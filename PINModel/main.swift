@@ -43,12 +43,9 @@ func generateFilesWithInitialUrl(url: NSURL, outputDirectory : NSURL) {
     }
 }
 
-//
-//generateFilesWithInitialUrl(NSURL(string:"~/json-schema/pin.json".stringByExpandingTildeInPath)!, outputDirectory: NSURL(string: NSFileManager.defaultManager().currentDirectoryPath)!)
-
 manager.register("generate", "Generate Model Files") { argv in
     if let url = argv.shift() {
-        if let baseUrl = NSURL(string:url.stringByExpandingTildeInPath) {
+        if let baseUrl = NSURL(string:url.stringByStandardizingPath) {
             if let outputDirectoryString = argv.option("out") {
                 generateFilesWithInitialUrl(baseUrl, outputDirectory: NSURL(string: outputDirectoryString)!)
             } else {

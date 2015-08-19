@@ -63,8 +63,13 @@ class ObjectSchemaProperty {
                 return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
                     propertyInfo: json, sourceId: scopeUrl)
             } else if let rawId = json["id"] as? String {
-                return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
-                    propertyInfo: json, sourceId: NSURL(string: rawId.stringByExpandingTildeInPath)!)
+                if rawId.hasPrefix("http") {
+                    return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
+                        propertyInfo: json, sourceId: NSURL(string: rawId)!)
+                } else {
+                    return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
+                        propertyInfo: json, sourceId: NSURL(fileURLWithPath: rawId.stringByStandardizingPath))
+                }
             } else {
                 assert(false) // Shouldn't be reached
                 return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
@@ -157,7 +162,11 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
     override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId : NSURL) {
         var id = sourceId
         if let rawId = propertyInfo["id"] as? String {
-            id = NSURL(string: rawId.stringByExpandingTildeInPath)!
+            if rawId.hasPrefix("http") {
+                id = NSURL(string: rawId.stringByStandardizingPath)!
+            } else {
+                id = NSURL(fileURLWithPath: rawId.stringByStandardizingPath)
+            }
         }
 
         if let rawProperties = propertyInfo["properties"] as? Dictionary<String, AnyObject> {
@@ -225,7 +234,10 @@ class ObjectSchemaPointerProperty : ObjectSchemaProperty {
                     // Local URL
                     return NSURL(string:refString, relativeToURL:sourceId)!
                 } else {
-                    let baseUrl = sourceId.URLByDeletingLastPathComponent
+                    var baseUrl = sourceId.URLByDeletingLastPathComponent
+                    if baseUrl!.path == "." {
+                        baseUrl = NSURL(fileURLWithPath: (baseUrl?.path)!)
+                    }
                     return NSURL(string:refString, relativeToURL:baseUrl)!
                 }
             } else {
