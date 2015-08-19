@@ -1,0 +1,29 @@
+# Xcode
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcworkspace
+*.mode1
+*.mode2v3
+*.mode1v3
+xcuserdata
+Snapshots
+
+# OS X
+*.DS_Store
+
+# CocoaPods
+Pods
+Podfile.lock
+
+# Build Outputs
+prepare_commit_log
+prepare_commit_result
+compile_commands.json
+
+# Code Coverage (gcov)
+*.gcno
+*.gcda
+
+# Python
+*.pyc

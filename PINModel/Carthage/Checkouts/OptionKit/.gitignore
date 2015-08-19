@@ -1,0 +1,4 @@
+Pods
+*.xcuserdatad
+.DS_Store
+Carthage/**
