@@ -10,6 +10,8 @@ import Foundation
 
 // MARK: Objective-C Helpers
 
+let DateValueTransformerKey = "kPINModelDateValueTransformerKey"
+
 public enum ObjCMemoryAssignmentType: String {
     case Copy = "copy"
     case Strong = "strong"
@@ -28,6 +30,13 @@ public enum ObjCMutabilityType: String {
 }
 
 
+public enum ObjCPrimitiveType: String {
+    case Float = "CGFloat"
+    case Integer = "NSInteger"
+    case Boolean = "BOOL"
+}
+
+
 extension ObjectSchemaProperty {
     func objectiveCStringForJSONType() -> String {
         switch self.jsonType {
@@ -36,15 +45,17 @@ extension ObjectSchemaProperty {
                 let subclass = self as! ObjectSchemaStringProperty
                 if subclass.format == JSONStringFormatType.Uri {
                     return NSStringFromClass(NSURL)
+                } else if subclass.format == JSONStringFormatType.DateTime {
+                    return NSStringFromClass(NSDate)
                 }
             }
             return NSStringFromClass(NSString)
         case .Number :
-            return "CGFloat"
+            return ObjCPrimitiveType.Float.rawValue
         case .Integer :
-            return "NSInteger"
+            return ObjCPrimitiveType.Integer.rawValue
         case .Boolean:
-            return "BOOL"
+            return ObjCPrimitiveType.Boolean.rawValue
         case .Array:
             if self is ObjectSchemaArrayProperty {
                 let subclass = self as! ObjectSchemaArrayProperty
@@ -86,6 +97,8 @@ extension ObjectSchemaProperty {
                 let subclass = self as! ObjectSchemaStringProperty
                 if subclass.format == JSONStringFormatType.Uri {
                     statement = "[NSURL URLWithString:\(propertyVariableString)]"
+                } else if subclass.format == JSONStringFormatType.DateTime {
+                    statement = "[[NSValueTransformer valueTransformerForName:\(DateValueTransformerKey)] transformedValue:\(propertyVariableString)]"
                 }
             }
         case .Number :
@@ -179,25 +192,20 @@ extension ObjectSchemaProperty {
             let subclass = self as! ObjectSchemaArrayProperty
             if let arrayItems = subclass.items as ObjectSchemaProperty? {
                 assert(arrayItems.isScalarObjectiveCType() == false) // Arrays cannot contain primitive types
-                if (arrayItems.jsonType == JSONType.Pointer ||
-                    (arrayItems.jsonType == JSONType.String && (arrayItems as! ObjectSchemaStringProperty).format == JSONStringFormatType.Uri)) {
-                        requiresAssignmentLogic = Bool(true)
-                }
+                return arrayItems.propertyRequiresAssignmentLogic()
             }
         case .Object:
             let subclass = self as! ObjectSchemaObjectProperty
             if let additionalProperties = subclass.additionalProperties as ObjectSchemaProperty? {
                 assert(additionalProperties.isScalarObjectiveCType() == false) // Dictionaries cannot contain primitive types
-                if additionalProperties.jsonType == JSONType.Pointer {
-                    requiresAssignmentLogic = Bool(true)
-                }
+                return additionalProperties.propertyRequiresAssignmentLogic()
             }
         case .Pointer:
             requiresAssignmentLogic = Bool(true)
         case .String :
             if self is ObjectSchemaStringProperty {
                 let subclass = self as! ObjectSchemaStringProperty
-                if subclass.format == JSONStringFormatType.Uri {
+                if subclass.format == JSONStringFormatType.Uri || subclass.format == JSONStringFormatType.DateTime {
                     requiresAssignmentLogic = Bool(true)
                 }
             }
