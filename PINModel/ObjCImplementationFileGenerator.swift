@@ -57,7 +57,8 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             return "#import \"\(prop.objectiveCStringForJSONType()).h\""
         })
 
-        var importStatements = ["#import \"\(self.className).h\""]
+        var importStatements = ["#import \"\(self.className).h\"",
+                                "#import \"PINModelRuntime.h\""]
         importStatements.extend(referencedImportStatements)
 
         return "\n".join(importStatements.sort())
