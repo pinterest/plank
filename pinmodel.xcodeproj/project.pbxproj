@@ -19,6 +19,7 @@
 		817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */; };
 		817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */; };
 		817B72361B697A7C0071DEF5 /* ObjCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72351B697A7C0071DEF5 /* ObjCProperty.swift */; };
+		81AC0B801B8D1C6F00ED599E /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +49,7 @@
 		817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCInterfaceFileGenerator.swift; sourceTree = "<group>"; };
 		817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; };
 		817B72351B697A7C0071DEF5 /* ObjCProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCProperty.swift; sourceTree = "<group>"; };
+		81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				816B9D211B62EFDF00C494BE /* StringExtensions.swift */,
+				81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 				814AB8681B61584700CF4BC4 /* ObjectiveCFileGenerator.swift in Sources */,
 				8172EB421B83B2A6005EF82E /* Command.swift in Sources */,
 				8125FF911B61AF68007E4B65 /* FileGenerator.swift in Sources */,
+				81AC0B801B8D1C6F00ED599E /* UrlExtensions.swift in Sources */,
 				817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */,
 				816B9D221B62EFDF00C494BE /* StringExtensions.swift in Sources */,
 				8172EB441B83B2A6005EF82E /* Manager.swift in Sources */,

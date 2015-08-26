@@ -76,9 +76,12 @@ extension ObjectSchemaProperty {
             let subclass = self as! ObjectSchemaPointerProperty
             if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) as? ObjectSchemaObjectProperty {
                 // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
+                // https://phabricator.pinadmin.com/T46
                 return ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix : "PI"]).className
             } else {
-                assert(false)
+                // TODO (rmalik): Add assertion back when we figure out why the API can have a null value for a schema.
+                // https://phabricator.pinadmin.com/T47
+//                assert(false)
                 return ""
             }
 
@@ -124,7 +127,10 @@ extension ObjectSchemaProperty {
 
                 statement = "[[\(classNameForSchema) alloc] initWithDictionary:\(propertyVariableString)]"
             } else {
-                assert(false)
+                // TODO (rmalik): Add assertion back when we figure out why the API can have a null value for a schema.
+                // https://phabricator.pinadmin.com/T47
+                statement = ""
+//                assert(false)
             }
 
         default:

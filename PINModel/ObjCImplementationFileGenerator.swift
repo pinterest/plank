@@ -92,7 +92,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return "\n".join([
             "+ (NSString *)polymorphicTypeIdentifier",
             "{",
-            "    return @\"\(self.objectDescriptor.name)\";",
+            "    return @\"\(self.objectDescriptor.name.lowercaseString)\";",
             "}"
         ])
     }

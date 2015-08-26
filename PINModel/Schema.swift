@@ -163,7 +163,7 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
         var id = sourceId
         if let rawId = propertyInfo["id"] as? String {
             if rawId.hasPrefix("http") {
-                id = NSURL(string: rawId.stringByStandardizingPath)!
+                id = NSURL(string: rawId)!
             } else {
                 id = NSURL(fileURLWithPath: rawId.stringByStandardizingPath)
             }
@@ -194,6 +194,7 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
         }
 
         // TODO: Parse definitions
+        // https://phabricator.pinadmin.com/T48
         self.definitions = [ObjectSchemaProperty]()
 
         if let rawItems = propertyInfo["additionalProperties"] as? JSONObject {
@@ -238,7 +239,7 @@ class ObjectSchemaPointerProperty : ObjectSchemaProperty {
                     if baseUrl!.path == "." {
                         baseUrl = NSURL(fileURLWithPath: (baseUrl?.path)!)
                     }
-                    return NSURL(string:refString, relativeToURL:baseUrl)!
+                    return NSURL(string:refString.pathComponents.last!, relativeToURL:baseUrl)!
                 }
             } else {
                 assert(false)
@@ -294,9 +295,26 @@ class SchemaLoader {
             return cachedValue
         }
 
+        // Checks for prefix of http to satisfy both http and https urls
         if schemaUrl.scheme.hasPrefix("http") {
-            // TODO: Load schema from the network.
-            assert(false)
+            do {
+                // Builds a URL with the access-token necessary to access the schema by appending a query parameter.
+                let schemaUrlWithToken = NSURL(string: "\(schemaUrl.absoluteURL.absoluteString)?\(accessTokenString)")!
+                if let data = NSURLSession.sharedSession().synchronousDataTaskWithUrl(schemaUrlWithToken) {
+                    let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [String:AnyObject]
+
+                    if jsonResult["data"] !== NSNull() {
+                        refs[schemaUrl] = ObjectSchemaProperty.propertyForJSONObject(jsonResult["data"] as! JSONObject, scopeUrl : schemaUrl)
+                    }
+                    // TODO (rmalik): Figure out if we should handle NSNull values differently for schemas.
+                    // https://phabricator.pinadmin.com/T47
+                    return refs[schemaUrl]
+                }
+            } catch {
+                // TODO: Better failure handling and reporting
+                // https://phabricator.pinadmin.com/T49
+                assert(false)
+            }
         } else {
             // Load from local file
             do {
@@ -308,6 +326,7 @@ class SchemaLoader {
                 }
             } catch {
                 // TODO: Better failure handling and reporting
+                // https://phabricator.pinadmin.com/T49
                 assert(false)
             }
         }

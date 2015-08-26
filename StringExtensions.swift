@@ -8,7 +8,6 @@
 
 import Foundation
 
-// TODO: Remove ObjC Specific Stuff here.
 
 let OBJC_RESERVED_WORDS_REPLACEMENTS = [
     "description" : "description_text",
