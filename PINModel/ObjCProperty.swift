@@ -260,6 +260,81 @@ class ObjectiveCProperty {
         return self.renderDeclaration(true)
     }
 
+    func renderEncodeWithCoderStatement() -> String {
+        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
+        switch self.propertyDescriptor.jsonType {
+        case .Pointer:
+            return "[aCoder encodeObject:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
+        case .Integer:
+            //- (void)encodeInt:(int)intv forKey:(NSString *)key;
+            return "[aCoder encodeInteger:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
+        case .Boolean:
+            //- (void)encodeBool:(BOOL)boolv forKey:(NSString *)key;
+            return "[aCoder encodeBool:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
+
+        case .Number:
+            //- (void)encodeFloat:(float)realv forKey:(NSString *)key;
+
+            return "[aCoder encodeCGFloat:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
+        default:
+            return "[aCoder encodeObject:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
+        }
+    }
+
+    func renderDecodeWithCoderStatement() -> String {
+        switch self.propertyDescriptor.jsonType {
+        case .Pointer:
+            //- (id)decodeObjectOfClass:(Class)aClass forKey:(NSString *)key NS_AVAILABLE(10_8, 6_0);
+            let subclass = self.propertyDescriptor as! ObjectSchemaPointerProperty
+            if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) as? ObjectSchemaObjectProperty {
+                // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
+                // https://phabricator.pinadmin.com/T46
+                let className = ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix : "PI"]).className
+                return "[aDecoder decodeObjectOfClass:[\(className) class] forKey:@\"\(self.propertyDescriptor.name)\"]"
+            } else {
+                // Failed to load schema
+                assert(false)
+            }
+        case .Integer:
+            // - (int)decodeIntForKey:(NSString *)key;
+            return "[aDecoder decodeIntegerForKey:@\"\(self.propertyDescriptor.name)\"]"
+        case .Boolean:
+            // - (BOOL)decodeBoolForKey:(NSString *)key;
+            return "[aDecoder decodeBoolForKey:@\"\(self.propertyDescriptor.name)\"]"
+        case .Number:
+            // - (float)decodeFloatForKey:(NSString *)key;
+            return "[aDecoder decodeCGFloatForKey:@\"\(self.propertyDescriptor.name)\"]"
+        case .String:
+            return "[aDecoder decodeObjectOfClass:[\(self.propertyDescriptor.objectiveCStringForJSONType()) class] forKey:@\"\(self.propertyDescriptor.name)\"]"
+        case .Array:
+            // - (id)decodeObjectOfClasses:(NSSet *)classes forKey:(NSString *)key NS_AVAILABLE(10_8, 6_0);
+            var deserializationClasses = Set(["NSArray"])
+            let subclass = self.propertyDescriptor as! ObjectSchemaArrayProperty
+            if let valueTypes = subclass.items as ObjectSchemaProperty? {
+                deserializationClasses.insert(valueTypes.objectiveCStringForJSONType())
+            }
+            let classList = ", ".join(deserializationClasses.map { "[\($0) class]" })
+            return "[aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[\(classList)]] forKey:@\"\(self.propertyDescriptor.name)\"]"
+        case .Object:
+            // - (id)decodeObjectOfClasses:(NSSet *)classes forKey:(NSString *)key NS_AVAILABLE(10_8, 6_0);
+            var deserializationClasses = Set(["NSDictionary", "NSString"])
+            let subclass = self.propertyDescriptor as! ObjectSchemaObjectProperty
+            if let valueTypes = subclass.additionalProperties as ObjectSchemaProperty? {
+                deserializationClasses.insert(valueTypes.objectiveCStringForJSONType())
+            }
+            let classList = ", ".join(deserializationClasses.map { "[\($0) class]" })
+            return "[aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[\(classList)]] forKey:@\"\(self.propertyDescriptor.name)\"]"
+        default:
+            assert(false)
+        }
+        return ""
+    }
+
+    private func isScalarType() -> Bool {
+        let jsonType = self.propertyDescriptor.jsonType
+        return jsonType == JSONType.Boolean || jsonType == JSONType.Integer || jsonType == JSONType.Number
+    }
+
     private func renderDeclaration(isMutable: Bool) -> String {
         let mutabilityType = isMutable ? ObjCMutabilityType.ReadWrite : ObjCMutabilityType.ReadOnly
         let propName = self.propertyDescriptor.name.snakeCaseToPropertyName()

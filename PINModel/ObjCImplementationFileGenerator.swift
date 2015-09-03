@@ -58,9 +58,9 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         })
 
         var importStatements = ["#import \"\(self.className).h\"",
-                                "#import \"PINModelRuntime.h\""]
+                                "#import \"PINModelRuntime.h\""
+        ]
         importStatements.extend(referencedImportStatements)
-
         return "\n".join(importStatements.sort())
     }
 
@@ -204,6 +204,46 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return "\n".join(lines)
     }
 
+    func renderSupportsSecureCoding() -> String {
+        return "\n".join([
+            "+ (BOOL)supportsSecureCoding",
+            "{",
+            "    return YES;",
+            "}"
+            ])
+    }
+
+    func renderInitWithCoder() -> String  {
+        let propertyLines : [String] = self.objectDescriptor.properties.map { (property : ObjectSchemaProperty) -> String in
+            let formattedPropName = property.name.snakeCaseToPropertyName()
+            let decodeStmt = ObjectiveCProperty(descriptor: property).renderDecodeWithCoderStatement()
+            return "_\(formattedPropName) = \(decodeStmt);"
+        }
+        let indentation = "    "
+        return "\n".join([
+            "- (instancetype)initWithCoder:(NSCoder *)aDecoder",
+            "{",
+            "    if (!(self = [super init])) { return self; }",
+            "\n".join(propertyLines.map({ indentation + $0 })),
+            "    return self;",
+            "}"
+            ])
+    }
+
+    func renderEncodeWithCoder() -> String  {
+        let propertyLines : [String] = self.objectDescriptor.properties.map { (property : ObjectSchemaProperty) -> String in
+            return ObjectiveCProperty(descriptor: property).renderEncodeWithCoderStatement() + ";"
+        }
+        let indentation = "    "
+        return "\n".join([
+            "- (void)encodeWithCoder:(NSCoder *)aCoder",
+            "{",
+            "\n".join(propertyLines.map({ indentation + $0 })),
+            "}"
+            ])
+    }
+
+
     func renderCopyWithZone() -> String  {
         return "\n".join([
             "- (id)copyWithZone:(NSZone *)zone",
@@ -242,6 +282,10 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             self.renderDesignatedInit(),
             self.renderInitWithDictionary(),
             self.renderInitWithBuilder(),
+            self.pragmaMark("NSSecureCoding implementation"),
+            self.renderSupportsSecureCoding(),
+            self.renderInitWithCoder(),
+            self.renderEncodeWithCoder(),
             self.pragmaMark("Mutation helper methods"),
             self.renderCopyWithBlock(),
             self.pragmaMark("NSCopying implementation"),

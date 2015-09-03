@@ -59,13 +59,14 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             return ObjectiveCProperty(descriptor: property).renderInterfaceDeclaration()
         }
 
-        let implementedProtocols = ", ".join(["NSCopying"])
+        let implementedProtocols = ", ".join(["NSCopying", "NSSecureCoding"])
         let lines = [
             "@interface \(self.className) : NSObject<\(implementedProtocols)>",
             "\n".join(propertyLines),
             "+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;",
             "- (instancetype)initWithDictionary:(NSDictionary *)modelDictionary NS_DESIGNATED_INITIALIZER;",
             "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder NS_DESIGNATED_INITIALIZER;",
+            "- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;",
             "- (instancetype)copyWithBlock:(\(self.builderClassName)Block)block;",
             "@end",
         ]
