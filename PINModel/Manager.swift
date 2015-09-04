@@ -32,7 +32,7 @@ public class Manager {
         // try to find the deepest command name matching the arguments
         for depth in Array((1...args.count).reverse()) {
             let slicedArgs = args[0 ..< depth]
-            let maybeCommandName = " ".join(slicedArgs)
+            let maybeCommandName = slicedArgs.joinWithSeparator(" ")
 
             if let command = findCommand(maybeCommandName) {
                 argv.arguments = Array(args[depth ..< args.count]) // strip the command name from arguments

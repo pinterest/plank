@@ -20,7 +20,7 @@ func generateFilesWithInitialUrl(url: NSURL, outputDirectory : NSURL) {
 
         var processedSchemas = Set<NSURL>([])
         repeat {
-            SchemaLoader.sharedInstance.refs.map({ (url : NSURL, schema : ObjectSchemaProperty) -> Void in
+            let _ = SchemaLoader.sharedInstance.refs.map({ (url : NSURL, schema : ObjectSchemaProperty) -> Void in
                 if processedSchemas.contains(url) {
                     return
                 }
@@ -50,7 +50,7 @@ func generateFilesWithInitialUrl(url: NSURL, outputDirectory : NSURL) {
 
 manager.register("generate", "Generate Model Files") { argv in
     if let url = argv.shift() {
-        if let baseUrl = NSURL(string:url.stringByStandardizingPath) {
+        if let baseUrl = NSURL(string:url)?.URLByStandardizingPath {
             if let outputDirectoryString = argv.option("out") {
                 generateFilesWithInitialUrl(baseUrl, outputDirectory: NSURL(string: outputDirectoryString)!)
             } else {

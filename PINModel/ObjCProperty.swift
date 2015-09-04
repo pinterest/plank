@@ -313,7 +313,7 @@ class ObjectiveCProperty {
             if let valueTypes = subclass.items as ObjectSchemaProperty? {
                 deserializationClasses.insert(valueTypes.objectiveCStringForJSONType())
             }
-            let classList = ", ".join(deserializationClasses.map { "[\($0) class]" })
+            let classList = deserializationClasses.map { "[\($0) class]" }.joinWithSeparator(", ")
             return "[aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[\(classList)]] forKey:@\"\(self.propertyDescriptor.name)\"]"
         case .Object:
             // - (id)decodeObjectOfClasses:(NSSet *)classes forKey:(NSString *)key NS_AVAILABLE(10_8, 6_0);
@@ -322,7 +322,7 @@ class ObjectiveCProperty {
             if let valueTypes = subclass.additionalProperties as ObjectSchemaProperty? {
                 deserializationClasses.insert(valueTypes.objectiveCStringForJSONType())
             }
-            let classList = ", ".join(deserializationClasses.map { "[\($0) class]" })
+            let classList = deserializationClasses.map { "[\($0) class]" }.joinWithSeparator(", ")
             return "[aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[\(classList)]] forKey:@\"\(self.propertyDescriptor.name)\"]"
         default:
             assert(false)
@@ -340,11 +340,10 @@ class ObjectiveCProperty {
         let propName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         let format : String = self.propertyDescriptor.isScalarObjectiveCType() ?  "%@ (%@) %@ %@;" : "%@ (%@) %@ *%@;"
         return String(format: format, "@property",
-            ", ".join([
-                self.atomicityType.rawValue,
-                self.propertyDescriptor.objCMemoryAssignmentType().rawValue,
-                mutabilityType.rawValue]),
-            self.propertyDescriptor.objectiveCStringForJSONType(),
-            propName)
+            [self.atomicityType.rawValue,
+             self.propertyDescriptor.objCMemoryAssignmentType().rawValue,
+             mutabilityType.rawValue].joinWithSeparator(", "),
+             self.propertyDescriptor.objectiveCStringForJSONType(),
+             propName)
     }
 }

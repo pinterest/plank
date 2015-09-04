@@ -38,7 +38,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderUtilityFunctions() -> String {
-        return "\n".join([
+        return [
             "static inline id valueOrNil(NSDictionary *dict, NSString *key) {",
             "    id value = dict[key];",
             "    if (value == nil || value == [NSNull null]) {",
@@ -46,7 +46,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             "    }",
             "    return value;",
             "}"
-        ])
+        ].joinWithSeparator("\n")
     }
 
     func renderImports() -> String {
@@ -60,8 +60,8 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         var importStatements = ["#import \"\(self.className).h\"",
                                 "#import \"PINModelRuntime.h\""
         ]
-        importStatements.extend(referencedImportStatements)
-        return "\n".join(importStatements.sort())
+        importStatements.appendContentsOf(referencedImportStatements)
+        return importStatements.sort().joinWithSeparator("\n")
     }
 
     func renderClassExtension() -> String {
@@ -71,30 +71,30 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
 
         let lines = [
             "@interface \(self.className)()",
-            "\n".join(propertyLines),
+            propertyLines.joinWithSeparator("\n"),
             "@end"
         ]
-        return "\n\n".join(lines)
+        return lines.joinWithSeparator("\n\n")
     }
 
 
     func renderModelObjectWithDictionary() -> String {
-        return "\n".join([
+        return [
             "+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary",
             "{",
             "    return [[self alloc] initWithDictionary:dictionary];",
             "}"
-            ])
+        ].joinWithSeparator("\n")
     }
 
     func renderPolymorphicTypeIdentifier() -> String {
 
-        return "\n".join([
+        return [
             "+ (NSString *)polymorphicTypeIdentifier",
             "{",
             "    return @\"\(self.objectDescriptor.name.lowercaseString)\";",
             "}"
-        ])
+        ].joinWithSeparator("\n")
     }
 
     func renderInitWithDictionary() -> String {
@@ -102,14 +102,16 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             let indentation = "    "
             if property.propertyRequiresAssignmentLogic() {
                 let propFromDictionary = "valueOrNil(modelDictionary, @\"\(property.name)\")"
-                return "\n".join([
+                let propertyLines = property.propertyAssignmentStatementFromDictionary().map({ indentation + indentation + $0 }).joinWithSeparator("\n")
+                let lines = [
                     indentation + "value = \(propFromDictionary);",
                     indentation + "if (value != nil) {" ,
-                    "\n".join(property.propertyAssignmentStatementFromDictionary().map({ indentation + indentation + $0 })),
+                    propertyLines,
                     indentation + "}"
-                    ])
+                ]
+                return lines.joinWithSeparator("\n")
             }
-            return "\n".join(property.propertyAssignmentStatementFromDictionary().map({ indentation + $0 }))
+            return property.propertyAssignmentStatementFromDictionary().map({ indentation + $0 }).joinWithSeparator("\n")
         }
 
         let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({$0.propertyRequiresAssignmentLogic()}).reduce(false) {
@@ -133,11 +135,11 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             "    NSParameterAssert(modelDictionary);",
             "    if (!(self = [super init])) { return self; }",
             tmpVariableLine,
-            "\n\n".join(propertyLines),
+            propertyLines.joinWithSeparator("\n\n"),
             "    return self;",
             "}"
         ]
-        return "\n".join(lines)
+        return lines.joinWithSeparator("\n")
     }
 
     func renderCopyWithBlock() -> String {
@@ -152,7 +154,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             "    return [builder build];",
             "}"
         ]
-        return "\n".join(lines)
+        return lines.joinWithSeparator("\n")
     }
 
     func renderDesignatedInit() -> String {
@@ -163,7 +165,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             "   return self;",
             "}"
         ]
-        return "\n".join(lines)
+        return lines.joinWithSeparator("\n")
     }
 
     func renderInitWithBuilder() -> String {
@@ -179,11 +181,11 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             "{",
             "    NSParameterAssert(builder);",
             "    if (!(self = [super init])) { return self; }",
-            "\n".join(propertyLines.map({ indentation + $0 })),
+            propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
             "    return self;",
             "}"
         ]
-        return "\n".join(lines)
+        return lines.joinWithSeparator("\n")
     }
 
     func renderBuilderInitWithModelObject() -> String {
@@ -197,20 +199,20 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             "{",
             "    NSParameterAssert(modelObject);",
             "    if (!(self = [super init])) { return self; }",
-            "\n".join(propertyLines.map({ indentation + $0 })),
+            propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
             "    return self;",
             "}"
         ]
-        return "\n".join(lines)
+        return lines.joinWithSeparator("\n")
     }
 
     func renderSupportsSecureCoding() -> String {
-        return "\n".join([
+        return [
             "+ (BOOL)supportsSecureCoding",
             "{",
             "    return YES;",
             "}"
-            ])
+        ].joinWithSeparator("\n")
     }
 
     func renderInitWithCoder() -> String  {
@@ -220,14 +222,14 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             return "_\(formattedPropName) = \(decodeStmt);"
         }
         let indentation = "    "
-        return "\n".join([
+        return [
             "- (instancetype)initWithCoder:(NSCoder *)aDecoder",
             "{",
             "    if (!(self = [super init])) { return self; }",
-            "\n".join(propertyLines.map({ indentation + $0 })),
+            propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
             "    return self;",
             "}"
-            ])
+        ].joinWithSeparator("\n")
     }
 
     func renderEncodeWithCoder() -> String  {
@@ -235,22 +237,22 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             return ObjectiveCProperty(descriptor: property).renderEncodeWithCoderStatement() + ";"
         }
         let indentation = "    "
-        return "\n".join([
+        return [
             "- (void)encodeWithCoder:(NSCoder *)aCoder",
             "{",
-            "\n".join(propertyLines.map({ indentation + $0 })),
+            propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
             "}"
-            ])
+        ].joinWithSeparator("\n")
     }
 
 
     func renderCopyWithZone() -> String  {
-        return "\n".join([
+        return [
             "- (id)copyWithZone:(NSZone *)zone",
             "{",
             "    return self;",
             "}"
-        ])
+        ].joinWithSeparator("\n")
     }
 
     func renderBuildMethod() -> String  {
@@ -260,7 +262,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             "    return [[\(self.className) alloc] initWithBuilder:self];",
             "}"
         ]
-        return "\n".join(lines)
+        return lines.joinWithSeparator("\n")
     }
 
     func renderBuilderImplementation() -> String {
@@ -270,7 +272,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             self.renderBuildMethod(),
             "@end"
         ]
-        return "\n\n".join(lines)
+        return lines.joinWithSeparator("\n\n")
     }
 
 
@@ -292,7 +294,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             self.renderCopyWithZone(),
             "@end"
         ]
-        return "\n\n".join(lines)
+        return lines.joinWithSeparator("\n\n")
     }
 
     func renderFile() -> String {
@@ -305,6 +307,6 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             self.renderBuilderImplementation(),
             "" // Newline at the end of file.
         ]
-        return "\n\n".join(lines)
+        return lines.joinWithSeparator("\n\n")
     }
 }

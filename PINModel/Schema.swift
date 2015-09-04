@@ -68,7 +68,7 @@ class ObjectSchemaProperty {
                         propertyInfo: json, sourceId: NSURL(string: rawId)!)
                 } else {
                     return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
-                        propertyInfo: json, sourceId: NSURL(fileURLWithPath: rawId.stringByStandardizingPath))
+                        propertyInfo: json, sourceId: NSURL(fileURLWithPath: rawId).URLByStandardizingPath!)
                 }
             } else {
                 assert(false) // Shouldn't be reached
@@ -165,7 +165,7 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
             if rawId.hasPrefix("http") {
                 id = NSURL(string: rawId)!
             } else {
-                id = NSURL(fileURLWithPath: rawId.stringByStandardizingPath)
+                id = NSURL(fileURLWithPath: rawId).URLByStandardizingPath!
             }
         }
 
@@ -239,7 +239,8 @@ class ObjectSchemaPointerProperty : ObjectSchemaProperty {
                     if baseUrl!.path == "." {
                         baseUrl = NSURL(fileURLWithPath: (baseUrl?.path)!)
                     }
-                    return NSURL(string:refString.pathComponents.last!, relativeToURL:baseUrl)!
+                    let lastPathComponentString = NSURL(string: refString)?.pathComponents?.last
+                    return NSURL(string:lastPathComponentString!, relativeToURL:baseUrl)!
                 }
             } else {
                 assert(false)

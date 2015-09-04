@@ -55,17 +55,17 @@ public class ARGV {
     }
     
     private func optionParameter(arg: String) -> (key: String, value: String) {
-        let argument = arg.substringFromIndex(advance(arg.startIndex, 2))
-        let components = split(argument.characters) { $0 == "=" }.map { String($0) }
+        let argument = arg.substringFromIndex(arg.startIndex.advancedBy(2))
+        let components = argument.characters.split(isSeparator: { $0 == "=" }).map { String($0) }
         assert(components.count == 2)
         return (components[0], components[1])
     }
     
     private func flagParameter(arg: String) -> (key: String, value: Bool) {
         if arg.hasPrefix("--no-") {
-            return (arg.substringFromIndex(advance(arg.startIndex, 5)), false)
+            return (arg.substringFromIndex(arg.startIndex.advancedBy(5)), false)
         } else {
-            return (arg.substringFromIndex(advance(arg.startIndex, 2)), true)
+            return (arg.substringFromIndex(arg.startIndex.advancedBy(2)), true)
         }
     }
 }

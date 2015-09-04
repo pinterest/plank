@@ -50,7 +50,7 @@ extension FileGenerator {
             "//  Copyright (c) \(year) Pinterest, Inc. All rights reserved.",
             "//"
         ]
-        return "\n".join(header)
+        return header.joinWithSeparator("\n")
     }
 }
 

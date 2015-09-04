@@ -20,7 +20,7 @@ extension String {
         let name : [String] = components.map { (component : String) -> String in
             return component.capitalizedString
         }
-        return "".join(name)
+        return name.joinWithSeparator("")
     }
 
     func snakeCaseToPropertyName () -> String {

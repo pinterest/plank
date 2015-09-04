@@ -41,13 +41,13 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
 
         let lines = [
             "@interface \(self.builderClassName) : NSObject",
-            "\n".join(propertyLines),
+            propertyLines.joinWithSeparator("\n"),
             "- (instancetype)initWith\(self.className):(\(self.className) *)modelObject;",
             "- (\(self.className) *)build;", // - (Model *)build;
             "@end"
         ]
 
-        return "\n\n".join(lines)
+        return lines.joinWithSeparator("\n\n")
     }
 
     func renderBuilderBlockType() -> String {
@@ -59,10 +59,10 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             return ObjectiveCProperty(descriptor: property).renderInterfaceDeclaration()
         }
 
-        let implementedProtocols = ", ".join(["NSCopying", "NSSecureCoding"])
+        let implementedProtocols = ["NSCopying", "NSSecureCoding"].joinWithSeparator(", ")
         let lines = [
             "@interface \(self.className) : NSObject<\(implementedProtocols)>",
-            "\n".join(propertyLines),
+            propertyLines.joinWithSeparator("\n"),
             "+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;",
             "- (instancetype)initWithDictionary:(NSDictionary *)modelDictionary NS_DESIGNATED_INITIALIZER;",
             "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder NS_DESIGNATED_INITIALIZER;",
@@ -71,7 +71,7 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             "@end",
         ]
 
-        return "\n\n".join(lines)
+        return lines.joinWithSeparator("\n\n")
     }
 
     func renderForwardDeclarations() -> String {
@@ -82,8 +82,8 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             return "@class \(prop.objectiveCStringForJSONType());"
         })
         var forwardDeclarations = ["@class \(self.builderClassName);"]
-        forwardDeclarations.extend(referencedForwardDeclarations)
-        return "\n".join(forwardDeclarations.sort())
+        forwardDeclarations.appendContentsOf(referencedForwardDeclarations)
+        return forwardDeclarations.sort().joinWithSeparator("\n")
     }
 
     func renderFile() -> String {
@@ -99,6 +99,6 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             "NS_ASSUME_NONNULL_END",
             "" // Newline at the end of file.
         ]
-        return "\n\n".join(lines)
+        return lines.joinWithSeparator("\n\n")
     }
 }
