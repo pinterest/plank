@@ -23,7 +23,7 @@ protocol FileGeneratorManager {
 }
 
 protocol FileGenerator {
-    init(descriptor: ObjectSchemaObjectProperty, generatorParameters : GenerationParameters)
+    init(descriptor: ObjectSchemaObjectProperty, generatorParameters : GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?)
     func fileName() -> String
     func renderFile() -> String
 }

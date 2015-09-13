@@ -13,8 +13,10 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     let className : String
     let builderClassName : String
     let generationParameters : GenerationParameters
+    let parentDescriptor : ObjectSchemaObjectProperty?
 
-    required init(descriptor: ObjectSchemaObjectProperty, generatorParameters : GenerationParameters) {
+
+    required init(descriptor: ObjectSchemaObjectProperty, generatorParameters : GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?) {
         self.objectDescriptor = descriptor
         if let classPrefix = generatorParameters[GenerationParameterType.ClassPrefix] as String? {
             self.className = String(format: "%@%@", arguments: [
@@ -26,10 +28,24 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         }
         self.builderClassName = "\(self.className)Builder"
         self.generationParameters = generatorParameters
+        self.parentDescriptor = parentDescriptor
     }
 
     func fileName() -> String {
         return "\(self.className).m"
+    }
+
+    func isBaseClass() -> Bool {
+        return self.parentDescriptor == nil
+    }
+
+
+    func classProperties() -> [ObjectSchemaProperty] {
+        if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
+            let baseProperties = Set(baseClass.properties.map({ $0.name }))
+            return self.objectDescriptor.properties.filter({ !baseProperties.contains($0.name) })
+        }
+        return self.objectDescriptor.properties
     }
 
 
@@ -64,20 +80,6 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return importStatements.sort().joinWithSeparator("\n")
     }
 
-    func renderClassExtension() -> String {
-        let propertyLines : [String] = self.objectDescriptor.properties.map { (property : ObjectSchemaProperty) -> String in
-            return ObjectiveCProperty(descriptor: property).renderImplementationDeclaration()
-        }
-
-        let lines = [
-            "@interface \(self.className)()",
-            propertyLines.joinWithSeparator("\n"),
-            "@end"
-        ]
-        return lines.joinWithSeparator("\n\n")
-    }
-
-
     func renderModelObjectWithDictionary() -> String {
         return [
             "+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary",
@@ -98,8 +100,8 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderInitWithDictionary() -> String {
-        let propertyLines : [String] = self.objectDescriptor.properties.map { (property : ObjectSchemaProperty) -> String in
-            let indentation = "    "
+        let indentation = "    "
+        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
             if property.propertyRequiresAssignmentLogic() {
                 let propFromDictionary = "valueOrNil(modelDictionary, @\"\(property.name)\")"
                 let propertyLines = property.propertyAssignmentStatementFromDictionary().map({ indentation + indentation + $0 }).joinWithSeparator("\n")
@@ -124,17 +126,22 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         if anyPropertiesRequireAssignmentLogic {
             // Don't insert the temporary value variable if it will not be used.
             // Currently it is only used for URLs, Typed Collections and Other model classes.
-            tmpVariableLine = "    id value = nil;"
+            tmpVariableLine = "id value = nil;"
         }
 
+
+        var superInitCall = "if (!(self = [super initWithDictionary:modelDictionary])) { return self; }"
+        if self.isBaseClass() {
+            superInitCall = "if (!(self = [super init])) { return self; }"
+        }
 
         let lines = [
             "- (instancetype) __attribute__((annotate(\"oclint:suppress[high npath complexity]\")))",
             "    initWithDictionary:(NSDictionary *)modelDictionary",
             "{",
             "    NSParameterAssert(modelDictionary);",
-            "    if (!(self = [super init])) { return self; }",
-            tmpVariableLine,
+            indentation + superInitCall,
+            indentation + tmpVariableLine,
             propertyLines.joinWithSeparator("\n\n"),
             "    return self;",
             "}"
@@ -143,13 +150,11 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderCopyWithBlock() -> String {
-        let blockName = "\(self.builderClassName)Block"
-
         let lines = [
-            "- (instancetype)copyWithBlock:(\(blockName))block",
+            "- (instancetype)copyWithBlock:(void (^)(id builder))block",
             "{",
             "    NSParameterAssert(block);",
-            "    \(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWith\(self.className):self];",
+            "    \(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
             "    block(builder);",
             "    return [builder build];",
             "}"
@@ -169,18 +174,22 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderInitWithBuilder() -> String {
-        let propertyLines : [String] = self.objectDescriptor.properties.map { (property : ObjectSchemaProperty) -> String in
+        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
             let formattedPropName = property.name.snakeCaseToPropertyName()
             return "_\(formattedPropName) = builder.\(formattedPropName);"
         }
 
         let indentation = "    "
+        var superInitCall = indentation + "if (!(self = [super initWithBuilder:builder])) { return self; }"
+        if self.isBaseClass() {
+            superInitCall = indentation + "if (!(self = [super init])) { return self; }"
+        }
 
         let lines = [
             "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder",
             "{",
             "    NSParameterAssert(builder);",
-            "    if (!(self = [super init])) { return self; }",
+            superInitCall,
             propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
             "    return self;",
             "}"
@@ -189,16 +198,20 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderBuilderInitWithModelObject() -> String {
-        let propertyLines : [String] = self.objectDescriptor.properties.map { (property : ObjectSchemaProperty) -> String in
+        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
             let formattedPropName = property.name.snakeCaseToPropertyName()
             return "_\(formattedPropName) = modelObject.\(formattedPropName);"
         }
         let indentation = "    "
+        var superInitCall = indentation + "if (!(self = [super initWithModel:modelObject])) { return self; }"
+        if self.isBaseClass() {
+            superInitCall = indentation + "if (!(self = [super init])) { return self; }"
+        }
         let lines = [
-            "- (instancetype)initWith\(self.className):(\(self.className) *)modelObject",
+            "- (instancetype)initWithModel:(\(self.className) *)modelObject",
             "{",
             "    NSParameterAssert(modelObject);",
-            "    if (!(self = [super init])) { return self; }",
+            superInitCall,
             propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
             "    return self;",
             "}"
@@ -216,16 +229,20 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderInitWithCoder() -> String  {
-        let propertyLines : [String] = self.objectDescriptor.properties.map { (property : ObjectSchemaProperty) -> String in
+        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
             let formattedPropName = property.name.snakeCaseToPropertyName()
             let decodeStmt = ObjectiveCProperty(descriptor: property).renderDecodeWithCoderStatement()
             return "_\(formattedPropName) = \(decodeStmt);"
         }
         let indentation = "    "
+        var superInitCall = indentation + "if (!(self = [super initWithCoder:aDecoder])) { return self; }"
+        if self.isBaseClass() {
+            superInitCall = indentation + "if (!(self = [super init])) { return self; }"
+        }
         return [
             "- (instancetype)initWithCoder:(NSCoder *)aDecoder",
             "{",
-            "    if (!(self = [super init])) { return self; }",
+            superInitCall,
             propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
             "    return self;",
             "}"
@@ -233,16 +250,26 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderEncodeWithCoder() -> String  {
-        let propertyLines : [String] = self.objectDescriptor.properties.map { (property : ObjectSchemaProperty) -> String in
+        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
             return ObjectiveCProperty(descriptor: property).renderEncodeWithCoderStatement() + ";"
         }
         let indentation = "    "
-        return [
-            "- (void)encodeWithCoder:(NSCoder *)aCoder",
-            "{",
-            propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
-            "}"
-        ].joinWithSeparator("\n")
+        if self.isBaseClass() {
+            return [
+                "- (void)encodeWithCoder:(NSCoder *)aCoder",
+                "{",
+                propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
+                "}"
+            ].joinWithSeparator("\n")
+        } else {
+            return [
+                "- (void)encodeWithCoder:(NSCoder *)aCoder",
+                "{",
+                indentation + "[super encodeWithCoder:aCoder];",
+                propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
+                "}"
+            ].joinWithSeparator("\n")
+        }
     }
 
 
@@ -277,21 +304,38 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
 
 
     func renderImplementation() -> String {
+
+        if self.isBaseClass() {
+            let lines = [
+                "@implementation \(self.className)",
+                self.renderModelObjectWithDictionary(),
+                self.renderDesignatedInit(),
+                self.renderInitWithDictionary(),
+                self.renderInitWithBuilder(),
+                self.pragmaMark("NSSecureCoding implementation"),
+                self.renderSupportsSecureCoding(),
+                self.renderInitWithCoder(),
+                self.renderEncodeWithCoder(),
+                self.pragmaMark("Mutation helper methods"),
+                self.renderCopyWithBlock(),
+                self.pragmaMark("NSCopying implementation"),
+                self.renderCopyWithZone(),
+                "@end"
+            ]
+            return lines.joinWithSeparator("\n\n")
+
+        }
+
         let lines = [
             "@implementation \(self.className)",
-            self.renderModelObjectWithDictionary(),
             self.renderPolymorphicTypeIdentifier(),
-            self.renderDesignatedInit(),
             self.renderInitWithDictionary(),
             self.renderInitWithBuilder(),
             self.pragmaMark("NSSecureCoding implementation"),
-            self.renderSupportsSecureCoding(),
             self.renderInitWithCoder(),
             self.renderEncodeWithCoder(),
             self.pragmaMark("Mutation helper methods"),
             self.renderCopyWithBlock(),
-            self.pragmaMark("NSCopying implementation"),
-            self.renderCopyWithZone(),
             "@end"
         ]
         return lines.joinWithSeparator("\n\n")
@@ -301,11 +345,9 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         let lines = [
             self.renderCommentHeader(),
             self.renderImports(),
-            self.renderClassExtension(),
             self.renderUtilityFunctions(),
             self.renderImplementation(),
-            self.renderBuilderImplementation(),
-            "" // Newline at the end of file.
+            self.renderBuilderImplementation()
         ]
         return lines.joinWithSeparator("\n\n")
     }

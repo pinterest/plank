@@ -13,11 +13,37 @@ import Foundation
 // https://phabricator.pinadmin.com/T45
 let accessTokenString = "access_token=MTQzMTU5NDoxNTAwMjYzNjg3NDUyMTEzMDk6OTIyMzM3MjAzNjg1NDc3NTgwNzoxfDE0Mzk4NTQ5NTA6MC0tOGQwYzJjMzVlMTMyMDI1YTk2MDcwYzJlYWZiYjk1NTM%3D"
 
+
+let BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(name: "model", objectType: JSONType.Object,
+                                           propertyInfo: ["properties" : [ "id" : [ "type" : "string"]]],
+                                           sourceId: NSURL())
 var manager = Manager()
 
-func generateFilesWithInitialUrl(url: NSURL, outputDirectory : NSURL) {
-    if let _ = SchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
+func generateFile(schema: ObjectSchemaObjectProperty, outputDirectory: NSURL) {
+    let manager = ObjectiveCFileGeneratorManager(descriptor: schema,
+                                                 generatorParameters: [GenerationParameterType.ClassPrefix : "PI"])
+    for file in manager.filesToGenerate() {
+        let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file.
+        do {
+            try fileContents.writeToFile(
+                (outputDirectory.URLByAppendingPathComponent(file.fileName()).absoluteString),
+                atomically: true,
+                encoding: NSUTF8StringEncoding)
+        } catch {
+            assert(false)
+        }
+    }
+}
 
+
+
+func generateFilesWithInitialUrl(url: NSURL, outputDirectory : NSURL) {
+
+    // Generate Base Model
+    generateFile(BASE_MODEL_INSTANCE, outputDirectory: outputDirectory)
+
+    // Generate Subclasses
+    if let _ = SchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
         var processedSchemas = Set<NSURL>([])
         repeat {
             let _ = SchemaLoader.sharedInstance.refs.map({ (url : NSURL, schema : ObjectSchemaProperty) -> Void in
@@ -28,19 +54,7 @@ func generateFilesWithInitialUrl(url: NSURL, outputDirectory : NSURL) {
                 processedSchemas.insert(url)
 
                 if schema is ObjectSchemaObjectProperty  {
-                    let manager = ObjectiveCFileGeneratorManager(descriptor: schema as! ObjectSchemaObjectProperty,
-                                                                 generatorParameters: [GenerationParameterType.ClassPrefix : "PI"])
-                    for file in manager.filesToGenerate() {
-                        let fileContents : String = file.renderFile()
-                        do {
-                            try fileContents.writeToFile(
-                                (outputDirectory.URLByAppendingPathComponent(file.fileName()).absoluteString),
-                                atomically: true,
-                                encoding: NSUTF8StringEncoding)
-                        } catch {
-                            assert(false)
-                        }
-                    }
+                    generateFile(schema as! ObjectSchemaObjectProperty,outputDirectory : outputDirectory)
                 }
 
             })

@@ -77,7 +77,7 @@ extension ObjectSchemaProperty {
             if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) as? ObjectSchemaObjectProperty {
                 // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
                 // https://phabricator.pinadmin.com/T46
-                return ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix : "PI"]).className
+                return ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix : "PI"], parentDescriptor: nil).className
             } else {
                 // TODO (rmalik): Add assertion back when we figure out why the API can have a null value for a schema.
                 // https://phabricator.pinadmin.com/T47
@@ -289,7 +289,7 @@ class ObjectiveCProperty {
             if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) as? ObjectSchemaObjectProperty {
                 // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
                 // https://phabricator.pinadmin.com/T46
-                let className = ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix : "PI"]).className
+                let className = ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix : "PI"], parentDescriptor: nil).className
                 return "[aDecoder decodeObjectOfClass:[\(className) class] forKey:@\"\(self.propertyDescriptor.name)\"]"
             } else {
                 // Failed to load schema
@@ -339,11 +339,21 @@ class ObjectiveCProperty {
         let mutabilityType = isMutable ? ObjCMutabilityType.ReadWrite : ObjCMutabilityType.ReadOnly
         let propName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         let format : String = self.propertyDescriptor.isScalarObjectiveCType() ?  "%@ (%@) %@ %@;" : "%@ (%@) %@ *%@;"
-        return String(format: format, "@property",
-            [self.atomicityType.rawValue,
-             self.propertyDescriptor.objCMemoryAssignmentType().rawValue,
-             mutabilityType.rawValue].joinWithSeparator(", "),
-             self.propertyDescriptor.objectiveCStringForJSONType(),
-             propName)
+        if self.isScalarType() {
+            return String(format: format, "@property",
+                [self.atomicityType.rawValue,
+                 self.propertyDescriptor.objCMemoryAssignmentType().rawValue,
+                 mutabilityType.rawValue].joinWithSeparator(", "),
+                 self.propertyDescriptor.objectiveCStringForJSONType(),
+                 propName)
+        } else {
+            return String(format: format, "@property",
+                ["nullable", // We don't have a notion of required fields so we must assume all are nullable
+                    self.atomicityType.rawValue,
+                    self.propertyDescriptor.objCMemoryAssignmentType().rawValue,
+                    mutabilityType.rawValue].joinWithSeparator(", "),
+                self.propertyDescriptor.objectiveCStringForJSONType(),
+                propName)
+        }
     }
 }
