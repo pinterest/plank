@@ -15,7 +15,7 @@ let OBJC_RESERVED_WORDS_REPLACEMENTS = [
 ]
 
 extension String {
-    func snakeCaseToCamelCase () -> String {
+    func snakeCaseToCamelCase() -> String {
         let components = self.componentsSeparatedByString("_")
         let name : [String] = components.map { (component : String) -> String in
             return component.capitalizedString
@@ -23,7 +23,7 @@ extension String {
         return name.joinWithSeparator("")
     }
 
-    func snakeCaseToPropertyName () -> String {
+    func snakeCaseToPropertyName() -> String {
         var str : String = self
 
         if let replacementString = OBJC_RESERVED_WORDS_REPLACEMENTS[self] as String?  {

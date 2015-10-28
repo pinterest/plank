@@ -126,7 +126,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         if anyPropertiesRequireAssignmentLogic {
             // Don't insert the temporary value variable if it will not be used.
             // Currently it is only used for URLs, Typed Collections and Other model classes.
-            tmpVariableLine = "id value = nil;"
+            tmpVariableLine = indentation + "id value = nil;"
         }
 
 
@@ -141,7 +141,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             "{",
             "    NSParameterAssert(modelDictionary);",
             indentation + superInitCall,
-            indentation + tmpVariableLine,
+            tmpVariableLine,
             propertyLines.joinWithSeparator("\n\n"),
             "    return self;",
             "}"
@@ -273,6 +273,58 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
 
+    func renderMergeWithDictionary() -> String {
+        let indentation = "    "
+        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
+            var lines : [String] = []
+            let formattedPropName = property.name.snakeCaseToPropertyName()
+
+            if property.propertyRequiresAssignmentLogic() {
+                let propFromDictionary = "valueOrNil(modelDictionary, @\"\(property.name)\")"
+                let propertyLines = property.propertyMergeStatementFromDictionary("builder").map({ indentation + $0 })
+                lines = ["value = \(propFromDictionary);",
+                         "if (value != nil) {"] +
+                        propertyLines +
+                        ["} else {",
+                         indentation + "builder.\(formattedPropName) = nil;",
+                         "}"]
+            } else {
+                lines = property.propertyMergeStatementFromDictionary("builder")
+            }
+            let result = ["if ([key isEqualToString:@\"\(property.name)\"]) {"] + lines.map({indentation + $0}) + [ indentation + "return;", "}"]
+            return result.map({ indentation + indentation + $0 }).joinWithSeparator("\n")
+        }
+
+        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({$0.propertyRequiresAssignmentLogic()}).reduce(false) {
+            (sum, nextVal) in
+            return sum || nextVal
+        }
+
+
+        var tmpVariableLine = ""
+        if anyPropertiesRequireAssignmentLogic {
+            // Don't insert the temporary value variable if it will not be used.
+            // Currently it is only used for URLs, Typed Collections and Other model classes.
+            tmpVariableLine = indentation + indentation + "id value = nil;"
+        }
+        let lines = [
+        "- (instancetype)mergeWithDictionary:(NSDictionary *)modelDictionary",
+        "{",
+        "   NSParameterAssert(modelDictionary);",
+        "   \(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
+
+        "   [modelDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key, id  _Nonnull obj, __unused BOOL * _Nonnull stop) {",
+        "        if (obj == [NSNull null]) { return; }",
+            tmpVariableLine,
+            propertyLines.joinWithSeparator("\n\n"),
+        "   }];",
+        "   return [builder build];",
+        "}"
+        ]
+        return lines.joinWithSeparator("\n")
+    }
+
+
     func renderCopyWithZone() -> String  {
         return [
             "- (id)copyWithZone:(NSZone *)zone",
@@ -318,6 +370,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
                 self.renderEncodeWithCoder(),
                 self.pragmaMark("Mutation helper methods"),
                 self.renderCopyWithBlock(),
+                self.renderMergeWithDictionary(),
                 self.pragmaMark("NSCopying implementation"),
                 self.renderCopyWithZone(),
                 "@end"
@@ -336,6 +389,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             self.renderEncodeWithCoder(),
             self.pragmaMark("Mutation helper methods"),
             self.renderCopyWithBlock(),
+            self.renderMergeWithDictionary(),
             "@end"
         ]
         return lines.joinWithSeparator("\n\n")

@@ -108,6 +108,7 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
                 "- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;",
                 "- (nullable instancetype)initWithBuilder:(BuilderObjectType)builder NS_DESIGNATED_INITIALIZER;",
                 "- (instancetype)copyWithBlock:(void (^)(BuilderObjectType builder))block;",
+                "- (instancetype)mergeWithDictionary:(NSDictionary *)modelDictionary;",
                 "@end",
             ]
             return lines.joinWithSeparator("\n\n")
@@ -136,9 +137,9 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
 
     func renderImports()  -> String {
         if self.isBaseClass() {
-            return "#import \"CBLDefines.h\""
+            return ""
         }
-        return ["#import \"CBLDefines.h\"", "#import \"\(self.parentClassName()).h\""].joinWithSeparator("\n")
+        return "#import \"\(self.parentClassName()).h\""
     }
 
     func renderFile() -> String {

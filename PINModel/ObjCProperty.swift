@@ -60,7 +60,7 @@ extension ObjectSchemaProperty {
             if self is ObjectSchemaArrayProperty {
                 let subclass = self as! ObjectSchemaArrayProperty
                 if let valueTypes = subclass.items as ObjectSchemaProperty? {
-                    return "\(NSStringFromClass(NSArray)) PI_GENERIC(\(valueTypes.objectiveCStringForJSONType()) *)"
+                    return "\(NSStringFromClass(NSArray)) <\(valueTypes.objectiveCStringForJSONType()) *>"
                 }
             }
             return NSStringFromClass(NSArray)
@@ -68,7 +68,7 @@ extension ObjectSchemaProperty {
             if self is ObjectSchemaObjectProperty {
                 let subclass = self as! ObjectSchemaObjectProperty
                 if let valueTypes = subclass.additionalProperties as ObjectSchemaProperty? {
-                    return "\(NSStringFromClass(NSDictionary)) PI_GENERIC(\(NSStringFromClass(NSString)) *, \(valueTypes.objectiveCStringForJSONType()) *)"
+                    return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, \(valueTypes.objectiveCStringForJSONType()) *>"
                 }
             }
             return NSStringFromClass(NSDictionary)
@@ -139,6 +139,69 @@ extension ObjectSchemaProperty {
         return statement
     }
 
+
+
+    func propertyMergeStatementFromDictionary(originVariableString : String) -> [String] {
+        let formattedPropName = self.name.snakeCaseToPropertyName()
+        let propFromDictionary = self.propertyStatementFromDictionary("value")
+
+        if self.propertyRequiresAssignmentLogic() == false {
+            // Code optimization: Early-exit if we are simply doing a basic assignment
+            let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.name)\")")
+            return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]
+        }
+
+        var propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
+        switch self.jsonType {
+        case .Array :
+            let subclass = self as! ObjectSchemaArrayProperty
+            if let arrayItems = subclass.items as ObjectSchemaProperty? {
+                assert(arrayItems.isScalarObjectiveCType() == false) // Arrays cannot contain primitive types
+                if (arrayItems.jsonType == JSONType.Pointer ||
+                    (arrayItems.jsonType == JSONType.String && (arrayItems as! ObjectSchemaStringProperty).format == JSONStringFormatType.Uri)) {
+                        let deserializedObject = arrayItems.propertyStatementFromDictionary("obj")
+                        return [
+                            "NSArray *items = value;",
+                            "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
+                            "for (id obj in items) {",
+                            "    [result addObject:\(deserializedObject)];",
+                            "}",
+                            "\(originVariableString).\(formattedPropName) = result;"
+                        ]
+                }
+            }
+        case .Object:
+            let subclass = self as! ObjectSchemaObjectProperty
+            if let additionalProperties = subclass.additionalProperties as ObjectSchemaProperty? {
+                assert(additionalProperties.isScalarObjectiveCType() == false) // Dictionaries cannot contain primitive types
+                if additionalProperties.jsonType == JSONType.Pointer {
+                    let deserializedObject = additionalProperties.propertyStatementFromDictionary("obj")
+                    return [
+                        "NSDictionary *items = value;",
+                        "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
+                        "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, __unused BOOL *stop) {",
+                        "    result[key] = \(deserializedObject);",
+                        "}];",
+                        "\(originVariableString).\(formattedPropName) = result;"
+                    ]
+                }
+            }
+        case .Pointer:
+            let subclass = self as! ObjectSchemaPointerProperty
+            let propStmt = subclass.propertyStatementFromDictionary("value")
+            return [
+                "if (\(originVariableString).\(formattedPropName) != nil) {",
+                "   \(originVariableString).\(formattedPropName) = [\(originVariableString).\(formattedPropName) mergeWithDictionary:value];",
+                "} else {",
+                "   \(originVariableString).\(formattedPropName) = \(propStmt);",
+                "}"
+            ]
+        default:
+            propertyAssignmentStatement = "\(originVariableString).\(formattedPropName) = \(propFromDictionary);"
+        }
+        return [propertyAssignmentStatement]
+    }
+
     func propertyAssignmentStatementFromDictionary() -> [String] {
         let formattedPropName = self.name.snakeCaseToPropertyName()
         let propFromDictionary = self.propertyStatementFromDictionary("value")
@@ -161,9 +224,9 @@ extension ObjectSchemaProperty {
                     return [
                         "NSArray *items = value;",
                         "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
-                        "[items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {",
+                        "for (id obj in items) {",
                         "    [result addObject:\(deserializedObject)];",
-                        "}];",
+                        "}",
                         "_\(formattedPropName) = result;"
                     ]
 
