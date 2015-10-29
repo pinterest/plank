@@ -296,12 +296,8 @@ extension ObjectSchemaProperty {
             return ObjCMemoryAssignmentType.Assign
         }
 
-        switch self.jsonType {
-        case .String:
-            return ObjCMemoryAssignmentType.Copy
-        default:
-            return ObjCMemoryAssignmentType.Strong
-        }
+        // Since we are generating immutable models we can avoid declaring properties with "copy" memory assignment types.
+        return ObjCMemoryAssignmentType.Strong
     }
 }
 
