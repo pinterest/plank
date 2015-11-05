@@ -48,6 +48,13 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return self.objectDescriptor.properties
     }
 
+    func parentClassProperties() -> [ObjectSchemaProperty] {
+        if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
+            return baseClass.properties
+        }
+        return []
+    }
+
 
     func pragmaMark(pragmaName : String) -> String {
         return "#pragma mark - \(pragmaName)"
@@ -275,7 +282,8 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
 
     func renderMergeWithDictionary() -> String {
         let indentation = "    "
-        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
+
+        func renderMergeForProperty(property : ObjectSchemaProperty) -> String {
             var lines : [String] = []
             let formattedPropName = property.name.snakeCaseToPropertyName()
 
@@ -283,17 +291,21 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
                 let propFromDictionary = "valueOrNil(modelDictionary, @\"\(property.name)\")"
                 let propertyLines = property.propertyMergeStatementFromDictionary("builder").map({ indentation + $0 })
                 lines = ["value = \(propFromDictionary);",
-                         "if (value != nil) {"] +
-                        propertyLines +
-                        ["} else {",
-                         indentation + "builder.\(formattedPropName) = nil;",
-                         "}"]
+                    "if (value != nil) {"] +
+                    propertyLines +
+                    ["} else {",
+                    indentation + "builder.\(formattedPropName) = nil;",
+                    "}"]
             } else {
                 lines = property.propertyMergeStatementFromDictionary("builder")
             }
             let result = ["if ([key isEqualToString:@\"\(property.name)\"]) {"] + lines.map({indentation + $0}) + [ indentation + "return;", "}"]
             return result.map({ indentation + indentation + $0 }).joinWithSeparator("\n")
         }
+
+        var allProperties : [ObjectSchemaProperty] = self.classProperties() + self.parentClassProperties()
+        allProperties.sortInPlace({$0.name < $1.name})
+        let propertyLines : [String] = allProperties.map({ renderMergeForProperty($0)})
 
         let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({$0.propertyRequiresAssignmentLogic()}).reduce(false) {
             (sum, nextVal) in
