@@ -135,6 +135,16 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
         return forwardDeclarations.sort().joinWithSeparator("\n")
     }
 
+    func renderEnums() -> String {
+        let enumProperties = self.objectDescriptor.properties.filter({ ObjectiveCProperty(descriptor: $0).isEnumPropertyType() })
+
+        let enumDeclarations : [String] = enumProperties.map { (prop : ObjectSchemaProperty) -> String in
+            let objcProp = ObjectiveCProperty(descriptor: prop)
+            return objcProp.renderEnumDeclaration()
+        }
+        return enumDeclarations.joinWithSeparator("\n\n")
+    }
+
     func renderImports()  -> String {
         if self.isBaseClass() {
             return ""
@@ -148,6 +158,7 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
                 self.renderCommentHeader(),
                 "@import Foundation;",
                 self.renderImports(),
+                self.renderEnums(),
                 self.renderForwardDeclarations(),
                 "NS_ASSUME_NONNULL_BEGIN",
                 self.renderInterface(),
@@ -160,6 +171,7 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             self.renderCommentHeader(),
             "@import Foundation;",
             self.renderImports(),
+            self.renderEnums(),
             self.renderForwardDeclarations(),
             self.renderInterface(),
             self.renderBuilderInterface()

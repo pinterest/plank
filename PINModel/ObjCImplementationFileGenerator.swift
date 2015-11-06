@@ -39,7 +39,6 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return self.parentDescriptor == nil
     }
 
-
     func classProperties() -> [ObjectSchemaProperty] {
         if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
             let baseProperties = Set(baseClass.properties.map({ $0.name }))
@@ -54,7 +53,6 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         }
         return []
     }
-
 
     func pragmaMark(pragmaName : String) -> String {
         return "#pragma mark - \(pragmaName)"

@@ -36,13 +36,20 @@ class ObjectSchemaProperty {
     let jsonType: JSONType
     let propInfo : JSONObject
     let sourceId : NSURL
+    let enumValues : [[String : AnyObject]]
 
     init(name : String, objectType: JSONType, propertyInfo : JSONObject, sourceId : NSURL) {
         self.name = name
         self.jsonType = objectType
         self.propInfo = propertyInfo
         self.sourceId = sourceId
+        if let enumValues = propertyInfo["enum"] as? [[String : AnyObject]] {
+            self.enumValues = enumValues
+        } else {
+            self.enumValues = []
+        }
     }
+
 
 
     class func propertyForJSONObject(json: JSONObject, var name: String = "", scopeUrl : NSURL) -> ObjectSchemaProperty {
@@ -77,8 +84,6 @@ class ObjectSchemaProperty {
             }
         }
 
-
-        // MARK: Shouldn't reach here
         assert(false) // Shouldn't be reached
         let propType : JSONType = JSONType(rawValue: (json["type"] as? String)!)!
         return ObjectSchemaProperty.propertyForType(name, objectType: propType, propertyInfo: json, sourceId: scopeUrl)

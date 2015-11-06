@@ -53,6 +53,10 @@ extension ObjectSchemaProperty {
         case .Number :
             return ObjCPrimitiveType.Float.rawValue
         case .Integer :
+            let objCProp = ObjectiveCProperty(descriptor: self)
+            if objCProp.isEnumPropertyType() {
+                return objCProp.enumPropertyTypeName()
+            }
             return ObjCPrimitiveType.Integer.rawValue
         case .Boolean:
             return ObjCPrimitiveType.Boolean.rawValue
@@ -319,6 +323,37 @@ class ObjectiveCProperty {
 
     func renderImplementationDeclaration() -> String {
         return self.renderDeclaration(true)
+    }
+
+    func isEnumPropertyType() -> Bool {
+        return self.propertyDescriptor.enumValues.count > 0
+    }
+
+    func enumPropertyTypeName() -> String {
+        // TODO: Expose class prefix in a better way.
+        return "PI" + (self.propertyDescriptor.name + "_type").snakeCaseToCamelCase()
+    }
+
+    func renderEnumDeclaration() -> String {
+        assert(self.isEnumPropertyType())
+
+        let indent = "    "
+        if self.propertyDescriptor.jsonType == JSONType.Integer {
+            let enumTypeValues = self.propertyDescriptor.enumValues.map({ (val : [String : AnyObject]) -> String in
+                let description = val["description"] as! String
+                let defaultVal = val["default"] as! Int
+                let enumValueName = self.enumPropertyTypeName() + description.snakeCaseToCamelCase()
+                return indent + "\(enumValueName) = \(defaultVal)"
+            })
+            return ["typedef NS_ENUM(NSInteger, \(self.enumPropertyTypeName())) {",
+                    enumTypeValues.joinWithSeparator(",\n"),
+                    "};"].joinWithSeparator("\n")
+        } else if self.propertyDescriptor.jsonType == JSONType.String {
+
+        }
+        assert(false, "We don't handle enums that are not strings or integer values")
+        return "";
+
     }
 
     func renderEncodeWithCoderStatement() -> String {
