@@ -323,7 +323,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         "   NSParameterAssert(modelDictionary);",
         "   \(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
 
-        "   [modelDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key, id  _Nonnull obj, __unused BOOL * _Nonnull stop) {",
+        "   [modelDictionary enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSString *  _Nonnull key, id  _Nonnull obj, __unused BOOL * _Nonnull stop) {",
         "        if (obj == [NSNull null]) { return; }",
             tmpVariableLine,
             propertyLines.joinWithSeparator("\n\n"),
