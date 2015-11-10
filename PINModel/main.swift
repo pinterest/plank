@@ -16,7 +16,7 @@ let accessTokenString = "access_token=MTQzMTU5NDoxNTAwMjYzNjg3NDUyMTEzMDk6OTIyMz
 
 let BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(name: "model", objectType: JSONType.Object,
                                            propertyInfo: ["properties" : [ "id" : [ "type" : "string"] ,
-                                                          "additional_local_nonAPI_properties" : [ "type" : "object"]]],
+                                                          "additional_local_non_API_properties" : [ "type" : "object"]]],
                                            sourceId: NSURL())
 var manager = Manager()
 
