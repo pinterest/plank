@@ -69,7 +69,7 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
 
     func renderBuilderInterface() -> String {
         let propertyLines = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
-            return ObjectiveCProperty(descriptor: property).renderImplementationDeclaration()
+            return ObjectiveCProperty(descriptor: property, className : self.className).renderImplementationDeclaration()
         }
 
         let parentClassName = NSStringFromClass(NSObject)
@@ -94,7 +94,7 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
 
     func renderInterface() -> String {
         let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
-            return ObjectiveCProperty(descriptor: property).renderInterfaceDeclaration()
+            return ObjectiveCProperty(descriptor: property, className : self.className).renderInterfaceDeclaration()
         }
 
         let implementedProtocols = ["NSSecureCoding", "NSCopying"].joinWithSeparator(", ")
@@ -136,10 +136,10 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
     }
 
     func renderEnums() -> String {
-        let enumProperties = self.objectDescriptor.properties.filter({ ObjectiveCProperty(descriptor: $0).isEnumPropertyType() })
+        let enumProperties = self.objectDescriptor.properties.filter({ ObjectiveCProperty(descriptor: $0, className : self.className).isEnumPropertyType() })
 
         let enumDeclarations : [String] = enumProperties.map { (prop : ObjectSchemaProperty) -> String in
-            let objcProp = ObjectiveCProperty(descriptor: prop)
+            let objcProp = ObjectiveCProperty(descriptor: prop, className : self.className)
             return objcProp.renderEnumDeclaration()
         }
         return enumDeclarations.joinWithSeparator("\n\n")

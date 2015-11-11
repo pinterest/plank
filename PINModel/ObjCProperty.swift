@@ -38,7 +38,7 @@ public enum ObjCPrimitiveType: String {
 
 
 extension ObjectSchemaProperty {
-    func objectiveCStringForJSONType() -> String {
+    func objectiveCStringForJSONType(className : String = "") -> String {
         switch self.jsonType {
         case .String :
             if self is ObjectSchemaStringProperty {
@@ -53,7 +53,7 @@ extension ObjectSchemaProperty {
         case .Number :
             return ObjCPrimitiveType.Float.rawValue
         case .Integer :
-            let objCProp = ObjectiveCProperty(descriptor: self)
+            let objCProp = ObjectiveCProperty(descriptor: self, className : className)
             if objCProp.isEnumPropertyType() {
                 return objCProp.enumPropertyTypeName()
             }
@@ -311,9 +311,11 @@ extension ObjectSchemaProperty {
 class ObjectiveCProperty {
     let propertyDescriptor : ObjectSchemaProperty
     let atomicityType = ObjCAtomicityType.NonAtomic
+    let className : String
 
-    init(descriptor: ObjectSchemaProperty) {
+    init(descriptor: ObjectSchemaProperty, className : String = "") {
         self.propertyDescriptor = descriptor
+        self.className = className
     }
 
 
@@ -331,7 +333,7 @@ class ObjectiveCProperty {
 
     func enumPropertyTypeName() -> String {
         // TODO: Expose class prefix in a better way.
-        return "PI" + (self.propertyDescriptor.name + "_type").snakeCaseToCamelCase()
+        return self.className + (self.propertyDescriptor.name + "_type").snakeCaseToCamelCase()
     }
 
     func renderEnumDeclaration() -> String {
@@ -440,7 +442,7 @@ class ObjectiveCProperty {
                 [self.atomicityType.rawValue,
                  self.propertyDescriptor.objCMemoryAssignmentType().rawValue,
                  mutabilityType.rawValue].joinWithSeparator(", "),
-                 self.propertyDescriptor.objectiveCStringForJSONType(),
+                 self.propertyDescriptor.objectiveCStringForJSONType(self.className),
                  propName)
         } else {
             return String(format: format, "@property",
@@ -448,7 +450,7 @@ class ObjectiveCProperty {
                     self.atomicityType.rawValue,
                     self.propertyDescriptor.objCMemoryAssignmentType().rawValue,
                     mutabilityType.rawValue].joinWithSeparator(", "),
-                self.propertyDescriptor.objectiveCStringForJSONType(),
+                self.propertyDescriptor.objectiveCStringForJSONType(self.className),
                 propName)
         }
     }
