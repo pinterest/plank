@@ -74,7 +74,7 @@ extension ObjectSchemaProperty {
                 if let valueTypes = subclass.additionalProperties as ObjectSchemaProperty? {
                     return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, \(valueTypes.objectiveCStringForJSONType()) *>"
                 } else {
-                    return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, \(NSStringFromClass(NSObject)) *>"
+                    return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, __kindof \(NSStringFromClass(NSObject)) *>"
                 }
             }
             return NSStringFromClass(NSDictionary)
