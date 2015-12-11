@@ -69,15 +69,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderUtilityFunctions() -> String {
-        return [
-            "static inline id valueOrNil(NSDictionary *dict, NSString *key) {",
-            "    id value = dict[key];",
-            "    if (value == nil || value == [NSNull null]) {",
-            "        return nil;",
-            "    }",
-            "    return value;",
-            "}"
-        ].joinWithSeparator("\n")
+        return self.renderStringEnumUtilityMethods()
     }
 
     func renderImports() -> String {
@@ -128,7 +120,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
             if property.propertyRequiresAssignmentLogic() {
                 let propFromDictionary = "valueOrNil(modelDictionary, @\"\(property.name)\")"
-                let propertyLines = property.propertyAssignmentStatementFromDictionary().map({ indentation + indentation + $0 }).joinWithSeparator("\n")
+                let propertyLines = property.propertyAssignmentStatementFromDictionary(self.className).map({ indentation + indentation + $0 }).joinWithSeparator("\n")
                 let lines = [
                     indentation + "value = \(propFromDictionary);",
                     indentation + "if (value != nil) {" ,
@@ -137,7 +129,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
                 ]
                 return lines.joinWithSeparator("\n")
             }
-            return property.propertyAssignmentStatementFromDictionary().map({ indentation + $0 }).joinWithSeparator("\n")
+            return property.propertyAssignmentStatementFromDictionary(self.className).map({ indentation + $0 }).joinWithSeparator("\n")
         }
 
         let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({$0.propertyRequiresAssignmentLogic()}).reduce(false) {
@@ -317,7 +309,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
 
             if property.propertyRequiresAssignmentLogic() {
                 let propFromDictionary = "valueOrNil(modelDictionary, @\"\(property.name)\")"
-                let propertyLines = property.propertyMergeStatementFromDictionary("builder").map({ indentation + $0 })
+                let propertyLines = property.propertyMergeStatementFromDictionary("builder", className: self.className).map({ indentation + $0 })
                 lines = ["value = \(propFromDictionary);",
                     "if (value != nil) {"] +
                     propertyLines +
@@ -325,7 +317,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
                     indentation + "builder.\(formattedPropName) = nil;",
                     "}"]
             } else {
-                lines = property.propertyMergeStatementFromDictionary("builder")
+                lines = property.propertyMergeStatementFromDictionary("builder", className: self.className)
             }
             let result = ["if ([key isEqualToString:@\"\(property.name)\"]) {"] + lines.map({indentation + $0}) + [ indentation + "return;", "}"]
             return result.map({ indentation + indentation + $0 }).joinWithSeparator("\n")
@@ -362,6 +354,59 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         "}"
         ]
         return lines.joinWithSeparator("\n")
+    }
+
+
+    func renderStringEnumUtilityMethods() -> String {
+        let enumProperties = self.objectDescriptor.properties.filter({ ObjectiveCProperty(descriptor: $0, className : self.className).isEnumPropertyType() && $0.jsonType == JSONType.String })
+
+        let indentation = "    "
+
+        let enumMethods : [String] = enumProperties.map { (prop : ObjectSchemaProperty) -> String in
+            assert(prop.defaultValue != nil, "We need a default value for code generation of this string enum.")
+            let objcProp = ObjectiveCProperty(descriptor: prop, className : self.className)
+            let defaultEnumVal = prop.enumValues.filter { ($0["default"] as! String) == prop.defaultValue as! String }[0]
+            let defaultEnumName = objcProp.enumPropertyTypeName() + (defaultEnumVal["description"] as! String).snakeCaseToCamelCase()
+            // String to Enum
+            let stringToEnumConditionals : [String] = prop.enumValues.map {
+                let description = $0["description"] as! String
+                let enumValueName = objcProp.enumPropertyTypeName() + description.snakeCaseToCamelCase()
+                return ["if ([str isEqualToString:@\"\($0["default"] as! String)\"]) {",
+                        indentation + "return \(enumValueName);",
+                        "}"
+                    ].map{ indentation + $0 }.joinWithSeparator("\n")
+            }
+
+            let stringToEnumLines = [
+                "extern \(objcProp.enumPropertyTypeName()) \(objcProp.enumPropertyTypeName())FromString(NSString *str)",
+                "{",
+                stringToEnumConditionals.joinWithSeparator("\n"),
+                indentation + "return \(defaultEnumName);",
+                "}"
+            ].joinWithSeparator("\n")
+
+            // Enum to String
+            let enumToStringConditionals : [String] = prop.enumValues.map {
+                let description = $0["description"] as! String
+                let defaultVal = $0["default"] as! String
+                let enumValueName = objcProp.enumPropertyTypeName() + description.snakeCaseToCamelCase()
+                return ["if (enumType == \(enumValueName)) {",
+                    indentation +  "return @\"\(defaultVal)\";",
+                    "}"
+                    ].map{ indentation + $0 }.joinWithSeparator("\n")
+            }
+
+
+            let enumToStringLines = [
+                "extern NSString * \(objcProp.enumPropertyTypeName())ToString(\(objcProp.enumPropertyTypeName()) enumType)",
+                "{",
+                enumToStringConditionals.joinWithSeparator("\n"),
+                indentation + "return @\"\(prop.defaultValue as! String)\";",
+                "}"
+            ].joinWithSeparator("\n")
+            return [stringToEnumLines, enumToStringLines].joinWithSeparator("\n\n")
+        }
+        return enumMethods.joinWithSeparator("\n\n")
     }
 
     func renderModelPropertyNames() -> String {
@@ -425,6 +470,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         if self.isBaseClass() {
             let lines = [
                 "@implementation \(self.className)",
+                self.renderPolymorphicTypeIdentifier(),
                 self.renderModelObjectWithDictionary(),
                 self.renderDesignatedInit(),
                 self.renderInitWithDictionary(),
@@ -440,7 +486,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
                 self.pragmaMark("NSCopying implementation"),
                 self.renderCopyWithZone(),
                 "@end"
-            ]
+            ].filter { "" != $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
             return lines.joinWithSeparator("\n\n")
 
         }
@@ -459,7 +505,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             self.renderMergeWithDictionary(),
             self.renderModelPropertyNames(),
             "@end"
-        ]
+        ].filter { "" != $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
         return lines.joinWithSeparator("\n\n")
     }
 
@@ -470,7 +516,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             self.renderUtilityFunctions(),
             self.renderImplementation(),
             self.renderBuilderImplementation()
-        ]
+        ].filter { "" != $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
         return lines.joinWithSeparator("\n\n")
     }
 }

@@ -106,6 +106,7 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             let lines = [
                 "@interface \(self.className)<__covariant BuilderObjectType /* \(self.builderClassName) * */> : NSObject<\(implementedProtocols)>",
                 propertyLines.joinWithSeparator("\n"),
+                "+ (NSString *)polymorphicTypeIdentifier;",
                 "+ (nullable instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;",
                 "- (nullable instancetype)initWithDictionary:(NSDictionary *)modelDictionary NS_DESIGNATED_INITIALIZER;",
                 "- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;",
@@ -163,6 +164,16 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
         return enumDeclarations.joinWithSeparator("\n\n")
     }
 
+    func renderStringEnumUtilityMethods() -> String {
+        let enumProperties = self.objectDescriptor.properties.filter({ ObjectiveCProperty(descriptor: $0, className : self.className).isEnumPropertyType() && $0.jsonType == JSONType.String })
+
+        let enumDeclarations : [String] = enumProperties.map { (prop : ObjectSchemaProperty) -> String in
+            let objcProp = ObjectiveCProperty(descriptor: prop, className : self.className)
+            return objcProp.renderEnumUtilityMethodsInterface()
+        }
+        return enumDeclarations.joinWithSeparator("\n\n")
+    }
+
     func renderImports()  -> String {
         if self.isBaseClass() {
             return ""
@@ -181,7 +192,7 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
                 self.renderInterface(),
                 self.renderBuilderInterface(),
                 "NS_ASSUME_NONNULL_END"
-            ]
+            ].filter { "" != $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
             return lines.joinWithSeparator("\n\n")
         }
         let lines = [
@@ -189,10 +200,11 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             "@import Foundation;",
             self.renderImports(),
             self.renderEnums(),
+            self.renderStringEnumUtilityMethods(),
             self.renderForwardDeclarations(),
             self.renderInterface(),
             self.renderBuilderInterface()
-        ]
+        ].filter { "" != $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
         return lines.joinWithSeparator("\n\n")
     }
 }

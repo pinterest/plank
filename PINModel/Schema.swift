@@ -36,21 +36,26 @@ class ObjectSchemaProperty {
     let jsonType: JSONType
     let propInfo : JSONObject
     let sourceId : NSURL
-    let enumValues : [[String : AnyObject]]
+    let enumValues : [JSONObject]
+    let defaultValue : AnyObject?
 
     init(name : String, objectType: JSONType, propertyInfo : JSONObject, sourceId : NSURL) {
         self.name = name
         self.jsonType = objectType
         self.propInfo = propertyInfo
         self.sourceId = sourceId
-        if let enumValues = propertyInfo["enum"] as? [[String : AnyObject]] {
+        if let enumValues = propertyInfo["enum"] as? [JSONObject] {
             self.enumValues = enumValues
         } else {
             self.enumValues = []
         }
+
+        if let defaultVal = propertyInfo["default"] as AnyObject? {
+            self.defaultValue = defaultVal
+        } else {
+            self.defaultValue = nil;
+        }
     }
-
-
 
     class func propertyForJSONObject(json: JSONObject, var name: String = "", scopeUrl : NSURL) -> ObjectSchemaProperty {
         if let title = json["title"] as? String {
