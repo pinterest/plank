@@ -54,6 +54,16 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return []
     }
 
+    func parentClassName() -> String {
+        if let parentSchema = self.parentDescriptor as ObjectSchemaObjectProperty? {
+            return ObjectiveCInterfaceFileDescriptor(
+                descriptor: parentSchema,
+                generatorParameters: self.generationParameters,
+                parentDescriptor: nil).className
+        }
+        return NSStringFromClass(NSObject)
+    }
+
     func pragmaMark(pragmaName : String) -> String {
         return "#pragma mark - \(pragmaName)"
     }
@@ -104,6 +114,15 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         ].joinWithSeparator("\n")
     }
 
+    func renderDealloc() -> String {
+        return [
+            "- (void)dealloc",
+            "{",
+            "    [self \(self.parentClassName())WillDealloc];",
+            "}"
+            ].joinWithSeparator("\n");
+    }
+
     func renderInitWithDictionary() -> String {
         let indentation = "    "
         let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
@@ -131,7 +150,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         if anyPropertiesRequireAssignmentLogic {
             // Don't insert the temporary value variable if it will not be used.
             // Currently it is only used for URLs, Typed Collections and Other model classes.
-            tmpVariableLine = indentation + "id value = nil;"
+            tmpVariableLine = indentation + "id value = nil;\n"
         }
 
 
@@ -140,7 +159,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             superInitCall = "if (!(self = [super init])) { return self; }"
         }
 
-        let lines = [
+        var lines = [
             "- (instancetype) __attribute__((annotate(\"oclint:suppress[high npath complexity]\")))",
             "    initWithDictionary:(NSDictionary *)modelDictionary",
             "{",
@@ -148,9 +167,13 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             indentation + superInitCall,
             tmpVariableLine,
             propertyLines.joinWithSeparator("\n\n"),
+            "",
             "    return self;",
             "}"
         ]
+        if self.isBaseClass() == false {
+            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize];\n", atIndex: lines.count - 2)
+        }
         return lines.joinWithSeparator("\n")
     }
 
@@ -190,7 +213,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             superInitCall = indentation + "if (!(self = [super init])) { return self; }"
         }
 
-        let lines = [
+        var lines = [
             "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder",
             "{",
             "    NSParameterAssert(builder);",
@@ -199,6 +222,9 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             "    return self;",
             "}"
         ]
+        if self.isBaseClass() == false {
+            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize];", atIndex: lines.count - 2)
+        }
         return lines.joinWithSeparator("\n")
     }
 
@@ -244,14 +270,18 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         if self.isBaseClass() {
             superInitCall = indentation + "if (!(self = [super init])) { return self; }"
         }
-        return [
+        var lines = [
             "- (instancetype)initWithCoder:(NSCoder *)aDecoder",
             "{",
-            superInitCall,
-            propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
+            superInitCall + "\n",
+            propertyLines.map({ indentation + $0 }).joinWithSeparator("\n\n") + "\n",
             "    return self;",
             "}"
-        ].joinWithSeparator("\n")
+        ]
+        if self.isBaseClass() == false {
+            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize];\n", atIndex: lines.count - 2)
+        }
+        return lines.joinWithSeparator("\n")
     }
 
     func renderEncodeWithCoder() -> String  {
@@ -334,6 +364,31 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return lines.joinWithSeparator("\n")
     }
 
+    func renderModelPropertyNames() -> String {
+        let propertyNames = self.classProperties().filter { $0.jsonType == JSONType.Pointer }.map { $0.name }
+
+        let indentation = "    "
+
+        var lines:Array<String>
+        if propertyNames.count == 0 {
+            lines = [
+                indentation + "return @[];"
+            ]
+        } else {
+            let returnLine = indentation + "return @["
+            lines = [
+                returnLine,
+                propertyNames
+                    .map { String(count: returnLine.characters.count, repeatedValue: (" " as Character)) + "@\"\($0.snakeCaseToPropertyName())\""}
+                    .joinWithSeparator(",\n"),
+                "    ];"
+            ]
+        }
+        lines.insert("- (NSArray<NSString *> *)modelPropertyNames", atIndex: 0)
+        lines.insert("{", atIndex: 1)
+        lines.insert("}", atIndex: lines.count)
+        return lines.joinWithSeparator("\n")
+    }
 
     func renderCopyWithZone() -> String  {
         return [
@@ -381,6 +436,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
                 self.pragmaMark("Mutation helper methods"),
                 self.renderCopyWithBlock(),
                 self.renderMergeWithDictionary(),
+                self.renderModelPropertyNames(),
                 self.pragmaMark("NSCopying implementation"),
                 self.renderCopyWithZone(),
                 "@end"
@@ -392,6 +448,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         let lines = [
             "@implementation \(self.className)",
             self.renderPolymorphicTypeIdentifier(),
+            self.renderDealloc(),
             self.renderInitWithDictionary(),
             self.renderInitWithBuilder(),
             self.pragmaMark("NSSecureCoding implementation"),
@@ -400,6 +457,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             self.pragmaMark("Mutation helper methods"),
             self.renderCopyWithBlock(),
             self.renderMergeWithDictionary(),
+            self.renderModelPropertyNames(),
             "@end"
         ]
         return lines.joinWithSeparator("\n\n")

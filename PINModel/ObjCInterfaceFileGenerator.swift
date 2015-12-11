@@ -35,6 +35,10 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
         return "\(self.className).h"
     }
 
+    func protocolName() -> String {
+        return "\(self.className)Protocol"
+    }
+
     func isBaseClass() -> Bool {
         return self.parentDescriptor == nil
     }
@@ -97,9 +101,8 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             return ObjectiveCProperty(descriptor: property, className : self.className).renderInterfaceDeclaration()
         }
 
-        let implementedProtocols = ["NSSecureCoding", "NSCopying"].joinWithSeparator(", ")
-
         if self.isBaseClass() {
+            let implementedProtocols = ["NSSecureCoding", "NSCopying", self.protocolName()].joinWithSeparator(", ")
             let lines = [
                 "@interface \(self.className)<__covariant BuilderObjectType /* \(self.builderClassName) * */> : NSObject<\(implementedProtocols)>",
                 propertyLines.joinWithSeparator("\n"),
@@ -109,6 +112,7 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
                 "- (nullable instancetype)initWithBuilder:(BuilderObjectType)builder NS_DESIGNATED_INITIALIZER;",
                 "- (instancetype)copyWithBlock:(void (^)(BuilderObjectType builder))block;",
                 "- (instancetype)mergeWithDictionary:(NSDictionary *)modelDictionary;",
+                "- (NSArray<NSString *> *)modelPropertyNames;",
                 "@end",
             ]
             return lines.joinWithSeparator("\n\n")
@@ -131,8 +135,22 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             return "@class \(prop.objectiveCStringForJSONType());"
         })
         var forwardDeclarations = ["@class \(self.builderClassName);"]
+        if self.isBaseClass() {
+            forwardDeclarations.append("@class \(self.className);")
+        }
         forwardDeclarations.appendContentsOf(referencedForwardDeclarations)
         return forwardDeclarations.sort().joinWithSeparator("\n")
+    }
+
+    func renderProtocol() -> String {
+        let lines = [
+            "@protocol \(self.protocolName()) <NSObject>",
+            "@optional",
+            "- (void)\(self.className)DidInitialize;",
+            "- (void)\(self.className)WillDealloc;",
+            "@end"
+        ]
+        return lines.joinWithSeparator("\n")
     }
 
     func renderEnums() -> String {
@@ -157,10 +175,9 @@ class ObjectiveCInterfaceFileDescriptor : FileGenerator {
             let lines = [
                 self.renderCommentHeader(),
                 "@import Foundation;",
-                self.renderImports(),
-                self.renderEnums(),
                 self.renderForwardDeclarations(),
                 "NS_ASSUME_NONNULL_BEGIN",
+                self.renderProtocol(),
                 self.renderInterface(),
                 self.renderBuilderInterface(),
                 "NS_ASSUME_NONNULL_END"
