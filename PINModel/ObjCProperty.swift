@@ -231,7 +231,9 @@ extension ObjectSchemaProperty {
                         "NSArray *items = value;",
                         "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
                         "for (id obj in items) {",
-                        "    [result addObject:\(deserializedObject)];",
+                        "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
+                        "        [result addObject:\(deserializedObject)];",
+                        "    }",
                         "}",
                         "_\(formattedPropName) = result;"
                     ]
@@ -248,7 +250,9 @@ extension ObjectSchemaProperty {
                         "NSDictionary *items = value;",
                         "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
                         "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, BOOL *stop) {",
-                        "    result[key] = \(deserializedObject);",
+                        "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
+                        "        result[key] = \(deserializedObject);",
+                        "    }",
                         "}];",
                         "_\(formattedPropName) = result;"
                     ]
