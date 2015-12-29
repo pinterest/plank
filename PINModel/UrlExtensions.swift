@@ -12,10 +12,9 @@ import Foundation
 extension NSURLSession {
     func synchronousDataTaskWithUrl(url: NSURL) -> NSData? {
         let semaphore = dispatch_semaphore_create(0)
-        var responseData : NSData?
-        self.dataTaskWithURL(url) { (data : NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-
-            if (response != nil) {
+        var responseData: NSData?
+        self.dataTaskWithURL(url) { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+            if response != nil {
                 responseData = data
             }
             dispatch_semaphore_signal(semaphore)

@@ -11,11 +11,11 @@
 		814AB85F1B60750A00CF4BC4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB85E1B60750A00CF4BC4 /* main.swift */; };
 		814AB8661B61580A00CF4BC4 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8651B61580A00CF4BC4 /* Schema.swift */; };
 		814AB8681B61584700CF4BC4 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */; };
+		816488241C320BF200483015 /* ARGV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164881F1C320BF200483015 /* ARGV.swift */; };
+		816488251C320BF200483015 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488201C320BF200483015 /* Command.swift */; };
+		816488261C320BF200483015 /* HelpCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488221C320BF200483015 /* HelpCommand.swift */; };
+		816488271C320BF200483015 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488231C320BF200483015 /* Manager.swift */; };
 		816B9D221B62EFDF00C494BE /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B9D211B62EFDF00C494BE /* StringExtensions.swift */; };
-		8172EB411B83B2A6005EF82E /* ARGV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8172EB3C1B83B2A6005EF82E /* ARGV.swift */; };
-		8172EB421B83B2A6005EF82E /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8172EB3D1B83B2A6005EF82E /* Command.swift */; };
-		8172EB431B83B2A6005EF82E /* HelpCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8172EB3F1B83B2A6005EF82E /* HelpCommand.swift */; };
-		8172EB441B83B2A6005EF82E /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8172EB401B83B2A6005EF82E /* Manager.swift */; };
 		817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */; };
 		817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */; };
 		817B72361B697A7C0071DEF5 /* ObjCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72351B697A7C0071DEF5 /* ObjCProperty.swift */; };
@@ -37,17 +37,17 @@
 /* Begin PBXFileReference section */
 		8125FF901B61AF68007E4B65 /* FileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileGenerator.swift; path = ../FileGenerator.swift; sourceTree = "<group>"; };
 		814AB85B1B60750A00CF4BC4 /* pinmodel */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pinmodel; sourceTree = BUILT_PRODUCTS_DIR; };
-		814AB85E1B60750A00CF4BC4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		814AB85E1B60750A00CF4BC4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = main.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		814AB8651B61580A00CF4BC4 /* Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; };
+		8164881F1C320BF200483015 /* ARGV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARGV.swift; path = CommandKit/ARGV.swift; sourceTree = "<group>"; };
+		816488201C320BF200483015 /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Command.swift; path = CommandKit/Command.swift; sourceTree = "<group>"; };
+		816488211C320BF200483015 /* CommandKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommandKit.h; path = CommandKit/CommandKit.h; sourceTree = "<group>"; };
+		816488221C320BF200483015 /* HelpCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HelpCommand.swift; path = CommandKit/HelpCommand.swift; sourceTree = "<group>"; };
+		816488231C320BF200483015 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manager.swift; path = CommandKit/Manager.swift; sourceTree = "<group>"; };
 		816B9D211B62EFDF00C494BE /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtensions.swift; path = ../StringExtensions.swift; sourceTree = "<group>"; };
-		8172EB3C1B83B2A6005EF82E /* ARGV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARGV.swift; sourceTree = "<group>"; };
-		8172EB3D1B83B2A6005EF82E /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
-		8172EB3E1B83B2A6005EF82E /* CommandKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandKit.h; sourceTree = "<group>"; };
-		8172EB3F1B83B2A6005EF82E /* HelpCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpCommand.swift; sourceTree = "<group>"; };
-		8172EB401B83B2A6005EF82E /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCInterfaceFileGenerator.swift; sourceTree = "<group>"; };
-		817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; };
+		817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		817B72351B697A7C0071DEF5 /* ObjCProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCProperty.swift; sourceTree = "<group>"; };
 		81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -92,13 +92,29 @@
 			path = PINModel;
 			sourceTree = "<group>";
 		};
-		816B9D231B62EFED00C494BE /* ObjectiveC */ = {
+		8164881C1C31FC9700483015 /* Properties */ = {
+			isa = PBXGroup;
+			children = (
+				817B72351B697A7C0071DEF5 /* ObjCProperty.swift */,
+			);
+			name = Properties;
+			sourceTree = "<group>";
+		};
+		8164881D1C31FCA800483015 /* Files */ = {
 			isa = PBXGroup;
 			children = (
 				814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */,
-				817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */,
 				817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */,
-				817B72351B697A7C0071DEF5 /* ObjCProperty.swift */,
+				817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */,
+			);
+			name = Files;
+			sourceTree = "<group>";
+		};
+		816B9D231B62EFED00C494BE /* ObjectiveC */ = {
+			isa = PBXGroup;
+			children = (
+				8164881D1C31FCA800483015 /* Files */,
+				8164881C1C31FC9700483015 /* Properties */,
 			);
 			name = ObjectiveC;
 			sourceTree = "<group>";
@@ -115,11 +131,11 @@
 		8172EB3B1B83B28D005EF82E /* CommandKit */ = {
 			isa = PBXGroup;
 			children = (
-				8172EB3C1B83B2A6005EF82E /* ARGV.swift */,
-				8172EB3D1B83B2A6005EF82E /* Command.swift */,
-				8172EB3E1B83B2A6005EF82E /* CommandKit.h */,
-				8172EB3F1B83B2A6005EF82E /* HelpCommand.swift */,
-				8172EB401B83B2A6005EF82E /* Manager.swift */,
+				8164881F1C320BF200483015 /* ARGV.swift */,
+				816488201C320BF200483015 /* Command.swift */,
+				816488211C320BF200483015 /* CommandKit.h */,
+				816488221C320BF200483015 /* HelpCommand.swift */,
+				816488231C320BF200483015 /* Manager.swift */,
 			);
 			name = CommandKit;
 			sourceTree = "<group>";
@@ -134,6 +150,7 @@
 				814AB8571B60750A00CF4BC4 /* Sources */,
 				814AB8581B60750A00CF4BC4 /* Frameworks */,
 				814AB8591B60750A00CF4BC4 /* CopyFiles */,
+				8164881E1C32099700483015 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -177,24 +194,40 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		8164881E1C32099700483015 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		814AB8571B60750A00CF4BC4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				817B72361B697A7C0071DEF5 /* ObjCProperty.swift in Sources */,
-				8172EB411B83B2A6005EF82E /* ARGV.swift in Sources */,
 				814AB8681B61584700CF4BC4 /* ObjectiveCFileGenerator.swift in Sources */,
-				8172EB421B83B2A6005EF82E /* Command.swift in Sources */,
+				816488261C320BF200483015 /* HelpCommand.swift in Sources */,
 				8125FF911B61AF68007E4B65 /* FileGenerator.swift in Sources */,
 				81AC0B801B8D1C6F00ED599E /* UrlExtensions.swift in Sources */,
 				817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */,
+				816488241C320BF200483015 /* ARGV.swift in Sources */,
+				816488251C320BF200483015 /* Command.swift in Sources */,
 				816B9D221B62EFDF00C494BE /* StringExtensions.swift in Sources */,
-				8172EB441B83B2A6005EF82E /* Manager.swift in Sources */,
 				817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */,
 				814AB8661B61580A00CF4BC4 /* Schema.swift in Sources */,
-				8172EB431B83B2A6005EF82E /* HelpCommand.swift in Sources */,
 				814AB85F1B60750A00CF4BC4 /* main.swift in Sources */,
+				816488271C320BF200483015 /* Manager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

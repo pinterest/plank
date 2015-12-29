@@ -8,15 +8,15 @@
 
 import Foundation
 
-class ObjectiveCImplementationFileDescriptor : FileGenerator {
-    let objectDescriptor : ObjectSchemaObjectProperty
-    let className : String
-    let builderClassName : String
-    let generationParameters : GenerationParameters
-    let parentDescriptor : ObjectSchemaObjectProperty?
+class ObjectiveCImplementationFileDescriptor: FileGenerator {
+    let objectDescriptor: ObjectSchemaObjectProperty
+    let className: String
+    let builderClassName: String
+    let generationParameters: GenerationParameters
+    let parentDescriptor: ObjectSchemaObjectProperty?
 
 
-    required init(descriptor: ObjectSchemaObjectProperty, generatorParameters : GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?) {
+    required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?) {
         self.objectDescriptor = descriptor
         if let classPrefix = generatorParameters[GenerationParameterType.ClassPrefix] as String? {
             self.className = String(format: "%@%@", arguments: [
@@ -64,7 +64,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return NSStringFromClass(NSObject)
     }
 
-    func pragmaMark(pragmaName : String) -> String {
+    func pragmaMark(pragmaName: String) -> String {
         return "#pragma mark - \(pragmaName)"
     }
 
@@ -73,7 +73,8 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderImports() -> String {
-        let referencedImportStatements : [String] = self.objectDescriptor.referencedClasses.flatMap({ (prop: ObjectSchemaPointerProperty) -> String? in
+        let referencedImportStatements: [String] = self.objectDescriptor.referencedClasses.flatMap({ (propDescriptor: ObjectSchemaPointerProperty) -> String? in
+            let prop = ObjectiveCProperty(descriptor: propDescriptor, className: self.className)
             if prop.objectiveCStringForJSONType() == self.className {
                 return nil
             }
@@ -117,9 +118,11 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
 
     func renderInitWithDictionary() -> String {
         let indentation = "    "
-        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
+        let propertyLines: [String] = self.classProperties().map { (propDescriptor: ObjectSchemaProperty) -> String in
+            let property = ObjectiveCProperty(descriptor: propDescriptor, className: self.className)
+
             if property.propertyRequiresAssignmentLogic() {
-                let propFromDictionary = "valueOrNil(modelDictionary, @\"\(property.name)\")"
+                let propFromDictionary = "valueOrNil(modelDictionary, @\"\(propDescriptor.name)\")"
                 let propertyLines = property.propertyAssignmentStatementFromDictionary(self.className).map({ indentation + indentation + $0 }).joinWithSeparator("\n")
                 let lines = [
                     indentation + "value = \(propFromDictionary);",
@@ -132,7 +135,8 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             return property.propertyAssignmentStatementFromDictionary(self.className).map({ indentation + $0 }).joinWithSeparator("\n")
         }
 
-        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({$0.propertyRequiresAssignmentLogic()}).reduce(false) {
+        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({
+            ObjectiveCProperty(descriptor: $0, className: self.className).propertyRequiresAssignmentLogic()}).reduce(false) {
             (sum, nextVal) in
             return sum || nextVal
         }
@@ -194,7 +198,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderInitWithBuilder() -> String {
-        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
+        let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
             let formattedPropName = property.name.snakeCaseToPropertyName()
             return "_\(formattedPropName) = builder.\(formattedPropName);"
         }
@@ -221,7 +225,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     }
 
     func renderBuilderInitWithModelObject() -> String {
-        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
+        let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
             let formattedPropName = property.name.snakeCaseToPropertyName()
             return "_\(formattedPropName) = modelObject.\(formattedPropName);"
         }
@@ -251,8 +255,8 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         ].joinWithSeparator("\n")
     }
 
-    func renderInitWithCoder() -> String  {
-        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
+    func renderInitWithCoder() -> String {
+        let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
             let formattedPropName = property.name.snakeCaseToPropertyName()
             let decodeStmt = ObjectiveCProperty(descriptor: property).renderDecodeWithCoderStatement()
             return "_\(formattedPropName) = \(decodeStmt);"
@@ -276,8 +280,8 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return lines.joinWithSeparator("\n")
     }
 
-    func renderEncodeWithCoder() -> String  {
-        let propertyLines : [String] = self.classProperties().map { (property : ObjectSchemaProperty) -> String in
+    func renderEncodeWithCoder() -> String {
+        let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
             return ObjectiveCProperty(descriptor: property).renderEncodeWithCoderStatement() + ";"
         }
         let indentation = "    "
@@ -303,12 +307,13 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
     func renderMergeWithDictionary() -> String {
         let indentation = "    "
 
-        func renderMergeForProperty(property : ObjectSchemaProperty) -> String {
-            var lines : [String] = []
-            let formattedPropName = property.name.snakeCaseToPropertyName()
+        func renderMergeForProperty(propertyDescriptor: ObjectSchemaProperty) -> String {
+            var lines: [String] = []
+            let property = ObjectiveCProperty(descriptor: propertyDescriptor, className: self.className)
+            let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
 
             if property.propertyRequiresAssignmentLogic() {
-                let propFromDictionary = "valueOrNil(modelDictionary, @\"\(property.name)\")"
+                let propFromDictionary = "valueOrNil(modelDictionary, @\"\(propertyDescriptor.name)\")"
                 let propertyLines = property.propertyMergeStatementFromDictionary("builder", className: self.className).map({ indentation + $0 })
                 lines = ["value = \(propFromDictionary);",
                     "if (value != nil) {"] +
@@ -319,15 +324,16 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             } else {
                 lines = property.propertyMergeStatementFromDictionary("builder", className: self.className)
             }
-            let result = ["if ([key isEqualToString:@\"\(property.name)\"]) {"] + lines.map({indentation + $0}) + [ indentation + "return;", "}"]
+            let result = ["if ([key isEqualToString:@\"\(propertyDescriptor.name)\"]) {"] + lines.map({indentation + $0}) + [ indentation + "return;", "}"]
             return result.map({ indentation + indentation + $0 }).joinWithSeparator("\n")
         }
 
-        var allProperties : [ObjectSchemaProperty] = self.classProperties() + self.parentClassProperties()
+        var allProperties: [ObjectSchemaProperty] = self.classProperties() + self.parentClassProperties()
         allProperties.sortInPlace({$0.name < $1.name})
-        let propertyLines : [String] = allProperties.map({ renderMergeForProperty($0)})
+        let propertyLines: [String] = allProperties.map({ renderMergeForProperty($0)})
 
-        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({$0.propertyRequiresAssignmentLogic()}).reduce(false) {
+        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({
+            ObjectiveCProperty(descriptor: $0, className: self.className).propertyRequiresAssignmentLogic()}).reduce(false) {
             (sum, nextVal) in
             return sum || nextVal
         }
@@ -358,23 +364,23 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
 
 
     func renderStringEnumUtilityMethods() -> String {
-        let enumProperties = self.objectDescriptor.properties.filter({ ObjectiveCProperty(descriptor: $0, className : self.className).isEnumPropertyType() && $0.jsonType == JSONType.String })
+        let enumProperties = self.objectDescriptor.properties.filter({ ObjectiveCProperty(descriptor: $0, className: self.className).isEnumPropertyType() && $0.jsonType == JSONType.String })
 
         let indentation = "    "
 
-        let enumMethods : [String] = enumProperties.map { (prop : ObjectSchemaProperty) -> String in
+        let enumMethods: [String] = enumProperties.map { (prop: ObjectSchemaProperty) -> String in
             assert(prop.defaultValue != nil, "We need a default value for code generation of this string enum.")
-            let objcProp = ObjectiveCProperty(descriptor: prop, className : self.className)
+            let objcProp = ObjectiveCProperty(descriptor: prop, className: self.className)
             let defaultEnumVal = prop.enumValues.filter { ($0["default"] as! String) == prop.defaultValue as! String }[0]
             let defaultEnumName = objcProp.enumPropertyTypeName() + (defaultEnumVal["description"] as! String).snakeCaseToCamelCase()
             // String to Enum
-            let stringToEnumConditionals : [String] = prop.enumValues.map {
+            let stringToEnumConditionals: [String] = prop.enumValues.map {
                 let description = $0["description"] as! String
                 let enumValueName = objcProp.enumPropertyTypeName() + description.snakeCaseToCamelCase()
                 return ["if ([str isEqualToString:@\"\($0["default"] as! String)\"]) {",
                         indentation + "return \(enumValueName);",
                         "}"
-                    ].map{ indentation + $0 }.joinWithSeparator("\n")
+                    ].map { indentation + $0 }.joinWithSeparator("\n")
             }
 
             let stringToEnumLines = [
@@ -386,14 +392,14 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
             ].joinWithSeparator("\n")
 
             // Enum to String
-            let enumToStringConditionals : [String] = prop.enumValues.map {
+            let enumToStringConditionals: [String] = prop.enumValues.map {
                 let description = $0["description"] as! String
                 let defaultVal = $0["default"] as! String
                 let enumValueName = objcProp.enumPropertyTypeName() + description.snakeCaseToCamelCase()
                 return ["if (enumType == \(enumValueName)) {",
                     indentation +  "return @\"\(defaultVal)\";",
                     "}"
-                    ].map{ indentation + $0 }.joinWithSeparator("\n")
+                    ].map { indentation + $0 }.joinWithSeparator("\n")
             }
 
 
@@ -435,7 +441,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         return lines.joinWithSeparator("\n")
     }
 
-    func renderCopyWithZone() -> String  {
+    func renderCopyWithZone() -> String {
         return [
             "- (id)copyWithZone:(NSZone *)zone",
             "{",
@@ -444,7 +450,7 @@ class ObjectiveCImplementationFileDescriptor : FileGenerator {
         ].joinWithSeparator("\n")
     }
 
-    func renderBuildMethod() -> String  {
+    func renderBuildMethod() -> String {
         let lines = [
             "- (\(self.className) *)build",
             "{",

@@ -34,12 +34,12 @@ public enum JSONStringFormatType: String {
 class ObjectSchemaProperty {
     let name: String
     let jsonType: JSONType
-    let propInfo : JSONObject
-    let sourceId : NSURL
-    let enumValues : [JSONObject]
-    let defaultValue : AnyObject?
+    let propInfo: JSONObject
+    let sourceId: NSURL
+    let enumValues: [JSONObject]
+    let defaultValue: AnyObject?
 
-    init(name : String, objectType: JSONType, propertyInfo : JSONObject, sourceId : NSURL) {
+    init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
         self.name = name
         self.jsonType = objectType
         self.propInfo = propertyInfo
@@ -57,7 +57,7 @@ class ObjectSchemaProperty {
         }
     }
 
-    class func propertyForJSONObject(json: JSONObject, var name: String = "", scopeUrl : NSURL) -> ObjectSchemaProperty {
+    class func propertyForJSONObject(json: JSONObject, var name: String = "", scopeUrl: NSURL) -> ObjectSchemaProperty {
         if let title = json["title"] as? String {
             name = title
         }
@@ -90,11 +90,11 @@ class ObjectSchemaProperty {
         }
 
         assert(false) // Shouldn't be reached
-        let propType : JSONType = JSONType(rawValue: (json["type"] as? String)!)!
+        let propType: JSONType = JSONType(rawValue: (json["type"] as? String)!)!
         return ObjectSchemaProperty.propertyForType(name, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
     }
 
-    class func propertyForType(name: String, objectType : JSONType, propertyInfo : JSONObject, sourceId: NSURL) -> ObjectSchemaProperty {
+    class func propertyForType(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) -> ObjectSchemaProperty {
         switch objectType {
         case JSONType.String:
             return ObjectSchemaStringProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
@@ -115,17 +115,17 @@ class ObjectSchemaProperty {
     }
 }
 
-class ObjectSchemaObjectProperty : ObjectSchemaProperty {
-    let definitions : [ObjectSchemaProperty]
-    let properties : [ObjectSchemaProperty]
-    let additionalProperties : ObjectSchemaProperty?
-    var referencedClasses : [ObjectSchemaPointerProperty] {
+class ObjectSchemaObjectProperty: ObjectSchemaProperty {
+    let definitions: [ObjectSchemaProperty]
+    let properties: [ObjectSchemaProperty]
+    let additionalProperties: ObjectSchemaProperty?
+    var referencedClasses: [ObjectSchemaPointerProperty] {
         let seenReferences = NSMutableSet()
-        let allReferences : [ObjectSchemaPointerProperty] = properties.flatMap({ (obj : ObjectSchemaProperty) -> ObjectSchemaPointerProperty? in
+        let allReferences: [ObjectSchemaPointerProperty] = properties.flatMap({ (obj: ObjectSchemaProperty) -> ObjectSchemaPointerProperty? in
             // References to other models defined in this object property list
             if obj is ObjectSchemaPointerProperty {
                 let pointerObj = obj as! ObjectSchemaPointerProperty
-                if (seenReferences.containsObject(pointerObj.ref)) {
+                if seenReferences.containsObject(pointerObj.ref) {
                     return nil
                 }
                 seenReferences.addObject(pointerObj.ref)
@@ -138,7 +138,7 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
                     if let arrayObjItems = arrayObj.items as ObjectSchemaProperty? {
                         if arrayObjItems.jsonType == JSONType.Pointer {
                             let pointerObj = arrayObjItems as! ObjectSchemaPointerProperty
-                            if (seenReferences.containsObject(pointerObj.ref)) {
+                            if seenReferences.containsObject(pointerObj.ref) {
                                 return nil
                             }
                             seenReferences.addObject(pointerObj.ref)
@@ -153,7 +153,7 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
                     if let additionalProperties = dictObj.additionalProperties as ObjectSchemaProperty? {
                         if additionalProperties.jsonType == JSONType.Pointer {
                             let pointerObj = additionalProperties as! ObjectSchemaPointerProperty
-                            if (seenReferences.containsObject(pointerObj.ref)) {
+                            if seenReferences.containsObject(pointerObj.ref) {
                                 return nil
                             }
                             seenReferences.addObject(pointerObj.ref)
@@ -169,7 +169,7 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
         return allReferences
     }
 
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId : NSURL) {
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
         var id = sourceId
         if let rawId = propertyInfo["id"] as? String {
             if rawId.hasPrefix("http") {
@@ -180,7 +180,7 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
         }
 
         if let rawProperties = propertyInfo["properties"] as? Dictionary<String, AnyObject> {
-            self.properties = rawProperties.keys.sort().map { (key : String) -> ObjectSchemaProperty in
+            self.properties = rawProperties.keys.sort().map { (key: String) -> ObjectSchemaProperty in
 
                 let propInfo = (rawProperties[key] as? JSONObject)!
                 // Check for "type"
@@ -196,7 +196,7 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
                 }
 
                 // MARK: Shouldn't reach here
-                let propType : JSONType = JSONType(rawValue: (propInfo["type"] as? String)!)!
+                let propType: JSONType = JSONType(rawValue: (propInfo["type"] as? String)!)!
                 return ObjectSchemaProperty.propertyForType(key, objectType: propType, propertyInfo: propInfo, sourceId: id)
             }
         } else {
@@ -223,21 +223,21 @@ class ObjectSchemaObjectProperty : ObjectSchemaProperty {
 }
 
 
-class ObjectSchemaStringProperty : ObjectSchemaProperty {
-    let format : JSONStringFormatType?
+class ObjectSchemaStringProperty: ObjectSchemaProperty {
+    let format: JSONStringFormatType?
 
-    override init(name : String, objectType: JSONType, propertyInfo : JSONObject, sourceId : NSURL) {
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
         if let formatString = propertyInfo["format"] as? String {
             self.format = JSONStringFormatType(rawValue:formatString)
         } else {
             self.format = nil
         }
-        super.init(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId : sourceId)
+        super.init(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
     }
 }
 
-class ObjectSchemaPointerProperty : ObjectSchemaProperty {
-    var ref : NSURL {
+class ObjectSchemaPointerProperty: ObjectSchemaProperty {
+    var ref: NSURL {
         get {
 
             if let refString = self.refString {
@@ -259,9 +259,9 @@ class ObjectSchemaPointerProperty : ObjectSchemaProperty {
         }
     }
 
-    private let refString : String?
+    private let refString: String?
 
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId : NSURL) {
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
         if let refString = propertyInfo["$ref"] as? String {
             self.refString = refString
         } else {
@@ -274,11 +274,11 @@ class ObjectSchemaPointerProperty : ObjectSchemaProperty {
 }
 
 
-class ObjectSchemaArrayProperty : ObjectSchemaProperty {
-    let items : ObjectSchemaProperty?
-    override init(name : String, objectType: JSONType, propertyInfo : JSONObject, sourceId : NSURL) {
+class ObjectSchemaArrayProperty: ObjectSchemaProperty {
+    let items: ObjectSchemaProperty?
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
         if let rawItems = propertyInfo["items"] as? JSONObject {
-            self.items = ObjectSchemaProperty.propertyForJSONObject(rawItems, scopeUrl : sourceId)
+            self.items = ObjectSchemaProperty.propertyForJSONObject(rawItems, scopeUrl: sourceId)
         } else {
             self.items = nil
         }
@@ -288,20 +288,20 @@ class ObjectSchemaArrayProperty : ObjectSchemaProperty {
 
 
 
-class ObjectSchemaBooleanProperty : ObjectSchemaProperty {}
-class ObjectSchemaNumberProperty : ObjectSchemaProperty {}
-class ObjectSchemaNullProperty : ObjectSchemaProperty {}
+class ObjectSchemaBooleanProperty: ObjectSchemaProperty {}
+class ObjectSchemaNumberProperty: ObjectSchemaProperty {}
+class ObjectSchemaNullProperty: ObjectSchemaProperty {}
 
 class SchemaLoader {
     static let sharedInstance = SchemaLoader()
 
-    var refs : [NSURL:ObjectSchemaProperty]
+    var refs: [NSURL:ObjectSchemaProperty]
 
     init() {
         self.refs = [NSURL:ObjectSchemaProperty]()
     }
 
-    func loadSchema(schemaUrl : NSURL) -> ObjectSchemaProperty? {
+    func loadSchema(schemaUrl: NSURL) -> ObjectSchemaProperty? {
         if let cachedValue = refs[schemaUrl] as ObjectSchemaProperty? {
             return cachedValue
         }
@@ -315,7 +315,7 @@ class SchemaLoader {
                     let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [String:AnyObject]
 
                     if jsonResult["data"] !== NSNull() {
-                        refs[schemaUrl] = ObjectSchemaProperty.propertyForJSONObject(jsonResult["data"] as! JSONObject, scopeUrl : schemaUrl)
+                        refs[schemaUrl] = ObjectSchemaProperty.propertyForJSONObject(jsonResult["data"] as! JSONObject, scopeUrl: schemaUrl)
                     }
                     // TODO (rmalik): Figure out if we should handle NSNull values differently for schemas.
                     // https://phabricator.pinadmin.com/T47
@@ -332,7 +332,7 @@ class SchemaLoader {
                 if let data = NSData(contentsOfFile: schemaUrl.path!) {
                     let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [String:AnyObject]
 
-                    refs[schemaUrl] = ObjectSchemaProperty.propertyForJSONObject(jsonResult, scopeUrl : schemaUrl)
+                    refs[schemaUrl] = ObjectSchemaProperty.propertyForJSONObject(jsonResult, scopeUrl: schemaUrl)
                     return refs[schemaUrl]
                 }
             } catch {

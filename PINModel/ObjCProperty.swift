@@ -37,295 +37,12 @@ public enum ObjCPrimitiveType: String {
 }
 
 
-extension ObjectSchemaProperty {
-    func objectiveCStringForJSONType(className : String = "") -> String {
-        switch self.jsonType {
-        case .String :
-            // If this is a string enum, we will return the enumeration type name (which is represented as an int enum).
-            let objCProp = ObjectiveCProperty(descriptor: self, className : className)
-            if objCProp.isEnumPropertyType() {
-                return objCProp.enumPropertyTypeName()
-            }
-            if self is ObjectSchemaStringProperty {
-                let subclass = self as! ObjectSchemaStringProperty
-                if subclass.format == JSONStringFormatType.Uri {
-                    return NSStringFromClass(NSURL)
-                } else if subclass.format == JSONStringFormatType.DateTime {
-                    return NSStringFromClass(NSDate)
-                }
-            }
-            return NSStringFromClass(NSString)
-        case .Number :
-            return ObjCPrimitiveType.Float.rawValue
-        case .Integer :
-            let objCProp = ObjectiveCProperty(descriptor: self, className : className)
-            if objCProp.isEnumPropertyType() {
-                return objCProp.enumPropertyTypeName()
-            }
-            return ObjCPrimitiveType.Integer.rawValue
-        case .Boolean:
-            return ObjCPrimitiveType.Boolean.rawValue
-        case .Array:
-            if self is ObjectSchemaArrayProperty {
-                let subclass = self as! ObjectSchemaArrayProperty
-                if let valueTypes = subclass.items as ObjectSchemaProperty? {
-                    return "\(NSStringFromClass(NSArray)) <\(valueTypes.objectiveCStringForJSONType()) *>"
-                }
-            }
-            return NSStringFromClass(NSArray)
-        case .Object:
-            if self is ObjectSchemaObjectProperty {
-                let subclass = self as! ObjectSchemaObjectProperty
-                if let valueTypes = subclass.additionalProperties as ObjectSchemaProperty? {
-                    return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, \(valueTypes.objectiveCStringForJSONType()) *>"
-                } else {
-                    return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, __kindof \(NSStringFromClass(NSObject)) *>"
-                }
-            }
-            return NSStringFromClass(NSDictionary)
-        case .Pointer:
-            let subclass = self as! ObjectSchemaPointerProperty
-            if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) as? ObjectSchemaObjectProperty {
-                // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
-                // https://phabricator.pinadmin.com/T46
-                return ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix : "PI"], parentDescriptor: nil).className
-            } else {
-                // TODO (rmalik): Add assertion back when we figure out why the API can have a null value for a schema.
-                // https://phabricator.pinadmin.com/T47
-//                assert(false)
-                return ""
-            }
-
-
-        default:
-            return ""
-        }
-    }
-
-
-    func propertyStatementFromDictionary(propertyVariableString : String, className : String) -> String {
-        var statement = propertyVariableString
-        switch self.jsonType {
-        case .String :
-            if self is ObjectSchemaStringProperty {
-                let subclass = self as! ObjectSchemaStringProperty
-                if subclass.format == JSONStringFormatType.Uri {
-                    statement = "[NSURL URLWithString:\(propertyVariableString)]"
-                } else if subclass.format == JSONStringFormatType.DateTime {
-                    statement = "[[NSValueTransformer valueTransformerForName:\(DateValueTransformerKey)] transformedValue:\(propertyVariableString)]"
-                } else if ObjectiveCProperty(descriptor: subclass, className: className).isEnumPropertyType() {
-                    statement = "\(ObjectiveCProperty(descriptor: subclass, className: className).enumPropertyTypeName())FromString(\(propertyVariableString))"
-                }
-            }
-        case .Number :
-            statement = "[\(propertyVariableString) floatValue]"
-        case .Integer :
-            statement = "[\(propertyVariableString) integerValue]"
-        case .Boolean:
-            statement = "[\(propertyVariableString) boolValue]"
-        case .Pointer:
-            let subclass = self as! ObjectSchemaPointerProperty
-            if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) {
-                var classNameForSchema = ""
-                // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
-                var generationParameters =  [GenerationParameterType.ClassPrefix : "PI"]
-                if let classPrefix = generationParameters[GenerationParameterType.ClassPrefix] as String? {
-                    classNameForSchema = String(format: "%@%@", arguments: [
-                        classPrefix,
-                        schema.name.snakeCaseToCamelCase()
-                        ])
-                } else {
-                    classNameForSchema = schema.name.snakeCaseToCamelCase()
-                }
-
-                statement = "[[\(classNameForSchema) alloc] initWithDictionary:\(propertyVariableString)]"
-            } else {
-                // TODO (rmalik): Add assertion back when we figure out why the API can have a null value for a schema.
-                // https://phabricator.pinadmin.com/T47
-                statement = ""
-//                assert(false)
-            }
-
-        default:
-            statement = propertyVariableString
-        }
-        return statement
-    }
-
-
-
-    func propertyMergeStatementFromDictionary(originVariableString : String, className : String) -> [String] {
-        let formattedPropName = self.name.snakeCaseToPropertyName()
-        let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
-
-        if self.propertyRequiresAssignmentLogic() == false {
-            // Code optimization: Early-exit if we are simply doing a basic assignment
-            let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.name)\")", className: className)
-            return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]
-        }
-
-        var propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
-        switch self.jsonType {
-        case .Array :
-            let subclass = self as! ObjectSchemaArrayProperty
-            if let arrayItems = subclass.items as ObjectSchemaProperty? {
-                assert(arrayItems.isScalarObjectiveCType() == false) // Arrays cannot contain primitive types
-                if (arrayItems.jsonType == JSONType.Pointer ||
-                    (arrayItems.jsonType == JSONType.String && (arrayItems as! ObjectSchemaStringProperty).format == JSONStringFormatType.Uri)) {
-                        let deserializedObject = arrayItems.propertyStatementFromDictionary("obj", className: className)
-                        return [
-                            "NSArray *items = value;",
-                            "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
-                            "for (id obj in items) {",
-                            "    [result addObject:\(deserializedObject)];",
-                            "}",
-                            "\(originVariableString).\(formattedPropName) = result;"
-                        ]
-                }
-            }
-        case .Object:
-            let subclass = self as! ObjectSchemaObjectProperty
-            if let additionalProperties = subclass.additionalProperties as ObjectSchemaProperty? {
-                assert(additionalProperties.isScalarObjectiveCType() == false) // Dictionaries cannot contain primitive types
-                if additionalProperties.jsonType == JSONType.Pointer {
-                    let deserializedObject = additionalProperties.propertyStatementFromDictionary("obj", className: className)
-                    return [
-                        "NSDictionary *items = value;",
-                        "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
-                        "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, __unused BOOL *stop) {",
-                        "    result[key] = \(deserializedObject);",
-                        "}];",
-                        "\(originVariableString).\(formattedPropName) = result;"
-                    ]
-                }
-            }
-        case .Pointer:
-            let subclass = self as! ObjectSchemaPointerProperty
-            let propStmt = subclass.propertyStatementFromDictionary("value", className: className)
-            return [
-                "if (\(originVariableString).\(formattedPropName) != nil) {",
-                "   \(originVariableString).\(formattedPropName) = [\(originVariableString).\(formattedPropName) mergeWithDictionary:value];",
-                "} else {",
-                "   \(originVariableString).\(formattedPropName) = \(propStmt);",
-                "}"
-            ]
-        default:
-            propertyAssignmentStatement = "\(originVariableString).\(formattedPropName) = \(propFromDictionary);"
-        }
-        return [propertyAssignmentStatement]
-    }
-
-    func propertyAssignmentStatementFromDictionary(className : String) -> [String] {
-        let formattedPropName = self.name.snakeCaseToPropertyName()
-        let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
-
-        if self.propertyRequiresAssignmentLogic() == false {
-            // Code optimization: Early-exit if we are simply doing a basic assignment
-            let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.name)\")", className: className)
-            return ["_\(formattedPropName) = \(shortPropFromDictionary);"]
-        }
-
-        var propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
-        switch self.jsonType {
-        case .Array :
-            let subclass = self as! ObjectSchemaArrayProperty
-            if let arrayItems = subclass.items as ObjectSchemaProperty? {
-                assert(arrayItems.isScalarObjectiveCType() == false) // Arrays cannot contain primitive types
-                if (arrayItems.jsonType == JSONType.Pointer ||
-                   (arrayItems.jsonType == JSONType.String && (arrayItems as! ObjectSchemaStringProperty).format == JSONStringFormatType.Uri)) {
-                    let deserializedObject = arrayItems.propertyStatementFromDictionary("obj", className: className)
-                    return [
-                        "NSArray *items = value;",
-                        "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
-                        "for (id obj in items) {",
-                        "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
-                        "        [result addObject:\(deserializedObject)];",
-                        "    }",
-                        "}",
-                        "_\(formattedPropName) = result;"
-                    ]
-
-                }
-            }
-        case .Object:
-            let subclass = self as! ObjectSchemaObjectProperty
-            if let additionalProperties = subclass.additionalProperties as ObjectSchemaProperty? {
-                assert(additionalProperties.isScalarObjectiveCType() == false) // Dictionaries cannot contain primitive types
-                if additionalProperties.jsonType == JSONType.Pointer {
-                    let deserializedObject = additionalProperties.propertyStatementFromDictionary("obj", className: className)
-                    return [
-                        "NSDictionary *items = value;",
-                        "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
-                        "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, BOOL *stop) {",
-                        "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
-                        "        result[key] = \(deserializedObject);",
-                        "    }",
-                        "}];",
-                        "_\(formattedPropName) = result;"
-                    ]
-                }
-            }
-        default:
-            propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
-        }
-        return [propertyAssignmentStatement]
-    }
-
-    func propertyRequiresAssignmentLogic() -> Bool {
-        var requiresAssignmentLogic = Bool(false)
-        switch self.jsonType {
-        case .Array :
-            let subclass = self as! ObjectSchemaArrayProperty
-            if let arrayItems = subclass.items as ObjectSchemaProperty? {
-                assert(arrayItems.isScalarObjectiveCType() == false) // Arrays cannot contain primitive types
-                return arrayItems.propertyRequiresAssignmentLogic()
-            }
-        case .Object:
-            let subclass = self as! ObjectSchemaObjectProperty
-            if let additionalProperties = subclass.additionalProperties as ObjectSchemaProperty? {
-                assert(additionalProperties.isScalarObjectiveCType() == false) // Dictionaries cannot contain primitive types
-                return additionalProperties.propertyRequiresAssignmentLogic()
-            }
-        case .Pointer:
-            requiresAssignmentLogic = Bool(true)
-        case .String :
-            if self is ObjectSchemaStringProperty {
-                let subclass = self as! ObjectSchemaStringProperty
-                if subclass.format == JSONStringFormatType.Uri || subclass.format == JSONStringFormatType.DateTime {
-                    requiresAssignmentLogic = Bool(true)
-                }
-            }
-        default:
-            requiresAssignmentLogic = Bool(false)
-        }
-
-        return requiresAssignmentLogic
-    }
-
-
-    func isScalarObjectiveCType() -> Bool {
-        // TODO: This is duplicating the functionality in ObjectiveCProperty class. We should remove this soon as it adds no additional value.
-        let jsonType = self.jsonType
-        return jsonType == JSONType.Boolean || jsonType == JSONType.Integer || jsonType == JSONType.Number || (jsonType == JSONType.String && ObjectiveCProperty(descriptor: self).isEnumPropertyType())
-    }
-
-    func objCMemoryAssignmentType() -> ObjCMemoryAssignmentType {
-        if self.isScalarObjectiveCType() {
-            return ObjCMemoryAssignmentType.Assign
-        }
-
-        // Since we are generating immutable models we can avoid declaring properties with "copy" memory assignment types.
-        return ObjCMemoryAssignmentType.Strong
-    }
-}
-
-
 class ObjectiveCProperty {
-    let propertyDescriptor : ObjectSchemaProperty
+    let propertyDescriptor: ObjectSchemaProperty
     let atomicityType = ObjCAtomicityType.NonAtomic
-    let className : String
+    let className: String
 
-    init(descriptor: ObjectSchemaProperty, className : String = "") {
+    init(descriptor: ObjectSchemaProperty, className: String = "") {
         self.propertyDescriptor = descriptor
         self.className = className
     }
@@ -337,6 +54,20 @@ class ObjectiveCProperty {
 
     func renderImplementationDeclaration() -> String {
         return self.renderDeclaration(true)
+    }
+
+    private func isScalarType() -> Bool {
+        let jsonType = self.propertyDescriptor.jsonType
+        return jsonType == JSONType.Boolean || jsonType == JSONType.Integer || jsonType == JSONType.Number || (jsonType == JSONType.String && self.isEnumPropertyType())
+    }
+
+    private func memoryAssignmentType() -> ObjCMemoryAssignmentType {
+        if self.isScalarType() {
+            return ObjCMemoryAssignmentType.Assign
+        }
+
+        // Since we are generating immutable models we can avoid declaring properties with "copy" memory assignment types.
+        return ObjCMemoryAssignmentType.Strong
     }
 
     func isEnumPropertyType() -> Bool {
@@ -358,7 +89,7 @@ class ObjectiveCProperty {
 
         let indent = "    "
         if self.propertyDescriptor.jsonType == JSONType.Integer {
-            let enumTypeValues = self.propertyDescriptor.enumValues.map({ (val : JSONObject) -> String in
+            let enumTypeValues = self.propertyDescriptor.enumValues.map({ (val: JSONObject) -> String in
                 let description = val["description"] as! String
                 let defaultVal = val["default"] as! Int
                 let enumValueName = self.enumPropertyTypeName() + description.snakeCaseToCamelCase()
@@ -369,7 +100,7 @@ class ObjectiveCProperty {
                     "};"].joinWithSeparator("\n")
         } else if self.propertyDescriptor.jsonType == JSONType.String {
 
-            let enumTypeValues = self.propertyDescriptor.enumValues.enumerate().map({ (index : Int, val : JSONObject) -> String in
+            let enumTypeValues = self.propertyDescriptor.enumValues.enumerate().map({ (index: Int, val: JSONObject) -> String in
                 let description = val["description"] as! String
                 let defaultVal = val["default"] as! String
 
@@ -416,7 +147,7 @@ class ObjectiveCProperty {
             if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) as? ObjectSchemaObjectProperty {
                 // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
                 // https://phabricator.pinadmin.com/T46
-                let className = ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix : "PI"], parentDescriptor: nil).className
+                let className = ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: nil).className
                 return "[aDecoder decodeObjectOfClass:[\(className) class] forKey:@\"\(self.propertyDescriptor.name)\"]"
             } else {
                 // Failed to load schema
@@ -435,13 +166,14 @@ class ObjectiveCProperty {
             if self.isEnumPropertyType() {
                 return "[aDecoder decodeIntegerForKey:@\"\(self.propertyDescriptor.name)\"]"
             }
-            return "[aDecoder decodeObjectOfClass:[\(self.propertyDescriptor.objectiveCStringForJSONType()) class] forKey:@\"\(self.propertyDescriptor.name)\"]"
+            return "[aDecoder decodeObjectOfClass:[\(self.objectiveCStringForJSONType()) class] forKey:@\"\(self.propertyDescriptor.name)\"]"
         case .Array:
             // - (id)decodeObjectOfClasses:(NSSet *)classes forKey:(NSString *)key NS_AVAILABLE(10_8, 6_0);
             var deserializationClasses = Set(["NSArray"])
             let subclass = self.propertyDescriptor as! ObjectSchemaArrayProperty
             if let valueTypes = subclass.items as ObjectSchemaProperty? {
-                deserializationClasses.insert(valueTypes.objectiveCStringForJSONType())
+                let prop = ObjectiveCProperty(descriptor: valueTypes, className: self.className)
+                deserializationClasses.insert(prop.objectiveCStringForJSONType())
             }
             let classList = deserializationClasses.map { "[\($0) class]" }.joinWithSeparator(", ")
             return "[aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[\(classList)]] forKey:@\"\(self.propertyDescriptor.name)\"]"
@@ -450,7 +182,8 @@ class ObjectiveCProperty {
             var deserializationClasses = Set(["NSDictionary", "NSString"])
             let subclass = self.propertyDescriptor as! ObjectSchemaObjectProperty
             if let valueTypes = subclass.additionalProperties as ObjectSchemaProperty? {
-                deserializationClasses.insert(valueTypes.objectiveCStringForJSONType())
+                let prop = ObjectiveCProperty(descriptor: valueTypes, className: self.className)
+                deserializationClasses.insert(prop.objectiveCStringForJSONType())
             }
             let classList = deserializationClasses.map { "[\($0) class]" }.joinWithSeparator(", ")
             return "[aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[\(classList)]] forKey:@\"\(self.propertyDescriptor.name)\"]"
@@ -460,30 +193,300 @@ class ObjectiveCProperty {
         return ""
     }
 
-    private func isScalarType() -> Bool {
-        let jsonType = self.propertyDescriptor.jsonType
-        return jsonType == JSONType.Boolean || jsonType == JSONType.Integer || jsonType == JSONType.Number || (jsonType == JSONType.String && self.isEnumPropertyType())
-    }
-
     private func renderDeclaration(isMutable: Bool) -> String {
-        let mutabilityType = isMutable ? ObjCMutabilityType.ReadWrite : ObjCMutabilityType.ReadOnly
+        let mutabilityType = isMutable ? ObjCMutabilityType.ReadWrite: ObjCMutabilityType.ReadOnly
         let propName = self.propertyDescriptor.name.snakeCaseToPropertyName()
-        let format : String = self.propertyDescriptor.isScalarObjectiveCType() ?  "%@ (%@) %@ %@;" : "%@ (%@) %@ *%@;"
+        let format: String = self.isScalarType() ?  "%@ (%@) %@ %@;": "%@ (%@) %@ *%@;"
         if self.isScalarType() {
             return String(format: format, "@property",
                 [self.atomicityType.rawValue,
-                 self.propertyDescriptor.objCMemoryAssignmentType().rawValue,
+                 self.memoryAssignmentType().rawValue,
                  mutabilityType.rawValue].joinWithSeparator(", "),
-                 self.propertyDescriptor.objectiveCStringForJSONType(self.className),
+                 self.objectiveCStringForJSONType(),
                  propName)
         } else {
             return String(format: format, "@property",
                 ["nullable", // We don't have a notion of required fields so we must assume all are nullable
                     self.atomicityType.rawValue,
-                    self.propertyDescriptor.objCMemoryAssignmentType().rawValue,
+                    self.memoryAssignmentType().rawValue,
                     mutabilityType.rawValue].joinWithSeparator(", "),
-                self.propertyDescriptor.objectiveCStringForJSONType(self.className),
+                self.objectiveCStringForJSONType(),
                 propName)
         }
+    }
+
+    func propertyRequiresAssignmentLogic() -> Bool {
+        var requiresAssignmentLogic = Bool(false)
+        switch self.propertyDescriptor.jsonType {
+        case .Array :
+            let subclass = self.propertyDescriptor as! ObjectSchemaArrayProperty
+            if let arrayItems = subclass.items as ObjectSchemaProperty? {
+                let prop = ObjectiveCProperty(descriptor: arrayItems, className: self.className)
+
+                assert(prop.isScalarType() == false) // Arrays cannot contain primitive types
+                return prop.propertyRequiresAssignmentLogic()
+            }
+        case .Object:
+            let subclass = self.propertyDescriptor as! ObjectSchemaObjectProperty
+            if let additionalProperties = subclass.additionalProperties as ObjectSchemaProperty? {
+                let prop = ObjectiveCProperty(descriptor: additionalProperties, className: self.className)
+                assert(prop.isScalarType() == false) // Dictionaries cannot contain primitive types
+                return prop.propertyRequiresAssignmentLogic()
+            }
+        case .Pointer:
+            requiresAssignmentLogic = Bool(true)
+        case .String :
+            if self.propertyDescriptor is ObjectSchemaStringProperty {
+                let subclass = self.propertyDescriptor as! ObjectSchemaStringProperty
+                if subclass.format == JSONStringFormatType.Uri || subclass.format == JSONStringFormatType.DateTime {
+                    requiresAssignmentLogic = Bool(true)
+                }
+            }
+        default:
+            requiresAssignmentLogic = Bool(false)
+        }
+
+        return requiresAssignmentLogic
+    }
+
+    func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String {
+        var statement = propertyVariableString
+        switch self.propertyDescriptor.jsonType {
+        case .String :
+            if self.propertyDescriptor is ObjectSchemaStringProperty {
+                let subclass = self.propertyDescriptor as! ObjectSchemaStringProperty
+                if subclass.format == JSONStringFormatType.Uri {
+                    statement = "[NSURL URLWithString:\(propertyVariableString)]"
+                } else if subclass.format == JSONStringFormatType.DateTime {
+                    statement = "[[NSValueTransformer valueTransformerForName:\(DateValueTransformerKey)] transformedValue:\(propertyVariableString)]"
+                } else if ObjectiveCProperty(descriptor: subclass, className: className).isEnumPropertyType() {
+                    statement = "\(ObjectiveCProperty(descriptor: subclass, className: className).enumPropertyTypeName())FromString(\(propertyVariableString))"
+                }
+            }
+        case .Number :
+            statement = "[\(propertyVariableString) floatValue]"
+        case .Integer :
+            statement = "[\(propertyVariableString) integerValue]"
+        case .Boolean:
+            statement = "[\(propertyVariableString) boolValue]"
+        case .Pointer:
+            let subclass = self.propertyDescriptor as! ObjectSchemaPointerProperty
+            if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) {
+                var classNameForSchema = ""
+                // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
+                var generationParameters =  [GenerationParameterType.ClassPrefix: "PI"]
+                if let classPrefix = generationParameters[GenerationParameterType.ClassPrefix] as String? {
+                    classNameForSchema = String(format: "%@%@", arguments: [
+                        classPrefix,
+                        schema.name.snakeCaseToCamelCase()
+                        ])
+                } else {
+                    classNameForSchema = schema.name.snakeCaseToCamelCase()
+                }
+
+                statement = "[[\(classNameForSchema) alloc] initWithDictionary:\(propertyVariableString)]"
+            } else {
+                // TODO (rmalik): Add assertion back when we figure out why the API can have a null value for a schema.
+                // https://phabricator.pinadmin.com/T47
+                statement = ""
+                //                assert(false)
+            }
+
+        default:
+            statement = propertyVariableString
+        }
+        return statement
+    }
+
+
+
+    func propertyAssignmentStatementFromDictionary(className: String) -> [String] {
+
+        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
+        let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
+
+        if self.propertyRequiresAssignmentLogic() == false {
+            // Code optimization: Early-exit if we are simply doing a basic assignment
+            let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
+            return ["_\(formattedPropName) = \(shortPropFromDictionary);"]
+        }
+
+        var propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
+        switch self.propertyDescriptor.jsonType {
+        case .Array :
+            let subclass = self.propertyDescriptor as! ObjectSchemaArrayProperty
+            if let arrayItems = subclass.items as ObjectSchemaProperty? {
+                let prop = ObjectiveCProperty(descriptor: arrayItems, className: self.className)
+                assert(prop.isScalarType() == false) // Arrays cannot contain primitive types
+                if arrayItems.jsonType == JSONType.Pointer ||
+                    (arrayItems.jsonType == JSONType.String && (arrayItems as! ObjectSchemaStringProperty).format == JSONStringFormatType.Uri) {
+                        let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
+                        return [
+                            "NSArray *items = value;",
+                            "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
+                            "for (id obj in items) {",
+                            "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
+                            "        [result addObject:\(deserializedObject)];",
+                            "    }",
+                            "}",
+                            "_\(formattedPropName) = result;"
+                        ]
+
+                }
+            }
+        case .Object:
+            let subclass = self.propertyDescriptor as! ObjectSchemaObjectProperty
+            if let additionalProperties = subclass.additionalProperties as ObjectSchemaProperty? {
+                let prop = ObjectiveCProperty(descriptor: additionalProperties, className: self.className)
+
+                assert(prop.isScalarType() == false) // Dictionaries cannot contain primitive types
+                if additionalProperties.jsonType == JSONType.Pointer {
+                    let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
+                    return [
+                        "NSDictionary *items = value;",
+                        "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
+                        "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, BOOL *stop) {",
+                        "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
+                        "        result[key] = \(deserializedObject);",
+                        "    }",
+                        "}];",
+                        "_\(formattedPropName) = result;"
+                    ]
+                }
+            }
+        default:
+            propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
+        }
+        return [propertyAssignmentStatement]
+    }
+
+    func objectiveCStringForJSONType() -> String {
+        switch self.propertyDescriptor.jsonType {
+        case .String :
+            // If this is a string enum, we will return the enumeration type name (which is represented as an int enum).
+            if self.isEnumPropertyType() {
+                return self.enumPropertyTypeName()
+            }
+            if self.propertyDescriptor is ObjectSchemaStringProperty {
+                let subclass = self.propertyDescriptor as! ObjectSchemaStringProperty
+                if subclass.format == JSONStringFormatType.Uri {
+                    return NSStringFromClass(NSURL)
+                } else if subclass.format == JSONStringFormatType.DateTime {
+                    return NSStringFromClass(NSDate)
+                }
+            }
+            return NSStringFromClass(NSString)
+        case .Number :
+            return ObjCPrimitiveType.Float.rawValue
+        case .Integer :
+            if self.isEnumPropertyType() {
+                return self.enumPropertyTypeName()
+            }
+            return ObjCPrimitiveType.Integer.rawValue
+        case .Boolean:
+            return ObjCPrimitiveType.Boolean.rawValue
+        case .Array:
+            if self.propertyDescriptor is ObjectSchemaArrayProperty {
+                let subclass = self.propertyDescriptor as! ObjectSchemaArrayProperty
+                if let valueTypes = subclass.items as ObjectSchemaProperty? {
+                    let prop = ObjectiveCProperty(descriptor: valueTypes, className: self.className)
+                    return "\(NSStringFromClass(NSArray)) <\(prop.objectiveCStringForJSONType()) *>"
+                }
+            }
+            return NSStringFromClass(NSArray)
+        case .Object:
+            if self.propertyDescriptor is ObjectSchemaObjectProperty {
+                let subclass = self.propertyDescriptor as! ObjectSchemaObjectProperty
+                if let valueTypes = subclass.additionalProperties as ObjectSchemaProperty? {
+                    let prop = ObjectiveCProperty(descriptor: valueTypes, className: self.className)
+
+                    return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, \(prop.objectiveCStringForJSONType()) *>"
+                } else {
+                    return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, __kindof \(NSStringFromClass(NSObject)) *>"
+                }
+            }
+            return NSStringFromClass(NSDictionary)
+        case .Pointer:
+            let subclass = self.propertyDescriptor as! ObjectSchemaPointerProperty
+            if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) as? ObjectSchemaObjectProperty {
+                // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
+                // https://phabricator.pinadmin.com/T46
+                return ObjectiveCInterfaceFileDescriptor(descriptor: schema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: nil).className
+            } else {
+                // TODO (rmalik): Add assertion back when we figure out why the API can have a null value for a schema.
+                // https://phabricator.pinadmin.com/T47
+                //                assert(false)
+                return ""
+            }
+
+
+        default:
+            return ""
+        }
+    }
+
+    func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
+        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
+        let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
+
+        if self.propertyRequiresAssignmentLogic() == false {
+            // Code optimization: Early-exit if we are simply doing a basic assignment
+            let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
+            return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]
+        }
+
+        var propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
+        switch self.propertyDescriptor.jsonType {
+        case .Array :
+            let subclass = self.propertyDescriptor as! ObjectSchemaArrayProperty
+            if let arrayItems = subclass.items as ObjectSchemaProperty? {
+                let prop = ObjectiveCProperty(descriptor: arrayItems, className: self.className)
+                assert(prop.isScalarType() == false) // Arrays cannot contain primitive types
+                if arrayItems.jsonType == JSONType.Pointer ||
+                    (arrayItems.jsonType == JSONType.String && (arrayItems as! ObjectSchemaStringProperty).format == JSONStringFormatType.Uri) {
+                        let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
+                        return [
+                            "NSArray *items = value;",
+                            "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
+                            "for (id obj in items) {",
+                            "    [result addObject:\(deserializedObject)];",
+                            "}",
+                            "\(originVariableString).\(formattedPropName) = result;"
+                        ]
+                }
+            }
+        case .Object:
+            let subclass = self.propertyDescriptor as! ObjectSchemaObjectProperty
+            if let additionalProperties = subclass.additionalProperties as ObjectSchemaProperty? {
+                let prop = ObjectiveCProperty(descriptor: additionalProperties, className: self.className)
+
+                assert(prop.isScalarType() == false) // Dictionaries cannot contain primitive types
+                if additionalProperties.jsonType == JSONType.Pointer {
+                    let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
+                    return [
+                        "NSDictionary *items = value;",
+                        "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
+                        "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, __unused BOOL *stop) {",
+                        "    result[key] = \(deserializedObject);",
+                        "}];",
+                        "\(originVariableString).\(formattedPropName) = result;"
+                    ]
+                }
+            }
+        case .Pointer:
+            let subclass = ObjectiveCProperty(descriptor: self.propertyDescriptor as! ObjectSchemaPointerProperty,
+                className: self.className)
+            let propStmt = subclass.propertyStatementFromDictionary("value", className: className)
+            return [
+                "if (\(originVariableString).\(formattedPropName) != nil) {",
+                "   \(originVariableString).\(formattedPropName) = [\(originVariableString).\(formattedPropName) mergeWithDictionary:value];",
+                "} else {",
+                "   \(originVariableString).\(formattedPropName) = \(propStmt);",
+                "}"
+            ]
+        default:
+            propertyAssignmentStatement = "\(originVariableString).\(formattedPropName) = \(propFromDictionary);"
+        }
+        return [propertyAssignmentStatement]
     }
 }

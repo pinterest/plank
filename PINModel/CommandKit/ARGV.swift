@@ -1,17 +1,17 @@
+public enum ParameterType {
+    case Argument, Option, Flag
+}
+
 public class ARGV {
-    
-    public enum ParameterType {
-        case Argument, Option, Flag
-    }
-    
+
     let originalArgs: [String]
     public var arguments = [String]()
     public var options = [String: String]()
     public var flags = [String: Bool]()
-    
+
     public init(_ args: [String]) {
         originalArgs = args
-        
+
         for arg in originalArgs {
             switch parameterType(arg) {
             case .Argument:
@@ -25,7 +25,7 @@ public class ARGV {
             }
         }
     }
-    
+
     public func shift() -> String? {
         if arguments.count > 0 {
             return arguments.removeAtIndex(0)
@@ -33,15 +33,15 @@ public class ARGV {
             return nil
         }
     }
-    
+
     public func option(name: String) -> String? {
         return options.removeValueForKey(name)
     }
-    
+
     public func flag(name: String) -> Bool? {
         return flags.removeValueForKey(name)
     }
-    
+
     private func parameterType(arg: String) -> ParameterType {
         if arg.hasPrefix("--") {
             if arg.characters.contains("=") {
@@ -53,19 +53,19 @@ public class ARGV {
             return .Argument
         }
     }
-    
+
     private func optionParameter(arg: String) -> (key: String, value: String) {
-        let argument = arg.substringFromIndex(advance(arg.startIndex, 2))
-        let components = split(argument.characters) { $0 == "=" }.map { String($0) }
+        let argument = arg.substringFromIndex(arg.startIndex.advancedBy(2))
+        let components = argument.characters.split(isSeparator: { $0 == "=" }).map { String($0) }
         assert(components.count == 2)
         return (components[0], components[1])
     }
-    
+
     private func flagParameter(arg: String) -> (key: String, value: Bool) {
         if arg.hasPrefix("--no-") {
-            return (arg.substringFromIndex(advance(arg.startIndex, 5)), false)
+            return (arg.substringFromIndex(arg.startIndex.advancedBy(5)), false)
         } else {
-            return (arg.substringFromIndex(advance(arg.startIndex, 2)), true)
+            return (arg.substringFromIndex(arg.startIndex.advancedBy(2)), true)
         }
     }
 }

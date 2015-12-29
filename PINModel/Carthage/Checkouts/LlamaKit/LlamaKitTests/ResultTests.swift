@@ -15,7 +15,7 @@ class ResultTests: XCTestCase {
   let err2 = NSError(domain: "", code: 12, userInfo: nil)
 
   func testSuccessIsSuccess() {
-    let s: Result<Int,NSError> = success(42)
+    let s: Result<Int, NSError> = success(42)
     XCTAssertTrue(s.isSuccess)
   }
 
@@ -25,12 +25,12 @@ class ResultTests: XCTestCase {
   }
 
   func testSuccessReturnsValue() {
-    let s: Result<Int,NSError> = success(42)
+    let s: Result<Int, NSError> = success(42)
     XCTAssertEqual(s.value!, 42)
   }
 
   func testSuccessReturnsNoError() {
-    let s: Result<Int,NSError> = success(42)
+    let s: Result<Int, NSError> = success(42)
     XCTAssertNil(s.error)
   }
 

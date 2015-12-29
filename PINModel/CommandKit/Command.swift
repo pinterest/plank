@@ -1,6 +1,6 @@
 public class Command {
-    public let name:String
-    public let description:String
+    public let name: String
+    public let description: String
 
     public init(_ name: String, _ description: String) {
         self.name = name
@@ -14,7 +14,7 @@ public class Command {
     }
 }
 
-public class ClosureCommand : Command {
+public class ClosureCommand: Command {
     public typealias ClosureType = (ARGV) -> ()
     let handler: ClosureType
 

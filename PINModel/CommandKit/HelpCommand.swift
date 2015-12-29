@@ -1,4 +1,4 @@
-class HelpCommand : Command {
+class HelpCommand: Command {
     init() {
         super.init("help", "Show help for the given command.")
     }

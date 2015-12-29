@@ -18,12 +18,14 @@ public enum GenerationParameterType {
 }
 
 protocol FileGeneratorManager {
-    init(descriptor: ObjectSchemaObjectProperty, generatorParameters : GenerationParameters)
+    init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters)
     func filesToGenerate() -> Array<FileGenerator>
 }
 
 protocol FileGenerator {
-    init(descriptor: ObjectSchemaObjectProperty, generatorParameters : GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?)
+    init(descriptor: ObjectSchemaObjectProperty,
+         generatorParameters: GenerationParameters,
+         parentDescriptor: ObjectSchemaObjectProperty?)
     func fileName() -> String
     func renderFile() -> String
 }
@@ -37,8 +39,8 @@ extension FileGenerator {
         formatter.timeZone = NSTimeZone(name: "UTC")
         formatter.dateFormat = "MM-dd-yyyy 'at' HH:mm:ss"
 
-        let year : Int = NSCalendar.currentCalendar().components(NSCalendarUnit.Year, fromDate: date).year
-
+        let calendar = NSCalendar.currentCalendar()
+        let year: Int = calendar.components(NSCalendarUnit.Year, fromDate: date).year
 
         let header = [
             "//",
@@ -52,5 +54,3 @@ extension FileGenerator {
         return header.joinWithSeparator("\n")
     }
 }
-
-

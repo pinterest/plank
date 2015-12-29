@@ -8,21 +8,23 @@
 
 import Foundation
 
-// TODO (rmalik): Reserve an access token for the api and also come up with a strategy for appending query parameters for loading remote schemas.
+// TODO (rmalik): Reserve an access token for the api and
+// also come up with a strategy for appending query parameters for loading remote schemas.
 // https://phabricator.pinadmin.com/T44
 // https://phabricator.pinadmin.com/T45
 let accessTokenString = "access_token=MTQzMTU5NDoxNTAwMjYzNjg3NDUyMTEzMDk6OTIyMzM3MjAzNjg1NDc3NTgwNzoxfDE0Mzk4NTQ5NTA6MC0tOGQwYzJjMzVlMTMyMDI1YTk2MDcwYzJlYWZiYjk1NTM%3D"
 
 
-let BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(name: "model", objectType: JSONType.Object,
-                                           propertyInfo: ["properties" : [ "id" : [ "type" : "string"] ,
-                                                          "additional_local_non_API_properties" : [ "type" : "object"]]],
-                                           sourceId: NSURL())
+let BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(
+    name: "model", objectType: JSONType.Object,
+    propertyInfo: ["properties": [ "id": [ "type": "string"],
+                   "additional_local_non_API_properties": [ "type": "object"]]],
+    sourceId: NSURL())
 var manager = Manager()
 
 func generateFile(schema: ObjectSchemaObjectProperty, outputDirectory: NSURL) {
     let manager = ObjectiveCFileGeneratorManager(descriptor: schema,
-                                                 generatorParameters: [GenerationParameterType.ClassPrefix : "PI"])
+                                                 generatorParameters: [GenerationParameterType.ClassPrefix: "PI"])
     for file in manager.filesToGenerate() {
         let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file.
         do {
@@ -38,7 +40,7 @@ func generateFile(schema: ObjectSchemaObjectProperty, outputDirectory: NSURL) {
 
 
 
-func generateFilesWithInitialUrl(url: NSURL, outputDirectory : NSURL) {
+func generateFilesWithInitialUrl(url: NSURL, outputDirectory: NSURL) {
 
     // Generate Base Model
     generateFile(BASE_MODEL_INSTANCE, outputDirectory: outputDirectory)
@@ -47,17 +49,16 @@ func generateFilesWithInitialUrl(url: NSURL, outputDirectory : NSURL) {
     if let _ = SchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
         var processedSchemas = Set<NSURL>([])
         repeat {
-            let _ = SchemaLoader.sharedInstance.refs.map({ (url : NSURL, schema : ObjectSchemaProperty) -> Void in
+            let _ = SchemaLoader.sharedInstance.refs.map({ (url: NSURL, schema: ObjectSchemaProperty) -> Void in
                 if processedSchemas.contains(url) {
                     return
                 }
 
                 processedSchemas.insert(url)
 
-                if schema is ObjectSchemaObjectProperty  {
-                    generateFile(schema as! ObjectSchemaObjectProperty,outputDirectory : outputDirectory)
+                if let objectSchema = schema as? ObjectSchemaObjectProperty {
+                    generateFile(objectSchema, outputDirectory: outputDirectory)
                 }
-
             })
         } while (processedSchemas.count != SchemaLoader.sharedInstance.refs.keys.count)
     }

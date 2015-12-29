@@ -6,27 +6,29 @@
 //  Copyright (c) 2014 nomothetis. All rights reserved.
 //
 
+// swiftlint:disable file_length
+
 import Cocoa
 import XCTest
 import OptionKit
 
 class OptionKitTests: XCTestCase {
-    
+
     func testParserWithNoOption() {
         let parser = OptionParser()
         parser.parse(["--hello"]).map {opts in
             XCTFail("Empty parser should process no options other than -h|--help; instead processed: \(opts)")
         }
-        
+
         parser.parse(["-v"]).map {opts in
             XCTFail("Empty parser should process no options other than -h|--help; instead processed: \(opts)")
         }
     }
-    
+
     func testParserWithNoParameterShortOption() {
         let optionDescription = Option(trigger:.Short("h"))
         let parser = OptionParser(definitions:[optionDescription])
-        
+
         var params = ["h"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -36,7 +38,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let opts):
             XCTFail("Parsing should have succeeded for parser: \(parser), options: \(opts)")
         }
-        
+
         params = ["-h"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -46,7 +48,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parsing should have succeeded for parser: \(parser), options: \(params)")
         }
-        
+
         params = ["-i"]
         switch parser.parse(params) {
         case .Success(_):
@@ -54,7 +56,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         params = ["-h", "--bad-option"]
         switch parser.parse(params) {
         case .Success(_):
@@ -62,7 +64,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         params = ["-h", "-n"]
         switch parser.parse(params) {
         case .Success(_):
@@ -70,7 +72,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         // Check that order doesn't matter.
         params = ["-h", "lastIsBest"]
         switch parser.parse(params) {
@@ -82,7 +84,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should not have failed to parse \(params) with error: \(err)")
         }
-        
+
         params = ["firstRules", "-h"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -93,7 +95,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         params = ["sandwiches", "-h", "rock"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -104,13 +106,13 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
     }
-    
+
     func testInvalidCallsOfNoParamterShortOption() {
         let optionDescription = Option(trigger:.Short("h"))
         let parser = OptionParser(definitions:[optionDescription])
-        
+
         var params = ["--hello"]
         switch parser.parse(params) {
         case .Success(let opts):
@@ -119,12 +121,12 @@ class OptionKitTests: XCTestCase {
             XCTAssert(true, "WAT?")
         }
     }
-    
-    
+
+
     func testParserWithNoParameterLongOption() {
         let optionDescription = Option(trigger:.Long("hello"))
         let parser = OptionParser(definitions:[optionDescription])
-        
+
         var params = ["hello"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -134,7 +136,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let opts):
             XCTFail("Parsing should have succeeded for parser: \(parser), options: \(opts)")
         }
-        
+
         params = ["--hello"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -145,7 +147,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parsing should have succeeded for parser: \(parser), options: \(params)")
         }
-        
+
         params = ["-i"]
         switch parser.parse(params) {
         case .Success(let _):
@@ -153,7 +155,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         params = ["--hello", "--bad-option"]
         switch parser.parse(params) {
         case .Success(_):
@@ -161,7 +163,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         params = ["--hello", "-n"]
         switch parser.parse(params) {
         case .Success(_):
@@ -169,7 +171,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         // Check that order doesn't matter.
         params = ["--hello", "lastIsBest"]
         switch parser.parse(params) {
@@ -181,7 +183,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["firstRules", "--hello"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -192,7 +194,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["sandwiches", "--hello", "rock"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -204,11 +206,11 @@ class OptionKitTests: XCTestCase {
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
     }
-    
+
     func testInvalidCallsOfNoParamterLongOption() {
         let optionDescription = Option(trigger:.Long("vroom"), numberOfParameters:0)
         let parser = OptionParser(definitions:[optionDescription])
-        
+
         var params = ["-v"]
         switch parser.parse(params) {
         case .Success(_):
@@ -217,11 +219,11 @@ class OptionKitTests: XCTestCase {
             XCTAssert(true, "WAT?")
         }
     }
-    
+
     func testParserWithNoParameterMixedOption() {
         let optionDescription = Option(trigger:.Mixed("h", "hello"))
         let parser = OptionParser(definitions:[optionDescription])
-        
+
         var params = ["h"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -231,7 +233,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let opts):
             XCTFail("Parsing should have succeeded for parser: \(parser), options: \(opts)")
         }
-        
+
         params = ["-h"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -242,7 +244,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parsing should have succeeded for parser: \(parser), options: \(params)")
         }
-        
+
         params = ["-i"]
         switch parser.parse(params) {
         case .Success(_):
@@ -250,7 +252,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         params = ["-h", "--bad-option"]
         switch parser.parse(params) {
         case .Success(_):
@@ -258,7 +260,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         params = ["-h", "-n"]
         switch parser.parse(params) {
         case .Success(_):
@@ -266,7 +268,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         // Check that order doesn't matter.
         params = ["-h", "lastIsBest"]
         switch parser.parse(params) {
@@ -278,7 +280,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should not have failed to parse \(params) with error: \(err)")
         }
-        
+
         params = ["firstRules", "-h"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -289,7 +291,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         params = ["sandwiches", "-h", "rock"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -300,9 +302,9 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         // Check that the long option also works.
-        
+
         params = ["--hello"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -313,7 +315,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parsing should have succeeded for parser: \(parser), options: \(params)")
         }
-        
+
         params = ["--hello", "--bad-option"]
         switch parser.parse(params) {
         case .Success(_):
@@ -321,7 +323,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         params = ["--hello", "-n"]
         switch parser.parse(params) {
         case .Success(_):
@@ -329,7 +331,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "Success!")
         }
-        
+
         // Check that order doesn't matter.
         params = ["--hello", "lastIsBest"]
         switch parser.parse(params) {
@@ -341,7 +343,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["firstRules", "--hello"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -352,7 +354,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["sandwiches", "--hello", "rock"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -364,12 +366,12 @@ class OptionKitTests: XCTestCase {
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
     }
-    
+
     func testOptionWithParameters() {
         // One parameter.
         var optionDescription = Option(trigger:.Mixed("h", "hello"), numberOfParameters:1)
         var parser = OptionParser(definitions:[optionDescription])
-        
+
         var params = ["-h", "world"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -380,7 +382,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["--hello", "world"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -391,7 +393,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["--hello"]
         switch parser.parse(params) {
         case .Success(let opts):
@@ -399,7 +401,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "WTF?")
         }
-        
+
         params = ["--hello", "--world"]
         switch parser.parse(params) {
         case .Success(let opts):
@@ -407,7 +409,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "WTF?")
         }
-        
+
         params = ["--hello", "-w"]
         switch parser.parse(params) {
         case .Success(let opts):
@@ -415,11 +417,11 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "WTF?")
         }
-        
-        
+
+
         optionDescription = Option(trigger:.Mixed("h", "hello"), numberOfParameters:3)
         parser = OptionParser(definitions:[optionDescription])
-        
+
         params = ["-h", "world", "of", "coke"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -430,7 +432,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["--hello", "world", "of", "coke"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -441,7 +443,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["--hello"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -449,7 +451,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "WTF?")
         }
-        
+
         params = ["--hello", "world"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -457,7 +459,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "WTF?")
         }
-        
+
         params = ["--hello", "world", "of"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -466,8 +468,8 @@ class OptionKitTests: XCTestCase {
             XCTAssert(true, "WTF?")
         }
     }
-    
-    
+
+
     func testMixOfParametersAndNoParameters() {
         var optionDescription = Option(trigger:.Mixed("h", "hello"), numberOfParameters:1)
         var optionDescription2 = Option(trigger:.Mixed("p", "pom"))
@@ -476,7 +478,7 @@ class OptionKitTests: XCTestCase {
         var expectedParameters1 = ["world"]
         var expectedParameters2 = []
         var expectedParameters3 = ["boo", "hoo"]
-        
+
         var params = ["--hello", "world", "of"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -491,7 +493,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["--hello", "world"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -506,7 +508,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["--hello", "world", "-p"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -518,7 +520,7 @@ class OptionKitTests: XCTestCase {
             } else {
                 XCTFail("No parameters for option \(optionDescription)")
             }
-            
+
             if let optParams2 = options[optionDescription2] {
                 XCTAssertEqual(optParams2, expectedParameters2, "Incorrect parameters for \(optionDescription)")
             } else {
@@ -527,7 +529,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["--hello", "world", "-p"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -539,7 +541,7 @@ class OptionKitTests: XCTestCase {
             } else {
                 XCTFail("No parameters for option \(optionDescription)")
             }
-            
+
             if let optParams2 = options[optionDescription2] {
                 XCTAssertEqual(optParams2, expectedParameters2, "Incorrect parameters for \(optionDescription)")
             } else {
@@ -548,7 +550,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["--hello", "world", "-p", "-n", "boo", "hoo"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -560,13 +562,13 @@ class OptionKitTests: XCTestCase {
             } else {
                 XCTFail("No parameters for option \(optionDescription)")
             }
-            
+
             if let optParams2 = options[optionDescription2] {
                 XCTAssertEqual(optParams2, expectedParameters2, "Incorrect parameters for \(optionDescription)")
             } else {
                 XCTFail("No parameters for option \(optionDescription2)")
             }
-            
+
             if let optParams3 = options[optionDescription3] {
                 XCTAssertEqual(optParams3, expectedParameters3, "Incorrect parameters for \(optionDescription)")
             } else {
@@ -575,7 +577,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         params = ["--hello", "world", "-p", "-n", "boo", "hoo", "rest"]
         switch parser.parse(params) {
         case .Success(let parseDataBox):
@@ -587,13 +589,13 @@ class OptionKitTests: XCTestCase {
             } else {
                 XCTFail("No parameters for option \(optionDescription)")
             }
-            
+
             if let optParams2 = options[optionDescription2] {
                 XCTAssertEqual(optParams2, expectedParameters2, "Incorrect parameters for \(optionDescription)")
             } else {
                 XCTFail("No parameters for option \(optionDescription2)")
             }
-            
+
             if let optParams3 = options[optionDescription3] {
                 XCTAssertEqual(optParams3, expectedParameters3, "Incorrect parameters for \(optionDescription)")
             } else {
@@ -602,7 +604,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
+
         // Tests that options can be passed at any time
         params = ["-p", "-n", "boo", "hoo", "rest", "--hello", "world"]
         switch parser.parse(params) {
@@ -615,13 +617,13 @@ class OptionKitTests: XCTestCase {
             } else {
                 XCTFail("No parameters for option \(optionDescription)")
             }
-            
+
             if let optParams2 = options[optionDescription2] {
                 XCTAssertEqual(optParams2, expectedParameters2, "Incorrect parameters for \(optionDescription)")
             } else {
                 XCTFail("No parameters for option \(optionDescription2)")
             }
-            
+
             if let optParams3 = options[optionDescription3] {
                 XCTAssertEqual(optParams3, expectedParameters3, "Incorrect parameters for \(optionDescription)")
             } else {
@@ -630,8 +632,8 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTFail("Parser \(parser) should have properly parsed \(params)")
         }
-        
-        
+
+
         // Now test the failure states: times when all the parameters aren't passed.
         params = ["-p", "-n", "boo", "--hello", "world"]
         switch parser.parse(params) {
@@ -640,7 +642,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "WTF?")
         }
-        
+
         params = ["-p", "-n", "boo", "--hello"]
         switch parser.parse(params) {
         case .Success(let opts):
@@ -648,7 +650,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "WTF?")
         }
-        
+
         params = ["-n", "boo", "hoo", "--hello"]
         switch parser.parse(params) {
         case .Success(let opts):
@@ -656,7 +658,7 @@ class OptionKitTests: XCTestCase {
         case .Failure(let err):
             XCTAssert(true, "WTF?")
         }
-        
+
     }
-    
+
 }

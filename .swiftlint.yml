@@ -1,0 +1,26 @@
+disabled_rules: # rule identifiers to exclude from running
+  - force_cast
+  - function_body_length
+  - line_length
+  - todo
+  - type_body_length
+  - variable_name
+included: # paths to include during linting. `--path` is ignored if present.
+  - PINModel
+excluded: # paths to ignore during linting.
+  - PINModel/Carthage
+  - PINModel/CommandKit
+# parameterized rules can be customized from this configuration file
+line_length: 110
+# parameterized rules are first parameterized as a warning level, then error level.
+type_body_length:
+  - 300 # warning
+  - 400 # error
+# parameterized rules are first parameterized as a warning level, then error level.
+variable_name_max_length:
+  - 40 # warning
+  - 60 # error
+# parameterized rules are first parameterized as a warning level, then error level.
+variable_name_min_length:
+  - 3 # warning
+  - 2 # error
