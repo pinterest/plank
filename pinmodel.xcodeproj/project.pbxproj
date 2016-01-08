@@ -15,11 +15,17 @@
 		816488251C320BF200483015 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488201C320BF200483015 /* Command.swift */; };
 		816488261C320BF200483015 /* HelpCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488221C320BF200483015 /* HelpCommand.swift */; };
 		816488271C320BF200483015 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488231C320BF200483015 /* Manager.swift */; };
+		816488291C32160800483015 /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488281C32160800483015 /* ObjectiveCArrayProperty.swift */; };
+		8164882B1C321A8A00483015 /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */; };
+		8164882D1C321AFC00483015 /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */; };
+		8164882F1C321B4000483015 /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */; };
+		816488311C321C6400483015 /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488301C321C6400483015 /* ObjectiveCBooleanProperty.swift */; };
 		816B9D221B62EFDF00C494BE /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B9D211B62EFDF00C494BE /* StringExtensions.swift */; };
 		817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */; };
 		817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */; };
-		817B72361B697A7C0071DEF5 /* ObjCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72351B697A7C0071DEF5 /* ObjCProperty.swift */; };
+		817B72361B697A7C0071DEF5 /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */; };
 		81AC0B801B8D1C6F00ED599E /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */; };
+		81CB51CF1C3C91B900EB1834 /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,11 +51,17 @@
 		816488211C320BF200483015 /* CommandKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommandKit.h; path = CommandKit/CommandKit.h; sourceTree = "<group>"; };
 		816488221C320BF200483015 /* HelpCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HelpCommand.swift; path = CommandKit/HelpCommand.swift; sourceTree = "<group>"; };
 		816488231C320BF200483015 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manager.swift; path = CommandKit/Manager.swift; sourceTree = "<group>"; };
+		816488281C32160800483015 /* ObjectiveCArrayProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCArrayProperty.swift; sourceTree = "<group>"; };
+		8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCIntegerProperty.swift; sourceTree = "<group>"; };
+		8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCStringProperty.swift; sourceTree = "<group>"; };
+		8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCDictionaryProperty.swift; sourceTree = "<group>"; };
+		816488301C321C6400483015 /* ObjectiveCBooleanProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCBooleanProperty.swift; sourceTree = "<group>"; };
 		816B9D211B62EFDF00C494BE /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtensions.swift; path = ../StringExtensions.swift; sourceTree = "<group>"; };
 		817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCInterfaceFileGenerator.swift; sourceTree = "<group>"; };
 		817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		817B72351B697A7C0071DEF5 /* ObjCProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCProperty.swift; sourceTree = "<group>"; };
+		817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCProperty.swift; sourceTree = "<group>"; };
 		81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
+		81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCClassProperty.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +107,13 @@
 		8164881C1C31FC9700483015 /* Properties */ = {
 			isa = PBXGroup;
 			children = (
-				817B72351B697A7C0071DEF5 /* ObjCProperty.swift */,
+				817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */,
+				816488281C32160800483015 /* ObjectiveCArrayProperty.swift */,
+				8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */,
+				8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */,
+				8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */,
+				816488301C321C6400483015 /* ObjectiveCBooleanProperty.swift */,
+				81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */,
 			);
 			name = Properties;
 			sourceTree = "<group>";
@@ -215,11 +233,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				817B72361B697A7C0071DEF5 /* ObjCProperty.swift in Sources */,
+				817B72361B697A7C0071DEF5 /* ObjectiveCProperty.swift in Sources */,
 				814AB8681B61584700CF4BC4 /* ObjectiveCFileGenerator.swift in Sources */,
+				816488291C32160800483015 /* ObjectiveCArrayProperty.swift in Sources */,
+				8164882D1C321AFC00483015 /* ObjectiveCStringProperty.swift in Sources */,
 				816488261C320BF200483015 /* HelpCommand.swift in Sources */,
 				8125FF911B61AF68007E4B65 /* FileGenerator.swift in Sources */,
+				8164882F1C321B4000483015 /* ObjectiveCDictionaryProperty.swift in Sources */,
 				81AC0B801B8D1C6F00ED599E /* UrlExtensions.swift in Sources */,
+				81CB51CF1C3C91B900EB1834 /* ObjectiveCClassProperty.swift in Sources */,
+				8164882B1C321A8A00483015 /* ObjectiveCIntegerProperty.swift in Sources */,
 				817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */,
 				816488241C320BF200483015 /* ARGV.swift in Sources */,
 				816488251C320BF200483015 /* Command.swift in Sources */,
@@ -228,6 +251,7 @@
 				814AB8661B61580A00CF4BC4 /* Schema.swift in Sources */,
 				814AB85F1B60750A00CF4BC4 /* main.swift in Sources */,
 				816488271C320BF200483015 /* Manager.swift in Sources */,
+				816488311C321C6400483015 /* ObjectiveCBooleanProperty.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

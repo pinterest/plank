@@ -74,7 +74,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
     func renderImports() -> String {
         let referencedImportStatements: [String] = self.objectDescriptor.referencedClasses.flatMap({ (propDescriptor: ObjectSchemaPointerProperty) -> String? in
-            let prop = ObjectiveCProperty(descriptor: propDescriptor, className: self.className)
+            let prop = PropertyFactory.propertyForDescriptor(propDescriptor, className: self.className)
             if prop.objectiveCStringForJSONType() == self.className {
                 return nil
             }
@@ -129,7 +129,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     func renderInitWithDictionary() -> String {
         let indentation = "    "
         let propertyLines: [String] = self.classProperties().map { (propDescriptor: ObjectSchemaProperty) -> String in
-            let property = ObjectiveCProperty(descriptor: propDescriptor, className: self.className)
+            let property = PropertyFactory.propertyForDescriptor(propDescriptor, className: self.className)
 
             if property.propertyRequiresAssignmentLogic() {
                 let propFromDictionary = "valueOrNil(modelDictionary, @\"\(propDescriptor.name)\")"
@@ -145,8 +145,10 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             return property.propertyAssignmentStatementFromDictionary(self.className).map({ indentation + $0 }).joinWithSeparator("\n")
         }
 
-        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({
-            ObjectiveCProperty(descriptor: $0, className: self.className).propertyRequiresAssignmentLogic()}).reduce(false) {
+        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties
+            .map { PropertyFactory.propertyForDescriptor($0, className: self.className) }
+            .map { $0.propertyRequiresAssignmentLogic() }
+            .reduce(false) {
             (sum, nextVal) in
             return sum || nextVal
         }
@@ -268,7 +270,8 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     func renderInitWithCoder() -> String {
         let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
             let formattedPropName = property.name.snakeCaseToPropertyName()
-            let decodeStmt = ObjectiveCProperty(descriptor: property).renderDecodeWithCoderStatement()
+            let prop = PropertyFactory.propertyForDescriptor(property, className: self.className)
+            let decodeStmt = prop.renderDecodeWithCoderStatement()
             return "_\(formattedPropName) = \(decodeStmt);"
         }
         let indentation = "    "
@@ -292,7 +295,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
     func renderEncodeWithCoder() -> String {
         let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
-            return ObjectiveCProperty(descriptor: property).renderEncodeWithCoderStatement() + ";"
+            return PropertyFactory.propertyForDescriptor(property, className: self.className).renderEncodeWithCoderStatement() + ";"
         }
         let indentation = "    "
         if self.isBaseClass() {
@@ -319,7 +322,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
         func renderMergeForProperty(propertyDescriptor: ObjectSchemaProperty) -> String {
             var lines: [String] = []
-            let property = ObjectiveCProperty(descriptor: propertyDescriptor, className: self.className)
+            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className)
             let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
 
             if property.propertyRequiresAssignmentLogic() {
@@ -342,12 +345,13 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         allProperties.sortInPlace({$0.name < $1.name})
         let propertyLines: [String] = allProperties.map({ renderMergeForProperty($0)})
 
-        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties.map({
-            ObjectiveCProperty(descriptor: $0, className: self.className).propertyRequiresAssignmentLogic()}).reduce(false) {
+        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties
+            .map { PropertyFactory.propertyForDescriptor($0, className: self.className) }
+            .map { $0.propertyRequiresAssignmentLogic() }
+            .reduce(false) {
             (sum, nextVal) in
             return sum || nextVal
         }
-
 
         var tmpVariableLine = ""
         if anyPropertiesRequireAssignmentLogic {
@@ -374,13 +378,13 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
 
     func renderStringEnumUtilityMethods() -> String {
-        let enumProperties = self.objectDescriptor.properties.filter({ ObjectiveCProperty(descriptor: $0, className: self.className).isEnumPropertyType() && $0.jsonType == JSONType.String })
+        let enumProperties = self.objectDescriptor.properties.filter({ PropertyFactory.propertyForDescriptor($0, className: self.className).isEnumPropertyType() && $0.jsonType == JSONType.String })
 
         let indentation = "    "
 
         let enumMethods: [String] = enumProperties.map { (prop: ObjectSchemaProperty) -> String in
             assert(prop.defaultValue != nil, "We need a default value for code generation of this string enum.")
-            let objcProp = ObjectiveCProperty(descriptor: prop, className: self.className)
+            let objcProp = PropertyFactory.propertyForDescriptor(prop, className: self.className)
             let defaultEnumVal = prop.enumValues.filter { ($0["default"] as! String) == prop.defaultValue as! String }[0]
             let defaultEnumName = objcProp.enumPropertyTypeName() + (defaultEnumVal["description"] as! String).snakeCaseToCamelCase()
             // String to Enum
