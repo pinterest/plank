@@ -60,6 +60,7 @@ protocol ObjectiveCProperty: class {
     func propertyAssignmentStatementFromDictionary(className: String) -> [String]
     func objectiveCStringForJSONType() -> String
     func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String]
+    func polymorphicTypeIdentifier() -> String
 }
 
 class PropertyFactory {
@@ -80,6 +81,8 @@ class PropertyFactory {
             return AnyProperty(ObjectiveCBooleanProperty(descriptor: d, className: className))
         case let d as ObjectSchemaPointerProperty:
             return AnyProperty(ObjectiveCClassProperty(descriptor: d, className: className))
+        case let d as ObjectSchemaPolymorphicProperty:
+            return AnyProperty(ObjectiveCPolymorphicProperty(descriptor: d, className: className))
         default:
             assert(false, "Unsupported Property Type")
             return AnyProperty(ObjectiveCDictionaryProperty(descriptor: descriptor as! ObjectSchemaObjectProperty, className: className))
@@ -108,6 +111,7 @@ class AnyProperty: ObjectiveCProperty {
     private var _propertyAssignmentStatementFromDictionary: String -> [String]
     private var _objectiveCStringForJSONType: Void -> String
     private var _propertyMergeStatementFromDictionary: (String, String) -> [String]
+    private var _polymorphicTypeIdentifier: Void -> String
 
 
     required init(descriptor: ObjectSchemaProperty, className: String) {
@@ -128,6 +132,7 @@ class AnyProperty: ObjectiveCProperty {
         _propertyAssignmentStatementFromDictionary = { base.propertyAssignmentStatementFromDictionary($0) }
         _renderDeclaration = { base.renderDeclaration($0) }
         _propertyStatementFromDictionary = { base.propertyStatementFromDictionary($0, className: $1) }
+        _polymorphicTypeIdentifier = { base.polymorphicTypeIdentifier() }
 
         self.propertyDescriptor = descriptor
         self.className = className
@@ -151,6 +156,7 @@ class AnyProperty: ObjectiveCProperty {
         _propertyAssignmentStatementFromDictionary = { base.propertyAssignmentStatementFromDictionary($0) }
         _renderDeclaration = { base.renderDeclaration($0) }
         _propertyStatementFromDictionary = { base.propertyStatementFromDictionary($0, className: $1) }
+        _polymorphicTypeIdentifier = { base.polymorphicTypeIdentifier() }
 
         self.propertyDescriptor = base.propertyDescriptor
         self.className = base.className
@@ -162,6 +168,10 @@ class AnyProperty: ObjectiveCProperty {
 
     func renderImplementationDeclaration() -> String {
         return _renderImplementationDeclaration()
+    }
+
+    func polymorphicTypeIdentifier() -> String {
+        return _polymorphicTypeIdentifier()
     }
 
     func isScalarType() -> Bool {
@@ -229,6 +239,10 @@ extension ObjectiveCProperty {
 
     func renderImplementationDeclaration() -> String {
         return self.renderDeclaration(true)
+    }
+
+    func polymorphicTypeIdentifier() -> String {
+        return self.propertyDescriptor.name
     }
 
     func isScalarType() -> Bool {

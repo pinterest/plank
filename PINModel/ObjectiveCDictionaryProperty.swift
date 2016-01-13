@@ -16,6 +16,7 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
     required init(descriptor: ObjectSchemaObjectProperty, className: String) {
         self.propertyDescriptor = descriptor
         self.className = className
+        // TODO: Cache ObjectiveCProperty representation of additionalProperties here rather than every method.
     }
 
     func renderEncodeWithCoderStatement() -> String {
@@ -26,12 +27,20 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
 
     func renderDecodeWithCoderStatement() -> String {
         // - (id)decodeObjectOfClasses:(NSSet *)classes forKey:(NSString *)key NS_AVAILABLE(10_8, 6_0);
-        NSStringFromClass(NSString)
         var deserializationClasses = Set([NSStringFromClass(NSDictionary), NSStringFromClass(NSString)])
-        if let valueTypes = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className)
-            deserializationClasses.insert(prop.objectiveCStringForJSONType())
+
+        switch self.propertyDescriptor.additionalProperties {
+        case let d as ObjectSchemaPolymorphicProperty:
+            let prop = ObjectiveCPolymorphicProperty(descriptor: d, className: self.className)
+            deserializationClasses.unionInPlace(prop.classList())
+        default:
+            if let valueTypes = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
+                let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className)
+                deserializationClasses.insert(prop.objectiveCStringForJSONType())
+            }
         }
+        // TODO: Handle polymorphic types as the value type (additional props).
+        // Figure out the best way to make this sensible. the classes might just return a list of classes and the protocol extension can take over this implementation.
         let classList = deserializationClasses.map { "[\($0) class]" }.joinWithSeparator(", ")
         return "[aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[\(classList)]] forKey:@\"\(self.propertyDescriptor.name)\"]"
     }
@@ -40,7 +49,7 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
         var requiresAssignmentLogic = false
         if let additionalProperties = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
             let prop = PropertyFactory.propertyForDescriptor(additionalProperties, className: self.className)
-            assert(prop.isScalarType() == false) // Dictionaries cannot contain primitive types
+            assert(prop.isScalarType() == false, "Dictionaries cannot contain primitive types")
             requiresAssignmentLogic = prop.propertyRequiresAssignmentLogic()
         }
         return requiresAssignmentLogic
@@ -49,39 +58,6 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
     func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String {
         // This might be unnecessary if the base class does the same thing.
         return propertyVariableString
-    }
-
-    func propertyAssignmentStatementFromDictionary(className: String) -> [String] {
-
-        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
-        let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
-
-        if self.propertyRequiresAssignmentLogic() == false {
-            // Code optimization: Early-exit if we are simply doing a basic assignment
-            let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
-            return ["_\(formattedPropName) = \(shortPropFromDictionary);"]
-        }
-
-        if let additionalProperties = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(additionalProperties, className: self.className)
-            assert(prop.isScalarType() == false) // Dictionaries cannot contain primitive types
-            if additionalProperties.jsonType == JSONType.Pointer {
-                let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
-                return [
-                    "NSDictionary *items = value;",
-                    "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
-                    "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, BOOL *stop) {",
-                    "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
-                    "        result[key] = \(deserializedObject);",
-                    "    }",
-                    "}];",
-                    "_\(formattedPropName) = result;"
-                ]
-            }
-        }
-
-        let propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
-        return [propertyAssignmentStatement]
     }
 
     func objectiveCStringForJSONType() -> String {
@@ -93,35 +69,63 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
         return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, __kindof \(NSStringFromClass(NSObject)) *>"
     }
 
-    func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
-        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
 
-        if let additionalProperties = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(additionalProperties, className: self.className)
-
-            assert(prop.isScalarType() == false) // Dictionaries cannot contain primitive types
-            if additionalProperties.jsonType == JSONType.Pointer {
-                let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
-                return [
-                    "NSDictionary *items = value;",
-                    "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
-                    "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, __unused BOOL *stop) {",
-                    "    result[key] = \(deserializedObject);",
-                    "}];",
-                    "\(originVariableString).\(formattedPropName) = result;"
-                ]
-            }
-        }
-
+    func templatedPropertyAssignmentStatementFromDictionary(assigneeName: String, className: String) -> [String] {
         let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
         if self.propertyRequiresAssignmentLogic() == false {
             // Code optimization: Early-exit if we are simply doing a basic assignment
             let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
-            return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]
+            return ["\(assigneeName) = \(shortPropFromDictionary);"]
         }
 
-        let propertyAssignmentStatement = "\(originVariableString).\(formattedPropName) = \(propFromDictionary);"
+
+        switch self.propertyDescriptor.additionalProperties {
+
+        case let additionalProperties as ObjectSchemaPolymorphicProperty:
+            let prop = ObjectiveCPolymorphicProperty(descriptor: additionalProperties, className: self.className)
+            if prop.propertyRequiresAssignmentLogic() {
+                return [
+                    "NSDictionary *items = value;",
+                    "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
+                    "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, __unused BOOL *stop) {",
+                    "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {"] +
+                    prop.templatedPropertyAssignmentStatementFromDictionary("result[key]",
+                        className: className, dictionaryElementName: "obj").map { "        " + $0 } +
+                    ["    }",
+                    "}];",
+                    "\(assigneeName) = result;"]
+            }
+        default:
+            if let additionalProperties = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
+                let prop = PropertyFactory.propertyForDescriptor(additionalProperties, className: self.className)
+                let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
+                if prop.propertyRequiresAssignmentLogic() {
+                    return [
+                        "NSDictionary *items = value;",
+                        "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
+                        "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, __unused BOOL *stop) {",
+                        "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
+                        "        result[key] = \(deserializedObject);",
+                        "    }",
+                        "}];",
+                        "\(assigneeName) = result;"
+                    ]
+                }
+            }
+        }
+
+        let propertyAssignmentStatement = "\(assigneeName) = \(propFromDictionary);"
         return [propertyAssignmentStatement]
+    }
+
+    func propertyAssignmentStatementFromDictionary(className: String) -> [String] {
+        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
+        return self.templatedPropertyAssignmentStatementFromDictionary("_\(formattedPropName)", className: className)
+    }
+
+    func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
+        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
+        return self.templatedPropertyAssignmentStatementFromDictionary("\(originVariableString).\(formattedPropName)", className: className)
     }
 
 }

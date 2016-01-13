@@ -25,12 +25,19 @@ final class ObjectiveCArrayProperty: ObjectiveCProperty {
     }
 
     func renderDecodeWithCoderStatement() -> String {
-        // - (id)decodeObjectOfClasses:(NSSet *)classes forKey:(NSString *)key NS_AVAILABLE(10_8, 6_0);
         var deserializationClasses = Set([NSStringFromClass(NSArray)])
-        if let valueTypes = self.propertyDescriptor.items as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className)
-            deserializationClasses.insert(prop.objectiveCStringForJSONType())
+
+        switch self.propertyDescriptor.items {
+        case let d as ObjectSchemaPolymorphicProperty:
+            let prop = ObjectiveCPolymorphicProperty(descriptor: d, className: self.className)
+            deserializationClasses.unionInPlace(prop.classList())
+        default:
+            if let valueTypes = self.propertyDescriptor.items as ObjectSchemaProperty? {
+                let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className)
+                deserializationClasses.insert(prop.objectiveCStringForJSONType())
+            }
         }
+
         let classList = deserializationClasses.map { "[\($0) class]" }.joinWithSeparator(", ")
         return "[aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[\(classList)]] forKey:@\"\(self.propertyDescriptor.name)\"]"
     }
@@ -50,41 +57,6 @@ final class ObjectiveCArrayProperty: ObjectiveCProperty {
         return propertyVariableString
     }
 
-    func propertyAssignmentStatementFromDictionary(className: String) -> [String] {
-
-        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
-        let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
-
-        if self.propertyRequiresAssignmentLogic() == false {
-            // Code optimization: Early-exit if we are simply doing a basic assignment
-            let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
-            return ["_\(formattedPropName) = \(shortPropFromDictionary);"]
-        }
-
-        let propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
-
-        let subclass = self.propertyDescriptor
-        if let arrayItems = subclass.items as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(arrayItems, className: self.className)
-            assert(prop.isScalarType() == false) // Arrays cannot contain primitive types
-            if arrayItems.jsonType == JSONType.Pointer ||
-                (arrayItems.jsonType == JSONType.String && (arrayItems as! ObjectSchemaStringProperty).format == JSONStringFormatType.Uri) {
-                    let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
-                    return [
-                        "NSArray *items = value;",
-                        "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
-                        "for (id obj in items) {",
-                        "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
-                        "        [result addObject:\(deserializedObject)];",
-                        "    }",
-                        "}",
-                        "_\(formattedPropName) = result;"
-                    ]
-
-            }
-        }
-        return [propertyAssignmentStatement]
-    }
 
     func objectiveCStringForJSONType() -> String {
         let subclass = self.propertyDescriptor
@@ -95,36 +67,62 @@ final class ObjectiveCArrayProperty: ObjectiveCProperty {
         return NSStringFromClass(NSArray)
     }
 
-    func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
-        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
+
+    func templatedPropertyAssignmentStatementFromDictionary(assigneeName: String, className: String) -> [String] {
         let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
 
         if self.propertyRequiresAssignmentLogic() == false {
             // Code optimization: Early-exit if we are simply doing a basic assignment
             let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
-            return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]
+            return ["\(assigneeName) = \(shortPropFromDictionary);"]
         }
 
-        let propertyAssignmentStatement = "\(originVariableString).\(formattedPropName) = \(propFromDictionary);"
-
-        let subclass = self.propertyDescriptor
-        if let arrayItems = subclass.items as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(arrayItems, className: self.className)
-            assert(prop.isScalarType() == false) // Arrays cannot contain primitive types
-            if arrayItems.jsonType == JSONType.Pointer ||
-                (arrayItems.jsonType == JSONType.String && (arrayItems as! ObjectSchemaStringProperty).format == JSONStringFormatType.Uri) {
+        switch self.propertyDescriptor.items {
+        case let arrayItems as ObjectSchemaPolymorphicProperty:
+            let prop = ObjectiveCPolymorphicProperty(descriptor: arrayItems, className: self.className)
+            return [
+                 "NSArray *items = value;",
+                 "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
+                 "for (id obj in items) {",
+                 "    if ([obj isEqual:[NSNull null]] == NO) {",
+                 "        id parsedObj;"] +
+                prop.templatedPropertyAssignmentStatementFromDictionary("parsedObj", className: className, dictionaryElementName: "obj").map {"        " + $0} +
+                ["        if (parsedObj != nil) { [result addObject:parsedObj]; }",
+                 "    }",
+                 "}",
+                 "\(assigneeName) = result;"
+            ]
+        default:
+            if let arrayItems = self.propertyDescriptor.items as ObjectSchemaProperty? {
+                let prop = PropertyFactory.propertyForDescriptor(arrayItems, className: self.className)
+                assert(prop.isScalarType() == false) // Arrays cannot contain primitive types
+                if prop.propertyRequiresAssignmentLogic() {
                     let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
                     return [
                         "NSArray *items = value;",
                         "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
                         "for (id obj in items) {",
-                        "    [result addObject:\(deserializedObject)];",
+                        "    if ([obj isEqual:[NSNull null]] == NO) {",
+                        "        [result addObject:\(deserializedObject)];",
+                        "    }",
                         "}",
-                        "\(originVariableString).\(formattedPropName) = result;"
+                        "\(assigneeName) = result;"
                     ]
+                }
             }
         }
+
+        let propertyAssignmentStatement = "\(assigneeName) = \(propFromDictionary);"
         return [propertyAssignmentStatement]
     }
 
+    func propertyAssignmentStatementFromDictionary(className: String) -> [String] {
+        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
+        return self.templatedPropertyAssignmentStatementFromDictionary( "_\(formattedPropName)", className: className)
+    }
+
+    func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
+        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
+        return self.templatedPropertyAssignmentStatementFromDictionary("\(originVariableString).\(formattedPropName)", className: className)
+    }
 }

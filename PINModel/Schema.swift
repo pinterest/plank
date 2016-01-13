@@ -19,6 +19,7 @@ public enum JSONType: String {
     case Boolean = "boolean"
     case Null = "null"
     case Pointer = "$ref" // Used for combining schemas via references.
+    case Polymorphic = "oneOf" // JSONType composed of other JSONTypes
 }
 
 public enum JSONStringFormatType: String {
@@ -30,13 +31,12 @@ public enum JSONStringFormatType: String {
     case Uri = "uri"  // A universal resource identifier (URI), according to RFC3986.
 }
 
-
 class ObjectSchemaProperty {
     let name: String
     let jsonType: JSONType
     let propInfo: JSONObject
     let sourceId: NSURL
-    let enumValues: [JSONObject]
+    let enumValues: [JSONObject] // TODO: Create a type-safe struct to represent EnumValue
     let defaultValue: AnyObject?
 
     init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
@@ -45,6 +45,7 @@ class ObjectSchemaProperty {
         self.propInfo = propertyInfo
         self.sourceId = sourceId
         if let enumValues = propertyInfo["enum"] as? [JSONObject] {
+
             self.enumValues = enumValues
         } else {
             self.enumValues = []
@@ -69,25 +70,30 @@ class ObjectSchemaProperty {
             }
         }
 
-        // Check for reference to relative or remote path.
-        if let _ = json["$ref"] as? String {
-            if scopeUrl != NSURL() {
-                return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
-                    propertyInfo: json, sourceId: scopeUrl)
-            } else if let rawId = json["id"] as? String {
-                if rawId.hasPrefix("http") {
-                    return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
-                        propertyInfo: json, sourceId: NSURL(string: rawId)!)
-                } else {
-                    return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
-                        propertyInfo: json, sourceId: NSURL(fileURLWithPath: rawId).URLByStandardizingPath!)
-                }
+        var sourceUrl = scopeUrl
+        if let rawId = json["id"] as? String {
+            if rawId.hasPrefix("http") {
+                sourceUrl = NSURL(string: rawId)!
             } else {
-                assert(false) // Shouldn't be reached
-                return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
-                    propertyInfo: json, sourceId: NSURL())
+                sourceUrl = NSURL(fileURLWithPath: rawId).URLByStandardizingPath!
             }
         }
+
+
+        // Check for reference to relative or remote path.
+        if let _ = json["$ref"] as? String {
+            if sourceUrl != NSURL() {
+                return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
+                    propertyInfo: json, sourceId: sourceUrl)
+            } else {
+                assert(false) // Shouldn't be reached
+            }
+        }
+
+        if let _ = json["oneOf"] as? [JSONObject] {
+            return ObjectSchemaPolymorphicProperty(name: name, objectType: JSONType.Polymorphic, propertyInfo: json, sourceId: scopeUrl)
+        }
+
 
         assert(false) // Shouldn't be reached
         let propType: JSONType = JSONType(rawValue: (json["type"] as? String)!)!
@@ -108,11 +114,28 @@ class ObjectSchemaProperty {
             return ObjectSchemaPointerProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
         case JSONType.Object:
             return ObjectSchemaObjectProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
+        case JSONType.Polymorphic:
+            return ObjectSchemaPolymorphicProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
         default:
             assert(false)
             return ObjectSchemaObjectProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
         }
     }
+}
+
+class ObjectSchemaPolymorphicProperty: ObjectSchemaProperty {
+    let oneOf: [ObjectSchemaProperty]
+
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
+        if let oneOfValues = propertyInfo["oneOf"] as? [JSONObject] {
+            self.oneOf = oneOfValues.map { ObjectSchemaProperty.propertyForJSONObject($0, scopeUrl: sourceId) }
+        } else {
+            assert(false, "Insufficient amount of items specified for oneOf")
+            self.oneOf = []
+        }
+        super.init(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
+    }
+
 }
 
 class ObjectSchemaObjectProperty: ObjectSchemaProperty {
@@ -121,50 +144,36 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
     let additionalProperties: ObjectSchemaProperty?
     var referencedClasses: [ObjectSchemaPointerProperty] {
         let seenReferences = NSMutableSet()
-        let allReferences: [ObjectSchemaPointerProperty] = properties.flatMap({ (obj: ObjectSchemaProperty) -> ObjectSchemaPointerProperty? in
-            // References to other models defined in this object property list
-            if obj is ObjectSchemaPointerProperty {
-                let pointerObj = obj as! ObjectSchemaPointerProperty
-                if seenReferences.containsObject(pointerObj.ref) {
-                    return nil
-                }
-                seenReferences.addObject(pointerObj.ref)
-                return obj as? ObjectSchemaPointerProperty
-            }
 
-            // References to other models defined through Generics on Collection Types (Array, Object)
-            if obj is ObjectSchemaArrayProperty {
-                if let arrayObj = obj as? ObjectSchemaArrayProperty {
-                    if let arrayObjItems = arrayObj.items as ObjectSchemaProperty? {
-                        if arrayObjItems.jsonType == JSONType.Pointer {
-                            let pointerObj = arrayObjItems as! ObjectSchemaPointerProperty
-                            if seenReferences.containsObject(pointerObj.ref) {
-                                return nil
-                            }
-                            seenReferences.addObject(pointerObj.ref)
-                            return arrayObjItems as? ObjectSchemaPointerProperty
-                        }
+        var allReferences = Array<ObjectSchemaPointerProperty>()
+        var propertyQueue = Array<ObjectSchemaProperty>()
+        propertyQueue.appendContentsOf(self.properties)
+
+        while propertyQueue.count > 0 {
+            if let obj = propertyQueue.popLast() {
+                switch obj {
+                // References to other models defined in this object property list
+                case let pointerObj as ObjectSchemaPointerProperty:
+                    if !seenReferences.containsObject(pointerObj.ref) {
+                        seenReferences.addObject(pointerObj.ref)
+                        allReferences.append(pointerObj)
                     }
-                }
-            }
-
-            if obj is ObjectSchemaObjectProperty {
-                if let dictObj = obj as? ObjectSchemaObjectProperty {
-                    if let additionalProperties = dictObj.additionalProperties as ObjectSchemaProperty? {
-                        if additionalProperties.jsonType == JSONType.Pointer {
-                            let pointerObj = additionalProperties as! ObjectSchemaPointerProperty
-                            if seenReferences.containsObject(pointerObj.ref) {
-                                return nil
-                            }
-                            seenReferences.addObject(pointerObj.ref)
-                            return additionalProperties as? ObjectSchemaPointerProperty
-                        }
+                // References to other models defined through Generics on Collection Types (Array, Object)
+                case let arrayObj as ObjectSchemaArrayProperty:
+                    if let items = arrayObj.items {
+                        propertyQueue.append(items)
                     }
+                case let dictObj as ObjectSchemaObjectProperty:
+                    if let additionalProps = dictObj.additionalProperties {
+                        propertyQueue.append(additionalProps)
+
+                    }
+                case let polymorphicObj as ObjectSchemaPolymorphicProperty:
+                    propertyQueue.appendContentsOf(polymorphicObj.oneOf)
+                default: break
                 }
             }
-
-            return nil
-        })
+        }
 
         return allReferences
     }
@@ -195,7 +204,12 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
                     return ObjectSchemaPointerProperty(name: key, objectType: JSONType.Pointer, propertyInfo: propInfo, sourceId: id)
                 }
 
+                if let _ = propInfo["oneOf"] as? [JSONObject] {
+                    return ObjectSchemaPolymorphicProperty(name: key, objectType: JSONType.Polymorphic, propertyInfo: propInfo, sourceId: id)
+                }
+
                 // MARK: Shouldn't reach here
+                assert(false, "Unsupported property definition for \(key)")
                 let propType: JSONType = JSONType(rawValue: (propInfo["type"] as? String)!)!
                 return ObjectSchemaProperty.propertyForType(key, objectType: propType, propertyInfo: propInfo, sourceId: id)
             }

@@ -58,12 +58,8 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
     }
 
     func propertyRequiresAssignmentLogic() -> Bool {
-        var requiresAssignmentLogic = false
-        if self.propertyDescriptor.format == JSONStringFormatType.Uri ||
-           self.propertyDescriptor.format == JSONStringFormatType.DateTime {
-            requiresAssignmentLogic = true
-        }
-        return requiresAssignmentLogic
+        return (self.propertyDescriptor.format == JSONStringFormatType.Uri ||
+                self.propertyDescriptor.format == JSONStringFormatType.DateTime)
     }
 
     func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String {

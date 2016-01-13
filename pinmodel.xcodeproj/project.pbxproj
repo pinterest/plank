@@ -25,6 +25,28 @@
 		817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */; };
 		817B72361B697A7C0071DEF5 /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */; };
 		81AC0B801B8D1C6F00ED599E /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */; };
+		81B00B761C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */; };
+		81B00BAB1C45C8280074364D /* ObjectiveCPolymorphicPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */; };
+		81B00BAD1C45CE7B0074364D /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488281C32160800483015 /* ObjectiveCArrayProperty.swift */; };
+		81B00BAE1C45CE7B0074364D /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488301C321C6400483015 /* ObjectiveCBooleanProperty.swift */; };
+		81B00BAF1C45CE7B0074364D /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */; };
+		81B00BB01C45CE7B0074364D /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */; };
+		81B00BB11C45CE7B0074364D /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */; };
+		81B00BB21C45CE7B0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */; };
+		81B00BB31C45CE7B0074364D /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */; };
+		81B00BB41C45CE7B0074364D /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */; };
+		81B00BB51C45CE880074364D /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8651B61580A00CF4BC4 /* Schema.swift */; };
+		81B00BB71C45CE960074364D /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8125FF901B61AF68007E4B65 /* FileGenerator.swift */; };
+		81B00BB81C45CEA20074364D /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */; };
+		81B00BB91C45CEA20074364D /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */; };
+		81B00BBA1C45CEA20074364D /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */; };
+		81B00BBB1C45CEA50074364D /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B9D211B62EFDF00C494BE /* StringExtensions.swift */; };
+		81B00BBC1C45CEA50074364D /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */; };
+		81B00BBD1C45CEAA0074364D /* ARGV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164881F1C320BF200483015 /* ARGV.swift */; };
+		81B00BBE1C45CEAA0074364D /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488201C320BF200483015 /* Command.swift */; };
+		81B00BBF1C45CEAA0074364D /* HelpCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488221C320BF200483015 /* HelpCommand.swift */; };
+		81B00BC01C45CEAA0074364D /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488231C320BF200483015 /* Manager.swift */; };
+		81B00BC11C45CED60074364D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB85E1B60750A00CF4BC4 /* main.swift */; };
 		81CB51CF1C3C91B900EB1834 /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,11 +83,22 @@
 		817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCProperty.swift; sourceTree = "<group>"; };
 		81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
+		81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjectiveCPolymorphicProperty.swift; path = ../ObjectiveCPolymorphicProperty.swift; sourceTree = "<group>"; };
+		81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjectiveCPolymorphicPropertyTests.swift; path = ../PINModel/ObjectiveCPolymorphicPropertyTests.swift; sourceTree = "<group>"; };
+		81B00BA31C45C7F60074364D /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81B00BA71C45C7F70074364D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCClassProperty.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		814AB8581B60750A00CF4BC4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81B00BA01C45C7F60074364D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -79,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				814AB85D1B60750A00CF4BC4 /* PINModel */,
+				81B00BA41C45C7F60074364D /* Tests */,
 				814AB85C1B60750A00CF4BC4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				814AB85B1B60750A00CF4BC4 /* pinmodel */,
+				81B00BA31C45C7F60074364D /* Unit Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -107,13 +142,14 @@
 		8164881C1C31FC9700483015 /* Properties */ = {
 			isa = PBXGroup;
 			children = (
-				817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */,
 				816488281C32160800483015 /* ObjectiveCArrayProperty.swift */,
-				8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */,
-				8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */,
-				8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */,
 				816488301C321C6400483015 /* ObjectiveCBooleanProperty.swift */,
 				81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */,
+				8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */,
+				8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */,
+				81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */,
+				817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */,
+				8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */,
 			);
 			name = Properties;
 			sourceTree = "<group>";
@@ -158,6 +194,16 @@
 			name = CommandKit;
 			sourceTree = "<group>";
 		};
+		81B00BA41C45C7F60074364D /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */,
+				81B00BA71C45C7F70074364D /* Info.plist */,
+			);
+			name = Tests;
+			path = "Unit Tests";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -179,6 +225,23 @@
 			productReference = 814AB85B1B60750A00CF4BC4 /* pinmodel */;
 			productType = "com.apple.product-type.tool";
 		};
+		81B00BA21C45C7F60074364D /* Unit Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81B00BA81C45C7F70074364D /* Build configuration list for PBXNativeTarget "Unit Tests" */;
+			buildPhases = (
+				81B00B9F1C45C7F60074364D /* Sources */,
+				81B00BA01C45C7F60074364D /* Frameworks */,
+				81B00BA11C45C7F60074364D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Unit Tests";
+			productName = "Unit Tests";
+			productReference = 81B00BA31C45C7F60074364D /* Unit Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -186,12 +249,15 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Rahul Malik";
 				TargetAttributes = {
 					814AB85A1B60750A00CF4BC4 = {
 						CreatedOnToolsVersion = 7.0;
+					};
+					81B00BA21C45C7F60074364D = {
+						CreatedOnToolsVersion = 7.2;
 					};
 				};
 			};
@@ -208,9 +274,20 @@
 			projectRoot = "";
 			targets = (
 				814AB85A1B60750A00CF4BC4 /* PINModel */,
+				81B00BA21C45C7F60074364D /* Unit Tests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		81B00BA11C45C7F60074364D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		8164881E1C32099700483015 /* ShellScript */ = {
@@ -248,10 +325,39 @@
 				816488251C320BF200483015 /* Command.swift in Sources */,
 				816B9D221B62EFDF00C494BE /* StringExtensions.swift in Sources */,
 				817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */,
+				81B00B761C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */,
 				814AB8661B61580A00CF4BC4 /* Schema.swift in Sources */,
 				814AB85F1B60750A00CF4BC4 /* main.swift in Sources */,
 				816488271C320BF200483015 /* Manager.swift in Sources */,
 				816488311C321C6400483015 /* ObjectiveCBooleanProperty.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81B00B9F1C45C7F60074364D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81B00BAD1C45CE7B0074364D /* ObjectiveCArrayProperty.swift in Sources */,
+				81B00BBC1C45CEA50074364D /* UrlExtensions.swift in Sources */,
+				81B00BB21C45CE7B0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */,
+				81B00BB41C45CE7B0074364D /* ObjectiveCStringProperty.swift in Sources */,
+				81B00BAF1C45CE7B0074364D /* ObjectiveCClassProperty.swift in Sources */,
+				81B00BBE1C45CEAA0074364D /* Command.swift in Sources */,
+				81B00BB51C45CE880074364D /* Schema.swift in Sources */,
+				81B00BB71C45CE960074364D /* FileGenerator.swift in Sources */,
+				81B00BC11C45CED60074364D /* main.swift in Sources */,
+				81B00BAB1C45C8280074364D /* ObjectiveCPolymorphicPropertyTests.swift in Sources */,
+				81B00BB11C45CE7B0074364D /* ObjectiveCIntegerProperty.swift in Sources */,
+				81B00BBA1C45CEA20074364D /* ObjCInterfaceFileGenerator.swift in Sources */,
+				81B00BBF1C45CEAA0074364D /* HelpCommand.swift in Sources */,
+				81B00BB91C45CEA20074364D /* ObjCImplementationFileGenerator.swift in Sources */,
+				81B00BAE1C45CE7B0074364D /* ObjectiveCBooleanProperty.swift in Sources */,
+				81B00BB81C45CEA20074364D /* ObjectiveCFileGenerator.swift in Sources */,
+				81B00BBD1C45CEAA0074364D /* ARGV.swift in Sources */,
+				81B00BBB1C45CEA50074364D /* StringExtensions.swift in Sources */,
+				81B00BB31C45CE7B0074364D /* ObjectiveCProperty.swift in Sources */,
+				81B00BB01C45CE7B0074364D /* ObjectiveCDictionaryProperty.swift in Sources */,
+				81B00BC01C45CEAA0074364D /* Manager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +462,30 @@
 			};
 			name = Release;
 		};
+		81B00BA91C45C7F70074364D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Unit Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pinterest.pinmodel.Unit-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		81B00BAA1C45C7F70074364D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Unit Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pinterest.pinmodel.Unit-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -376,6 +506,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		81B00BA81C45C7F70074364D /* Build configuration list for PBXNativeTarget "Unit Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81B00BA91C45C7F70074364D /* Debug */,
+				81B00BAA1C45C7F70074364D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

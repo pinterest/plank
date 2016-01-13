@@ -38,8 +38,6 @@ func generateFile(schema: ObjectSchemaObjectProperty, outputDirectory: NSURL) {
     }
 }
 
-
-
 func generateFilesWithInitialUrl(url: NSURL, outputDirectory: NSURL) {
 
     // Generate Base Model
