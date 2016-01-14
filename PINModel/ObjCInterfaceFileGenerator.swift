@@ -106,6 +106,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             let lines = [
                 "@interface \(self.className)<__covariant BuilderObjectType /* \(self.builderClassName) * */>: NSObject<\(implementedProtocols)>",
                 propertyLines.joinWithSeparator("\n"),
+                "+ (NSString *)className;",
                 "+ (NSString *)polymorphicTypeIdentifier;",
                 "+ (nullable instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;",
                 "- (nullable instancetype)initWithDictionary:(NSDictionary *)modelDictionary NS_DESIGNATED_INITIALIZER;",
@@ -149,6 +150,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             "@protocol \(self.protocolName()) <NSObject>",
             "@optional",
             "- (void)\(self.className)DidInitialize;",
+            "- (void)\(self.className)DidInitializeWithDictionary:(NSDictionary *)dictionary;",
             "- (void)\(self.className)WillDealloc;",
             "@end"
         ]

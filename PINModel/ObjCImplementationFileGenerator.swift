@@ -97,6 +97,16 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         ].joinWithSeparator("\n")
     }
 
+    func renderClassName() -> String {
+
+        return [
+            "+ (NSString *)className",
+            "{",
+            "    return @\"\(self.className)\";",
+            "}"
+        ].joinWithSeparator("\n")
+    }
+
     func renderPolymorphicTypeIdentifier() -> String {
 
         return [
@@ -168,7 +178,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "}"
         ]
         if self.isBaseClass() == false {
-            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize];\n", atIndex: lines.count - 2)
+            lines.insert(indentation + "[self \(self.parentClassName())DidInitializeWithDictionary:modelDictionary];\n", atIndex: lines.count - 2)
         }
         return lines.joinWithSeparator("\n")
     }
@@ -476,6 +486,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         if self.isBaseClass() {
             let lines = [
                 "@implementation \(self.className)",
+                self.renderClassName(),
                 self.renderPolymorphicTypeIdentifier(),
                 self.renderModelObjectWithDictionary(),
                 self.renderDesignatedInit(),
@@ -499,6 +510,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
         let lines = [
             "@implementation \(self.className)",
+            self.renderClassName(),
             self.renderPolymorphicTypeIdentifier(),
             self.renderDealloc(),
             self.renderInitWithDictionary(),
