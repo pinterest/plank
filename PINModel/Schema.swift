@@ -19,7 +19,7 @@ public enum JSONType: String {
     case Boolean = "boolean"
     case Null = "null"
     case Pointer = "$ref" // Used for combining schemas via references.
-    case Polymorphic = "oneOf" // JSONType composed of other JSONTypes
+    case Polymorphic = "oneOf" // JSONType composed of other JSONTypes    
 }
 
 public enum JSONStringFormatType: String {
@@ -38,24 +38,17 @@ class ObjectSchemaProperty {
     let sourceId: NSURL
     let enumValues: [JSONObject] // TODO: Create a type-safe struct to represent EnumValue
     let defaultValue: AnyObject?
+    var isModelProperty: Bool {
+        return false
+    }
 
     init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
         self.name = name
         self.jsonType = objectType
         self.propInfo = propertyInfo
         self.sourceId = sourceId
-        if let enumValues = propertyInfo["enum"] as? [JSONObject] {
-
-            self.enumValues = enumValues
-        } else {
-            self.enumValues = []
-        }
-
-        if let defaultVal = propertyInfo["default"] as AnyObject? {
-            self.defaultValue = defaultVal
-        } else {
-            self.defaultValue = nil;
-        }
+        self.enumValues = (propertyInfo["enum"] as? [JSONObject]) ?? []
+        self.defaultValue = (propertyInfo["default"] as AnyObject?) ?? nil
     }
 
     class func propertyForJSONObject(json: JSONObject, var name: String = "", scopeUrl: NSURL) -> ObjectSchemaProperty {
@@ -64,10 +57,8 @@ class ObjectSchemaProperty {
         }
 
         // Check for "type"
-        if let propTypeString = json["type"] as? String {
-            if let propType = JSONType(rawValue: propTypeString) {
-                return ObjectSchemaProperty.propertyForType(name, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
-            }
+        if let propTypeString = json["type"] as? String, propType = JSONType(rawValue: propTypeString) {
+            return ObjectSchemaProperty.propertyForType(name, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
         }
 
         var sourceUrl = scopeUrl
@@ -125,6 +116,9 @@ class ObjectSchemaProperty {
 
 class ObjectSchemaPolymorphicProperty: ObjectSchemaProperty {
     let oneOf: [ObjectSchemaProperty]
+    override var isModelProperty: Bool {
+        return oneOf.filter({ $0.isModelProperty }).count == oneOf.count;
+    }
 
     override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
         if let oneOfValues = propertyInfo["oneOf"] as? [JSONObject] {
@@ -271,6 +265,9 @@ class ObjectSchemaPointerProperty: ObjectSchemaProperty {
                 return NSURL()
             }
         }
+    }
+    override var isModelProperty: Bool {
+        return true
     }
 
     private let refString: String?

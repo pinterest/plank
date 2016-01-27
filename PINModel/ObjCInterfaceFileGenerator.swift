@@ -116,6 +116,8 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                 "- (instancetype)copyWithBlock:(void (^)(BuilderObjectType builder))block;",
                 "- (instancetype)mergeWithDictionary:(NSDictionary *)modelDictionary;",
                 "- (NSArray<NSString *> *)modelPropertyNames;",
+                "- (NSArray<NSString *> *)modelArrayPropertyNames;",
+                "- (NSArray<NSString *> *)modelDictionaryPropertyNames;",
                 "@end",
             ]
             return lines.joinWithSeparator("\n\n")

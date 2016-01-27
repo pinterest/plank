@@ -39,6 +39,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         return self.parentDescriptor == nil
     }
 
+    //TODO make this "lazy"
     func classProperties() -> [ObjectSchemaProperty] {
         if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
             let baseProperties = Set(baseClass.properties.map({ $0.name }))
@@ -430,10 +431,26 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     }
 
     func renderModelPropertyNames() -> String {
-        let propertyNames = self.classProperties().filter { $0.jsonType == JSONType.Pointer }.map { $0.name }
-
+        return self.renderPropertyNames("modelPropertyNames", includeProperty: { $0.isModelProperty })
+    }
+    
+    func renderModelArrayPropertyNames() -> String {
+        return self.renderPropertyNames("modelArrayPropertyNames",
+            includeProperty: { ($0 as? ObjectSchemaArrayProperty)?.items?.isModelProperty ?? false })
+    }
+    
+    func renderModelDictionaryPropertyNames() -> String {
+        return self.renderPropertyNames("modelDictionaryPropertyNames",
+            includeProperty: { ($0 as? ObjectSchemaObjectProperty)?.additionalProperties?.isModelProperty ?? false })
+    }
+    
+    func renderPropertyNames(methodName: String, includeProperty: (ObjectSchemaProperty) -> Bool) -> String {
+        let propertyNames = self.classProperties()
+            .filter(includeProperty)
+            .map { $0.name }
+        
         let indentation = "    "
-
+        
         var lines:Array<String>
         if propertyNames.count == 0 {
             lines = [
@@ -446,15 +463,15 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 propertyNames
                     .map { String(count: returnLine.characters.count, repeatedValue: (" " as Character)) + "@\"\($0.snakeCaseToPropertyName())\""}
                     .joinWithSeparator(",\n"),
-                "    ];"
+                String(count: returnLine.characters.count, repeatedValue: (" " as Character)) + "];"
             ]
         }
-        lines.insert("- (NSArray<NSString *> *)modelPropertyNames", atIndex: 0)
+        lines.insert("- (NSArray<NSString *> *)" + methodName, atIndex: 0)
         lines.insert("{", atIndex: 1)
         lines.insert("}", atIndex: lines.count)
         return lines.joinWithSeparator("\n")
     }
-
+    
     func renderCopyWithZone() -> String {
         return [
             "- (id)copyWithZone:(NSZone *)zone",
@@ -504,6 +521,8 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 self.renderCopyWithBlock(),
                 self.renderMergeWithDictionary(),
                 self.renderModelPropertyNames(),
+                self.renderModelArrayPropertyNames(),
+                self.renderModelDictionaryPropertyNames(),
                 self.pragmaMark("NSCopying implementation"),
                 self.renderCopyWithZone(),
                 "@end"
@@ -526,6 +545,8 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             self.renderCopyWithBlock(),
             self.renderMergeWithDictionary(),
             self.renderModelPropertyNames(),
+            self.renderModelArrayPropertyNames(),
+            self.renderModelDictionaryPropertyNames(),
             "@end"
         ].filter { "" != $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
         return lines.joinWithSeparator("\n\n")
