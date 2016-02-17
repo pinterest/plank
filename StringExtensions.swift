@@ -44,4 +44,10 @@ extension String {
 
         return name
     }
+
+    func snakeCaseToCapitalizedPropertyName() -> String {
+        let formattedPropName = self.snakeCaseToPropertyName()
+        let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercaseString
+        return capitalizedFirstLetter + String(formattedPropName.characters.dropFirst())
+    }
 }

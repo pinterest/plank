@@ -602,7 +602,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         func renderBuilderSetterForProperty(propertyDescriptor: ObjectSchemaProperty) -> String {
             let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className)
             let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
-            let capitalizedPropertyName = propertyDescriptor.name.snakeCaseToCamelCase()
+            let capitalizedPropertyName = propertyDescriptor.name.snakeCaseToCapitalizedPropertyName()
             let type = property.isScalarType() ? property.objectiveCStringForJSONType() : property.objectiveCStringForJSONType() + " *"
 
             let lines = [
