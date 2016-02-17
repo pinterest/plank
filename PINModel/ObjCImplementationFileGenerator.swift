@@ -12,6 +12,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     let objectDescriptor: ObjectSchemaObjectProperty
     let className: String
     let builderClassName: String
+    let dirtyPropertyOptionName : String
     let generationParameters: GenerationParameters
     let parentDescriptor: ObjectSchemaObjectProperty?
 
@@ -27,6 +28,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             self.className = self.objectDescriptor.name.snakeCaseToCamelCase()
         }
         self.builderClassName = "\(self.className)Builder"
+        self.dirtyPropertyOptionName = "\(self.className)DirtyProperties"
         self.generationParameters = generatorParameters
         self.parentDescriptor = parentDescriptor
     }
@@ -89,6 +91,44 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         return importStatements.sort().joinWithSeparator("\n")
     }
 
+    func renderPrivateInterface() -> String {
+        let modelLines = [
+            "@interface \(self.className) ()",
+            "@property (nonatomic, assign) \(self.dirtyPropertyOptionName) dirtyProperties;",
+            "@end"
+        ];
+
+        let builderLines = [
+            "@interface \(self.builderClassName) ()",
+            "@property (nonatomic, assign) \(self.dirtyPropertyOptionName) dirtyProperties;",
+            "@end"
+        ]
+
+        return [modelLines.joinWithSeparator("\n"), builderLines.joinWithSeparator("\n")].joinWithSeparator("\n\n")
+    }
+
+    func renderDirtyPropertyOptions() -> String {
+        var allProperties : [ObjectSchemaProperty] = []
+        if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
+            allProperties.appendContentsOf(baseClass.properties)
+        }
+        allProperties.appendContentsOf(self.classProperties())
+
+        let optionsLines: [String] = allProperties.enumerate().map { (index, property) in
+            assert(index < 64, "Only 64 properties are supported")
+
+            let prop = PropertyFactory.propertyForDescriptor(property, className: self.className)
+            let one = "1LL"
+            return "    \(prop.dirtyPropertyOption()) = \(one) << \(index),"
+        }
+        let lines = [
+            "typedef NS_OPTIONS(int64_t, \(self.className)DirtyProperties) {",
+            optionsLines.joinWithSeparator("\n"),
+            "};"
+        ]
+        return lines.joinWithSeparator("\n")
+    }
+
     func renderModelObjectWithDictionary() -> String {
         return [
             "+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary",
@@ -129,39 +169,25 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
     func renderInitWithDictionary() -> String {
         let indentation = "    "
-        let propertyLines: [String] = self.classProperties().map { (propDescriptor: ObjectSchemaProperty) -> String in
-            let property = PropertyFactory.propertyForDescriptor(propDescriptor, className: self.className)
+        func renderInitForProperty(propertyDescriptor: ObjectSchemaProperty) -> String {
+            var lines: [String] = []
+            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className)
 
             if property.propertyRequiresAssignmentLogic() {
-                let propFromDictionary = "valueOrNil(modelDictionary, @\"\(propDescriptor.name)\")"
-                let propertyLines = property.propertyAssignmentStatementFromDictionary(self.className).map({ indentation + indentation + $0 }).joinWithSeparator("\n")
-                let lines = [
-                    indentation + "value = \(propFromDictionary);",
-                    indentation + "if (value != nil) {" ,
-                    propertyLines,
-                    indentation + "}"
-                ]
-                return lines.joinWithSeparator("\n")
+                lines = ["id value = valueOrNil(modelDictionary, @\"\(propertyDescriptor.name)\");",
+                    "if (value != nil) {"]
+                    + property.propertyAssignmentStatementFromDictionary(self.className).map({ indentation + $0 })
+                    + ["}"]
+            } else {
+                lines = property.propertyAssignmentStatementFromDictionary(self.className)
             }
-            return property.propertyAssignmentStatementFromDictionary(self.className).map({ indentation + $0 }).joinWithSeparator("\n")
+
+            lines.append(property.dirtyPropertyAssignmentStatement())
+            let result = ["if ([key isEqualToString:@\"\(propertyDescriptor.name)\"]) {"] + lines.map({indentation + $0}) + [ indentation + "return;", "}"]
+            return result.map({ indentation + indentation + $0 }).joinWithSeparator("\n")
         }
 
-        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties
-            .map { PropertyFactory.propertyForDescriptor($0, className: self.className) }
-            .map { $0.propertyRequiresAssignmentLogic() }
-            .reduce(false) {
-            (sum, nextVal) in
-            return sum || nextVal
-        }
-
-
-        var tmpVariableLine = ""
-        if anyPropertiesRequireAssignmentLogic {
-            // Don't insert the temporary value variable if it will not be used.
-            // Currently it is only used for URLs, Typed Collections and Other model classes.
-            tmpVariableLine = indentation + "id value = nil;\n"
-        }
-
+        let propertyLines: [String] = self.classProperties().map({ renderInitForProperty($0)})
 
         var superInitCall = "if (!(self = [super initWithDictionary:modelDictionary])) { return self; }"
         if self.isBaseClass() {
@@ -174,14 +200,17 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "{",
             "    NSParameterAssert(modelDictionary);",
             indentation + superInitCall,
-            tmpVariableLine,
-            propertyLines.joinWithSeparator("\n\n"),
+            "",
+            "    [modelDictionary enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSString *  _Nonnull key, id  _Nonnull obj, __unused BOOL * _Nonnull stop) {",
+            "",
+                        propertyLines.joinWithSeparator("\n\n"),
+            "    }];",
             "",
             "    return self;",
             "}"
         ]
         if self.isBaseClass() == false {
-            lines.insert(indentation + "[self \(self.parentClassName())DidInitializeWithDictionary:modelDictionary];\n", atIndex: lines.count - 2)
+            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize];\n", atIndex: lines.count - 2)
         }
         return lines.joinWithSeparator("\n")
     }
@@ -222,40 +251,77 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             superInitCall = indentation + "if (!(self = [super init])) { return self; }"
         }
 
-        var lines = [
-            "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder",
-            "{",
-            "    NSParameterAssert(builder);",
-            superInitCall,
-            propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
-            "    return self;",
-            "}"
-        ]
-        if self.isBaseClass() == false {
-            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize];", atIndex: lines.count - 2)
+        var lines : [String] = []
+        if self.isBaseClass() {
+            lines = [
+                "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder",
+                "{",
+                "    NSParameterAssert(builder);",
+                superInitCall,
+                propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
+                "    _dirtyProperties = builder.dirtyProperties;",
+                "    return self;",
+                "}"
+            ]
+        } else {
+            lines = [
+                "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder",
+                "{",
+                "    return [self initWithBuilder:builder callDidMerge:NO];",
+                "}",
+                "",
+                "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder callDidMerge:(BOOL)callDidMerge",
+                "{",
+                "    NSParameterAssert(builder);",
+                superInitCall,
+                propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
+                "    if (callDidMerge) {",
+                "        [self \(self.parentClassName())DidMerge];",
+                "    } else {",
+                "        [self \(self.parentClassName())DidInitialize];",
+                "    }",
+                "    return self;",
+                "}"
+            ]
         }
         return lines.joinWithSeparator("\n")
     }
 
     func renderBuilderInitWithModelObject() -> String {
-        let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
-            let formattedPropName = property.name.snakeCaseToPropertyName()
-            return "_\(formattedPropName) = modelObject.\(formattedPropName);"
-        }
         let indentation = "    "
+
+        func renderInitForProperty(propertyDescriptor: ObjectSchemaProperty) -> String {
+            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className)
+            let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
+            let lines : [String] = [
+                "if (dirtyProperties & \(property.dirtyPropertyOption())) {",
+                "    _\(formattedPropName) = modelObject.\(formattedPropName);",
+                "}"
+            ]
+            return lines.map({ indentation + $0 }).joinWithSeparator("\n")
+        }
+        let propertyLines: [String] = self.classProperties().map({ renderInitForProperty($0)})
+
         var superInitCall = indentation + "if (!(self = [super initWithModel:modelObject])) { return self; }"
         if self.isBaseClass() {
             superInitCall = indentation + "if (!(self = [super init])) { return self; }"
         }
-        let lines = [
+        var lines = [
             "- (instancetype)initWithModel:(\(self.className) *)modelObject",
             "{",
             "    NSParameterAssert(modelObject);",
             superInitCall,
-            propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
+            "",
+            "    \(self.dirtyPropertyOptionName) dirtyProperties = modelObject.dirtyProperties;",
+            "",
+            propertyLines.joinWithSeparator("\n"),
+            "",
             "    return self;",
             "}"
         ]
+        if (self.isBaseClass()) {
+            lines.insertContentsOf([indentation + "_dirtyProperties = modelObject.dirtyProperties;", "\n"], at: lines.count - 2)
+        }
         return lines.joinWithSeparator("\n")
     }
 
@@ -288,7 +354,9 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "    return self;",
             "}"
         ]
-        if self.isBaseClass() == false {
+        if self.isBaseClass() {
+            lines.insert(indentation + "_dirtyProperties = [aDecoder decodeIntegerForKey:@\"dirty_properties\"];\n", atIndex: lines.count - 2)
+        } else {
             lines.insert(indentation + "[self \(self.parentClassName())DidInitialize];\n", atIndex: lines.count - 2)
         }
         return lines.joinWithSeparator("\n")
@@ -304,6 +372,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 "- (void)encodeWithCoder:(NSCoder *)aCoder",
                 "{",
                 propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
+                indentation + "[aCoder encodeInteger:self.dirtyProperties forKey:@\"dirty_properties\"];",
                 "}"
             ].joinWithSeparator("\n")
         } else {
@@ -317,6 +386,58 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         }
     }
 
+    func renderMergeWithModel() -> String {
+        let indentation = "    "
+
+        func renderMergeForProperty(propertyDescriptor: ObjectSchemaProperty) -> String {
+            var lines: [String] = []
+            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className)
+            let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
+
+            if propertyDescriptor.isModelProperty {
+                lines = ["id value = modelObject.\(formattedPropName);",
+                    "if (value != nil) {",
+                    indentation + "if (builder.\(formattedPropName) != nil) {",
+                    indentation + indentation + "builder.\(formattedPropName) = [builder.\(formattedPropName) mergeWithModel:value callDidMerge:NO];",
+                    indentation + "} else {",
+                    indentation + indentation + "builder.\(formattedPropName) = value;",
+                    indentation + "}",
+                    "} else {",
+                    indentation + "builder.\(formattedPropName) = nil;",
+                    "}"]
+            } else {
+                lines = ["builder.\(formattedPropName) = modelObject.\(formattedPropName);"]
+            }
+            let result = ["if (dirtyProperties & \(property.dirtyPropertyOption())) {"] + lines.map({indentation + $0}) + ["}"]
+            return result.map({ indentation + $0 }).joinWithSeparator("\n")
+        }
+
+        var allProperties: [ObjectSchemaProperty] = self.classProperties() + self.parentClassProperties()
+        allProperties.sortInPlace({$0.name < $1.name})
+        let propertyLines: [String] = allProperties.map({ renderMergeForProperty($0)})
+
+        var lines = [
+            "- (instancetype)mergeWithModel:(\(self.className) *)modelObject {",
+            "    return [self mergeWithModel:modelObject callDidMerge:NO];",
+            "}",
+            "",
+            "- (instancetype)mergeWithModel:(\(self.className) *)modelObject callDidMerge:(BOOL)callDidMerge",
+            "{",
+            "    NSParameterAssert(modelObject);",
+            "    \(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
+            "    \(self.dirtyPropertyOptionName) dirtyProperties = modelObject.dirtyProperties;",
+            "",
+            propertyLines.joinWithSeparator("\n\n"),
+            "",
+            "}"
+        ]
+        if self.isBaseClass() {
+            lines.insert(indentation + "return [builder build];", atIndex: lines.count - 1)
+        } else {
+            lines.insert(indentation + "return [[\(self.className) alloc] initWithBuilder:builder callDidMerge:callDidMerge];", atIndex: lines.count - 1)
+        }
+        return lines.joinWithSeparator("\n")
+    }
 
     func renderMergeWithDictionary() -> String {
         let indentation = "    "
@@ -329,7 +450,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             if property.propertyRequiresAssignmentLogic() {
                 let propFromDictionary = "valueOrNil(modelDictionary, @\"\(propertyDescriptor.name)\")"
                 let propertyLines = property.propertyMergeStatementFromDictionary("builder", className: self.className).map({ indentation + $0 })
-                lines = ["value = \(propFromDictionary);",
+                lines = ["id value = \(propFromDictionary);",
                     "if (value != nil) {"] +
                     propertyLines +
                     ["} else {",
@@ -346,20 +467,6 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         allProperties.sortInPlace({$0.name < $1.name})
         let propertyLines: [String] = allProperties.map({ renderMergeForProperty($0)})
 
-        let anyPropertiesRequireAssignmentLogic = self.objectDescriptor.properties
-            .map { PropertyFactory.propertyForDescriptor($0, className: self.className) }
-            .map { $0.propertyRequiresAssignmentLogic() }
-            .reduce(false) {
-            (sum, nextVal) in
-            return sum || nextVal
-        }
-
-        var tmpVariableLine = ""
-        if anyPropertiesRequireAssignmentLogic {
-            // Don't insert the temporary value variable if it will not be used.
-            // Currently it is only used for URLs, Typed Collections and Other model classes.
-            tmpVariableLine = indentation + indentation + "id value = nil;"
-        }
         let lines = [
         "- (instancetype)mergeWithDictionary:(NSDictionary *)modelDictionary",
         "{",
@@ -368,7 +475,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
         "   [modelDictionary enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(NSString *  _Nonnull key, id  _Nonnull obj, __unused BOOL * _Nonnull stop) {",
         "        if (obj == [NSNull null]) { return; }",
-            tmpVariableLine,
+        "",
             propertyLines.joinWithSeparator("\n\n"),
         "   }];",
         "   return [builder build];",
@@ -491,13 +598,40 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         return lines.joinWithSeparator("\n")
     }
 
+    func renderBuilderSetters() -> String {
+        func renderBuilderSetterForProperty(propertyDescriptor: ObjectSchemaProperty) -> String {
+            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className)
+            let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
+            let capitalizedPropertyName = propertyDescriptor.name.snakeCaseToCamelCase()
+            let type = property.isScalarType() ? property.objectiveCStringForJSONType() : property.objectiveCStringForJSONType() + " *"
+
+            let lines = [
+                "- (void)set\(capitalizedPropertyName):(\(type))\(formattedPropName)",
+                "{",
+                "    _\(formattedPropName) = \(formattedPropName);",
+                "    _dirtyProperties |= \(property.dirtyPropertyOption());",
+                "}"
+            ]
+            return lines.joinWithSeparator("\n")
+        }
+
+        return self.classProperties().map({ renderBuilderSetterForProperty($0) }).joinWithSeparator("\n\n")
+    }
+
     func renderBuilderImplementation() -> String {
-        let lines = [
+        var lines = [
             "@implementation \(self.builderClassName)",
+        ];
+        if self.isBaseClass() == false {
+            lines.append("@dynamic dirtyProperties;")
+        }
+        lines.appendContentsOf(
+        [
             self.renderBuilderInitWithModelObject(),
             self.renderBuildMethod(),
+            self.renderBuilderSetters(),
             "@end"
-        ]
+        ])
         return lines.joinWithSeparator("\n\n")
     }
 
@@ -519,6 +653,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 self.renderEncodeWithCoder(),
                 self.pragmaMark("Mutation helper methods"),
                 self.renderCopyWithBlock(),
+                self.renderMergeWithModel(),
                 self.renderMergeWithDictionary(),
                 self.renderModelPropertyNames(),
                 self.renderModelArrayPropertyNames(),
@@ -533,6 +668,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
         let lines = [
             "@implementation \(self.className)",
+            "@dynamic dirtyProperties;",
             self.renderClassName(),
             self.renderPolymorphicTypeIdentifier(),
             self.renderDealloc(),
@@ -543,6 +679,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             self.renderEncodeWithCoder(),
             self.pragmaMark("Mutation helper methods"),
             self.renderCopyWithBlock(),
+            self.renderMergeWithModel(),
             self.renderMergeWithDictionary(),
             self.renderModelPropertyNames(),
             self.renderModelArrayPropertyNames(),
@@ -553,9 +690,23 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     }
 
     func renderFile() -> String {
+        if self.isBaseClass() {
+            let lines = [
+                self.renderCommentHeader(),
+                self.renderImports(),
+                self.renderPrivateInterface(),
+                self.renderUtilityFunctions(),
+                self.renderImplementation(),
+                self.renderBuilderImplementation()
+                ].filter { "" != $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
+            return lines.joinWithSeparator("\n\n")
+        }
+
         let lines = [
             self.renderCommentHeader(),
             self.renderImports(),
+            self.renderDirtyPropertyOptions(),
+            self.renderPrivateInterface(),
             self.renderUtilityFunctions(),
             self.renderImplementation(),
             self.renderBuilderImplementation()

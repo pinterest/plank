@@ -61,6 +61,7 @@ protocol ObjectiveCProperty: class {
     func objectiveCStringForJSONType() -> String
     func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String]
     func polymorphicTypeIdentifier() -> String
+    func dirtyPropertyAssignmentStatement() -> String
 }
 
 class PropertyFactory {
@@ -112,6 +113,8 @@ class AnyProperty: ObjectiveCProperty {
     private var _objectiveCStringForJSONType: Void -> String
     private var _propertyMergeStatementFromDictionary: (String, String) -> [String]
     private var _polymorphicTypeIdentifier: Void -> String
+    private var _dirtyPropertyOption: Void -> String
+    private var _dirtyPropertyAssignmentStatement: Void -> String
 
 
     required init(descriptor: ObjectSchemaProperty, className: String) {
@@ -133,6 +136,8 @@ class AnyProperty: ObjectiveCProperty {
         _renderDeclaration = { base.renderDeclaration($0) }
         _propertyStatementFromDictionary = { base.propertyStatementFromDictionary($0, className: $1) }
         _polymorphicTypeIdentifier = { base.polymorphicTypeIdentifier() }
+        _dirtyPropertyOption = { base.dirtyPropertyOption() }
+        _dirtyPropertyAssignmentStatement = { base.dirtyPropertyAssignmentStatement() }
 
         self.propertyDescriptor = descriptor
         self.className = className
@@ -157,6 +162,8 @@ class AnyProperty: ObjectiveCProperty {
         _renderDeclaration = { base.renderDeclaration($0) }
         _propertyStatementFromDictionary = { base.propertyStatementFromDictionary($0, className: $1) }
         _polymorphicTypeIdentifier = { base.polymorphicTypeIdentifier() }
+        _dirtyPropertyOption = { base.dirtyPropertyOption() }
+        _dirtyPropertyAssignmentStatement = { base.dirtyPropertyAssignmentStatement() }
 
         self.propertyDescriptor = base.propertyDescriptor
         self.className = base.className
@@ -228,6 +235,10 @@ class AnyProperty: ObjectiveCProperty {
 
     func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
         return _propertyMergeStatementFromDictionary(originVariableString, className)
+    }
+
+    func dirtyPropertyAssignmentStatement() -> String {
+        return _dirtyPropertyAssignmentStatement()
     }
 }
 
@@ -328,5 +339,18 @@ extension ObjectiveCProperty {
         }
         let propertyAssignmentStatement = "_\(formattedPropName) = \(propFromDictionary);"
         return [propertyAssignmentStatement]
+    }
+
+    func dirtyPropertyOption() -> String {
+        let propertyName = self.propertyDescriptor.name.snakeCaseToPropertyName()
+        let capitalizedFirstLetter = String(propertyName[propertyName.startIndex]).uppercaseString
+        let capitalizedPropertyName = capitalizedFirstLetter + String(propertyName.characters.dropFirst())
+        return self.className + "DirtyProperty" + capitalizedPropertyName
+    }
+
+    func dirtyPropertyAssignmentStatement() -> String {
+        let dirtyPropertyOption = self.dirtyPropertyOption()
+        let propertyAssignmentStatement = "_dirtyProperties |= \(dirtyPropertyOption);"
+        return propertyAssignmentStatement
     }
 }

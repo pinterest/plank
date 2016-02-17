@@ -13,6 +13,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
     let objectDescriptor: ObjectSchemaObjectProperty
     let className: String
     let builderClassName: String
+    let dirtyPropertyOptionName : String
     let generationParameters: GenerationParameters
     let parentDescriptor: ObjectSchemaObjectProperty?
 
@@ -27,6 +28,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             self.className = self.objectDescriptor.name.snakeCaseToCamelCase()
         }
         self.builderClassName = "\(self.className)Builder"
+        self.dirtyPropertyOptionName = "\(self.className)DirtyProperties"
         self.generationParameters = generatorParameters
         self.parentDescriptor = parentDescriptor
     }
@@ -78,8 +80,15 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
 
         let parentClassName = NSStringFromClass(NSObject)
         if self.isBaseClass() {
-            let lines = [
+            let interfaceDeclaration = [
                 "@interface \(self.builderClassName)<ObjectType:\(self.className) *> : \(parentClassName)",
+                "{",
+                "    @protected",
+                "    \(self.dirtyPropertyOptionName) _dirtyProperties;",
+                "}"
+            ]
+            let lines = [
+                interfaceDeclaration.joinWithSeparator("\n"),
                 propertyLines.joinWithSeparator("\n"),
                 "- (nullable instancetype)initWithModel:(ObjectType)modelObject;",
                 "- (ObjectType)build;",
@@ -104,8 +113,15 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
 
         if self.isBaseClass() {
             let implementedProtocols = ["NSSecureCoding", "NSCopying", self.protocolName()].joinWithSeparator(", ")
-            let lines = [
+            let interfaceDeclaration = [
                 "@interface \(self.className)<__covariant BuilderObjectType /* \(self.builderClassName) * */> : NSObject<\(implementedProtocols)>",
+                "{",
+                "    @protected",
+                "    \(self.dirtyPropertyOptionName) _dirtyProperties;",
+                "}"
+            ]
+            let lines = [
+                interfaceDeclaration.joinWithSeparator("\n"),
                 propertyLines.joinWithSeparator("\n"),
                 "+ (NSString *)className;",
                 "+ (NSString *)polymorphicTypeIdentifier;",
@@ -115,6 +131,11 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                 "- (nullable instancetype)initWithBuilder:(BuilderObjectType)builder NS_DESIGNATED_INITIALIZER;",
                 "- (instancetype)copyWithBlock:(void (^)(BuilderObjectType builder))block;",
                 "- (instancetype)mergeWithDictionary:(NSDictionary *)modelDictionary;",
+                "- (instancetype)mergeWithModel:(PIModel *)modelObject;",
+                "// Merges the fields of the receiver with another model. If callDidMerge is NO, this\n" +
+                "// method will call the normal post init hook PIModelDidInitialize when merge is complete.\n" +
+                "// If callDidInit is YES, this method will call PIModelDidMerge.\n" +
+                "- (instancetype)mergeWithModel:(PIModel *)modelObject callDidMerge:(BOOL)callDidMerge;",
                 "- (NSArray<NSString *> *)modelPropertyNames;",
                 "- (NSArray<NSString *> *)modelArrayPropertyNames;",
                 "- (NSArray<NSString *> *)modelDictionaryPropertyNames;",
@@ -148,12 +169,28 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         return forwardDeclarations.sort().joinWithSeparator("\n")
     }
 
+    func renderDirtyPropertyOptions() -> String {
+        let optionsLines: [String] = self.classProperties().enumerate().map { (index, property) in
+            assert(index < 64, "Only 64 properties are supported")
+
+            let prop = PropertyFactory.propertyForDescriptor(property, className: self.className)
+            let one = "1LL"
+            return "    \(prop.dirtyPropertyOption()) = \(one) << \(index),"
+        }
+        let lines = [
+            "typedef NS_OPTIONS(int64_t, \(self.className)DirtyProperties) {",
+            optionsLines.joinWithSeparator("\n"),
+            "};"
+        ]
+        return lines.joinWithSeparator("\n")
+    }
+    
     func renderProtocol() -> String {
         let lines = [
             "@protocol \(self.protocolName()) <NSObject>",
             "@optional",
             "- (void)\(self.className)DidInitialize;",
-            "- (void)\(self.className)DidInitializeWithDictionary:(NSDictionary *)dictionary;",
+            "- (void)\(self.className)DidMerge;",
             "- (void)\(self.className)WillDealloc;",
             "@end"
         ]
@@ -191,8 +228,9 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         if self.isBaseClass() {
             let lines = [
                 self.renderCommentHeader(),
-                "@import Foundation;",
+                "#import <Foundation/Foundation.h>",
                 self.renderForwardDeclarations(),
+                self.renderDirtyPropertyOptions(),
                 "NS_ASSUME_NONNULL_BEGIN",
                 self.renderProtocol(),
                 self.renderInterface(),
