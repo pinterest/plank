@@ -135,7 +135,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                 "// Merges the fields of the receiver with another model. If callDidMerge is NO, this\n" +
                 "// method will call the normal post init hook PIModelDidInitialize when merge is complete.\n" +
                 "// If callDidInit is YES, this method will call PIModelDidMerge.\n" +
-                "- (instancetype)mergeWithModel:(PIModel *)modelObject callDidMerge:(BOOL)callDidMerge;",
+                "- (instancetype)mergeWithModel:(PIModel *)modelObject initType:(PIModelInitType)initType;",
                 "- (NSArray<NSString *> *)modelPropertyNames;",
                 "- (NSArray<NSString *> *)modelArrayPropertyNames;",
                 "- (NSArray<NSString *> *)modelDictionaryPropertyNames;",
@@ -184,13 +184,23 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         ]
         return lines.joinWithSeparator("\n")
     }
-    
+
+    func renderInitTypeEnum() -> String {
+        let lines = [
+            "typedef enum {",
+            "    PIModelInitTypeDefault = 1 << 0,",
+            "    PIModelInitTypeFromMerge = 1 << 1,",
+            "    PIModelInitTypeFromSubmerge = 1 << 2",
+            "} PIModelInitType;"
+        ]
+        return lines.joinWithSeparator("\n")
+    }
+
     func renderProtocol() -> String {
         let lines = [
             "@protocol \(self.protocolName()) <NSObject>",
             "@optional",
-            "- (void)\(self.className)DidInitialize;",
-            "- (void)\(self.className)DidMerge;",
+            "- (void)\(self.className)DidInitialize:(PIModelInitType)initType;",
             "- (void)\(self.className)WillDealloc;",
             "@end"
         ]
@@ -231,6 +241,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                 "#import <Foundation/Foundation.h>",
                 self.renderForwardDeclarations(),
                 self.renderDirtyPropertyOptions(),
+                self.renderInitTypeEnum(),
                 "NS_ASSUME_NONNULL_BEGIN",
                 self.renderProtocol(),
                 self.renderInterface(),

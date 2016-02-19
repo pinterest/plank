@@ -210,7 +210,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "}"
         ]
         if self.isBaseClass() == false {
-            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize];\n", atIndex: lines.count - 2)
+            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize:PIModelInitTypeDefault];\n", atIndex: lines.count - 2)
         }
         return lines.joinWithSeparator("\n")
     }
@@ -267,19 +267,15 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             lines = [
                 "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder",
                 "{",
-                "    return [self initWithBuilder:builder callDidMerge:NO];",
+                "    return [self initWithBuilder:builder initType:PIModelInitTypeDefault];",
                 "}",
                 "",
-                "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder callDidMerge:(BOOL)callDidMerge",
+                "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder initType:(PIModelInitType)initType",
                 "{",
                 "    NSParameterAssert(builder);",
                 superInitCall,
                 propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
-                "    if (callDidMerge) {",
-                "        [self \(self.parentClassName())DidMerge];",
-                "    } else {",
-                "        [self \(self.parentClassName())DidInitialize];",
-                "    }",
+                "    [self \(self.parentClassName())DidInitialize:initType];",
                 "    return self;",
                 "}"
             ]
@@ -357,7 +353,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         if self.isBaseClass() {
             lines.insert(indentation + "_dirtyProperties = [aDecoder decodeIntegerForKey:@\"dirty_properties\"];\n", atIndex: lines.count - 2)
         } else {
-            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize];\n", atIndex: lines.count - 2)
+            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize:PIModelInitTypeDefault];\n", atIndex: lines.count - 2)
         }
         return lines.joinWithSeparator("\n")
     }
@@ -398,7 +394,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 lines = ["id value = modelObject.\(formattedPropName);",
                     "if (value != nil) {",
                     indentation + "if (builder.\(formattedPropName) != nil) {",
-                    indentation + indentation + "builder.\(formattedPropName) = [builder.\(formattedPropName) mergeWithModel:value callDidMerge:NO];",
+                    indentation + indentation + "builder.\(formattedPropName) = [builder.\(formattedPropName) mergeWithModel:value initType:PIModelInitTypeFromSubmerge];",
                     indentation + "} else {",
                     indentation + indentation + "builder.\(formattedPropName) = value;",
                     indentation + "}",
@@ -418,10 +414,10 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
         var lines = [
             "- (instancetype)mergeWithModel:(\(self.className) *)modelObject {",
-            "    return [self mergeWithModel:modelObject callDidMerge:NO];",
+            "    return [self mergeWithModel:modelObject initType:PIModelInitTypeFromMerge];",
             "}",
             "",
-            "- (instancetype)mergeWithModel:(\(self.className) *)modelObject callDidMerge:(BOOL)callDidMerge",
+            "- (instancetype)mergeWithModel:(\(self.className) *)modelObject initType:(PIModelInitType)initType",
             "{",
             "    NSParameterAssert(modelObject);",
             "    \(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
@@ -434,7 +430,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         if self.isBaseClass() {
             lines.insert(indentation + "return [builder build];", atIndex: lines.count - 1)
         } else {
-            lines.insert(indentation + "return [[\(self.className) alloc] initWithBuilder:builder callDidMerge:callDidMerge];", atIndex: lines.count - 1)
+            lines.insert(indentation + "return [[\(self.className) alloc] initWithBuilder:builder initType:initType];", atIndex: lines.count - 1)
         }
         return lines.joinWithSeparator("\n")
     }
