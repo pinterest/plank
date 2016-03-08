@@ -401,6 +401,15 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                     "} else {",
                     indentation + "builder.\(formattedPropName) = nil;",
                     "}"]
+            } else if propertyDescriptor.name == "additional_local_non_API_properties" {
+                lines = ["if (builder.\(formattedPropName)) {",
+                    indentation + "NSMutableDictionary *mutableProperties = [[NSMutableDictionary alloc] initWithDictionary:builder.\(formattedPropName)];",
+                    indentation + "[mutableProperties addEntriesFromDictionary:modelObject.\(formattedPropName)];",
+                    indentation + "builder.\(formattedPropName) = mutableProperties;",
+                    "} else {",
+                    indentation + "builder.\(formattedPropName) = modelObject.\(formattedPropName);",
+                    "}"
+                ]
             } else {
                 lines = ["builder.\(formattedPropName) = modelObject.\(formattedPropName);"]
             }
