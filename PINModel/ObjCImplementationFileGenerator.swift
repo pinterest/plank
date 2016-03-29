@@ -351,7 +351,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "}"
         ]
         if self.isBaseClass() {
-            lines.insert(indentation + "_dirtyProperties = [aDecoder decodeIntegerForKey:@\"dirty_properties\"];\n", atIndex: lines.count - 2)
+            lines.insert(indentation + "_dirtyProperties = [aDecoder decodeInt64ForKey:@\"dirty_properties\"];\n", atIndex: lines.count - 2)
         } else {
             lines.insert(indentation + "[self \(self.parentClassName())DidInitialize:PIModelInitTypeDefault];\n", atIndex: lines.count - 2)
         }
@@ -368,7 +368,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 "- (void)encodeWithCoder:(NSCoder *)aCoder",
                 "{",
                 propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
-                indentation + "[aCoder encodeInteger:self.dirtyProperties forKey:@\"dirty_properties\"];",
+                indentation + "[aCoder encodeInt64:self.dirtyProperties forKey:@\"dirty_properties\"];",
                 "}"
             ].joinWithSeparator("\n")
         } else {
