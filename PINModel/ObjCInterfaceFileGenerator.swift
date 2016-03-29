@@ -252,7 +252,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         }
         let lines = [
             self.renderCommentHeader(),
-            "@import Foundation;",
+            "#import <Foundation/Foundation.h>",
             self.renderImports(),
             self.renderEnums(),
             self.renderStringEnumUtilityMethods(),

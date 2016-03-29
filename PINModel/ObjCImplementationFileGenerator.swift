@@ -545,24 +545,24 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     func renderModelPropertyNames() -> String {
         return self.renderPropertyNames("modelPropertyNames", includeProperty: { $0.isModelProperty })
     }
-    
+
     func renderModelArrayPropertyNames() -> String {
         return self.renderPropertyNames("modelArrayPropertyNames",
             includeProperty: { ($0 as? ObjectSchemaArrayProperty)?.items?.isModelProperty ?? false })
     }
-    
+
     func renderModelDictionaryPropertyNames() -> String {
         return self.renderPropertyNames("modelDictionaryPropertyNames",
             includeProperty: { ($0 as? ObjectSchemaObjectProperty)?.additionalProperties?.isModelProperty ?? false })
     }
-    
+
     func renderPropertyNames(methodName: String, includeProperty: (ObjectSchemaProperty) -> Bool) -> String {
         let propertyNames = self.classProperties()
             .filter(includeProperty)
             .map { $0.name }
-        
+
         let indentation = "    "
-        
+
         var lines:Array<String>
         if propertyNames.count == 0 {
             lines = [
@@ -583,7 +583,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         lines.insert("}", atIndex: lines.count)
         return lines.joinWithSeparator("\n")
     }
-    
+
     func renderCopyWithZone() -> String {
         return [
             "- (id)copyWithZone:(NSZone *)zone",
