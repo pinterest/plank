@@ -226,6 +226,14 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         }
         return enumDeclarations.joinWithSeparator("\n\n")
     }
+    
+    func renderFrameworkImports() -> String {
+        let lines = [
+            "#import <Foundation/Foundation.h>",
+            "#import <UIKit/UIKit.h>"
+        ]
+        return lines.joinWithSeparator("\n")
+    }
 
     func renderImports() -> String {
         if self.isBaseClass() {
@@ -238,7 +246,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         if self.isBaseClass() {
             let lines = [
                 self.renderCommentHeader(),
-                "#import <Foundation/Foundation.h>",
+                self.renderFrameworkImports(),
                 self.renderForwardDeclarations(),
                 self.renderDirtyPropertyOptions(),
                 self.renderInitTypeEnum(),
@@ -252,7 +260,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         }
         let lines = [
             self.renderCommentHeader(),
-            "#import <Foundation/Foundation.h>",
+            self.renderFrameworkImports(),
             self.renderImports(),
             self.renderEnums(),
             self.renderStringEnumUtilityMethods(),
