@@ -12,7 +12,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     let objectDescriptor: ObjectSchemaObjectProperty
     let className: String
     let builderClassName: String
-    let dirtyPropertyOptionName : String
+    let dirtyPropertyOptionName: String
     let generationParameters: GenerationParameters
     let parentDescriptor: ObjectSchemaObjectProperty?
 
@@ -108,7 +108,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     }
 
     func renderDirtyPropertyOptions() -> String {
-        var allProperties : [ObjectSchemaProperty] = []
+        var allProperties: [ObjectSchemaProperty] = []
         if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
             allProperties.appendContentsOf(baseClass.properties)
         }
@@ -251,7 +251,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             superInitCall = indentation + "if (!(self = [super init])) { return self; }"
         }
 
-        var lines : [String] = []
+        var lines: [String] = []
         if self.isBaseClass() {
             lines = [
                 "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder",
@@ -289,7 +289,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         func renderInitForProperty(propertyDescriptor: ObjectSchemaProperty) -> String {
             let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className)
             let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
-            let lines : [String] = [
+            let lines: [String] = [
                 "if (dirtyProperties & \(property.dirtyPropertyOption())) {",
                 "    _\(formattedPropName) = modelObject.\(formattedPropName);",
                 "}"
@@ -315,7 +315,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "    return self;",
             "}"
         ]
-        if (self.isBaseClass()) {
+        if self.isBaseClass() {
             lines.insertContentsOf([indentation + "_dirtyProperties = modelObject.dirtyProperties;", "\n"], at: lines.count - 2)
         }
         return lines.joinWithSeparator("\n")

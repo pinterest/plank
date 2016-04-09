@@ -8,12 +8,6 @@
 
 import Foundation
 
-// TODO (rmalik): Reserve an access token for the api and
-// also come up with a strategy for appending query parameters for loading remote schemas.
-// https://phabricator.pinadmin.com/T44
-// https://phabricator.pinadmin.com/T45
-let accessTokenString = "access_token=MTQzMTU5NDoxNTAwMjYzNjg3NDUyMTEzMDk6OTIyMzM3MjAzNjg1NDc3NTgwNzoxfDE0Mzk4NTQ5NTA6MC0tOGQwYzJjMzVlMTMyMDI1YTk2MDcwYzJlYWZiYjk1NTM%3D"
-
 
 let BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(
     name: "model", objectType: JSONType.Object,

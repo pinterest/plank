@@ -19,7 +19,7 @@ public enum JSONType: String {
     case Boolean = "boolean"
     case Null = "null"
     case Pointer = "$ref" // Used for combining schemas via references.
-    case Polymorphic = "oneOf" // JSONType composed of other JSONTypes    
+    case Polymorphic = "oneOf" // JSONType composed of other JSONTypes
 }
 
 public enum JSONStringFormatType: String {
@@ -321,7 +321,7 @@ class SchemaLoader {
         if schemaUrl.scheme.hasPrefix("http") {
             do {
                 // Builds a URL with the access-token necessary to access the schema by appending a query parameter.
-                let schemaUrlWithToken = NSURL(string: "\(schemaUrl.absoluteURL.absoluteString)?\(accessTokenString)")!
+                let schemaUrlWithToken = NSURL(string: "\(schemaUrl.absoluteURL.absoluteString)")!
                 if let data = NSURLSession.sharedSession().synchronousDataTaskWithUrl(schemaUrlWithToken) {
                     let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [String:AnyObject]
 
