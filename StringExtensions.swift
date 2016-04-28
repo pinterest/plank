@@ -12,6 +12,7 @@ import Foundation
 let OBJC_RESERVED_WORDS_REPLACEMENTS = [
     "description": "description_text",
     "id": "identifier"
+  // TODO: Fill out more objc keywords with replacements.
 ]
 
 extension String {

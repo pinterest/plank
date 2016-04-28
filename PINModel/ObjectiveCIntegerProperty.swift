@@ -36,21 +36,21 @@ final class ObjectiveCIntegerProperty: ObjectiveCProperty {
     func renderEncodeWithCoderStatement() -> String {
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         if self.propertyDescriptor.jsonType == JSONType.Number {
-            return "[aCoder encodeCGFloat:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
+            return "[aCoder encodeDouble:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
         }
         return "[aCoder encodeInteger:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
     }
 
     func renderDecodeWithCoderStatement() -> String {
         if self.propertyDescriptor.jsonType == JSONType.Number {
-            return "[aDecoder decodeCGFloatForKey:@\"\(self.propertyDescriptor.name)\"]"
+            return "[aDecoder decodeDoubleForKey:@\"\(self.propertyDescriptor.name)\"]"
         }
         return "[aDecoder decodeIntegerForKey:@\"\(self.propertyDescriptor.name)\"]"
     }
 
     func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String {
         if self.propertyDescriptor.jsonType == JSONType.Number {
-            return "[\(propertyVariableString) floatValue]"
+            return "[\(propertyVariableString) doubleValue]"
         }
        return "[\(propertyVariableString) integerValue]"
     }
@@ -76,7 +76,7 @@ final class ObjectiveCIntegerProperty: ObjectiveCProperty {
         }
 
         if self.propertyDescriptor.jsonType == JSONType.Number {
-            return ObjCPrimitiveType.Float.rawValue
+            return ObjCPrimitiveType.Double.rawValue
         }
 
         return ObjCPrimitiveType.Integer.rawValue

@@ -30,7 +30,8 @@ public enum ObjCMutabilityType: String {
 
 
 public enum ObjCPrimitiveType: String {
-    case Float = "CGFloat"
+    case Float = "float"
+    case Double = "double"
     case Integer = "NSInteger"
     case Boolean = "BOOL"
 }

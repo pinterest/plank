@@ -13,7 +13,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
     let objectDescriptor: ObjectSchemaObjectProperty
     let className: String
     let builderClassName: String
-    let dirtyPropertyOptionName : String
+    let dirtyPropertyOptionName: String
     let generationParameters: GenerationParameters
     let parentDescriptor: ObjectSchemaObjectProperty?
 
@@ -226,11 +226,10 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         }
         return enumDeclarations.joinWithSeparator("\n\n")
     }
-    
+
     func renderFrameworkImports() -> String {
         let lines = [
-            "#import <Foundation/Foundation.h>",
-            "#import <UIKit/UIKit.h>"
+            "#import <Foundation/Foundation.h>"
         ]
         return lines.joinWithSeparator("\n")
     }

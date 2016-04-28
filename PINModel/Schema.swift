@@ -285,6 +285,7 @@ class ObjectSchemaPointerProperty: ObjectSchemaProperty {
 }
 
 
+// Explore using NSOrderedSet as the type if "uniqueItems": true is present.
 class ObjectSchemaArrayProperty: ObjectSchemaProperty {
     let items: ObjectSchemaProperty?
     override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
@@ -323,7 +324,7 @@ class SchemaLoader {
                 // Builds a URL with the access-token necessary to access the schema by appending a query parameter.
                 let schemaUrlWithToken = NSURL(string: "\(schemaUrl.absoluteURL.absoluteString)")!
                 if let data = NSURLSession.sharedSession().synchronousDataTaskWithUrl(schemaUrlWithToken) {
-                    let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [String:AnyObject]
+                    let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! JSONObject
 
                     if jsonResult["data"] !== NSNull() {
                         refs[schemaUrl] = ObjectSchemaProperty.propertyForJSONObject(jsonResult["data"] as! JSONObject, scopeUrl: schemaUrl)
@@ -341,7 +342,7 @@ class SchemaLoader {
             // Load from local file
             do {
                 if let data = NSData(contentsOfFile: schemaUrl.path!) {
-                    let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [String:AnyObject]
+                    let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! JSONObject
 
                     refs[schemaUrl] = ObjectSchemaProperty.propertyForJSONObject(jsonResult, scopeUrl: schemaUrl)
                     return refs[schemaUrl]
