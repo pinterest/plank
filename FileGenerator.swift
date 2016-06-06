@@ -49,6 +49,7 @@ extension FileGenerator {
             "//",
             "//  DO NOT EDIT - EDITS WILL BE OVERWRITTEN",
             "//  Copyright (c) \(year) Pinterest, Inc. All rights reserved.",
+            "//  @generated",
             "//"
         ]
         return header.joinWithSeparator("\n")
