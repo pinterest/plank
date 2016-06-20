@@ -14,10 +14,12 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
 
     var propertyDescriptor: ObjectSchemaStringProperty
     var className: String
+    var schemaLoader: SchemaLoader
 
-    required init(descriptor: ObjectSchemaStringProperty, className: String) {
+    required init(descriptor: ObjectSchemaStringProperty, className: String, schemaLoader: SchemaLoader) {
         self.propertyDescriptor = descriptor
         self.className = className
+        self.schemaLoader = schemaLoader
     }
 
     func renderEnumUtilityMethodsInterface() -> String {

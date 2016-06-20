@@ -12,10 +12,12 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
 
     var propertyDescriptor: ObjectSchemaObjectProperty
     var className: String
+    var schemaLoader: SchemaLoader
 
-    required init(descriptor: ObjectSchemaObjectProperty, className: String) {
+    required init(descriptor: ObjectSchemaObjectProperty, className: String, schemaLoader: SchemaLoader) {
         self.propertyDescriptor = descriptor
         self.className = className
+        self.schemaLoader = schemaLoader
         // TODO: Cache ObjectiveCProperty representation of additionalProperties here rather than every method.
     }
 
@@ -31,11 +33,11 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
 
         switch self.propertyDescriptor.additionalProperties {
         case let d as ObjectSchemaPolymorphicProperty:
-            let prop = ObjectiveCPolymorphicProperty(descriptor: d, className: self.className)
+            let prop = ObjectiveCPolymorphicProperty(descriptor: d, className: self.className, schemaLoader: self.schemaLoader)
             deserializationClasses.unionInPlace(prop.classList())
         default:
             if let valueTypes = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
-                let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className)
+                let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className, schemaLoader: self.schemaLoader)
                 deserializationClasses.insert(prop.objectiveCStringForJSONType())
             }
         }
@@ -48,7 +50,7 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
     func propertyRequiresAssignmentLogic() -> Bool {
         var requiresAssignmentLogic = false
         if let additionalProperties = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(additionalProperties, className: self.className)
+            let prop = PropertyFactory.propertyForDescriptor(additionalProperties, className: self.className, schemaLoader: self.schemaLoader)
             assert(prop.isScalarType() == false, "Dictionaries cannot contain primitive types")
             requiresAssignmentLogic = prop.propertyRequiresAssignmentLogic()
         }
@@ -62,7 +64,7 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
 
     func objectiveCStringForJSONType() -> String {
         if let valueTypes = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className)
+            let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className, schemaLoader: self.schemaLoader)
             return "\(NSStringFromClass(NSDictionary)) <\(NSStringFromClass(NSString)) *, \(prop.objectiveCStringForJSONType()) *>"
         }
 
@@ -82,12 +84,12 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
         switch self.propertyDescriptor.additionalProperties {
 
         case let additionalProperties as ObjectSchemaPolymorphicProperty:
-            let prop = ObjectiveCPolymorphicProperty(descriptor: additionalProperties, className: self.className)
+            let prop = ObjectiveCPolymorphicProperty(descriptor: additionalProperties, className: self.className, schemaLoader: self.schemaLoader)
             if prop.propertyRequiresAssignmentLogic() {
                 return [
                     "NSDictionary *items = value;",
                     "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
-                    "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, __unused BOOL *stop) {",
+                    "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, __unused BOOL *stop) {",
                     "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {"] +
                     prop.templatedPropertyAssignmentStatementFromDictionary("result[key]",
                         className: className, dictionaryElementName: "obj").map { "        " + $0 } +
@@ -97,13 +99,13 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
             }
         default:
             if let additionalProperties = self.propertyDescriptor.additionalProperties as ObjectSchemaProperty? {
-                let prop = PropertyFactory.propertyForDescriptor(additionalProperties, className: self.className)
+                let prop = PropertyFactory.propertyForDescriptor(additionalProperties, className: self.className, schemaLoader: self.schemaLoader)
                 let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)
                 if prop.propertyRequiresAssignmentLogic() {
                     return [
                         "NSDictionary *items = value;",
                         "NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:items.count];",
-                        "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, __unused BOOL *stop) {",
+                        "[items enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, __unused BOOL *stop) {",
                         "    if (obj != nil && [obj isEqual:[NSNull null]] == NO) {",
                         "        result[key] = \(deserializedObject);",
                         "    }",

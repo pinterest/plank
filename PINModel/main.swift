@@ -18,7 +18,7 @@ var manager = Manager()
 
 func generateFile(schema: ObjectSchemaObjectProperty, outputDirectory: NSURL) {
     let manager = ObjectiveCFileGeneratorManager(descriptor: schema,
-                                                 generatorParameters: [GenerationParameterType.ClassPrefix: "PI"])
+                                                 generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], schemaLoader: RemoteSchemaLoader.sharedInstance)
     for file in manager.filesToGenerate() {
         let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file.
         do {
@@ -38,10 +38,10 @@ func generateFilesWithInitialUrl(url: NSURL, outputDirectory: NSURL) {
     generateFile(BASE_MODEL_INSTANCE, outputDirectory: outputDirectory)
 
     // Generate Subclasses
-    if let _ = SchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
+    if let _ = RemoteSchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
         var processedSchemas = Set<NSURL>([])
         repeat {
-            let _ = SchemaLoader.sharedInstance.refs.map({ (url: NSURL, schema: ObjectSchemaProperty) -> Void in
+            let _ = RemoteSchemaLoader.sharedInstance.refs.map({ (url: NSURL, schema: ObjectSchemaProperty) -> Void in
                 if processedSchemas.contains(url) {
                     return
                 }
@@ -52,7 +52,7 @@ func generateFilesWithInitialUrl(url: NSURL, outputDirectory: NSURL) {
                     generateFile(objectSchema, outputDirectory: outputDirectory)
                 }
             })
-        } while (processedSchemas.count != SchemaLoader.sharedInstance.refs.keys.count)
+        } while (processedSchemas.count != RemoteSchemaLoader.sharedInstance.refs.keys.count)
     }
 }
 

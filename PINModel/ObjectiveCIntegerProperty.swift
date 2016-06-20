@@ -12,10 +12,12 @@ final class ObjectiveCIntegerProperty: ObjectiveCProperty {
 
     var propertyDescriptor: ObjectSchemaNumberProperty
     var className: String
+    var schemaLoader: SchemaLoader
 
-    required init(descriptor: ObjectSchemaNumberProperty, className: String) {
+    required init(descriptor: ObjectSchemaNumberProperty, className: String, schemaLoader: SchemaLoader) {
         self.propertyDescriptor = descriptor
         self.className = className
+        self.schemaLoader = schemaLoader
     }
 
     func renderEnumDeclaration() -> String {

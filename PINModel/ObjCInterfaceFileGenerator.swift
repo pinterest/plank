@@ -16,8 +16,9 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
     let dirtyPropertyOptionName: String
     let generationParameters: GenerationParameters
     let parentDescriptor: ObjectSchemaObjectProperty?
+    var schemaLoader: SchemaLoader
 
-    required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?) {
+    required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?, schemaLoader: SchemaLoader) {
         self.objectDescriptor = descriptor
         if let classPrefix = generatorParameters[GenerationParameterType.ClassPrefix] as String? {
             self.className = String(format: "%@%@", arguments: [
@@ -31,6 +32,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         self.dirtyPropertyOptionName = "\(self.className)DirtyProperties"
         self.generationParameters = generatorParameters
         self.parentDescriptor = parentDescriptor
+        self.schemaLoader = schemaLoader
     }
 
     func fileName() -> String {
@@ -58,7 +60,8 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             return ObjectiveCInterfaceFileDescriptor(
                     descriptor: parentSchema,
                     generatorParameters: self.generationParameters,
-                    parentDescriptor: nil).className
+                    parentDescriptor: nil,
+                    schemaLoader: self.schemaLoader).className
         }
         return NSStringFromClass(NSObject)
     }
@@ -68,27 +71,22 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             return ObjectiveCInterfaceFileDescriptor(
                 descriptor: parentSchema,
                 generatorParameters: self.generationParameters,
-                parentDescriptor: nil).builderClassName
+                parentDescriptor: nil,
+                schemaLoader: self.schemaLoader).builderClassName
         }
         return NSStringFromClass(NSObject)
     }
 
     func renderBuilderInterface() -> String {
         let propertyLines = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
-            return PropertyFactory.propertyForDescriptor(property, className: self.className).renderImplementationDeclaration()
+            return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderImplementationDeclaration()
         }
 
         let parentClassName = NSStringFromClass(NSObject)
         if self.isBaseClass() {
-            let interfaceDeclaration = [
-                "@interface \(self.builderClassName)<ObjectType:\(self.className) *> : \(parentClassName)",
-                "{",
-                "    @protected",
-                "    \(self.dirtyPropertyOptionName) _dirtyProperties;",
-                "}"
-            ]
+            let interfaceDeclaration = "@interface \(self.builderClassName)<ObjectType:\(self.className) *> : \(parentClassName)"
             let lines = [
-                interfaceDeclaration.joinWithSeparator("\n"),
+                interfaceDeclaration,
                 propertyLines.joinWithSeparator("\n"),
                 "- (nullable instancetype)initWithModel:(ObjectType)modelObject;",
                 "- (ObjectType)build;",
@@ -107,21 +105,15 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
 
     func renderInterface() -> String {
         let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
-            let prop = PropertyFactory.propertyForDescriptor(property, className: self.className)
+            let prop = PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader)
             return prop.renderInterfaceDeclaration()
         }
 
         if self.isBaseClass() {
             let implementedProtocols = ["NSSecureCoding", "NSCopying", self.protocolName()].joinWithSeparator(", ")
-            let interfaceDeclaration = [
-                "@interface \(self.className)<__covariant BuilderObjectType /* \(self.builderClassName) * */> : NSObject<\(implementedProtocols)>",
-                "{",
-                "    @protected",
-                "    \(self.dirtyPropertyOptionName) _dirtyProperties;",
-                "}"
-            ]
+            let interfaceDeclaration = "@interface \(self.className)<__covariant BuilderObjectType /* \(self.builderClassName) * */> : NSObject<\(implementedProtocols)>"
             let lines = [
-                interfaceDeclaration.joinWithSeparator("\n"),
+                interfaceDeclaration,
                 propertyLines.joinWithSeparator("\n"),
                 "+ (NSString *)className;",
                 "+ (NSString *)polymorphicTypeIdentifier;",
@@ -155,7 +147,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
 
     func renderForwardDeclarations() -> String {
         let referencedForwardDeclarations: [String] = self.objectDescriptor.referencedClasses.flatMap ({ (propDescriptor: ObjectSchemaPointerProperty) -> String? in
-            let prop = PropertyFactory.propertyForDescriptor(propDescriptor, className: self.className)
+            let prop = PropertyFactory.propertyForDescriptor(propDescriptor, className: self.className, schemaLoader: self.schemaLoader)
             if prop.objectiveCStringForJSONType() == self.className {
                 return nil
             }
@@ -170,15 +162,14 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
     }
 
     func renderDirtyPropertyOptions() -> String {
-        let optionsLines: [String] = self.classProperties().enumerate().map { (index, property) in
-            assert(index < 64, "Only 64 properties are supported")
-
-            let prop = PropertyFactory.propertyForDescriptor(property, className: self.className)
-            let one = "1LL"
-            return "    \(prop.dirtyPropertyOption()) = \(one) << \(index),"
+        let optionsLines: [String] = self.classProperties().map { (property) in
+            let prop = PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader)
+            let type = "unsigned int"
+            let one = "1"
+            return "    \(type) \(prop.dirtyPropertyOption()):\(one);"
         }
         let lines = [
-            "typedef NS_OPTIONS(int64_t, \(self.className)DirtyProperties) {",
+            "struct \(self.className)DirtyProperties {",
             optionsLines.joinWithSeparator("\n"),
             "};"
         ]
@@ -208,20 +199,20 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
     }
 
     func renderEnums() -> String {
-        let enumProperties = self.objectDescriptor.properties.filter({ PropertyFactory.propertyForDescriptor($0, className: self.className).isEnumPropertyType() })
+        let enumProperties = self.objectDescriptor.properties.filter({ PropertyFactory.propertyForDescriptor($0, className: self.className, schemaLoader: self.schemaLoader).isEnumPropertyType() })
 
         let enumDeclarations: [String] = enumProperties.map { (prop: ObjectSchemaProperty) -> String in
-            let objcProp = PropertyFactory.propertyForDescriptor(prop, className: self.className)
+            let objcProp = PropertyFactory.propertyForDescriptor(prop, className: self.className, schemaLoader: self.schemaLoader)
             return objcProp.renderEnumDeclaration()
         }
         return enumDeclarations.joinWithSeparator("\n\n")
     }
 
     func renderStringEnumUtilityMethods() -> String {
-        let enumProperties = self.objectDescriptor.properties.filter({ PropertyFactory.propertyForDescriptor($0, className: self.className).isEnumPropertyType() && $0.jsonType == JSONType.String })
+        let enumProperties = self.objectDescriptor.properties.filter({ PropertyFactory.propertyForDescriptor($0, className: self.className, schemaLoader: self.schemaLoader).isEnumPropertyType() && $0.jsonType == JSONType.String })
 
         let enumDeclarations: [String] = enumProperties.map { (prop: ObjectSchemaProperty) -> String in
-            let objcProp = PropertyFactory.propertyForDescriptor(prop, className: self.className)
+            let objcProp = PropertyFactory.propertyForDescriptor(prop, className: self.className, schemaLoader: self.schemaLoader)
             return objcProp.renderEnumUtilityMethodsInterface()
         }
         return enumDeclarations.joinWithSeparator("\n\n")

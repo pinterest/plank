@@ -42,8 +42,9 @@ protocol ObjectiveCProperty: class {
 
     var propertyDescriptor: SchemaType { get set }
     var className: String { get set }
-
-    init(descriptor: SchemaType, className: String)
+    var schemaLoader: SchemaLoader { get set }
+    
+    init(descriptor: SchemaType, className: String, schemaLoader: SchemaLoader)
 
     func renderInterfaceDeclaration() -> String
     func renderImplementationDeclaration() -> String
@@ -54,7 +55,9 @@ protocol ObjectiveCProperty: class {
     func renderEnumUtilityMethodsInterface() -> String
     func renderEnumDeclaration() -> String
     func renderEncodeWithCoderStatement() -> String
+    func renderEncodeWithCoderStatementForDirtyProperties() -> String
     func renderDecodeWithCoderStatement() -> String
+    func renderDecodeWithCoderStatementForDirtyProperties() -> String
     func renderDeclaration(isMutable: Bool) -> String
     func propertyRequiresAssignmentLogic() -> Bool
     func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String
@@ -66,28 +69,28 @@ protocol ObjectiveCProperty: class {
 }
 
 class PropertyFactory {
-    class func propertyForDescriptor(descriptor: ObjectSchemaProperty, className: String) -> AnyProperty {
+    class func propertyForDescriptor(descriptor: ObjectSchemaProperty, className: String, schemaLoader: SchemaLoader) -> AnyProperty {
         switch descriptor {
         case let d as ObjectSchemaObjectProperty:
-            return AnyProperty(ObjectiveCDictionaryProperty(descriptor: d, className: className))
+            return AnyProperty(ObjectiveCDictionaryProperty(descriptor: d, className: className, schemaLoader: schemaLoader))
         case let d as ObjectSchemaArrayProperty:
-            return AnyProperty(ObjectiveCArrayProperty(descriptor: d, className: className))
+            return AnyProperty(ObjectiveCArrayProperty(descriptor: d, className: className, schemaLoader: schemaLoader))
 
         case let d as ObjectSchemaStringProperty:
-            return AnyProperty(ObjectiveCStringProperty(descriptor: d, className: className))
+            return AnyProperty(ObjectiveCStringProperty(descriptor: d, className: className, schemaLoader: schemaLoader))
 
         case let d as ObjectSchemaNumberProperty:
-            return AnyProperty(ObjectiveCIntegerProperty(descriptor: d, className: className))
+            return AnyProperty(ObjectiveCIntegerProperty(descriptor: d, className: className, schemaLoader: schemaLoader))
 
         case let d as ObjectSchemaBooleanProperty:
-            return AnyProperty(ObjectiveCBooleanProperty(descriptor: d, className: className))
+            return AnyProperty(ObjectiveCBooleanProperty(descriptor: d, className: className, schemaLoader: schemaLoader))
         case let d as ObjectSchemaPointerProperty:
-            return AnyProperty(ObjectiveCClassProperty(descriptor: d, className: className))
+            return AnyProperty(ObjectiveCClassProperty(descriptor: d, className: className, schemaLoader: schemaLoader))
         case let d as ObjectSchemaPolymorphicProperty:
-            return AnyProperty(ObjectiveCPolymorphicProperty(descriptor: d, className: className))
+            return AnyProperty(ObjectiveCPolymorphicProperty(descriptor: d, className: className, schemaLoader: schemaLoader))
         default:
             assert(false, "Unsupported Property Type")
-            return AnyProperty(ObjectiveCDictionaryProperty(descriptor: descriptor as! ObjectSchemaObjectProperty, className: className))
+            return AnyProperty(ObjectiveCDictionaryProperty(descriptor: descriptor as! ObjectSchemaObjectProperty, className: className, schemaLoader: schemaLoader))
         }
     }
 }
@@ -96,6 +99,7 @@ class AnyProperty: ObjectiveCProperty {
 
     var propertyDescriptor: ObjectSchemaProperty
     var className: String
+    var schemaLoader: SchemaLoader
 
     private var _renderInterfaceDeclaration: Void -> String
     private var _renderImplementationDeclaration: Void -> String
@@ -106,7 +110,9 @@ class AnyProperty: ObjectiveCProperty {
     private var _renderEnumUtilityMethodsInterface: Void -> String
     private var _renderEnumDeclaration: Void -> String
     private var _renderEncodeWithCoderStatement: Void -> String
+    private var _renderEncodeWithCoderStatementForDirtyProperties: Void -> String
     private var _renderDecodeWithCoderStatement: Void -> String
+    private var _renderDecodeWithCoderStatementForDirtyProperties: Void -> String
     private var _renderDeclaration: Bool -> String
     private var _propertyRequiresAssignmentLogic: Void -> Bool
     private var _propertyStatementFromDictionary: (String, String) -> String
@@ -118,8 +124,8 @@ class AnyProperty: ObjectiveCProperty {
     private var _dirtyPropertyAssignmentStatement: Void -> String
 
 
-    required init(descriptor: ObjectSchemaProperty, className: String) {
-        let base = PropertyFactory.propertyForDescriptor(descriptor, className: className)
+    required init(descriptor: ObjectSchemaProperty, className: String, schemaLoader: SchemaLoader) {
+        let base = PropertyFactory.propertyForDescriptor(descriptor, className: className, schemaLoader: schemaLoader)
         _renderInterfaceDeclaration = { base.renderInterfaceDeclaration() }
         _renderImplementationDeclaration = { base.renderImplementationDeclaration() }
         _isScalarType = { base.isScalarType() }
@@ -129,7 +135,9 @@ class AnyProperty: ObjectiveCProperty {
         _renderEnumUtilityMethodsInterface = { base.renderEnumUtilityMethodsInterface() }
         _renderEnumDeclaration = { base.renderEnumDeclaration() }
         _renderEncodeWithCoderStatement = { base.renderEncodeWithCoderStatement() }
+        _renderEncodeWithCoderStatementForDirtyProperties = { base.renderEncodeWithCoderStatementForDirtyProperties() }
         _renderDecodeWithCoderStatement = { base.renderDecodeWithCoderStatement() }
+        _renderDecodeWithCoderStatementForDirtyProperties = { base.renderDecodeWithCoderStatementForDirtyProperties() }
         _propertyRequiresAssignmentLogic = { base.propertyRequiresAssignmentLogic() }
         _objectiveCStringForJSONType = { base.objectiveCStringForJSONType() }
         _propertyMergeStatementFromDictionary = { base.propertyMergeStatementFromDictionary($0, className: $1) }
@@ -142,6 +150,7 @@ class AnyProperty: ObjectiveCProperty {
 
         self.propertyDescriptor = descriptor
         self.className = className
+        self.schemaLoader = schemaLoader
     }
 
 
@@ -155,7 +164,9 @@ class AnyProperty: ObjectiveCProperty {
         _renderEnumUtilityMethodsInterface = { base.renderEnumUtilityMethodsInterface() }
         _renderEnumDeclaration = { base.renderEnumDeclaration() }
         _renderEncodeWithCoderStatement = { base.renderEncodeWithCoderStatement() }
+        _renderEncodeWithCoderStatementForDirtyProperties = { base.renderEncodeWithCoderStatementForDirtyProperties() }
         _renderDecodeWithCoderStatement = { base.renderDecodeWithCoderStatement() }
+        _renderDecodeWithCoderStatementForDirtyProperties = { base.renderDecodeWithCoderStatementForDirtyProperties() }
         _propertyRequiresAssignmentLogic = { base.propertyRequiresAssignmentLogic() }
         _objectiveCStringForJSONType = { base.objectiveCStringForJSONType() }
         _propertyMergeStatementFromDictionary = { base.propertyMergeStatementFromDictionary($0, className: $1) }
@@ -168,6 +179,7 @@ class AnyProperty: ObjectiveCProperty {
 
         self.propertyDescriptor = base.propertyDescriptor
         self.className = base.className
+        self.schemaLoader = base.schemaLoader
     }
 
     func renderInterfaceDeclaration() -> String {
@@ -209,11 +221,19 @@ class AnyProperty: ObjectiveCProperty {
     func renderEncodeWithCoderStatement() -> String {
         return _renderEncodeWithCoderStatement()
     }
+    
+    func renderEncodeWithCoderStatementForDirtyProperties() -> String {
+        return _renderEncodeWithCoderStatementForDirtyProperties()
+    }
 
     func renderDecodeWithCoderStatement() -> String {
         return _renderDecodeWithCoderStatement()
     }
 
+    func renderDecodeWithCoderStatementForDirtyProperties() -> String {
+        return _renderDecodeWithCoderStatementForDirtyProperties()
+    }
+    
     func renderDeclaration(isMutable: Bool) -> String {
         return _renderDeclaration(isMutable)
     }
@@ -244,6 +264,14 @@ class AnyProperty: ObjectiveCProperty {
 }
 
 extension ObjectiveCProperty {
+    
+    func isBaseClass() -> Bool {
+        return self.className == "PIModel"
+    }
+    
+    func dirtyPropertiesIVarName() -> String {
+        return self.isBaseClass() ? "baseDirtyProperties" : "dirtyProperties"
+    }
 
     func renderInterfaceDeclaration() -> String {
         return self.renderDeclaration(false)
@@ -294,10 +322,18 @@ extension ObjectiveCProperty {
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         return "[aCoder encodeObject:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
     }
+    
+    func renderEncodeWithCoderStatementForDirtyProperties() -> String {
+        return "[aCoder encodeInt:_\(self.dirtyPropertiesIVarName()).\(self.dirtyPropertyOption()) forKey:@\"\(self.propertyDescriptor.name)_dirty_property\"];"
+    }
 
     func renderDecodeWithCoderStatement() -> String {
         assert(false)
         return ""
+    }
+    
+    func renderDecodeWithCoderStatementForDirtyProperties() -> String {
+        return "_\(self.dirtyPropertiesIVarName()).\(self.dirtyPropertyOption()) = [aDecoder decodeIntForKey:@\"\(self.propertyDescriptor.name)_dirty_property\"];"
     }
 
     internal func renderDeclaration(isMutable: Bool) -> String {
@@ -351,7 +387,6 @@ extension ObjectiveCProperty {
 
     func dirtyPropertyAssignmentStatement() -> String {
         let dirtyPropertyOption = self.dirtyPropertyOption()
-        let propertyAssignmentStatement = "_dirtyProperties |= \(dirtyPropertyOption);"
-        return propertyAssignmentStatement
+        return "_\(self.dirtyPropertiesIVarName()).\(dirtyPropertyOption) = 1;"
     }
 }

@@ -12,10 +12,12 @@ final class ObjectiveCBooleanProperty: ObjectiveCProperty {
 
     var propertyDescriptor: ObjectSchemaBooleanProperty
     var className: String
-
-    required init(descriptor: ObjectSchemaBooleanProperty, className: String) {
+    var schemaLoader: SchemaLoader
+    
+    required init(descriptor: ObjectSchemaBooleanProperty, className: String, schemaLoader: SchemaLoader) {
         self.propertyDescriptor = descriptor
         self.className = className
+        self.schemaLoader = schemaLoader
     }
 
     func renderEncodeWithCoderStatement() -> String {

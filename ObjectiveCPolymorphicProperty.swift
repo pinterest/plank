@@ -15,11 +15,13 @@ final class ObjectiveCPolymorphicProperty: ObjectiveCProperty {
     var propertyDescriptor: ObjectSchemaPolymorphicProperty
     var className: String
     let properties : [AnyProperty]
+    var schemaLoader: SchemaLoader
 
-    required init(descriptor: ObjectSchemaPolymorphicProperty, className: String) {
+    required init(descriptor: ObjectSchemaPolymorphicProperty, className: String, schemaLoader: SchemaLoader) {
         self.propertyDescriptor = descriptor
         self.className = className
-        self.properties = descriptor.oneOf.map { PropertyFactory.propertyForDescriptor($0, className: className) }
+        self.schemaLoader = schemaLoader
+        self.properties = descriptor.oneOf.map { PropertyFactory.propertyForDescriptor($0, className: className, schemaLoader: schemaLoader) }
 
         assert(self.properties.count > 1, "Polymorphic properties should contain more than one property type.")
         for prop in self.properties {

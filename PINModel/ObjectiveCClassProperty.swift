@@ -8,22 +8,23 @@
 
 import Foundation
 
-
 final class ObjectiveCClassProperty: ObjectiveCProperty {
 
     var propertyDescriptor: ObjectSchemaPointerProperty
     var className: String
     var resolvedSchema: ObjectSchemaObjectProperty
-
-    required init(descriptor: ObjectSchemaPointerProperty, className: String) {
+    var schemaLoader: SchemaLoader
+    
+    required init(descriptor: ObjectSchemaPointerProperty, className: String, schemaLoader: SchemaLoader) {
         self.propertyDescriptor = descriptor
         self.className = className
         let subclass = self.propertyDescriptor
-        if let schema = SchemaLoader.sharedInstance.loadSchema(subclass.ref) as? ObjectSchemaObjectProperty {
+        self.schemaLoader = schemaLoader
+        if let schema = self.schemaLoader.loadSchema(subclass.ref) as? ObjectSchemaObjectProperty {
             self.resolvedSchema = schema
         } else {
             assert(false, "Unable to load schema: \(subclass.ref))")
-            self.resolvedSchema =  SchemaLoader.sharedInstance.loadSchema(subclass.ref) as! ObjectSchemaObjectProperty
+            self.resolvedSchema =  self.schemaLoader.loadSchema(subclass.ref) as! ObjectSchemaObjectProperty
         }
     }
 
@@ -34,7 +35,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
     func renderDecodeWithCoderStatement() -> String {
         // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
         // https://phabricator.pinadmin.com/T46
-        let className = ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: nil).className
+        let className = ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: nil, schemaLoader: self.schemaLoader).className
         return "[aDecoder decodeObjectOfClass:[\(className) class] forKey:@\"\(self.propertyDescriptor.name)\"]"
     }
 
@@ -43,7 +44,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
     }
 
     func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String {
-        if let schema = SchemaLoader.sharedInstance.loadSchema(self.propertyDescriptor.ref) {
+        if let schema = self.schemaLoader.loadSchema(self.propertyDescriptor.ref) {
             var classNameForSchema = ""
             // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
             var generationParameters =  [GenerationParameterType.ClassPrefix: "PI"]
@@ -80,7 +81,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
     func objectiveCStringForJSONType() -> String {
         // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
         // https://phabricator.pinadmin.com/T46
-        return ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: nil).className
+        return ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: nil, schemaLoader: self.schemaLoader).className
     }
 
     func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
@@ -91,7 +92,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
             return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]
         }
 
-        let subclass = PropertyFactory.propertyForDescriptor(self.propertyDescriptor, className: self.className)
+        let subclass = PropertyFactory.propertyForDescriptor(self.propertyDescriptor, className: self.className, schemaLoader: self.schemaLoader)
         let propStmt = subclass.propertyStatementFromDictionary("value", className: className)
         return [
             "if (\(originVariableString).\(formattedPropName) != nil) {",

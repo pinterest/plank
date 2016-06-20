@@ -48,6 +48,13 @@
 		81B00BC01C45CEAA0074364D /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488231C320BF200483015 /* Manager.swift */; };
 		81B00BC11C45CED60074364D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB85E1B60750A00CF4BC4 /* main.swift */; };
 		81CB51CF1C3C91B900EB1834 /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */; };
+		F12F981C1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12F981B1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift */; };
+		F12F981E1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12F981D1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift */; };
+		F12F98201D0E70520094CD38 /* PINModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12F981F1D0E70520094CD38 /* PINModelTests.swift */; };
+		F1CDFEB41D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CDFEB31D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift */; };
+		F1EF27191D1457B600E1678E /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EF27181D1457B600E1678E /* SchemaLoader.swift */; };
+		F1EF271C1D145CD100E1678E /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EF271A1D145CC300E1678E /* Mock.swift */; };
+		F1EF271D1D145CD900E1678E /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EF27181D1457B600E1678E /* SchemaLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -88,6 +95,12 @@
 		81B00BA31C45C7F60074364D /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81B00BA71C45C7F70074364D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCClassProperty.swift; sourceTree = "<group>"; };
+		F12F981B1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInterfaceFileDescriptorTests.swift; sourceTree = "<group>"; };
+		F12F981D1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCPropertyTests.swift; sourceTree = "<group>"; };
+		F12F981F1D0E70520094CD38 /* PINModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PINModelTests.swift; sourceTree = "<group>"; };
+		F1CDFEB31D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGeneratorTests.swift; sourceTree = "<group>"; };
+		F1EF27181D1457B600E1678E /* SchemaLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaLoader.swift; sourceTree = "<group>"; };
+		F1EF271A1D145CC300E1678E /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +142,7 @@
 		814AB85D1B60750A00CF4BC4 /* PINModel */ = {
 			isa = PBXGroup;
 			children = (
+				F1EF27171D14575900E1678E /* Protocols */,
 				8172EB3B1B83B28D005EF82E /* CommandKit */,
 				816B9D241B62EFF800C494BE /* Utilities */,
 				816B9D231B62EFED00C494BE /* ObjectiveC */,
@@ -199,9 +213,23 @@
 			children = (
 				81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */,
 				81B00BA71C45C7F70074364D /* Info.plist */,
+				F1CDFEB31D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift */,
+				F12F981B1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift */,
+				F12F981D1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift */,
+				F12F981F1D0E70520094CD38 /* PINModelTests.swift */,
+				F1EF271A1D145CC300E1678E /* Mock.swift */,
 			);
 			name = Tests;
 			path = "Unit Tests";
+			sourceTree = "<group>";
+		};
+		F1EF27171D14575900E1678E /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				F1EF27181D1457B600E1678E /* SchemaLoader.swift */,
+			);
+			name = Protocols;
+			path = "../Unit Tests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -323,6 +351,7 @@
 				817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */,
 				816488241C320BF200483015 /* ARGV.swift in Sources */,
 				816488251C320BF200483015 /* Command.swift in Sources */,
+				F1EF27191D1457B600E1678E /* SchemaLoader.swift in Sources */,
 				816B9D221B62EFDF00C494BE /* StringExtensions.swift in Sources */,
 				817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */,
 				81B00B761C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */,
@@ -338,19 +367,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				81B00BAD1C45CE7B0074364D /* ObjectiveCArrayProperty.swift in Sources */,
+				F1EF271D1D145CD900E1678E /* SchemaLoader.swift in Sources */,
 				81B00BBC1C45CEA50074364D /* UrlExtensions.swift in Sources */,
 				81B00BB21C45CE7B0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */,
 				81B00BB41C45CE7B0074364D /* ObjectiveCStringProperty.swift in Sources */,
 				81B00BAF1C45CE7B0074364D /* ObjectiveCClassProperty.swift in Sources */,
 				81B00BBE1C45CEAA0074364D /* Command.swift in Sources */,
+				F12F98201D0E70520094CD38 /* PINModelTests.swift in Sources */,
 				81B00BB51C45CE880074364D /* Schema.swift in Sources */,
 				81B00BB71C45CE960074364D /* FileGenerator.swift in Sources */,
 				81B00BC11C45CED60074364D /* main.swift in Sources */,
 				81B00BAB1C45C8280074364D /* ObjectiveCPolymorphicPropertyTests.swift in Sources */,
+				F1EF271C1D145CD100E1678E /* Mock.swift in Sources */,
 				81B00BB11C45CE7B0074364D /* ObjectiveCIntegerProperty.swift in Sources */,
 				81B00BBA1C45CEA20074364D /* ObjCInterfaceFileGenerator.swift in Sources */,
 				81B00BBF1C45CEAA0074364D /* HelpCommand.swift in Sources */,
 				81B00BB91C45CEA20074364D /* ObjCImplementationFileGenerator.swift in Sources */,
+				F12F981C1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */,
 				81B00BAE1C45CE7B0074364D /* ObjectiveCBooleanProperty.swift in Sources */,
 				81B00BB81C45CEA20074364D /* ObjectiveCFileGenerator.swift in Sources */,
 				81B00BBD1C45CEAA0074364D /* ARGV.swift in Sources */,
@@ -358,6 +391,8 @@
 				81B00BB31C45CE7B0074364D /* ObjectiveCProperty.swift in Sources */,
 				81B00BB01C45CE7B0074364D /* ObjectiveCDictionaryProperty.swift in Sources */,
 				81B00BC01C45CEAA0074364D /* Manager.swift in Sources */,
+				F12F981E1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift in Sources */,
+				F1CDFEB41D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +549,7 @@
 				81B00BAA1C45C7F70074364D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

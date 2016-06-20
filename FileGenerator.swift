@@ -18,14 +18,15 @@ public enum GenerationParameterType {
 }
 
 protocol FileGeneratorManager {
-    init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters)
+    init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, schemaLoader: SchemaLoader)
     func filesToGenerate() -> Array<FileGenerator>
 }
 
 protocol FileGenerator {
     init(descriptor: ObjectSchemaObjectProperty,
          generatorParameters: GenerationParameters,
-         parentDescriptor: ObjectSchemaObjectProperty?)
+         parentDescriptor: ObjectSchemaObjectProperty?,
+         schemaLoader: SchemaLoader)
     func fileName() -> String
     func renderFile() -> String
 }

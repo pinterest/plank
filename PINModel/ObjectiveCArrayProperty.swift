@@ -12,10 +12,12 @@ final class ObjectiveCArrayProperty: ObjectiveCProperty {
 
     var propertyDescriptor: ObjectSchemaArrayProperty
     var className: String
-
-    required init(descriptor: ObjectSchemaArrayProperty, className: String) {
+    var schemaLoader: SchemaLoader
+    
+    required init(descriptor: ObjectSchemaArrayProperty, className: String, schemaLoader: SchemaLoader) {
         self.propertyDescriptor = descriptor
         self.className = className
+        self.schemaLoader = schemaLoader
     }
 
     func renderEncodeWithCoderStatement() -> String {
@@ -29,11 +31,11 @@ final class ObjectiveCArrayProperty: ObjectiveCProperty {
 
         switch self.propertyDescriptor.items {
         case let d as ObjectSchemaPolymorphicProperty:
-            let prop = ObjectiveCPolymorphicProperty(descriptor: d, className: self.className)
+            let prop = ObjectiveCPolymorphicProperty(descriptor: d, className: self.className, schemaLoader: self.schemaLoader)
             deserializationClasses.unionInPlace(prop.classList())
         default:
             if let valueTypes = self.propertyDescriptor.items as ObjectSchemaProperty? {
-                let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className)
+                let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className, schemaLoader: self.schemaLoader)
                 deserializationClasses.insert(prop.objectiveCStringForJSONType())
             }
         }
@@ -45,7 +47,7 @@ final class ObjectiveCArrayProperty: ObjectiveCProperty {
     func propertyRequiresAssignmentLogic() -> Bool {
         var requiresAssignmentLogic = false
         if let arrayItems = self.propertyDescriptor.items as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(arrayItems, className: self.className)
+            let prop = PropertyFactory.propertyForDescriptor(arrayItems, className: self.className, schemaLoader: self.schemaLoader)
             assert(prop.isScalarType() == false) // Arrays cannot contain primitive types
             requiresAssignmentLogic = prop.propertyRequiresAssignmentLogic()
         }
@@ -61,7 +63,7 @@ final class ObjectiveCArrayProperty: ObjectiveCProperty {
     func objectiveCStringForJSONType() -> String {
         let subclass = self.propertyDescriptor
         if let valueTypes = subclass.items as ObjectSchemaProperty? {
-            let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className)
+            let prop = PropertyFactory.propertyForDescriptor(valueTypes, className: self.className, schemaLoader: self.schemaLoader)
             return "\(NSStringFromClass(NSArray)) <\(prop.objectiveCStringForJSONType()) *>"
         }
         return NSStringFromClass(NSArray)
@@ -79,7 +81,7 @@ final class ObjectiveCArrayProperty: ObjectiveCProperty {
 
         switch self.propertyDescriptor.items {
         case let arrayItems as ObjectSchemaPolymorphicProperty:
-            let prop = ObjectiveCPolymorphicProperty(descriptor: arrayItems, className: self.className)
+            let prop = ObjectiveCPolymorphicProperty(descriptor: arrayItems, className: self.className, schemaLoader: self.schemaLoader)
             return [
                  "NSArray *items = value;",
                  "NSMutableArray *result = [NSMutableArray arrayWithCapacity:items.count];",
@@ -94,7 +96,7 @@ final class ObjectiveCArrayProperty: ObjectiveCProperty {
             ]
         default:
             if let arrayItems = self.propertyDescriptor.items as ObjectSchemaProperty? {
-                let prop = PropertyFactory.propertyForDescriptor(arrayItems, className: self.className)
+                let prop = PropertyFactory.propertyForDescriptor(arrayItems, className: self.className, schemaLoader: self.schemaLoader)
                 assert(prop.isScalarType() == false) // Arrays cannot contain primitive types
                 if prop.propertyRequiresAssignmentLogic() {
                     let deserializedObject = prop.propertyStatementFromDictionary("obj", className: className)

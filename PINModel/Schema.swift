@@ -304,8 +304,8 @@ class ObjectSchemaBooleanProperty: ObjectSchemaProperty {}
 class ObjectSchemaNumberProperty: ObjectSchemaProperty {}
 class ObjectSchemaNullProperty: ObjectSchemaProperty {}
 
-class SchemaLoader {
-    static let sharedInstance = SchemaLoader()
+class RemoteSchemaLoader: SchemaLoader {
+    static let sharedInstance = RemoteSchemaLoader()
 
     var refs: [NSURL:ObjectSchemaProperty]
 
