@@ -38,7 +38,7 @@ public enum ObjCPrimitiveType: String {
 
 
 protocol ObjectiveCProperty: class {
-    typealias SchemaType : ObjectSchemaProperty
+    associatedtype SchemaType : ObjectSchemaProperty
 
     var propertyDescriptor: SchemaType { get set }
     var className: String { get set }
@@ -55,9 +55,9 @@ protocol ObjectiveCProperty: class {
     func renderEnumUtilityMethodsInterface() -> String
     func renderEnumDeclaration() -> String
     func renderEncodeWithCoderStatement() -> String
-    func renderEncodeWithCoderStatementForDirtyProperties() -> String
+    func renderEncodeWithCoderStatementForDirtyProperties(dirtyPropertiesIVarName: String) -> String
     func renderDecodeWithCoderStatement() -> String
-    func renderDecodeWithCoderStatementForDirtyProperties() -> String
+    func renderDecodeWithCoderStatementForDirtyProperties(dirtyPropertiesIVarName: String) -> String
     func renderDeclaration(isMutable: Bool) -> String
     func propertyRequiresAssignmentLogic() -> Bool
     func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String
@@ -65,7 +65,7 @@ protocol ObjectiveCProperty: class {
     func objectiveCStringForJSONType() -> String
     func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String]
     func polymorphicTypeIdentifier() -> String
-    func dirtyPropertyAssignmentStatement() -> String
+    func dirtyPropertyAssignmentStatement(dirtyPropertiesIVarName: String) -> String
 }
 
 class PropertyFactory {
@@ -110,9 +110,9 @@ class AnyProperty: ObjectiveCProperty {
     private var _renderEnumUtilityMethodsInterface: Void -> String
     private var _renderEnumDeclaration: Void -> String
     private var _renderEncodeWithCoderStatement: Void -> String
-    private var _renderEncodeWithCoderStatementForDirtyProperties: Void -> String
+    private var _renderEncodeWithCoderStatementForDirtyProperties: String -> String
     private var _renderDecodeWithCoderStatement: Void -> String
-    private var _renderDecodeWithCoderStatementForDirtyProperties: Void -> String
+    private var _renderDecodeWithCoderStatementForDirtyProperties: String -> String
     private var _renderDeclaration: Bool -> String
     private var _propertyRequiresAssignmentLogic: Void -> Bool
     private var _propertyStatementFromDictionary: (String, String) -> String
@@ -121,7 +121,7 @@ class AnyProperty: ObjectiveCProperty {
     private var _propertyMergeStatementFromDictionary: (String, String) -> [String]
     private var _polymorphicTypeIdentifier: Void -> String
     private var _dirtyPropertyOption: Void -> String
-    private var _dirtyPropertyAssignmentStatement: Void -> String
+    private var _dirtyPropertyAssignmentStatement: String -> String
 
 
     required init(descriptor: ObjectSchemaProperty, className: String, schemaLoader: SchemaLoader) {
@@ -135,9 +135,9 @@ class AnyProperty: ObjectiveCProperty {
         _renderEnumUtilityMethodsInterface = { base.renderEnumUtilityMethodsInterface() }
         _renderEnumDeclaration = { base.renderEnumDeclaration() }
         _renderEncodeWithCoderStatement = { base.renderEncodeWithCoderStatement() }
-        _renderEncodeWithCoderStatementForDirtyProperties = { base.renderEncodeWithCoderStatementForDirtyProperties() }
+        _renderEncodeWithCoderStatementForDirtyProperties = { base.renderEncodeWithCoderStatementForDirtyProperties($0) }
         _renderDecodeWithCoderStatement = { base.renderDecodeWithCoderStatement() }
-        _renderDecodeWithCoderStatementForDirtyProperties = { base.renderDecodeWithCoderStatementForDirtyProperties() }
+        _renderDecodeWithCoderStatementForDirtyProperties = { base.renderDecodeWithCoderStatementForDirtyProperties($0) }
         _propertyRequiresAssignmentLogic = { base.propertyRequiresAssignmentLogic() }
         _objectiveCStringForJSONType = { base.objectiveCStringForJSONType() }
         _propertyMergeStatementFromDictionary = { base.propertyMergeStatementFromDictionary($0, className: $1) }
@@ -146,7 +146,7 @@ class AnyProperty: ObjectiveCProperty {
         _propertyStatementFromDictionary = { base.propertyStatementFromDictionary($0, className: $1) }
         _polymorphicTypeIdentifier = { base.polymorphicTypeIdentifier() }
         _dirtyPropertyOption = { base.dirtyPropertyOption() }
-        _dirtyPropertyAssignmentStatement = { base.dirtyPropertyAssignmentStatement() }
+        _dirtyPropertyAssignmentStatement = { base.dirtyPropertyAssignmentStatement($0) }
 
         self.propertyDescriptor = descriptor
         self.className = className
@@ -164,9 +164,9 @@ class AnyProperty: ObjectiveCProperty {
         _renderEnumUtilityMethodsInterface = { base.renderEnumUtilityMethodsInterface() }
         _renderEnumDeclaration = { base.renderEnumDeclaration() }
         _renderEncodeWithCoderStatement = { base.renderEncodeWithCoderStatement() }
-        _renderEncodeWithCoderStatementForDirtyProperties = { base.renderEncodeWithCoderStatementForDirtyProperties() }
+        _renderEncodeWithCoderStatementForDirtyProperties = { base.renderEncodeWithCoderStatementForDirtyProperties($0) }
         _renderDecodeWithCoderStatement = { base.renderDecodeWithCoderStatement() }
-        _renderDecodeWithCoderStatementForDirtyProperties = { base.renderDecodeWithCoderStatementForDirtyProperties() }
+        _renderDecodeWithCoderStatementForDirtyProperties = { base.renderDecodeWithCoderStatementForDirtyProperties($0) }
         _propertyRequiresAssignmentLogic = { base.propertyRequiresAssignmentLogic() }
         _objectiveCStringForJSONType = { base.objectiveCStringForJSONType() }
         _propertyMergeStatementFromDictionary = { base.propertyMergeStatementFromDictionary($0, className: $1) }
@@ -175,7 +175,7 @@ class AnyProperty: ObjectiveCProperty {
         _propertyStatementFromDictionary = { base.propertyStatementFromDictionary($0, className: $1) }
         _polymorphicTypeIdentifier = { base.polymorphicTypeIdentifier() }
         _dirtyPropertyOption = { base.dirtyPropertyOption() }
-        _dirtyPropertyAssignmentStatement = { base.dirtyPropertyAssignmentStatement() }
+        _dirtyPropertyAssignmentStatement = { base.dirtyPropertyAssignmentStatement($0) }
 
         self.propertyDescriptor = base.propertyDescriptor
         self.className = base.className
@@ -222,16 +222,16 @@ class AnyProperty: ObjectiveCProperty {
         return _renderEncodeWithCoderStatement()
     }
     
-    func renderEncodeWithCoderStatementForDirtyProperties() -> String {
-        return _renderEncodeWithCoderStatementForDirtyProperties()
+    func renderEncodeWithCoderStatementForDirtyProperties(dirtyPropertiesIVarName: String) -> String {
+        return _renderEncodeWithCoderStatementForDirtyProperties(dirtyPropertiesIVarName)
     }
 
     func renderDecodeWithCoderStatement() -> String {
         return _renderDecodeWithCoderStatement()
     }
 
-    func renderDecodeWithCoderStatementForDirtyProperties() -> String {
-        return _renderDecodeWithCoderStatementForDirtyProperties()
+    func renderDecodeWithCoderStatementForDirtyProperties(dirtyPropertiesIVarName: String) -> String {
+        return _renderDecodeWithCoderStatementForDirtyProperties(dirtyPropertiesIVarName)
     }
     
     func renderDeclaration(isMutable: Bool) -> String {
@@ -258,20 +258,23 @@ class AnyProperty: ObjectiveCProperty {
         return _propertyMergeStatementFromDictionary(originVariableString, className)
     }
 
-    func dirtyPropertyAssignmentStatement() -> String {
-        return _dirtyPropertyAssignmentStatement()
+    func dirtyPropertyAssignmentStatement(dirtyPropertiesIVarName: String) -> String {
+        return _dirtyPropertyAssignmentStatement(dirtyPropertiesIVarName)
     }
 }
 
 extension ObjectiveCProperty {
     
-    func isBaseClass() -> Bool {
-        return self.className == "PIModel"
-    }
-    
-    func dirtyPropertiesIVarName() -> String {
-        return self.isBaseClass() ? "baseDirtyProperties" : "dirtyProperties"
-    }
+//    func isBaseClass() -> Bool {
+//        if let classObj = self as? ObjectiveCClassProperty {
+//            return classObj.resolvedSchema.extends = nil
+//        }
+//        return false
+//    }
+//
+//    func dirtyPropertiesIVarName() -> String {
+//        return self.isBaseClass() ? "baseDirtyProperties" : "dirtyProperties"
+//    }
 
     func renderInterfaceDeclaration() -> String {
         return self.renderDeclaration(false)
@@ -323,8 +326,8 @@ extension ObjectiveCProperty {
         return "[aCoder encodeObject:self.\(formattedPropName) forKey:@\"\(self.propertyDescriptor.name)\"]"
     }
     
-    func renderEncodeWithCoderStatementForDirtyProperties() -> String {
-        return "[aCoder encodeInt:_\(self.dirtyPropertiesIVarName()).\(self.dirtyPropertyOption()) forKey:@\"\(self.propertyDescriptor.name)_dirty_property\"];"
+    func renderEncodeWithCoderStatementForDirtyProperties(dirtyPropertiesIVarName: String) -> String {
+        return "[aCoder encodeInt:_\(dirtyPropertiesIVarName).\(self.dirtyPropertyOption()) forKey:@\"\(self.propertyDescriptor.name)_dirty_property\"];"
     }
 
     func renderDecodeWithCoderStatement() -> String {
@@ -332,8 +335,8 @@ extension ObjectiveCProperty {
         return ""
     }
     
-    func renderDecodeWithCoderStatementForDirtyProperties() -> String {
-        return "_\(self.dirtyPropertiesIVarName()).\(self.dirtyPropertyOption()) = [aDecoder decodeIntForKey:@\"\(self.propertyDescriptor.name)_dirty_property\"];"
+    func renderDecodeWithCoderStatementForDirtyProperties(dirtyPropertiesIVarName: String) -> String {
+        return "_\(dirtyPropertiesIVarName).\(self.dirtyPropertyOption()) = [aDecoder decodeIntForKey:@\"\(self.propertyDescriptor.name)_dirty_property\"];"
     }
 
     internal func renderDeclaration(isMutable: Bool) -> String {
@@ -385,8 +388,8 @@ extension ObjectiveCProperty {
         return self.className + "DirtyProperty" + capitalizedPropertyName
     }
 
-    func dirtyPropertyAssignmentStatement() -> String {
+    func dirtyPropertyAssignmentStatement(dirtyPropertiesIVarName : String) -> String {
         let dirtyPropertyOption = self.dirtyPropertyOption()
-        return "_\(self.dirtyPropertiesIVarName()).\(dirtyPropertyOption) = 1;"
+        return "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption) = 1;"
     }
 }

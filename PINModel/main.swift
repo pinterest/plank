@@ -9,11 +9,12 @@
 import Foundation
 
 
-let BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(
-    name: "model", objectType: JSONType.Object,
-    propertyInfo: ["properties": [ "id": [ "type": "string"],
-                   "additional_local_non_API_properties": [ "type": "object"]]],
-    sourceId: NSURL())
+//let BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(
+//    name: "model", objectType: JSONType.Object,
+//    propertyInfo: ["properties": [ "id": [ "type": "string"],
+//                   "additional_local_non_API_properties": [ "type": "object"]]],
+//    sourceId: NSURL())
+
 var manager = Manager()
 
 func generateFile(schema: ObjectSchemaObjectProperty, outputDirectory: NSURL) {
@@ -34,8 +35,6 @@ func generateFile(schema: ObjectSchemaObjectProperty, outputDirectory: NSURL) {
 
 func generateFilesWithInitialUrl(url: NSURL, outputDirectory: NSURL) {
 
-    // Generate Base Model
-    generateFile(BASE_MODEL_INSTANCE, outputDirectory: outputDirectory)
 
     // Generate Subclasses
     if let _ = RemoteSchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
@@ -54,6 +53,9 @@ func generateFilesWithInitialUrl(url: NSURL, outputDirectory: NSURL) {
             })
         } while (processedSchemas.count != RemoteSchemaLoader.sharedInstance.refs.keys.count)
     }
+
+    // Generate Base Model
+//    generateFile(BASE_MODEL_INSTANCE, outputDirectory: outputDirectory)
 }
 
 manager.register("generate", "Generate Model Files") { argv in

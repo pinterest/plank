@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import pinmodel
+//@testable import pinmodel
 
 class PINModelTests: XCTestCase {
     let schemaLoader = MockSchemaLoader()

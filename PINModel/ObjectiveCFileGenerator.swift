@@ -19,7 +19,12 @@ class ObjectiveCFileGeneratorManager: FileGeneratorManager {
     required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: [GenerationParameterType:String], schemaLoader: SchemaLoader) {
         self.objectDescriptor = descriptor
         self.generatorParams = generatorParameters
-        self.parentObjectDescriptor = descriptor === BASE_MODEL_INSTANCE ? nil: BASE_MODEL_INSTANCE
+        if let parentObjectSchema = descriptor.extends as ObjectSchemaPointerProperty? {
+            self.parentObjectDescriptor = schemaLoader.loadSchema(parentObjectSchema.ref) as? ObjectSchemaObjectProperty
+        } else {
+            self.parentObjectDescriptor = nil
+        }
+
         self.schemaLoader = schemaLoader
     }
 

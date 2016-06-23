@@ -123,11 +123,11 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                 "- (nullable instancetype)initWithBuilder:(BuilderObjectType)builder NS_DESIGNATED_INITIALIZER;",
                 "- (instancetype)copyWithBlock:(void (^)(BuilderObjectType builder))block;",
                 "- (instancetype)mergeWithDictionary:(NSDictionary *)modelDictionary __attribute__((deprecated));",
-                "- (instancetype)mergeWithModel:(PIModel *)modelObject;",
+                "- (instancetype)mergeWithModel:(\(self.className) *)modelObject;",
                 "// Merges the fields of the receiver with another model. If callDidMerge is NO, this\n" +
                 "// method will call the normal post init hook PIModelDidInitialize when merge is complete.\n" +
                 "// If callDidInit is YES, this method will call PIModelDidMerge.\n" +
-                "- (instancetype)mergeWithModel:(PIModel *)modelObject initType:(PIModelInitType)initType;",
+                "- (instancetype)mergeWithModel:(\(self.className) *)modelObject initType:(PIModelInitType)initType;",
                 "- (NSArray<NSString *> *)modelPropertyNames;",
                 "- (NSArray<NSString *> *)modelArrayPropertyNames;",
                 "- (NSArray<NSString *> *)modelDictionaryPropertyNames;",

@@ -51,14 +51,15 @@ class ObjectSchemaProperty {
         self.defaultValue = (propertyInfo["default"] as AnyObject?) ?? nil
     }
 
-    class func propertyForJSONObject(json: JSONObject, var name: String = "", scopeUrl: NSURL) -> ObjectSchemaProperty {
+    class func propertyForJSONObject(json: JSONObject, name: String = "", scopeUrl: NSURL) -> ObjectSchemaProperty {
+        var propertyName = name
         if let title = json["title"] as? String {
-            name = title
+            propertyName = title
         }
 
         // Check for "type"
         if let propTypeString = json["type"] as? String, propType = JSONType(rawValue: propTypeString) {
-            return ObjectSchemaProperty.propertyForType(name, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
+            return ObjectSchemaProperty.propertyForType(propertyName, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
         }
 
         var sourceUrl = scopeUrl
@@ -74,7 +75,7 @@ class ObjectSchemaProperty {
         // Check for reference to relative or remote path.
         if let _ = json["$ref"] as? String {
             if sourceUrl != NSURL() {
-                return ObjectSchemaPointerProperty(name: name, objectType: JSONType.Pointer,
+                return ObjectSchemaPointerProperty(name: propertyName, objectType: JSONType.Pointer,
                     propertyInfo: json, sourceId: sourceUrl)
             } else {
                 assert(false) // Shouldn't be reached
@@ -82,13 +83,13 @@ class ObjectSchemaProperty {
         }
 
         if let _ = json["oneOf"] as? [JSONObject] {
-            return ObjectSchemaPolymorphicProperty(name: name, objectType: JSONType.Polymorphic, propertyInfo: json, sourceId: scopeUrl)
+            return ObjectSchemaPolymorphicProperty(name: propertyName, objectType: JSONType.Polymorphic, propertyInfo: json, sourceId: scopeUrl)
         }
 
 
         assert(false) // Shouldn't be reached
         let propType: JSONType = JSONType(rawValue: (json["type"] as? String)!)!
-        return ObjectSchemaProperty.propertyForType(name, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
+        return ObjectSchemaProperty.propertyForType(propertyName, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
     }
 
     class func propertyForType(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) -> ObjectSchemaProperty {
@@ -136,6 +137,8 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
     let definitions: [ObjectSchemaProperty]
     let properties: [ObjectSchemaProperty]
     let additionalProperties: ObjectSchemaProperty?
+    let extends: ObjectSchemaPointerProperty?
+
     var referencedClasses: [ObjectSchemaPointerProperty] {
         let seenReferences = NSMutableSet()
 
@@ -219,6 +222,17 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
             self.additionalProperties = ObjectSchemaProperty.propertyForJSONObject(rawItems, scopeUrl: id)
         } else {
             self.additionalProperties = nil
+        }
+
+        if let rawExtendsFrom = propertyInfo["extends"] as? JSONObject {
+            if let extendsFromSchema = ObjectSchemaProperty.propertyForJSONObject(rawExtendsFrom, scopeUrl: id) as? ObjectSchemaPointerProperty {
+                self.extends = extendsFromSchema
+            } else {
+                assert(false, "Invalid extends schema specified in \(id)")
+                self.extends = nil;
+            }
+        } else {
+            self.extends = nil;
         }
 
         // Use title if available as the object name, fall-back to the provided name in this constructor.

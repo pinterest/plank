@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import pinmodel
+//@testable import pinmodel
 
 class ObjectiveCInterfaceFileDescriptorTests: PINModelTests {
     

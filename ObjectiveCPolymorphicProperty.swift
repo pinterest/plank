@@ -9,7 +9,6 @@
 import Foundation
 
 
-
 final class ObjectiveCPolymorphicProperty: ObjectiveCProperty {
 
     var propertyDescriptor: ObjectSchemaPolymorphicProperty
@@ -35,11 +34,11 @@ final class ObjectiveCPolymorphicProperty: ObjectiveCProperty {
     }
 
     func objectiveCStringForJSONType() -> String {
-        return "__kindof PI" + BASE_MODEL_INSTANCE.name.snakeCaseToCamelCase()
+        return "__kindof PIModel" // HACK - FIXME
+//        return "__kindof PI" + BASE_MODEL_INSTANCE.name.snakeCaseToCamelCase()
     }
 
     func renderDecodeWithCoderStatement() -> String {
-        // - (id)decodeObjectOfClasses:(NSSet *)classes forKey:(NSString *)key NS_AVAILABLE(10_8, 6_0);
         var deserializationClasses = Set<String>()
         for prop in self.properties {
             deserializationClasses.insert(prop.objectiveCStringForJSONType())

@@ -11,6 +11,7 @@
 		814AB85F1B60750A00CF4BC4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB85E1B60750A00CF4BC4 /* main.swift */; };
 		814AB8661B61580A00CF4BC4 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8651B61580A00CF4BC4 /* Schema.swift */; };
 		814AB8681B61584700CF4BC4 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */; };
+		8153D7501D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8153D74F1D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift */; };
 		816488241C320BF200483015 /* ARGV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164881F1C320BF200483015 /* ARGV.swift */; };
 		816488251C320BF200483015 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488201C320BF200483015 /* Command.swift */; };
 		816488261C320BF200483015 /* HelpCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488221C320BF200483015 /* HelpCommand.swift */; };
@@ -75,6 +76,7 @@
 		814AB85E1B60750A00CF4BC4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = main.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		814AB8651B61580A00CF4BC4 /* Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; };
+		8153D74F1D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGeneratorTests.swift; sourceTree = "<group>"; };
 		8164881F1C320BF200483015 /* ARGV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARGV.swift; path = CommandKit/ARGV.swift; sourceTree = "<group>"; };
 		816488201C320BF200483015 /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Command.swift; path = CommandKit/Command.swift; sourceTree = "<group>"; };
 		816488211C320BF200483015 /* CommandKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommandKit.h; path = CommandKit/CommandKit.h; sourceTree = "<group>"; };
@@ -142,15 +144,22 @@
 		814AB85D1B60750A00CF4BC4 /* PINModel */ = {
 			isa = PBXGroup;
 			children = (
+				8153D74E1D1B2EF700BB4F60 /* Core */,
 				F1EF27171D14575900E1678E /* Protocols */,
 				8172EB3B1B83B28D005EF82E /* CommandKit */,
-				816B9D241B62EFF800C494BE /* Utilities */,
+				816B9D241B62EFF800C494BE /* Extensions */,
 				816B9D231B62EFED00C494BE /* ObjectiveC */,
 				814AB85E1B60750A00CF4BC4 /* main.swift */,
-				814AB8651B61580A00CF4BC4 /* Schema.swift */,
-				8125FF901B61AF68007E4B65 /* FileGenerator.swift */,
 			);
 			path = PINModel;
+			sourceTree = "<group>";
+		};
+		8153D74E1D1B2EF700BB4F60 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				814AB8651B61580A00CF4BC4 /* Schema.swift */,
+			);
+			name = Core;
 			sourceTree = "<group>";
 		};
 		8164881C1C31FC9700483015 /* Properties */ = {
@@ -187,13 +196,13 @@
 			name = ObjectiveC;
 			sourceTree = "<group>";
 		};
-		816B9D241B62EFF800C494BE /* Utilities */ = {
+		816B9D241B62EFF800C494BE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				816B9D211B62EFDF00C494BE /* StringExtensions.swift */,
 				81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */,
 			);
-			name = Utilities;
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		8172EB3B1B83B28D005EF82E /* CommandKit */ = {
@@ -214,6 +223,7 @@
 				81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */,
 				81B00BA71C45C7F70074364D /* Info.plist */,
 				F1CDFEB31D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift */,
+				8153D74F1D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift */,
 				F12F981B1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift */,
 				F12F981D1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift */,
 				F12F981F1D0E70520094CD38 /* PINModelTests.swift */,
@@ -226,6 +236,7 @@
 		F1EF27171D14575900E1678E /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				8125FF901B61AF68007E4B65 /* FileGenerator.swift */,
 				F1EF27181D1457B600E1678E /* SchemaLoader.swift */,
 			);
 			name = Protocols;
@@ -367,6 +378,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81B00BAD1C45CE7B0074364D /* ObjectiveCArrayProperty.swift in Sources */,
+				8153D7501D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift in Sources */,
 				F1EF271D1D145CD900E1678E /* SchemaLoader.swift in Sources */,
 				81B00BBC1C45CEA50074364D /* UrlExtensions.swift in Sources */,
 				81B00BB21C45CE7B0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */,

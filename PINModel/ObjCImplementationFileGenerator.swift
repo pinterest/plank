@@ -52,7 +52,6 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         return self.parentDescriptor == nil
     }
 
-    //TODO make this "lazy"
     func classProperties() -> [ObjectSchemaProperty] {
         if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
             let baseProperties = Set(baseClass.properties.map({ $0.name }))
@@ -190,7 +189,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 lines = property.propertyAssignmentStatementFromDictionary(self.className)
             }
 
-            lines.append(property.dirtyPropertyAssignmentStatement())
+            lines.append(property.dirtyPropertyAssignmentStatement(self.dirtyPropertiesIVarName))
             let result = ["if ([key isEqualToString:@\"\(propertyDescriptor.name)\"]) {"] + lines.map({indentation + $0}) + [ indentation + "return;", "}"]
             return result.map({ indentation + indentation + $0 }).joinWithSeparator("\n")
         }
@@ -311,7 +310,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         if self.isBaseClass() {
             superInitCall = indentation + "if (!(self = [super init])) { return self; }"
         }
-        var lines = [
+        let lines = [
             "- (instancetype)initWithModel:(\(self.className) *)modelObject",
             "{",
             "    NSParameterAssert(modelObject);",
@@ -348,7 +347,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         }
         // Done in one line here because Swift complains about complexity when placed in array
         let dirtyPropertyLines = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
-            return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderDecodeWithCoderStatementForDirtyProperties()
+            return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderDecodeWithCoderStatementForDirtyProperties(self.dirtyPropertiesIVarName)
         }.map({ indentation + $0 }).joinWithSeparator("\n\n") + "\n"
         
         var superInitCall = indentation + "if (!(self = [super initWithCoder:aDecoder])) { return self; }"
@@ -376,7 +375,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderEncodeWithCoderStatement() + ";"
         }
         let dirtyPropertyLines = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
-            return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderEncodeWithCoderStatementForDirtyProperties()
+            return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderEncodeWithCoderStatementForDirtyProperties(self.dirtyPropertiesIVarName)
         }
         let indentation = "    "
         var encodeWithCoderLines = [
@@ -634,7 +633,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 "- (void)set\(capitalizedPropertyName):(\(type))\(formattedPropName)",
                 "{",
                 "\(indentation)_\(formattedPropName) = \(formattedPropName);",
-                "\(indentation)\(property.dirtyPropertyAssignmentStatement())",
+                "\(indentation)\(property.dirtyPropertyAssignmentStatement(self.dirtyPropertiesIVarName))",
                 "}"
             ]
             return lines.joinWithSeparator("\n")

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import pinmodel
+//@testable import pinmodel
 
 class ObjectiveCPropertyTests: PINModelTests {
     var baseProperty: AnyProperty!
@@ -16,8 +16,8 @@ class ObjectiveCPropertyTests: PINModelTests {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        self.baseProperty = PropertyFactory.propertyForDescriptor(self.baseImpl.objectDescriptor, className: "PIModel", schemaLoader: self.schemaLoader)
-        self.childProperty = PropertyFactory.propertyForDescriptor(self.childImpl.objectDescriptor, className: "PINotification", schemaLoader: self.schemaLoader)
+//        self.baseProperty = PropertyFactory.propertyForDescriptor(self.baseImpl.objectDescriptor, className: "PIModel", schemaLoader: self.schemaLoader)
+//        self.childProperty = PropertyFactory.propertyForDescriptor(self.childImpl.objectDescriptor, className: "PINotification", schemaLoader: self.schemaLoader)
     }
     
     override func tearDown() {
@@ -25,17 +25,4 @@ class ObjectiveCPropertyTests: PINModelTests {
         super.tearDown()
     }
 
-    func testDirtyPropertiesIVarNameForBaseClass() {
-        let dirtyPropertyIVarName = baseProperty.dirtyPropertiesIVarName()
-        let expectedDirtyPropertyIVarName = "baseDirtyProperties"
-        
-        XCTAssertEqual(dirtyPropertyIVarName, expectedDirtyPropertyIVarName)
-    }
-
-    func testDirtyPropertiesIVarNameForChildClass() {
-        let dirtyPropertyIVarName = childProperty.dirtyPropertiesIVarName()
-        let expectedDirtyPropertyIVarName = "dirtyProperties"
-        
-        XCTAssertEqual(dirtyPropertyIVarName, expectedDirtyPropertyIVarName)
-    }
 }

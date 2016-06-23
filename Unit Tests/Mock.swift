@@ -15,6 +15,7 @@ let TEST_NOTIFICATION_MODEL_INSTANCE = ObjectSchemaObjectProperty(
     propertyInfo: [
         "title" : "notification",
         "$schema" : "http://json-schema.org/schema#",
+        "extends" : ["$ref" : "model.json"],
         "required" : ["id"],
         "description" : "Schema definition of a notification",
         "type" : "object",
@@ -31,6 +32,7 @@ let TEST_NOTIFICATION_SECTION_MODEL_INSTANCE = ObjectSchemaObjectProperty(
     propertyInfo: [
         "title" : "notification_sections",
         "$schema" : "http://json-schema.org/schema#",
+        "extends" : ["$ref" : "model.json"],
         "required" : [],
         "description" : "Schema definition of a notification section",
         "type" : "object",
@@ -50,6 +52,7 @@ let TEST_NOTIFICATION_SECTION_DETAILS_MODEL_INSTANCE = ObjectSchemaObjectPropert
     propertyInfo: [
         "title" : "notification_section_details",
         "$schema" : "http://json-schema.org/schema#",
+        "extends" : ["$ref" : "model.json"],
         "required" : [],
         "description" : "Schema definition of a notification section details",
         "type" : "object",
