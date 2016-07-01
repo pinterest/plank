@@ -181,7 +181,7 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
             if rawId.hasPrefix("http") {
                 id = NSURL(string: rawId)!
             } else {
-                id = NSURL(fileURLWithPath: rawId).URLByStandardizingPath!
+                id = NSURL(string: rawId, relativeToURL: sourceId)!
             }
         }
 
@@ -268,7 +268,7 @@ class ObjectSchemaPointerProperty: ObjectSchemaProperty {
                     return NSURL(string:refString, relativeToURL:sourceId)!
                 } else {
                     var baseUrl = sourceId.URLByDeletingLastPathComponent
-                    if baseUrl!.path == "." {
+                    if baseUrl?.path == "." {
                         baseUrl = NSURL(fileURLWithPath: (baseUrl?.path)!)
                     }
                     let lastPathComponentString = NSURL(string: refString)?.pathComponents?.last

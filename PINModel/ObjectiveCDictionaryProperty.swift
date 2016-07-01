@@ -41,8 +41,7 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
                 deserializationClasses.insert(prop.objectiveCStringForJSONType())
             }
         }
-        // TODO: Handle polymorphic types as the value type (additional props).
-        // Figure out the best way to make this sensible. the classes might just return a list of classes and the protocol extension can take over this implementation.
+
         let classList = deserializationClasses.map { "[\($0) class]" }.joinWithSeparator(", ")
         return "[aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[\(classList)]] forKey:@\"\(self.propertyDescriptor.name)\"]"
     }

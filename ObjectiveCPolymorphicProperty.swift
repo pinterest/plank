@@ -34,8 +34,37 @@ final class ObjectiveCPolymorphicProperty: ObjectiveCProperty {
     }
 
     func objectiveCStringForJSONType() -> String {
-        return "__kindof PIModel" // HACK - FIXME
-//        return "__kindof PI" + BASE_MODEL_INSTANCE.name.snakeCaseToCamelCase()
+      // Find the last common ancestor of all objects and fallback to NSObject if there isn't one.
+      let commonParentElements = NSCountedSet()
+      var queue = Array<AnyProperty>()
+      queue.appendContentsOf(self.properties)
+      while !queue.isEmpty {
+
+        if let prop = queue.popLast() {
+
+          switch prop.propertyDescriptor {
+
+          case let pointerProp as ObjectSchemaPointerProperty:
+            let classProp = ObjectiveCClassProperty(descriptor: pointerProp, className: self.className, schemaLoader: self.schemaLoader)
+
+            let classType = prop.objectiveCStringForJSONType()
+
+            commonParentElements.addObject(classType)
+
+            if let parentPointerProp = classProp.resolvedSchema.extends {
+              let parentProp = PropertyFactory.propertyForDescriptor(parentPointerProp, className: self.className, schemaLoader: self.schemaLoader)
+              queue.append(parentProp)
+            }
+
+            if commonParentElements.countForObject(classType) == self.properties.count {
+              return "__kindof \(classType)"
+            }
+          default:
+            return "__kindof NSObject" // One of the properties is not a class so fallback to NSObject
+          }
+        }
+      }
+      return "__kindof NSObject"
     }
 
     func renderDecodeWithCoderStatement() -> String {

@@ -13,6 +13,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
     var propertyDescriptor: ObjectSchemaPointerProperty
     var className: String
     var resolvedSchema: ObjectSchemaObjectProperty
+    let parentProperty: ObjectSchemaObjectProperty?
     var schemaLoader: SchemaLoader
     
     required init(descriptor: ObjectSchemaPointerProperty, className: String, schemaLoader: SchemaLoader) {
@@ -26,6 +27,12 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
             assert(false, "Unable to load schema: \(subclass.ref))")
             self.resolvedSchema =  self.schemaLoader.loadSchema(subclass.ref) as! ObjectSchemaObjectProperty
         }
+
+        if let parentSchema = self.resolvedSchema.extends {
+            self.parentProperty = self.schemaLoader.loadSchema(parentSchema.ref) as? ObjectSchemaObjectProperty
+        } else {
+            self.parentProperty = nil
+        }
     }
 
     func polymorphicTypeIdentifier() -> String {
@@ -35,7 +42,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
     func renderDecodeWithCoderStatement() -> String {
         // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
         // https://phabricator.pinadmin.com/T46
-        let className = ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: nil, schemaLoader: self.schemaLoader).className
+        let className = ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: self.parentProperty, schemaLoader: self.schemaLoader).className
         return "[aDecoder decodeObjectOfClass:[\(className) class] forKey:@\"\(self.propertyDescriptor.name)\"]"
     }
 
@@ -81,7 +88,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
     func objectiveCStringForJSONType() -> String {
         // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
         // https://phabricator.pinadmin.com/T46
-        return ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: nil, schemaLoader: self.schemaLoader).className
+        return ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: self.parentProperty, schemaLoader: self.schemaLoader).className
     }
 
     func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {

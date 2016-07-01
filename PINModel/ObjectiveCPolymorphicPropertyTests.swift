@@ -8,28 +8,46 @@
 
 import XCTest
 
-class ObjectiveCPolymorphicPropertyTests: XCTestCase {
+class ObjectiveCPolymorphicPropertyTests: PINModelTests {
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testObjectiveCTypeWithCommonParents() {
+        let schemaProp = ObjectSchemaPolymorphicProperty(name: "test",
+                                        objectType: JSONType.Polymorphic,
+                                        propertyInfo: ["oneOf" : [
+                                            ["$ref": "notification_sections.json"],
+                                            ["$ref": "notification_section_details.json"]
+                                            ]],
+                                        sourceId: NSURL(fileURLWithPath: "test.json"))
+        
+        let prop = ObjectiveCPolymorphicProperty(descriptor: schemaProp, className: "", schemaLoader: schemaLoader)
+        XCTAssertEqual("__kindof PIModel", prop.objectiveCStringForJSONType())
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testObjectiveCTypeWithParentAndChild() {
+        // In the event that we have multiple types where one happens to be a subclass of another
+        let schemaProp = ObjectSchemaPolymorphicProperty(name: "test",
+                                        objectType: JSONType.Polymorphic,
+                                        propertyInfo: ["oneOf" : [
+                                            ["$ref": "notification_sections.json"],
+                                            ["$ref": "model.json"]
+                                            ]],
+                                        sourceId: NSURL(fileURLWithPath: "test.json"))
+        
+        let prop = ObjectiveCPolymorphicProperty(descriptor: schemaProp, className: "", schemaLoader: schemaLoader)
+        XCTAssertEqual("__kindof PIModel", prop.objectiveCStringForJSONType())
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testObjectiveCTypeWithNoCommonParent() {
+        // In the event that we have multiple types where one happens to be a subclass of another
+        let schemaProp = ObjectSchemaPolymorphicProperty(name: "test",
+                                        objectType: JSONType.Polymorphic,
+                                        propertyInfo: ["oneOf" : [
+                                            ["$ref": "notification_sections.json"],
+                                            ["$ref": "another_model.json"]
+                                            ]],
+                                        sourceId: NSURL(fileURLWithPath: "test.json"))
+        
+        let prop = ObjectiveCPolymorphicProperty(descriptor: schemaProp, className: "", schemaLoader: schemaLoader)
+        XCTAssertEqual("__kindof NSObject", prop.objectiveCStringForJSONType())
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }

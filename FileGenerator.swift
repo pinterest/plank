@@ -33,16 +33,16 @@ protocol FileGenerator {
 
 
 extension FileGenerator {
-
+    
     func renderCommentHeader() -> String {
         formatter.dateStyle = NSDateFormatterStyle.LongStyle
         formatter.timeStyle = .MediumStyle
         formatter.timeZone = NSTimeZone(name: "UTC")
         formatter.dateFormat = "MM-dd-yyyy 'at' HH:mm:ss"
-
+        
         let calendar = NSCalendar.currentCalendar()
         let year: Int = calendar.components(NSCalendarUnit.Year, fromDate: date).year
-
+        
         let header = [
             "//",
             "//  \(self.fileName())",
@@ -54,5 +54,42 @@ extension FileGenerator {
             "//"
         ]
         return header.joinWithSeparator("\n")
+    }
+    
+}
+
+func generateFile(schema: ObjectSchemaObjectProperty, outputDirectory: NSURL, generationParameters: GenerationParameters){
+    let manager = ObjectiveCFileGeneratorManager(descriptor: schema,
+                                                 generatorParameters: generationParameters,
+                                                 schemaLoader: RemoteSchemaLoader.sharedInstance)
+    for file in manager.filesToGenerate() {
+        let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file.
+        do {
+            try fileContents.writeToURL(
+                NSURL(string: file.fileName(), relativeToURL: outputDirectory)!,
+                atomically: true,
+                encoding: NSUTF8StringEncoding)
+        } catch {
+            assert(false)
+        }
+    }
+}
+
+func generateFilesWithInitialUrl(url: NSURL, outputDirectory: NSURL, generationParameters: GenerationParameters) {
+    if let _ = RemoteSchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
+        var processedSchemas = Set<NSURL>([])
+        repeat {
+            let _ = RemoteSchemaLoader.sharedInstance.refs.map({ (url: NSURL, schema: ObjectSchemaProperty) -> Void in
+                if processedSchemas.contains(url) {
+                    return
+                }
+                
+                processedSchemas.insert(url)
+                
+                if let objectSchema = schema as? ObjectSchemaObjectProperty {
+                    generateFile(objectSchema, outputDirectory: outputDirectory, generationParameters: generationParameters)
+                }
+            })
+        } while (processedSchemas.count != RemoteSchemaLoader.sharedInstance.refs.keys.count)
     }
 }

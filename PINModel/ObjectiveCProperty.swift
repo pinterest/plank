@@ -38,7 +38,7 @@ public enum ObjCPrimitiveType: String {
 
 
 protocol ObjectiveCProperty: class {
-    associatedtype SchemaType : ObjectSchemaProperty
+    typealias SchemaType : ObjectSchemaProperty
 
     var propertyDescriptor: SchemaType { get set }
     var className: String { get set }
@@ -265,17 +265,6 @@ class AnyProperty: ObjectiveCProperty {
 
 extension ObjectiveCProperty {
     
-//    func isBaseClass() -> Bool {
-//        if let classObj = self as? ObjectiveCClassProperty {
-//            return classObj.resolvedSchema.extends = nil
-//        }
-//        return false
-//    }
-//
-//    func dirtyPropertiesIVarName() -> String {
-//        return self.isBaseClass() ? "baseDirtyProperties" : "dirtyProperties"
-//    }
-
     func renderInterfaceDeclaration() -> String {
         return self.renderDeclaration(false)
     }
