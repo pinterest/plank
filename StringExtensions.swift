@@ -51,4 +51,14 @@ extension String {
         let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercaseString
         return capitalizedFirstLetter + String(formattedPropName.characters.dropFirst())
     }
+  
+    /// Return a new string with the last n characters removed
+    func removeLast(length: Int) -> String {
+        return self.substringToIndex(self.endIndex.advancedBy(-length))
+    }
+    
+    /// Get the last n characters of a string
+    func suffixSubstring(length: Int) -> String {
+        return self.substringFromIndex(self.endIndex.advancedBy(-length))
+    }
 }

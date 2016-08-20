@@ -299,14 +299,6 @@ extension ObjectiveCProperty {
         return self.className + (self.rawEnumPrefix + "_type").snakeCaseToCamelCase()
     }
     
-    private var rawEnumPrefix: String {
-        var name = self.propertyDescriptor.name
-        if name.characters.count >= 4 && String(name.characters.suffix(4)) == "type" {
-            name = name.substringToIndex(name.endIndex.advancedBy(-4))
-        }
-        return name
-    }
-
     func renderEnumUtilityMethodsInterface() -> String {
         return ["extern \(self.enumPropertyTypeName()) \(self.enumPropertyTypeName())FromString(NSString * _Nonnull str);",
             "extern NSString * _Nonnull \(self.enumPropertyTypeName())ToString(\(self.enumPropertyTypeName()) enumType);"].joinWithSeparator("\n")
@@ -388,5 +380,13 @@ extension ObjectiveCProperty {
     func dirtyPropertyAssignmentStatement(dirtyPropertiesIVarName : String) -> String {
         let dirtyPropertyOption = self.dirtyPropertyOption()
         return "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption) = 1;"
+    }
+    
+    private var rawEnumPrefix: String {
+        var name = self.propertyDescriptor.name
+        if name.characters.count >= 4 && name.suffixSubstring(4) == "type" {
+            name = name.removeLast(4)
+        }
+        return name
     }
 }
