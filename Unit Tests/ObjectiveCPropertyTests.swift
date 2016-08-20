@@ -15,6 +15,7 @@ class ObjectiveCPropertyTests: PINModelTests {
     
     override func setUp() {
         super.setUp()
+        
         // Put setup code here. This method is called before the invocation of each test method in the class.
 //        self.baseProperty = PropertyFactory.propertyForDescriptor(self.baseImpl.objectDescriptor, className: "PIModel", schemaLoader: self.schemaLoader)
 //        self.childProperty = PropertyFactory.propertyForDescriptor(self.childImpl.objectDescriptor, className: "PINotification", schemaLoader: self.schemaLoader)
@@ -25,4 +26,23 @@ class ObjectiveCPropertyTests: PINModelTests {
         super.tearDown()
     }
 
+    let enumIntegerPropertyInfo = [
+        "type": "integer",
+        "enum": [
+            [ "default" : 0, "description" : "SYSTEM_RECOMMENDATION" ],
+            ] as [[String: AnyObject]]
+        ] as JSONObject
+    
+    func testThatItDoesNotIncludeTypeInTheNameOfAnEnumEndingWithType()  {
+        let descriptor = ObjectSchemaNumberProperty(name: "type", objectType: .Integer, propertyInfo: enumIntegerPropertyInfo, sourceId: NSURL())
+        let integer = ObjectiveCIntegerProperty(descriptor: descriptor, className: "PIModel", schemaLoader: self.schemaLoader)
+        XCTAssertTrue(integer.enumPropertyTypeName() == "PIModelType")
+    }
+    
+    func testThatItCorrectlyHandlesAEnumNameLessThan4Characters()  {
+        let descriptor = ObjectSchemaNumberProperty(name: "ty", objectType: .Integer, propertyInfo: enumIntegerPropertyInfo, sourceId: NSURL())
+        let integer = ObjectiveCIntegerProperty(descriptor: descriptor, className: "PIModel", schemaLoader: self.schemaLoader)
+        XCTAssertTrue(integer.enumPropertyTypeName() == "PIModelTyType")
+    }
+    
 }

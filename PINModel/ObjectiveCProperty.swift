@@ -38,7 +38,7 @@ public enum ObjCPrimitiveType: String {
 
 
 protocol ObjectiveCProperty: class {
-    typealias SchemaType : ObjectSchemaProperty
+    associatedtype SchemaType : ObjectSchemaProperty
 
     var propertyDescriptor: SchemaType { get set }
     var className: String { get set }
@@ -296,7 +296,15 @@ extension ObjectiveCProperty {
     }
 
     func enumPropertyTypeName() -> String {
-        return self.className + (self.propertyDescriptor.name + "_type").snakeCaseToCamelCase()
+        return self.className + (self.rawEnumPrefix + "_type").snakeCaseToCamelCase()
+    }
+    
+    private var rawEnumPrefix: String {
+        var name = self.propertyDescriptor.name
+        if name.characters.count >= 4 && String(name.characters.suffix(4)) == "type" {
+            name = name.substringToIndex(name.endIndex.advancedBy(-4))
+        }
+        return name
     }
 
     func renderEnumUtilityMethodsInterface() -> String {
