@@ -296,7 +296,7 @@ extension ObjectiveCProperty {
     }
 
     func enumPropertyTypeName() -> String {
-        return self.className + (self.rawEnumPrefix + "_type").snakeCaseToCamelCase()
+        return className + (rawEnumPrefix + "_type").snakeCaseToCamelCase()
     }
     
     func renderEnumUtilityMethodsInterface() -> String {
@@ -383,10 +383,13 @@ extension ObjectiveCProperty {
     }
     
     private var rawEnumPrefix: String {
-        var name = self.propertyDescriptor.name
-        if name.characters.count >= 4 && name.suffixSubstring(4) == "type" {
-            name = name.removeLast(4)
+        var nameParts = propertyDescriptor.name.componentsSeparatedByString("_")
+        if nameParts.last == "type" {
+            nameParts.removeLast()
         }
-        return name
+        if let first = nameParts.first where className.suffixSubstring(first.characters.count).lowercaseString == first {
+            nameParts.removeFirst()
+        }
+        return nameParts.joinWithSeparator("_")
     }
 }
