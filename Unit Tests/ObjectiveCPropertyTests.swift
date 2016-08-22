@@ -15,14 +15,32 @@ class ObjectiveCPropertyTests: PINModelTests {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
 //        self.baseProperty = PropertyFactory.propertyForDescriptor(self.baseImpl.objectDescriptor, className: "PIModel", schemaLoader: self.schemaLoader)
 //        self.childProperty = PropertyFactory.propertyForDescriptor(self.childImpl.objectDescriptor, className: "PINotification", schemaLoader: self.schemaLoader)
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+    
+    func testThatItDoesNotIncludeTypeInTheNameOfAnEnumEndingWithType()  {
+        let integer = integerProperty(descriptorName: "type", className: "PIModel")
+        XCTAssertTrue(integer.enumPropertyTypeName() != "PIModelTypeType")
+        XCTAssertTrue(integer.enumPropertyTypeName() == "PIModelType")
+    }
+    
+    func testThatItCorrectlyHandlesAEnumNameLessThan4Characters()  {
+        let integer = integerProperty(descriptorName: "ty", className: "PIModel")
+        XCTAssertTrue(integer.enumPropertyTypeName() == "PIModelTyType")
+    }
+    
+    private func integerProperty(descriptorName name: String, className: String) -> ObjectiveCIntegerProperty {
+        let propertyInfo = [
+            "type": "integer",
+            "enum": [ [ "default" : 0, "description" : "SYSTEM_RECOMMENDATION" ] ] as [[String: AnyObject]]
+        ] as JSONObject
 
+        let descriptor = ObjectSchemaNumberProperty(name: name, objectType: .Integer, propertyInfo: propertyInfo, sourceId: NSURL())
+        return ObjectiveCIntegerProperty(descriptor: descriptor, className: className, schemaLoader: self.schemaLoader)
+    }
 }

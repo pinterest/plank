@@ -38,7 +38,7 @@ public enum ObjCPrimitiveType: String {
 
 
 protocol ObjectiveCProperty: class {
-    typealias SchemaType : ObjectSchemaProperty
+    associatedtype SchemaType : ObjectSchemaProperty
 
     var propertyDescriptor: SchemaType { get set }
     var className: String { get set }
@@ -296,9 +296,9 @@ extension ObjectiveCProperty {
     }
 
     func enumPropertyTypeName() -> String {
-        return self.className + (self.propertyDescriptor.name + "_type").snakeCaseToCamelCase()
+        return className + (rawEnumPrefix + "_type").snakeCaseToCamelCase()
     }
-
+    
     func renderEnumUtilityMethodsInterface() -> String {
         return ["extern \(self.enumPropertyTypeName()) \(self.enumPropertyTypeName())FromString(NSString * _Nonnull str);",
             "extern NSString * _Nonnull \(self.enumPropertyTypeName())ToString(\(self.enumPropertyTypeName()) enumType);"].joinWithSeparator("\n")
@@ -380,5 +380,13 @@ extension ObjectiveCProperty {
     func dirtyPropertyAssignmentStatement(dirtyPropertiesIVarName : String) -> String {
         let dirtyPropertyOption = self.dirtyPropertyOption()
         return "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption) = 1;"
+    }
+    
+    private var rawEnumPrefix: String {
+        var nameParts = propertyDescriptor.name.componentsSeparatedByString("_")
+        if nameParts.last?.lowercaseString == "type" {
+            nameParts.removeLast()
+        }
+        return nameParts.joinWithSeparator("_")
     }
 }
