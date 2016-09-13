@@ -22,11 +22,10 @@ final class ObjectiveCIntegerProperty: ObjectiveCProperty {
 
     func renderEnumDeclaration() -> String {
         assert(self.isEnumPropertyType())
-
         let indent = "    "
-        let enumTypeValues = self.propertyDescriptor.enumValues.map({ (val: JSONObject) -> String in
-            let description = val["description"] as! String
-            let defaultVal = val["default"] as! Int
+        let enumTypeValues = self.propertyDescriptor.enumValues.map({ (val: EnumValue<AnyObject>) -> String in
+            let description = val.description
+            let defaultVal = val.defaultValue as! Int
             let enumValueName = self.enumPropertyTypeName() + description.snakeCaseToCamelCase()
             return indent + "\(enumValueName) = \(defaultVal)"
         })

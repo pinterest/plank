@@ -31,12 +31,28 @@ public enum JSONStringFormatType: String {
     case Uri = "uri"  // A universal resource identifier (URI), according to RFC3986.
 }
 
+struct JSONParseError: ErrorType {}
+
+struct EnumValue<ValueType> {
+    let defaultValue: ValueType
+    let description: String
+
+    init(object: JSONObject) throws {
+        if let defaultVal = object["default"] as? ValueType, let descriptionVal = object["description"] as? String {
+            defaultValue = defaultVal
+            description = descriptionVal
+        } else {
+            throw JSONParseError()
+        }
+    }
+}
+
 class ObjectSchemaProperty {
     let name: String
     let jsonType: JSONType
     let propInfo: JSONObject
     let sourceId: NSURL
-    let enumValues: [JSONObject] // TODO: Create a type-safe struct to represent EnumValue
+    let enumValues: [EnumValue<AnyObject>] // TODO: Create a type-safe struct to represent EnumValue
     let defaultValue: AnyObject?
     var isModelProperty: Bool {
         return false
@@ -47,7 +63,13 @@ class ObjectSchemaProperty {
         self.jsonType = objectType
         self.propInfo = propertyInfo
         self.sourceId = sourceId
-        self.enumValues = (propertyInfo["enum"] as? [JSONObject]) ?? []
+        self.enumValues = ((propertyInfo["enum"] as? [JSONObject]) ?? []).flatMap {
+            if let val = try? EnumValue<AnyObject>(object: $0) {
+                return val
+            }
+            assertionFailure("Invalid enumeration value in \(name) schema property: \($0)")
+            return nil
+        }
         self.defaultValue = (propertyInfo["default"] as AnyObject?) ?? nil
     }
 
@@ -314,61 +336,8 @@ class ObjectSchemaArrayProperty: ObjectSchemaProperty {
     }
 }
 
-
-
 class ObjectSchemaBooleanProperty: ObjectSchemaProperty {}
+
 class ObjectSchemaNumberProperty: ObjectSchemaProperty {}
+
 class ObjectSchemaNullProperty: ObjectSchemaProperty {}
-
-class RemoteSchemaLoader: SchemaLoader {
-    static let sharedInstance = RemoteSchemaLoader()
-
-    var refs: [NSURL:ObjectSchemaProperty]
-
-    init() {
-        self.refs = [NSURL:ObjectSchemaProperty]()
-    }
-
-    func loadSchema(schemaUrl: NSURL) -> ObjectSchemaProperty? {
-        if let cachedValue = refs[schemaUrl] as ObjectSchemaProperty? {
-            return cachedValue
-        }
-
-        // Checks for prefix of http to satisfy both http and https urls
-        if schemaUrl.scheme!.hasPrefix("http") {
-            do {
-                // Builds a URL with the access-token necessary to access the schema by appending a query parameter.
-                let schemaUrlWithToken = NSURL(string: "\(schemaUrl.absoluteURL!.absoluteString)")!
-                if let data = NSURLSession.sharedSession().synchronousDataTaskWithUrl(schemaUrlWithToken) {
-                    let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! JSONObject
-
-                    if jsonResult["data"] !== NSNull() {
-                        refs[schemaUrl] = ObjectSchemaProperty.propertyForJSONObject(jsonResult["data"] as! JSONObject, scopeUrl: schemaUrl)
-                    }
-                    // TODO (rmalik): Figure out if we should handle NSNull values differently for schemas.
-                    // https://phabricator.pinadmin.com/T47
-                    return refs[schemaUrl]
-                }
-            } catch {
-                // TODO: Better failure handling and reporting
-                // https://phabricator.pinadmin.com/T49
-                assert(false)
-            }
-        } else {
-            // Load from local file
-            do {
-                if let data = NSData(contentsOfFile: schemaUrl.path!) {
-                    let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! JSONObject
-
-                    refs[schemaUrl] = ObjectSchemaProperty.propertyForJSONObject(jsonResult, scopeUrl: schemaUrl)
-                    return refs[schemaUrl]
-                }
-            } catch {
-                // TODO: Better failure handling and reporting
-                // https://phabricator.pinadmin.com/T49
-                assert(false)
-            }
-        }
-        return nil
-    }
-}

@@ -526,13 +526,13 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         let enumMethods: [String] = enumProperties.map { (prop: ObjectSchemaProperty) -> String in
             assert(prop.defaultValue != nil, "We need a default value for code generation of this string enum.")
             let objcProp = PropertyFactory.propertyForDescriptor(prop, className: self.className, schemaLoader: self.schemaLoader)
-            let defaultEnumVal = prop.enumValues.filter { ($0["default"] as! String) == prop.defaultValue as! String }[0]
-            let defaultEnumName = objcProp.enumPropertyTypeName() + (defaultEnumVal["description"] as! String).snakeCaseToCamelCase()
+            let defaultEnumVal = prop.enumValues.filter { ($0.defaultValue as! String) == prop.defaultValue as! String }[0]
+            let defaultEnumName = objcProp.enumPropertyTypeName() + (defaultEnumVal.description).snakeCaseToCamelCase()
             // String to Enum
             let stringToEnumConditionals: [String] = prop.enumValues.map {
-                let description = $0["description"] as! String
+                let description = $0.description
                 let enumValueName = objcProp.enumPropertyTypeName() + description.snakeCaseToCamelCase()
-                return ["if ([str isEqualToString:@\"\($0["default"] as! String)\"]) {",
+                return ["if ([str isEqualToString:@\"\($0.defaultValue as! String)\"]) {",
                         indentation + "return \(enumValueName);",
                         "}"
                     ].map { indentation + $0 }.joinWithSeparator("\n")
@@ -548,8 +548,8 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
             // Enum to String
             let enumToStringConditionals: [String] = prop.enumValues.map {
-                let description = $0["description"] as! String
-                let defaultVal = $0["default"] as! String
+                let description = $0.description
+                let defaultVal = $0.defaultValue as! String
                 let enumValueName = objcProp.enumPropertyTypeName() + description.snakeCaseToCamelCase()
                 return ["if (enumType == \(enumValueName)) {",
                     indentation +  "return @\"\(defaultVal)\";",

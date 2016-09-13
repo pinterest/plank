@@ -32,9 +32,9 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
         assert(self.isEnumPropertyType()) // Replace with "guard" statement?
 
         let indent = "    "
-        let enumTypeValues = self.propertyDescriptor.enumValues.enumerate().map({ (index: Int, val: JSONObject) -> String in
-            let description = val["description"] as! String
-            let defaultVal = val["default"] as! String
+        let enumTypeValues = self.propertyDescriptor.enumValues.enumerate().map({ (index: Int, val: EnumValue<AnyObject>) -> String in
+            let description = val.description
+            let defaultVal = val.defaultValue as! String
 
             let enumValueName = self.enumPropertyTypeName() + description.snakeCaseToCamelCase()
             return indent + "\(enumValueName) /* \(defaultVal) */"
