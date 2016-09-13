@@ -434,4 +434,22 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(settersString, expectedCode: expectedSetters)
     }
+
+
+    func testRenderCopyWithBlock() {
+        let copyWithBlockImpl = baseImpl.renderCopyWithBlock()
+
+        let expectedCopyWithBlockImpl = [
+            "- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(id builder))block",
+            "{",
+            "    NSParameterAssert(block);",
+            "    \(baseImpl.builderClassName) *builder = [[\(baseImpl.builderClassName) alloc] initWithModel:self];",
+            "    block(builder);",
+            "    return [builder build];",
+            "}"
+        ].joinWithSeparator("\n")
+
+        PINModelTests.tokenizeAndAssertFlexibleEquality(copyWithBlockImpl, expectedCode: expectedCopyWithBlockImpl)
+    }
+
 }
