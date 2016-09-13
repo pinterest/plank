@@ -193,7 +193,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "}",
         ].joinWithSeparator("\n")
         
-        XCTAssertEqual(initBuilderString, expectedInitBuilder)
+        PINModelTests.tokenizeAndAssertFlexibleEquality(initBuilderString, expectedCode: expectedInitBuilder)
     }
     
     func testRenderBuilderInitWithModelObjectForBaseClass() {

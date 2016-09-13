@@ -192,7 +192,6 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             "@protocol \(self.protocolName()) <NSObject>",
             "@optional",
             "- (void)\(self.className)DidInitialize:(PIModelInitType)initType;",
-            "- (void)\(self.className)WillDealloc;",
             "@end"
         ]
         return lines.joinWithSeparator("\n")

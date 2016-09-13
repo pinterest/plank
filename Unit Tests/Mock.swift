@@ -92,19 +92,19 @@ let TEST_ALTERNATE_BASE_MODEL = ObjectSchemaObjectProperty(
 )
 
 class MockSchemaLoader: SchemaLoader {
-    var refs = [
-        NSURL(fileURLWithPath:"notification.json").absoluteString : TEST_NOTIFICATION_MODEL_INSTANCE,
-        NSURL(fileURLWithPath:"notification_sections.json").absoluteString : TEST_NOTIFICATION_SECTION_MODEL_INSTANCE,
-        NSURL(fileURLWithPath:"notification_section_details.json").absoluteString : TEST_NOTIFICATION_SECTION_DETAILS_MODEL_INSTANCE,
-        NSURL(fileURLWithPath:"model.json").absoluteString: TEST_BASE_MODEL_INSTANCE,
-        NSURL(fileURLWithPath:"another_model.json").absoluteString: TEST_ALTERNATE_BASE_MODEL
+    var refs : [String:ObjectSchemaObjectProperty] = [
+        NSURL(fileURLWithPath:"notification.json").absoluteString! : TEST_NOTIFICATION_MODEL_INSTANCE,
+        NSURL(fileURLWithPath:"notification_sections.json").absoluteString! : TEST_NOTIFICATION_SECTION_MODEL_INSTANCE,
+        NSURL(fileURLWithPath:"notification_section_details.json").absoluteString! : TEST_NOTIFICATION_SECTION_DETAILS_MODEL_INSTANCE,
+        NSURL(fileURLWithPath:"model.json").absoluteString!: TEST_BASE_MODEL_INSTANCE,
+        NSURL(fileURLWithPath:"another_model.json").absoluteString!: TEST_ALTERNATE_BASE_MODEL
     ]
 
     var loadedSchema = false
     
     func loadSchema(schemaUrl: NSURL) -> ObjectSchemaProperty? {
         loadedSchema = true
-        if let objectSchemaProp = refs[schemaUrl.absoluteString] {
+        if let objectSchemaProp = refs[schemaUrl.absoluteString!] {
             return objectSchemaProp
         }
         assert(false)

@@ -172,6 +172,8 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
             }
         }
 
+
+
         return allReferences
     }
 
@@ -333,10 +335,10 @@ class RemoteSchemaLoader: SchemaLoader {
         }
 
         // Checks for prefix of http to satisfy both http and https urls
-        if schemaUrl.scheme.hasPrefix("http") {
+        if schemaUrl.scheme!.hasPrefix("http") {
             do {
                 // Builds a URL with the access-token necessary to access the schema by appending a query parameter.
-                let schemaUrlWithToken = NSURL(string: "\(schemaUrl.absoluteURL.absoluteString)")!
+                let schemaUrlWithToken = NSURL(string: "\(schemaUrl.absoluteURL!.absoluteString)")!
                 if let data = NSURLSession.sharedSession().synchronousDataTaskWithUrl(schemaUrlWithToken) {
                     let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! JSONObject
 

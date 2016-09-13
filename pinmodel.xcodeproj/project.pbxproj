@@ -25,6 +25,7 @@
 		817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */; };
 		817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */; };
 		817B72361B697A7C0071DEF5 /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */; };
+		81871EDF1D88948F009A4975 /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81871EDE1D88948F009A4975 /* OptionalExtensions.swift */; };
 		81AC0B801B8D1C6F00ED599E /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */; };
 		81B00B761C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */; };
 		81B00BAB1C45C8280074364D /* ObjectiveCPolymorphicPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */; };
@@ -91,6 +92,7 @@
 		817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCInterfaceFileGenerator.swift; sourceTree = "<group>"; };
 		817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCProperty.swift; sourceTree = "<group>"; };
+		81871EDE1D88948F009A4975 /* OptionalExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
 		81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
 		81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjectiveCPolymorphicProperty.swift; path = ../ObjectiveCPolymorphicProperty.swift; sourceTree = "<group>"; };
 		81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjectiveCPolymorphicPropertyTests.swift; path = ../PINModel/ObjectiveCPolymorphicPropertyTests.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 			children = (
 				816B9D211B62EFDF00C494BE /* StringExtensions.swift */,
 				81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */,
+				81871EDE1D88948F009A4975 /* OptionalExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -289,14 +292,16 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Rahul Malik";
 				TargetAttributes = {
 					814AB85A1B60750A00CF4BC4 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 					};
 					81B00BA21C45C7F60074364D = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -352,6 +357,7 @@
 				817B72361B697A7C0071DEF5 /* ObjectiveCProperty.swift in Sources */,
 				814AB8681B61584700CF4BC4 /* ObjectiveCFileGenerator.swift in Sources */,
 				816488291C32160800483015 /* ObjectiveCArrayProperty.swift in Sources */,
+				81871EDF1D88948F009A4975 /* OptionalExtensions.swift in Sources */,
 				8164882D1C321AFC00483015 /* ObjectiveCStringProperty.swift in Sources */,
 				816488261C320BF200483015 /* HelpCommand.swift in Sources */,
 				8125FF911B61AF68007E4B65 /* FileGenerator.swift in Sources */,
@@ -424,8 +430,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -470,8 +478,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -491,6 +501,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = pinmodel;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -499,6 +510,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = pinmodel;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -506,6 +518,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = pinmodel;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -518,6 +531,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pinterest.pinmodel.Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -530,6 +544,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.pinterest.pinmodel.Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};

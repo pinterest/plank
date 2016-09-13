@@ -52,6 +52,25 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         return self.parentDescriptor == nil
     }
 
+    func baseClass() -> ObjectSchemaObjectProperty? {
+        var baseClass = self.parentDescriptor
+        while let parentClassSchema = baseClass?.extends as ObjectSchemaPointerProperty? {
+            baseClass = schemaLoader.loadSchema(parentClassSchema.ref) as? ObjectSchemaObjectProperty
+        }
+        return baseClass
+    }
+
+    func baseClassName() -> String {
+        if let parentSchema = self.baseClass() as ObjectSchemaObjectProperty? {
+            return ObjectiveCInterfaceFileDescriptor(
+                descriptor: parentSchema,
+                generatorParameters: self.generationParameters,
+                parentDescriptor: nil,
+                schemaLoader: self.schemaLoader).className
+        }
+        return NSStringFromClass(NSObject)
+    }
+
     func classProperties() -> [ObjectSchemaProperty] {
         if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
             let baseProperties = Set(baseClass.properties.map({ $0.name }))
@@ -165,15 +184,6 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         ].joinWithSeparator("\n")
     }
 
-    func renderDealloc() -> String {
-        return [
-            "- (void)dealloc",
-            "{",
-            "    [self \(self.parentClassName())WillDealloc];",
-            "}"
-            ].joinWithSeparator("\n");
-    }
-
     func renderInitWithDictionary() -> String {
         let indentation = "    "
         func renderInitForProperty(propertyDescriptor: ObjectSchemaProperty) -> String {
@@ -217,7 +227,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "}"
         ]
         if self.isBaseClass() == false {
-            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize:PIModelInitTypeDefault];\n", atIndex: lines.count - 2)
+            lines.insert(indentation + "[self \(self.baseClassName())DidInitialize:PIModelInitTypeDefault];\n", atIndex: lines.count - 2)
         }
         return lines.joinWithSeparator("\n")
     }
@@ -283,7 +293,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 superInitCall,
                 propertyLines.map({ indentation + $0 }).joinWithSeparator("\n"),
                 "    _\(self.dirtyPropertiesIVarName) = builder.\(self.dirtyPropertiesIVarName);",
-                "    [self \(self.parentClassName())DidInitialize:initType];",
+                "    [self \(self.baseClassName())DidInitialize:initType];",
                 "    return self;",
                 "}"
             ]
@@ -365,7 +375,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "}"
         ]
         if !self.isBaseClass() {
-            lines.insert(indentation + "[self \(self.parentClassName())DidInitialize:PIModelInitTypeDefault];\n", atIndex: lines.count - 2)
+            lines.insert(indentation + "[self \(self.baseClassName())DidInitialize:PIModelInitTypeDefault];\n", atIndex: lines.count - 2)
         }
         return lines.joinWithSeparator("\n")
     }
@@ -697,7 +707,6 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "@dynamic \(self.parentDirtyPropertiesIVarName!);",
             self.renderClassName(),
             self.renderPolymorphicTypeIdentifier(),
-            self.renderDealloc(),
             self.renderInitWithDictionary(),
             self.renderInitWithBuilder(),
             self.pragmaMark("NSSecureCoding implementation"),

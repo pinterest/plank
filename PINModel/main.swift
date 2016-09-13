@@ -49,7 +49,7 @@ manager.register("generate", "Generate Model Files") { argv in
         let outputDirectory = NSURL(string: NSFileManager.defaultManager().currentDirectoryPath)!
       }
 
-      beginFileGeneration(url, outputDirectoryPath: outputDirectory.absoluteString, generationParameters: generationParameters)
+      beginFileGeneration(url, outputDirectoryPath: outputDirectory.absoluteString!, generationParameters: generationParameters)
     } else {
         assert(false, "Missing URL to JSON-Schema")
     }
