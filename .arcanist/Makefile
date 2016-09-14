@@ -9,4 +9,4 @@ update-owners:
 	cd .. && git subtree pull --prefix=.arcanist/owners --squash https://github.com/pinterest/arcanist-owners.git master
 
 update-test-engine:
-	cd .. && git subtree pull --prefix=.arcanist/arc-xcode-test-engine --squash https://github.com/google/arc-xcode-test-engine.git master
+	cd .. && git subtree pull --prefix=.arcanist/arc-xcode-test-engine --squash https://github.com/google/arc-xcode-test-engine.git stable
