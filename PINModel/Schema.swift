@@ -52,8 +52,9 @@ class ObjectSchemaProperty {
     let jsonType: JSONType
     let propInfo: JSONObject
     let sourceId: NSURL
-    let enumValues: [EnumValue<AnyObject>] // TODO: Create a type-safe struct to represent EnumValue
+    let enumValues: [EnumValue<AnyObject>] // TODO: Improve type constraints beyond AnyObject here.
     let defaultValue: AnyObject?
+    let algebraicDataTypeIdentifier: String
     var isModelProperty: Bool {
         return false
     }
@@ -70,6 +71,7 @@ class ObjectSchemaProperty {
             assertionFailure("Invalid enumeration value in \(name) schema property: \($0)")
             return nil
         }
+        self.algebraicDataTypeIdentifier = propertyInfo["algebraicDataTypeIdentifier"] as? String ?? name
         self.defaultValue = (propertyInfo["default"] as AnyObject?) ?? nil
     }
 

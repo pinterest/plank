@@ -90,6 +90,11 @@ final class ObjectiveCPolymorphicProperty: ObjectiveCProperty {
             }
             assignments.append(str)
         }
+
+        if assignments.count == 0 {
+            return assignments
+        }
+
         return ["NSString *typeString = \(dictionaryElementName)[@\"type\"];"] + assignments
     }
 

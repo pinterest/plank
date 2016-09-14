@@ -274,7 +274,7 @@ extension ObjectiveCProperty {
     }
 
     func polymorphicTypeIdentifier() -> String {
-        return self.propertyDescriptor.name
+        return self.propertyDescriptor.algebraicDataTypeIdentifier
     }
 
     func isScalarType() -> Bool {

@@ -79,7 +79,6 @@ let TEST_BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(
 )
 
 let TEST_ALTERNATE_BASE_MODEL = ObjectSchemaObjectProperty(
-
     name: "another_model",
     objectType: JSONType.Object,
     propertyInfo: [
@@ -90,6 +89,7 @@ let TEST_ALTERNATE_BASE_MODEL = ObjectSchemaObjectProperty(
     ],
     sourceId: NSURL()
 )
+
 
 class MockSchemaLoader: SchemaLoader {
     var refs : [String:ObjectSchemaObjectProperty] = [

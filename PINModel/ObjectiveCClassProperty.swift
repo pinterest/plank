@@ -36,7 +36,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
     }
 
     func polymorphicTypeIdentifier() -> String {
-        return self.resolvedSchema.name
+        return self.resolvedSchema.algebraicDataTypeIdentifier
     }
 
     func renderDecodeWithCoderStatement() -> String {

@@ -175,11 +175,13 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     }
 
     func renderPolymorphicTypeIdentifier() -> String {
-
+        let typeIdentifier = PropertyFactory.propertyForDescriptor(self.objectDescriptor,
+                                                                   className: self.className,
+                                                                   schemaLoader: self.schemaLoader).polymorphicTypeIdentifier()
         return [
             "+ (NSString *)polymorphicTypeIdentifier",
             "{",
-            "    return @\"\(self.objectDescriptor.name.lowercaseString)\";",
+            "    return @\"\(typeIdentifier)\";",
             "}"
         ].joinWithSeparator("\n")
     }

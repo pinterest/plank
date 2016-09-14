@@ -452,4 +452,67 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
         PINModelTests.tokenizeAndAssertFlexibleEquality(copyWithBlockImpl, expectedCode: expectedCopyWithBlockImpl)
     }
 
+    func testPolymorphicTypeIdentifierFallbackToName() {
+        // When `algebraicDataTypeIdentifier` is not specified, the fallback is the name of the schema.
+        let pinSchema = ObjectSchemaObjectProperty(
+            name: "pin",
+            objectType: JSONType.Object,
+            propertyInfo: [
+                "properties": [
+                    "id": [ "type": "string"],
+                ]
+            ],
+            sourceId: NSURL()
+        )
+
+        let impl = ObjectiveCImplementationFileDescriptor(
+            descriptor: pinSchema,
+            generatorParameters: [GenerationParameterType.ClassPrefix: "PI"],
+            parentDescriptor: nil,
+            schemaLoader: self.schemaLoader
+        )
+
+        let expectedMethodLines = [
+            "+ (NSString *)polymorphicTypeIdentifier",
+            "{",
+            "    return @\"pin\";",
+            "}"
+            ].joinWithSeparator("\n")
+
+        PINModelTests.tokenizeAndAssertFlexibleEquality(impl.renderPolymorphicTypeIdentifier(), expectedCode: expectedMethodLines)
+    }
+
+
+    func testPolymorphicTypeIdentifierWithADT() {
+        // The value for the ADT identifier should take precedence over `name` when specified.
+        let pinSchema = ObjectSchemaObjectProperty(
+            name: "pin",
+            objectType: JSONType.Object,
+            propertyInfo: [
+                "algebraicDataTypeIdentifier" : "some_other_pin",
+                "properties": [
+                    "id": [ "type": "string"],
+                ]
+            ],
+            sourceId: NSURL()
+        )
+
+        let impl = ObjectiveCImplementationFileDescriptor(
+            descriptor: pinSchema,
+            generatorParameters: [GenerationParameterType.ClassPrefix: "PI"],
+            parentDescriptor: nil,
+            schemaLoader: self.schemaLoader
+        )
+
+        let expectedMethodLines = [
+            "+ (NSString *)polymorphicTypeIdentifier",
+            "{",
+            "    return @\"some_other_pin\";",
+            "}"
+            ].joinWithSeparator("\n")
+
+        PINModelTests.tokenizeAndAssertFlexibleEquality(impl.renderPolymorphicTypeIdentifier(), expectedCode: expectedMethodLines)
+    }
+
+
 }
