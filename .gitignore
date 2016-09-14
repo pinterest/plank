@@ -20,6 +20,7 @@ Podfile.lock
 prepare_commit_log
 prepare_commit_result
 compile_commands.json
+build/
 
 # Code Coverage (gcov)
 *.gcno

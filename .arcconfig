@@ -12,6 +12,9 @@
             "scheme": "Unit Tests",
             "configuration": "Debug",
             "destination": "platform=macOS,arch=x86_64"
+        },
+        "coverage" : {
+            "product": "pinmodel"
         }
     },
     "project.name"	: "pinmodel"

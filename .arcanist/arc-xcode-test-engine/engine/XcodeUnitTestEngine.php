@@ -92,7 +92,7 @@ final class XcodeUnitTestEngine extends ArcanistUnitTestEngine {
 
     if ($this->shouldGenerateCoverage()) {
       $this->xcodebuild["enableCodeCoverage"] = "YES";
-      //$this->coverage = $config['unit.xcode']['coverage'];
+      $this->coverage = $config['unit.xcode']['coverage'];
     } else {
       $this->xcodebuild["enableCodeCoverage"] = "NO";
     }
