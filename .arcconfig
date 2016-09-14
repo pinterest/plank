@@ -1,6 +1,18 @@
 {
-  "phabricator.uri" : "https://phabricator.pinadmin.com/",
-  "repository.callsign": "PMD",
-  "load": [],
-  "project.name"	: "pinmodel"
+    "phabricator.uri" : "https://phabricator.pinadmin.com/",
+    "repository.callsign": "PMD",
+    "load": [
+        ".arcanist/linters/",
+        ".arcanist/owners/",
+        ".arcanist/arc-xcode-test-engine/"
+    ],
+    "unit.xcode": {
+        "build": {
+            "workspace": "pinmodel.xcworkspace",
+            "scheme": "Unit Tests",
+            "configuration": "Debug",
+            "destination": "platform=macOS,arch=x86_64"
+        }
+    },
+    "project.name"	: "pinmodel"
 }

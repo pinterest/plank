@@ -92,7 +92,7 @@ final class XcodeUnitTestEngine extends ArcanistUnitTestEngine {
 
     if ($this->shouldGenerateCoverage()) {
       $this->xcodebuild["enableCodeCoverage"] = "YES";
-      $this->coverage = $config['unit.xcode']['coverage'];
+      //$this->coverage = $config['unit.xcode']['coverage'];
     } else {
       $this->xcodebuild["enableCodeCoverage"] = "NO";
     }
@@ -170,7 +170,7 @@ final class XcodeUnitTestEngine extends ArcanistUnitTestEngine {
         }
       }
     }
-    
+
     // TODO(featherless): If we publicized the parseCoverageResults method on
     // XcodeTestResultParser we could parseTestResults, then call parseCoverageResults,
     // and the logic here would map the coverage results to the test results. This
