@@ -28,7 +28,7 @@ class ObjectiveCInterfaceFileDescriptorTests: PINModelTests {
             "    unsigned int PIModelDirtyPropertyAdditionalLocalNonApiProperties:1;",
             "    unsigned int PIModelDirtyPropertyIdentifier:1;",
             "};"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(dirtyPropertyOptions, expectedCode: expectedDirtyPropertyOptions)
     }

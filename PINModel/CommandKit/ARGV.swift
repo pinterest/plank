@@ -2,12 +2,12 @@ public enum ParameterType {
     case Argument, Option, Flag
 }
 
-public class ARGV {
+open class ARGV {
 
     let originalArgs: [String]
-    public var arguments = [String]()
-    public var options = [String: String]()
-    public var flags = [String: Bool]()
+    open var arguments = [String]()
+    open var options = [String: String]()
+    open var flags = [String: Bool]()
 
     public init(_ args: [String]) {
         originalArgs = args
@@ -26,23 +26,23 @@ public class ARGV {
         }
     }
 
-    public func shift() -> String? {
+    open func shift() -> String? {
         if arguments.count > 0 {
-            return arguments.removeAtIndex(0)
+            return arguments.remove(at: 0)
         } else {
             return nil
         }
     }
 
-    public func option(name: String) -> String? {
-        return options.removeValueForKey(name)
+    open func option(_ name: String) -> String? {
+        return options.removeValue(forKey: name)
     }
 
-    public func flag(name: String) -> Bool? {
-        return flags.removeValueForKey(name)
+    open func flag(_ name: String) -> Bool? {
+        return flags.removeValue(forKey: name)
     }
 
-    private func parameterType(arg: String) -> ParameterType {
+    fileprivate func parameterType(_ arg: String) -> ParameterType {
         if arg.hasPrefix("--") {
             if arg.characters.contains("=") {
                 return .Option
@@ -54,18 +54,18 @@ public class ARGV {
         }
     }
 
-    private func optionParameter(arg: String) -> (key: String, value: String) {
-        let argument = arg.substringFromIndex(arg.startIndex.advancedBy(2))
-        let components = argument.characters.split(isSeparator: { $0 == "=" }).map { String($0) }
+    fileprivate func optionParameter(_ arg: String) -> (key: String, value: String) {
+        let argument = arg.substring(from: arg.characters.index(arg.startIndex, offsetBy: 2))
+        let components = argument.characters.split(whereSeparator: { $0 == "=" }).map { String($0) }
         assert(components.count == 2)
         return (components[0], components[1])
     }
 
-    private func flagParameter(arg: String) -> (key: String, value: Bool) {
+    fileprivate func flagParameter(_ arg: String) -> (key: String, value: Bool) {
         if arg.hasPrefix("--no-") {
-            return (arg.substringFromIndex(arg.startIndex.advancedBy(5)), false)
+            return (arg.substring(from: arg.characters.index(arg.startIndex, offsetBy: 5)), false)
         } else {
-            return (arg.substringFromIndex(arg.startIndex.advancedBy(2)), true)
+            return (arg.substring(from: arg.characters.index(arg.startIndex, offsetBy: 2)), true)
         }
     }
 }

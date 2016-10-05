@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias JSONObject = [String:AnyObject]
+typealias JSONObject = [String:Any]
 
 public enum JSONType: String {
     case Object = "object"
@@ -31,7 +31,7 @@ public enum JSONStringFormatType: String {
     case Uri = "uri"  // A universal resource identifier (URI), according to RFC3986.
 }
 
-struct JSONParseError: ErrorType {}
+struct JSONParseError: Error {}
 
 struct EnumValue<ValueType> {
     let defaultValue: ValueType
@@ -51,7 +51,7 @@ class ObjectSchemaProperty {
     let name: String
     let jsonType: JSONType
     let propInfo: JSONObject
-    let sourceId: NSURL
+    let sourceId: URL
     let enumValues: [EnumValue<AnyObject>] // TODO: Improve type constraints beyond AnyObject here.
     let defaultValue: AnyObject?
     let algebraicDataTypeIdentifier: String
@@ -59,7 +59,7 @@ class ObjectSchemaProperty {
         return false
     }
 
-    init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
+    init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
         self.name = name
         self.jsonType = objectType
         self.propInfo = propertyInfo
@@ -75,30 +75,30 @@ class ObjectSchemaProperty {
         self.defaultValue = (propertyInfo["default"] as AnyObject?) ?? nil
     }
 
-    class func propertyForJSONObject(json: JSONObject, name: String = "", scopeUrl: NSURL) -> ObjectSchemaProperty {
+    class func propertyForJSONObject(_ json: JSONObject, name: String = "", scopeUrl: URL) -> ObjectSchemaProperty {
         var propertyName = name
         if let title = json["title"] as? String {
             propertyName = title
         }
 
         // Check for "type"
-        if let propTypeString = json["type"] as? String, propType = JSONType(rawValue: propTypeString) {
+        if let propTypeString = json["type"] as? String, let propType = JSONType(rawValue: propTypeString) {
             return ObjectSchemaProperty.propertyForType(propertyName, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
         }
 
         var sourceUrl = scopeUrl
         if let rawId = json["id"] as? String {
             if rawId.hasPrefix("http") {
-                sourceUrl = NSURL(string: rawId)!
+                sourceUrl = URL(string: rawId)!
             } else {
-                sourceUrl = NSURL(fileURLWithPath: rawId).URLByStandardizingPath!
+                sourceUrl = URL(fileURLWithPath: rawId).standardizedFileURL
             }
         }
 
 
         // Check for reference to relative or remote path.
         if let _ = json["$ref"] as? String {
-            if sourceUrl != NSURL() {
+            if sourceUrl.absoluteString != "" {
                 return ObjectSchemaPointerProperty(name: propertyName, objectType: JSONType.Pointer,
                     propertyInfo: json, sourceId: sourceUrl)
             } else {
@@ -116,7 +116,7 @@ class ObjectSchemaProperty {
         return ObjectSchemaProperty.propertyForType(propertyName, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
     }
 
-    class func propertyForType(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) -> ObjectSchemaProperty {
+    class func propertyForType(_ name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) -> ObjectSchemaProperty {
         switch objectType {
         case JSONType.String:
             return ObjectSchemaStringProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
@@ -145,7 +145,7 @@ class ObjectSchemaPolymorphicProperty: ObjectSchemaProperty {
         return oneOf.filter({ $0.isModelProperty }).count == oneOf.count;
     }
 
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
         if let oneOfValues = propertyInfo["oneOf"] as? [JSONObject] {
             self.oneOf = oneOfValues.map { ObjectSchemaProperty.propertyForJSONObject($0, scopeUrl: sourceId) }
         } else {
@@ -168,15 +168,15 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
 
         var allReferences = Array<ObjectSchemaPointerProperty>()
         var propertyQueue = Array<ObjectSchemaProperty>()
-        propertyQueue.appendContentsOf(self.properties)
+        propertyQueue.append(contentsOf: self.properties)
 
         while propertyQueue.count > 0 {
             if let obj = propertyQueue.popLast() {
                 switch obj {
                 // References to other models defined in this object property list
                 case let pointerObj as ObjectSchemaPointerProperty:
-                    if !seenReferences.containsObject(pointerObj.ref) {
-                        seenReferences.addObject(pointerObj.ref)
+                    if !seenReferences.contains(pointerObj.ref) {
+                        seenReferences.add(pointerObj.ref)
                         allReferences.append(pointerObj)
                     }
                 // References to other models defined through Generics on Collection Types (Array, Object)
@@ -190,7 +190,7 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
 
                     }
                 case let polymorphicObj as ObjectSchemaPolymorphicProperty:
-                    propertyQueue.appendContentsOf(polymorphicObj.oneOf)
+                    propertyQueue.append(contentsOf: polymorphicObj.oneOf)
                 default: break
                 }
             }
@@ -201,18 +201,18 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
         return allReferences
     }
 
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
         var id = sourceId
         if let rawId = propertyInfo["id"] as? String {
             if rawId.hasPrefix("http") {
-                id = NSURL(string: rawId)!
+                id = URL(string: rawId)!
             } else {
-                id = NSURL(string: rawId, relativeToURL: sourceId)!
+                id = URL(string: rawId, relativeTo: sourceId)!
             }
         }
 
         if let rawProperties = propertyInfo["properties"] as? Dictionary<String, AnyObject> {
-            self.properties = rawProperties.keys.sort().map { (key: String) -> ObjectSchemaProperty in
+            self.properties = rawProperties.keys.sorted().map { (key: String) -> ObjectSchemaProperty in
 
                 let propInfo = (rawProperties[key] as? JSONObject)!
                 // Check for "type"
@@ -274,7 +274,7 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
 class ObjectSchemaStringProperty: ObjectSchemaProperty {
     let format: JSONStringFormatType?
 
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
         if let formatString = propertyInfo["format"] as? String {
             self.format = JSONStringFormatType(rawValue:formatString)
         } else {
@@ -285,24 +285,24 @@ class ObjectSchemaStringProperty: ObjectSchemaProperty {
 }
 
 class ObjectSchemaPointerProperty: ObjectSchemaProperty {
-    var ref: NSURL {
+    var ref: URL {
         get {
 
             if let refString = self.refString {
                 if refString.hasPrefix("#") {
                     // Local URL
-                    return NSURL(string:refString, relativeToURL:sourceId)!
+                    return URL(string:refString, relativeTo:sourceId)!
                 } else {
-                    var baseUrl = sourceId.URLByDeletingLastPathComponent
-                    if baseUrl?.path == "." {
-                        baseUrl = NSURL(fileURLWithPath: (baseUrl?.path)!)
+                    var baseUrl = sourceId.deletingLastPathComponent()
+                    if baseUrl.path == "." {
+                        baseUrl = URL(fileURLWithPath: (baseUrl.path))
                     }
-                    let lastPathComponentString = NSURL(string: refString)?.pathComponents?.last
-                    return NSURL(string:lastPathComponentString!, relativeToURL:baseUrl)!
+                    let lastPathComponentString = URL(string: refString)?.pathComponents.last
+                    return URL(string:lastPathComponentString!, relativeTo:baseUrl)!
                 }
             } else {
                 assert(false)
-                return NSURL()
+                return URL(fileURLWithPath: "")
             }
         }
     }
@@ -310,9 +310,9 @@ class ObjectSchemaPointerProperty: ObjectSchemaProperty {
         return true
     }
 
-    private let refString: String?
+    fileprivate let refString: String?
 
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
         if let refString = propertyInfo["$ref"] as? String {
             self.refString = refString
         } else {
@@ -328,7 +328,7 @@ class ObjectSchemaPointerProperty: ObjectSchemaProperty {
 // Explore using NSOrderedSet as the type if "uniqueItems": true is present.
 class ObjectSchemaArrayProperty: ObjectSchemaProperty {
     let items: ObjectSchemaProperty?
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: NSURL) {
+    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
         if let rawItems = propertyInfo["items"] as? JSONObject {
             self.items = ObjectSchemaProperty.propertyForJSONObject(rawItems, scopeUrl: sourceId)
         } else {

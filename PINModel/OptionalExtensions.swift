@@ -8,11 +8,9 @@
 
 import Foundation
 
-extension Optional
-{
-    func assertNotNil(defaultValue: Wrapped) -> Wrapped
-    {
-        if case let .Some(value) = self {
+extension Optional {
+    func assertNotNil(defaultValue: Wrapped) -> Wrapped {
+        if case let .some(value) = self {
             return value
         } else {
             assertionFailure("Expected optional \(Wrapped.self) to be non-nil. Used default value \(defaultValue).")

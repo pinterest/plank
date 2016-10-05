@@ -16,9 +16,9 @@ class ObjectiveCPolymorphicPropertyTests: PINModelTests {
                                         propertyInfo: ["oneOf" : [
                                             ["$ref": "notification_sections.json"],
                                             ["$ref": "notification_section_details.json"]
-                                            ]],
-                                        sourceId: NSURL(fileURLWithPath: "test.json"))
-        
+                                            ] as AnyObject ],
+                                        sourceId: URL(fileURLWithPath: "test.json"))
+
         let prop = ObjectiveCPolymorphicProperty(descriptor: schemaProp, className: "", schemaLoader: schemaLoader)
         XCTAssertEqual("__kindof PIModel", prop.objectiveCStringForJSONType())
     }
@@ -30,8 +30,8 @@ class ObjectiveCPolymorphicPropertyTests: PINModelTests {
                                         propertyInfo: ["oneOf" : [
                                             ["$ref": "notification_sections.json"],
                                             ["$ref": "model.json"]
-                                            ]],
-                                        sourceId: NSURL(fileURLWithPath: "test.json"))
+                                            ] as AnyObject ],
+                                        sourceId: URL(fileURLWithPath: "test.json"))
         
         let prop = ObjectiveCPolymorphicProperty(descriptor: schemaProp, className: "", schemaLoader: schemaLoader)
         XCTAssertEqual("__kindof PIModel", prop.objectiveCStringForJSONType())
@@ -44,8 +44,8 @@ class ObjectiveCPolymorphicPropertyTests: PINModelTests {
                                         propertyInfo: ["oneOf" : [
                                             ["$ref": "notification_sections.json"],
                                             ["$ref": "another_model.json"]
-                                            ]],
-                                        sourceId: NSURL(fileURLWithPath: "test.json"))
+                                            ] as AnyObject ],
+                                        sourceId: URL(fileURLWithPath: "test.json"))
         
         let prop = ObjectiveCPolymorphicProperty(descriptor: schemaProp, className: "", schemaLoader: schemaLoader)
         XCTAssertEqual("__kindof NSObject", prop.objectiveCStringForJSONType())

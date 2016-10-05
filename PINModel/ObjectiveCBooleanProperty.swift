@@ -29,11 +29,11 @@ final class ObjectiveCBooleanProperty: ObjectiveCProperty {
         return "[aDecoder decodeBoolForKey:@\"\(self.propertyDescriptor.name)\"]"
     }
 
-    func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String {
+    func propertyStatementFromDictionary(_ propertyVariableString: String, className: String) -> String {
         return "[\(propertyVariableString) boolValue]"
     }
 
-    func propertyAssignmentStatementFromDictionary(className: String) -> [String] {
+    func propertyAssignmentStatementFromDictionary(_ className: String) -> [String] {
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
         return ["_\(formattedPropName) = \(shortPropFromDictionary);"]
@@ -43,7 +43,7 @@ final class ObjectiveCBooleanProperty: ObjectiveCProperty {
         return ObjCPrimitiveType.Boolean.rawValue
     }
 
-    func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
+    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String] {
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
         return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]

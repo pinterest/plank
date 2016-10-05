@@ -20,7 +20,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
 
     required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?, schemaLoader: SchemaLoader) {
         self.objectDescriptor = descriptor
-        if let classPrefix = generatorParameters[GenerationParameterType.ClassPrefix] as String? {
+        if let classPrefix = generatorParameters[GenerationParameterType.classPrefix] as String? {
             self.className = String(format: "%@%@", arguments: [
                 classPrefix,
                 self.objectDescriptor.name.snakeCaseToCamelCase()
@@ -63,7 +63,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                     parentDescriptor: nil,
                     schemaLoader: self.schemaLoader).className
         }
-        return NSStringFromClass(NSObject)
+        return NSObject.className()
     }
 
     func parentBuilderClassName() -> String {
@@ -74,7 +74,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                 parentDescriptor: nil,
                 schemaLoader: self.schemaLoader).builderClassName
         }
-        return NSStringFromClass(NSObject)
+        return NSObject.className()
     }
 
     func renderBuilderInterface() -> String {
@@ -82,24 +82,24 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderImplementationDeclaration()
         }
 
-        let parentClassName = NSStringFromClass(NSObject)
+        let parentClassName = NSObject.className()
         if self.isBaseClass() {
             let interfaceDeclaration = "@interface \(self.builderClassName)<ObjectType:\(self.className) *> : \(parentClassName)"
             let lines = [
                 interfaceDeclaration,
-                propertyLines.joinWithSeparator("\n"),
+                propertyLines.joined(separator: "\n"),
                 "- (nullable instancetype)initWithModel:(ObjectType)modelObject;",
                 "- (ObjectType)build;",
                 "@end"
             ]
-            return lines.joinWithSeparator("\n\n")
+            return lines.joined(separator: "\n\n")
         } else {
             let lines = [
                 "@interface \(self.builderClassName) : \(self.parentBuilderClassName())<\(self.className) *>",
-                propertyLines.joinWithSeparator("\n"),
+                propertyLines.joined(separator: "\n"),
                 "@end"
             ]
-            return lines.joinWithSeparator("\n\n")
+            return lines.joined(separator: "\n\n")
         }
     }
 
@@ -110,11 +110,11 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         }
 
         if self.isBaseClass() {
-            let implementedProtocols = ["NSSecureCoding", "NSCopying", self.protocolName()].joinWithSeparator(", ")
+            let implementedProtocols = ["NSSecureCoding", "NSCopying", self.protocolName()].joined(separator: ", ")
             let interfaceDeclaration = "@interface \(self.className)<__covariant BuilderObjectType /* \(self.builderClassName) * */> : NSObject<\(implementedProtocols)>"
             let lines = [
                 interfaceDeclaration,
-                propertyLines.joinWithSeparator("\n"),
+                propertyLines.joined(separator: "\n"),
                 "+ (NSString *)className;",
                 "+ (NSString *)polymorphicTypeIdentifier;",
                 "+ (nullable instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;",
@@ -133,14 +133,14 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                 "- (NSArray<NSString *> *)modelDictionaryPropertyNames;",
                 "@end",
             ]
-            return lines.joinWithSeparator("\n\n")
+            return lines.joined(separator: "\n\n")
         } else {
             let lines = [
                 "@interface \(self.className) : \(self.parentClassName())<\(self.builderClassName) *>",
-                propertyLines.joinWithSeparator("\n"),
+                propertyLines.joined(separator: "\n"),
                 "@end",
             ]
-            return lines.joinWithSeparator("\n\n")
+            return lines.joined(separator: "\n\n")
 
         }
     }
@@ -157,8 +157,8 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         if self.isBaseClass() {
             forwardDeclarations.append("@class \(self.className);")
         }
-        forwardDeclarations.appendContentsOf(referencedForwardDeclarations)
-        return forwardDeclarations.sort().joinWithSeparator("\n")
+        forwardDeclarations.append(contentsOf: referencedForwardDeclarations)
+        return forwardDeclarations.sorted().joined(separator: "\n")
     }
 
     func renderDirtyPropertyOptions() -> String {
@@ -170,10 +170,10 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         }
         let lines = [
             "struct \(self.className)DirtyProperties {",
-            optionsLines.joinWithSeparator("\n"),
+            optionsLines.joined(separator: "\n"),
             "};"
         ]
-        return lines.joinWithSeparator("\n")
+        return lines.joined(separator: "\n")
     }
 
     func renderInitTypeEnum() -> String {
@@ -184,7 +184,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             "    PIModelInitTypeFromSubmerge = 1 << 2",
             "} PIModelInitType;"
         ]
-        return lines.joinWithSeparator("\n")
+        return lines.joined(separator: "\n")
     }
 
     func renderProtocol() -> String {
@@ -194,7 +194,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             "- (void)\(self.className)DidInitialize:(PIModelInitType)initType;",
             "@end"
         ]
-        return lines.joinWithSeparator("\n")
+        return lines.joined(separator: "\n")
     }
 
     func renderEnums() -> String {
@@ -204,7 +204,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             let objcProp = PropertyFactory.propertyForDescriptor(prop, className: self.className, schemaLoader: self.schemaLoader)
             return objcProp.renderEnumDeclaration()
         }
-        return enumDeclarations.joinWithSeparator("\n\n")
+        return enumDeclarations.joined(separator: "\n\n")
     }
 
     func renderStringEnumUtilityMethods() -> String {
@@ -214,14 +214,14 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             let objcProp = PropertyFactory.propertyForDescriptor(prop, className: self.className, schemaLoader: self.schemaLoader)
             return objcProp.renderEnumUtilityMethodsInterface()
         }
-        return enumDeclarations.joinWithSeparator("\n\n")
+        return enumDeclarations.joined(separator: "\n\n")
     }
 
     func renderFrameworkImports() -> String {
         let lines = [
             "#import <Foundation/Foundation.h>"
         ]
-        return lines.joinWithSeparator("\n")
+        return lines.joined(separator: "\n")
     }
 
     func renderImports() -> String {
@@ -244,8 +244,8 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                 self.renderInterface(),
                 self.renderBuilderInterface(),
                 "NS_ASSUME_NONNULL_END"
-            ].filter { "" != $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
-            return lines.joinWithSeparator("\n\n")
+            ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
+            return lines.joined(separator: "\n\n")
         }
         let lines = [
             self.renderCommentHeader(),
@@ -256,7 +256,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             self.renderForwardDeclarations(),
             self.renderInterface(),
             self.renderBuilderInterface()
-        ].filter { "" != $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) }
-        return lines.joinWithSeparator("\n\n")
+        ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
+        return lines.joined(separator: "\n\n")
     }
 }

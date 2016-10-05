@@ -43,7 +43,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "@interface PIModelBuilder ()",
             "@property (nonatomic, assign) struct PIModelDirtyProperties baseDirtyProperties;",
             "@end"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(importsString, expectedCode: expectedImports)
     }
@@ -60,7 +60,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "@property (nonatomic, assign) struct PIModelDirtyProperties baseDirtyProperties;",
             "@property (nonatomic, assign) struct PINotificationDirtyProperties dirtyProperties;",
             "@end"
-            ].joinWithSeparator("\n")
+            ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(importsString, expectedCode: expectedImports)
     }
@@ -72,7 +72,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    unsigned int PIModelDirtyPropertyAdditionalLocalNonApiProperties:1;",
             "    unsigned int PIModelDirtyPropertyIdentifier:1;",
             "};"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(dirtyProperties, expectedCode: expectedDirtyProperties)
     }
@@ -84,7 +84,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    unsigned int PINotificationDirtyPropertySections:1;",
             "    unsigned int PINotificationDirtyPropertyStyle:1;",
             "};"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(dirtyProperties, expectedCode: expectedDirtyProperties)
     }
@@ -115,7 +115,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    return self;",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(initString, expectedCode: expectedInit)
     }
@@ -151,7 +151,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    return self;",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(initString, expectedCode: expectedInit)
     }
@@ -168,7 +168,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    _baseDirtyProperties = builder.baseDirtyProperties;",
             "    return self;",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(initBuilderString, expectedCode: expectedInitBuilder)
     }
@@ -191,7 +191,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    [self PIModelDidInitialize:initType];",
             "    return self;",
             "}",
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(initBuilderString, expectedCode: expectedInitBuilder)
     }
@@ -217,7 +217,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    return self;",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(initWithModelString, expectedCode: expectedInitModel)
     }
@@ -243,7 +243,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    return self;",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(initWIthModelString, expectedCode: expectedInitModel)
     }
@@ -255,7 +255,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "{",
             "    if (!(self = [super init])) { return self; }",
             "",
-            "    _additionalLocalNonApiProperties = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSString class], [NSDictionary class]]] forKey:@\"additional_local_non_API_properties\"];",
+            "    _additionalLocalNonApiProperties = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@\"additional_local_non_API_properties\"];",
             "",
             "    _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@\"id\"];",
             "",
@@ -266,7 +266,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    return self;",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(initWithCoderString, expectedCode: expectedInitCoder)
     }
@@ -291,7 +291,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    return self;",
             "}",
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(initWithCoderString, expectedCode: expectedInitCoder)
     }
@@ -309,7 +309,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    [aCoder encodeInt:_baseDirtyProperties.PIModelDirtyPropertyIdentifier forKey:@\"id_dirty_property\"];",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(encodeString, expectedCode: expectedEncodeString)
     }
@@ -343,7 +343,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    return [builder build];",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(mergeWithModelString, expectedCode: expectedMergeWithModel)
     }
@@ -392,7 +392,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    return [[PINotification alloc] initWithBuilder:builder initType:initType];",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(mergeWithModelString, expectedCode: expectedMergeWithModel)
     }
@@ -411,7 +411,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    _identifier = identifier;",
             "    _baseDirtyProperties.PIModelDirtyPropertyIdentifier = 1;",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(settersString, expectedCode: expectedSetters)
     }
@@ -430,7 +430,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    _style = style;",
             "    _dirtyProperties.PINotificationDirtyPropertyStyle = 1;",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
         
         PINModelTests.tokenizeAndAssertFlexibleEquality(settersString, expectedCode: expectedSetters)
     }
@@ -447,7 +447,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    block(builder);",
             "    return [builder build];",
             "}"
-        ].joinWithSeparator("\n")
+        ].joined(separator: "\n")
 
         PINModelTests.tokenizeAndAssertFlexibleEquality(copyWithBlockImpl, expectedCode: expectedCopyWithBlockImpl)
     }
@@ -462,12 +462,12 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
                     "id": [ "type": "string"],
                 ]
             ],
-            sourceId: NSURL()
+            sourceId: URL(fileURLWithPath: "")
         )
 
         let impl = ObjectiveCImplementationFileDescriptor(
             descriptor: pinSchema,
-            generatorParameters: [GenerationParameterType.ClassPrefix: "PI"],
+            generatorParameters: [GenerationParameterType.classPrefix: "PI"],
             parentDescriptor: nil,
             schemaLoader: self.schemaLoader
         )
@@ -477,7 +477,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "{",
             "    return @\"pin\";",
             "}"
-            ].joinWithSeparator("\n")
+            ].joined(separator: "\n")
 
         PINModelTests.tokenizeAndAssertFlexibleEquality(impl.renderPolymorphicTypeIdentifier(), expectedCode: expectedMethodLines)
     }
@@ -494,12 +494,12 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
                     "id": [ "type": "string"],
                 ]
             ],
-            sourceId: NSURL()
+            sourceId: URL(fileURLWithPath: "")
         )
 
         let impl = ObjectiveCImplementationFileDescriptor(
             descriptor: pinSchema,
-            generatorParameters: [GenerationParameterType.ClassPrefix: "PI"],
+            generatorParameters: [GenerationParameterType.classPrefix: "PI"],
             parentDescriptor: nil,
             schemaLoader: self.schemaLoader
         )
@@ -509,7 +509,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "{",
             "    return @\"some_other_pin\";",
             "}"
-            ].joinWithSeparator("\n")
+            ].joined(separator: "\n")
 
         PINModelTests.tokenizeAndAssertFlexibleEquality(impl.renderPolymorphicTypeIdentifier(), expectedCode: expectedMethodLines)
     }

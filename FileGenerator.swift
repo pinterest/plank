@@ -10,11 +10,11 @@ import Foundation
 
 typealias GenerationParameters = [GenerationParameterType:String]
 
-let formatter = NSDateFormatter()
-let date = NSDate()
+let formatter = DateFormatter()
+let date = Date()
 
 public enum GenerationParameterType {
-    case ClassPrefix
+    case classPrefix
 }
 
 protocol FileGeneratorManager {
@@ -35,13 +35,13 @@ protocol FileGenerator {
 extension FileGenerator {
     
     func renderCommentHeader() -> String {
-        formatter.dateStyle = NSDateFormatterStyle.LongStyle
-        formatter.timeStyle = .MediumStyle
-        formatter.timeZone = NSTimeZone(name: "UTC")
+        formatter.dateStyle = DateFormatter.Style.long
+        formatter.timeStyle = .medium
+        formatter.timeZone = TimeZone(identifier: "UTC")
         formatter.dateFormat = "MM-dd-yyyy 'at' HH:mm:ss"
         
-        let calendar = NSCalendar.currentCalendar()
-        let year: Int = calendar.components(NSCalendarUnit.Year, fromDate: date).year
+        let calendar = Calendar.current
+        let year: Int = (calendar as NSCalendar).components(NSCalendar.Unit.year, from: date).year!
         
         let header = [
             "//",
@@ -53,33 +53,33 @@ extension FileGenerator {
             "//  @generated",
             "//"
         ]
-        return header.joinWithSeparator("\n")
+        return header.joined(separator: "\n")
     }
     
 }
 
-func generateFile(schema: ObjectSchemaObjectProperty, outputDirectory: NSURL, generationParameters: GenerationParameters){
+func generateFile(_ schema: ObjectSchemaObjectProperty, outputDirectory: URL, generationParameters: GenerationParameters){
     let manager = ObjectiveCFileGeneratorManager(descriptor: schema,
                                                  generatorParameters: generationParameters,
                                                  schemaLoader: RemoteSchemaLoader.sharedInstance)
     for file in manager.filesToGenerate() {
         let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file.
         do {
-            try fileContents.writeToURL(
-                NSURL(string: file.fileName(), relativeToURL: outputDirectory)!,
+            try fileContents.write(
+                to: URL(string: file.fileName(), relativeTo: outputDirectory)!,
                 atomically: true,
-                encoding: NSUTF8StringEncoding)
+                encoding: String.Encoding.utf8)
         } catch {
             assert(false)
         }
     }
 }
 
-func generateFilesWithInitialUrl(url: NSURL, outputDirectory: NSURL, generationParameters: GenerationParameters) {
+func generateFilesWithInitialUrl(_ url: URL, outputDirectory: URL, generationParameters: GenerationParameters) {
     if let _ = RemoteSchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
-        var processedSchemas = Set<NSURL>([])
+        var processedSchemas = Set<URL>([])
         repeat {
-            let _ = RemoteSchemaLoader.sharedInstance.refs.map({ (url: NSURL, schema: ObjectSchemaProperty) -> Void in
+            let _ = RemoteSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: ObjectSchemaProperty) -> Void in
                 if processedSchemas.contains(url) {
                     return
                 }

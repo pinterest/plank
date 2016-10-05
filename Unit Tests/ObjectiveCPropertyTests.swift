@@ -34,13 +34,13 @@ class ObjectiveCPropertyTests: PINModelTests {
         XCTAssertTrue(integer.enumPropertyTypeName() == "PIModelTyType")
     }
     
-    private func integerProperty(descriptorName name: String, className: String) -> ObjectiveCIntegerProperty {
-        let propertyInfo = [
+    fileprivate func integerProperty(descriptorName name: String, className: String) -> ObjectiveCIntegerProperty {
+        let propInfo = [
             "type": "integer",
-            "enum": [ [ "default" : 0, "description" : "SYSTEM_RECOMMENDATION" ] ] as [[String: AnyObject]]
+            "enum": [ [ "default" : 0 , "description" : "SYSTEM_RECOMMENDATION" ] ]
         ] as JSONObject
 
-        let descriptor = ObjectSchemaNumberProperty(name: name, objectType: .Integer, propertyInfo: propertyInfo, sourceId: NSURL())
+        let descriptor = ObjectSchemaNumberProperty(name: name, objectType: .Integer, propertyInfo: propInfo, sourceId: URL(fileURLWithPath: ""))
         return ObjectiveCIntegerProperty(descriptor: descriptor, className: className, schemaLoader: self.schemaLoader)
     }
 }

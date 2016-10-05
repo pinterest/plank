@@ -23,7 +23,7 @@ let TEST_NOTIFICATION_MODEL_INSTANCE = ObjectSchemaObjectProperty(
             "style" : [ "type" : "string" ],
             "sections" : [ "$ref" : "notification_sections.json" ]
         ]
-    ], sourceId: NSURL(fileURLWithPath: "notification.json")
+    ], sourceId: URL(fileURLWithPath: "notification.json")
 )
 
 let TEST_NOTIFICATION_SECTION_MODEL_INSTANCE = ObjectSchemaObjectProperty(
@@ -43,7 +43,7 @@ let TEST_NOTIFICATION_SECTION_MODEL_INSTANCE = ObjectSchemaObjectProperty(
             "template": [ "type": "string"],
             "type": [ "type": "string" ]
         ]
-    ], sourceId: NSURL(fileURLWithPath: "notification_section_details.json")
+    ], sourceId: URL(fileURLWithPath: "notification_sections.json")
 )
 
 let TEST_NOTIFICATION_SECTION_DETAILS_MODEL_INSTANCE = ObjectSchemaObjectProperty(
@@ -63,7 +63,7 @@ let TEST_NOTIFICATION_SECTION_DETAILS_MODEL_INSTANCE = ObjectSchemaObjectPropert
             "message_body": [ "$ref": "notification_section_details.json" ],
             "right_object": [ "$ref": "notification_section_details.json" ]
         ]
-    ], sourceId: NSURL(fileURLWithPath: "notification_sections.json")
+    ], sourceId: URL(fileURLWithPath: "notification_sections.json")
 )
 
 let TEST_BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(
@@ -75,7 +75,7 @@ let TEST_BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(
             "additional_local_non_API_properties": [ "type": "object"]
         ]
     ],
-    sourceId: NSURL()
+    sourceId: URL(fileURLWithPath: "model.json")
 )
 
 let TEST_ALTERNATE_BASE_MODEL = ObjectSchemaObjectProperty(
@@ -87,24 +87,23 @@ let TEST_ALTERNATE_BASE_MODEL = ObjectSchemaObjectProperty(
             "additional_local_non_API_properties": [ "type": "object"]
         ]
     ],
-    sourceId: NSURL()
+    sourceId: URL(fileURLWithPath: "another_model.json")
 )
-
 
 class MockSchemaLoader: SchemaLoader {
     var refs : [String:ObjectSchemaObjectProperty] = [
-        NSURL(fileURLWithPath:"notification.json").absoluteString! : TEST_NOTIFICATION_MODEL_INSTANCE,
-        NSURL(fileURLWithPath:"notification_sections.json").absoluteString! : TEST_NOTIFICATION_SECTION_MODEL_INSTANCE,
-        NSURL(fileURLWithPath:"notification_section_details.json").absoluteString! : TEST_NOTIFICATION_SECTION_DETAILS_MODEL_INSTANCE,
-        NSURL(fileURLWithPath:"model.json").absoluteString!: TEST_BASE_MODEL_INSTANCE,
-        NSURL(fileURLWithPath:"another_model.json").absoluteString!: TEST_ALTERNATE_BASE_MODEL
+        URL(fileURLWithPath:"notification.json").absoluteString: TEST_NOTIFICATION_MODEL_INSTANCE,
+        URL(fileURLWithPath:"notification_sections.json").absoluteString: TEST_NOTIFICATION_SECTION_MODEL_INSTANCE,
+        URL(fileURLWithPath:"notification_section_details.json").absoluteString: TEST_NOTIFICATION_SECTION_DETAILS_MODEL_INSTANCE,
+        URL(fileURLWithPath:"model.json").absoluteString: TEST_BASE_MODEL_INSTANCE,
+        URL(fileURLWithPath:"another_model.json").absoluteString: TEST_ALTERNATE_BASE_MODEL
     ]
 
     var loadedSchema = false
     
-    func loadSchema(schemaUrl: NSURL) -> ObjectSchemaProperty? {
+    func loadSchema(_ schemaUrl: URL) -> ObjectSchemaProperty? {
         loadedSchema = true
-        if let objectSchemaProp = refs[schemaUrl.absoluteString!] {
+        if let objectSchemaProp = refs[schemaUrl.absoluteString] {
             return objectSchemaProp
         }
         assert(false)
