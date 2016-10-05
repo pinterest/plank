@@ -15,13 +15,13 @@ class ObjectiveCFileGeneratorTests: PINModelTests {
 
     override func setUp() {
         super.setUp()
-        self.baseSchema = self.schemaLoader.loadSchema(NSURL(fileURLWithPath: "model.json")) as! ObjectSchemaObjectProperty
-        self.childSchema = self.schemaLoader.loadSchema(NSURL(fileURLWithPath: "notification.json")) as! ObjectSchemaObjectProperty
+        self.baseSchema = self.schemaLoader.loadSchema(URL(fileURLWithPath: "model.json")) as! ObjectSchemaObjectProperty
+        self.childSchema = self.schemaLoader.loadSchema(URL(fileURLWithPath: "notification.json")) as! ObjectSchemaObjectProperty
     }
 
     func testNumberOfFilesToGenerate() {
         let fileGenerator = ObjectiveCFileGeneratorManager.init(descriptor: self.baseSchema,
-                                                                generatorParameters: [GenerationParameterType.ClassPrefix: "PI"],
+                                                                generatorParameters: [GenerationParameterType.classPrefix: "PI"],
                                                                 schemaLoader: self.schemaLoader)
         let files = fileGenerator.filesToGenerate()
         XCTAssertEqual(files.count, 2) // We should have two files to generate. Implementation and Interface.
@@ -29,7 +29,7 @@ class ObjectiveCFileGeneratorTests: PINModelTests {
 
     func testIsBaseClassWithBaseClass() {
         let fileGenerator = ObjectiveCFileGeneratorManager.init(descriptor: self.baseSchema,
-                                                                generatorParameters: [GenerationParameterType.ClassPrefix: "PI"],
+                                                                generatorParameters: [GenerationParameterType.classPrefix: "PI"],
                                                                 schemaLoader: self.schemaLoader)
         let files = fileGenerator.filesToGenerate()
         for f in files {
@@ -43,7 +43,7 @@ class ObjectiveCFileGeneratorTests: PINModelTests {
 
     func testIsBaseClassWithChildClass() {
         let fileGenerator = ObjectiveCFileGeneratorManager.init(descriptor: self.childSchema,
-                                                                generatorParameters: [GenerationParameterType.ClassPrefix: "PI"],
+                                                                generatorParameters: [GenerationParameterType.classPrefix: "PI"],
                                                                 schemaLoader: self.schemaLoader)
         let files = fileGenerator.filesToGenerate()
         for f in files {

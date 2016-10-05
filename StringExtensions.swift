@@ -17,11 +17,11 @@ let OBJC_RESERVED_WORDS_REPLACEMENTS = [
 
 extension String {
     func snakeCaseToCamelCase() -> String {
-        let components = self.componentsSeparatedByString("_")
+        let components = self.components(separatedBy: "_")
         let name: [String] = components.map { (component: String) -> String in
-            return component.capitalizedString
+            return component.capitalized
         }
-        return name.joinWithSeparator("")
+        return name.joined(separator: "")
     }
 
     func snakeCaseToPropertyName() -> String {
@@ -31,15 +31,15 @@ extension String {
             str = replacementString
         }
 
-        let components = str.componentsSeparatedByString("_")
+        let components = str.components(separatedBy: "_")
 
         var name: String = ""
-        for (idx, component) in components.enumerate() {
+        for (idx, component) in components.enumerated() {
             // Hack: Force URL's to be uppercase
             if idx != 0 && component == "url" {
-                name += component.uppercaseString
+                name += component.uppercased()
             } else {
-                name += idx != 0 ? component.capitalizedString: component
+                name += idx != 0 ? component.capitalized: component
             }
         }
 
@@ -48,12 +48,12 @@ extension String {
 
     func snakeCaseToCapitalizedPropertyName() -> String {
         let formattedPropName = self.snakeCaseToPropertyName()
-        let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercaseString
+        let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercased()
         return capitalizedFirstLetter + String(formattedPropName.characters.dropFirst())
     }
     
     /// Get the last n characters of a string
-    func suffixSubstring(length: Int) -> String {
-        return self.substringFromIndex(self.endIndex.advancedBy(-length))
+    func suffixSubstring(_ length: Int) -> String {
+        return self.substring(from: self.characters.index(self.endIndex, offsetBy: -length))
     }
 }

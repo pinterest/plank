@@ -19,15 +19,15 @@ class PINModelTests: XCTestCase {
         super.setUp()
         
         self.baseImpl = ObjectiveCImplementationFileDescriptor(
-            descriptor: self.schemaLoader.loadSchema(NSURL(fileURLWithPath: "model.json")) as! ObjectSchemaObjectProperty,
-            generatorParameters: [GenerationParameterType.ClassPrefix: "PI"],
+            descriptor: self.schemaLoader.loadSchema(URL(fileURLWithPath: "model.json")) as! ObjectSchemaObjectProperty,
+            generatorParameters: [GenerationParameterType.classPrefix: "PI"],
             parentDescriptor: nil,
             schemaLoader: self.schemaLoader
         )
         
         self.childImpl = ObjectiveCImplementationFileDescriptor(
-            descriptor: self.schemaLoader.loadSchema(NSURL(fileURLWithPath: "notification.json")) as! ObjectSchemaObjectProperty,
-            generatorParameters: [GenerationParameterType.ClassPrefix: "PI"],
+            descriptor: self.schemaLoader.loadSchema(URL(fileURLWithPath: "notification.json")) as! ObjectSchemaObjectProperty,
+            generatorParameters: [GenerationParameterType.classPrefix: "PI"],
             parentDescriptor: self.baseImpl.objectDescriptor,
             schemaLoader: self.schemaLoader
         )
@@ -40,17 +40,17 @@ class PINModelTests: XCTestCase {
     //   for equality.
     //    i.e. "      " == "  "
     //    i.e. "    if (YES) { }" == " if (YES) { }  "
-    class func tokenizeAndAssertFlexibleEquality(renderedCode: String, expectedCode: String) {
-        func tokenizeAndAssertWhiteSpaceEquality(renderedCode: String, expectedCode: String) {
-            let renderedWhiteSpaces = renderedCode.componentsSeparatedByString(" ").filter { $0 == "" }
-            let expectedWhiteSpaces = expectedCode.componentsSeparatedByString(" ").filter { $0 == "" }
+    class func tokenizeAndAssertFlexibleEquality(_ renderedCode: String, expectedCode: String) {
+        func tokenizeAndAssertWhiteSpaceEquality(_ renderedCode: String, expectedCode: String) {
+            let renderedWhiteSpaces = renderedCode.components(separatedBy: " ").filter { $0 == "" }
+            let expectedWhiteSpaces = expectedCode.components(separatedBy: " ").filter { $0 == "" }
             
             XCTAssertEqual(renderedWhiteSpaces.count, expectedWhiteSpaces.count)
         }
         
-        func tokenizeAndAssertContentEquality(renderedCode: String, expectedCode: String) {
-            let renderedContent = renderedCode.componentsSeparatedByString(" ").filter { $0 != "" }
-            let expectedContent = expectedCode.componentsSeparatedByString(" ").filter { $0 != "" }
+        func tokenizeAndAssertContentEquality(_ renderedCode: String, expectedCode: String) {
+            let renderedContent = renderedCode.components(separatedBy: " ").filter { $0 != "" }
+            let expectedContent = expectedCode.components(separatedBy: " ").filter { $0 != "" }
             
             XCTAssertEqual(renderedContent.count, expectedContent.count)
             XCTAssertEqual(renderedContent, expectedContent)

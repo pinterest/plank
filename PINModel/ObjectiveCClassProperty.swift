@@ -42,7 +42,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
     func renderDecodeWithCoderStatement() -> String {
         // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
         // https://phabricator.pinadmin.com/T46
-        let className = ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: self.parentProperty, schemaLoader: self.schemaLoader).className
+        let className = ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.classPrefix: "PI"], parentDescriptor: self.parentProperty, schemaLoader: self.schemaLoader).className
         return "[aDecoder decodeObjectOfClass:[\(className) class] forKey:@\"\(self.propertyDescriptor.name)\"]"
     }
 
@@ -50,12 +50,12 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
         return true
     }
 
-    func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String {
+    func propertyStatementFromDictionary(_ propertyVariableString: String, className: String) -> String {
         if let schema = self.schemaLoader.loadSchema(self.propertyDescriptor.ref) {
             var classNameForSchema = ""
             // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
-            var generationParameters =  [GenerationParameterType.ClassPrefix: "PI"]
-            if let classPrefix = generationParameters[GenerationParameterType.ClassPrefix] as String? {
+            var generationParameters =  [GenerationParameterType.classPrefix: "PI"]
+            if let classPrefix = generationParameters[GenerationParameterType.classPrefix] as String? {
                 classNameForSchema = String(format: "%@%@", arguments: [
                     classPrefix,
                     schema.name.snakeCaseToCamelCase()
@@ -70,7 +70,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
         return ""
     }
 
-    func propertyAssignmentStatementFromDictionary(className: String) -> [String] {
+    func propertyAssignmentStatementFromDictionary(_ className: String) -> [String] {
         // Likely this is going to just be in the base class so we can remove later...
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
@@ -88,10 +88,10 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
     func objectiveCStringForJSONType() -> String {
         // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
         // https://phabricator.pinadmin.com/T46
-        return ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.ClassPrefix: "PI"], parentDescriptor: self.parentProperty, schemaLoader: self.schemaLoader).className
+        return ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.classPrefix: "PI"], parentDescriptor: self.parentProperty, schemaLoader: self.schemaLoader).className
     }
 
-    func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
+    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String] {
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         if self.propertyRequiresAssignmentLogic() == false {
             // Code optimization: Early-exit if we are simply doing a basic assignment

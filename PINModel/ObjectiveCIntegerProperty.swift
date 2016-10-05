@@ -30,8 +30,8 @@ final class ObjectiveCIntegerProperty: ObjectiveCProperty {
             return indent + "\(enumValueName) = \(defaultVal)"
         })
         return ["typedef NS_ENUM(NSInteger, \(self.enumPropertyTypeName())) {",
-            enumTypeValues.joinWithSeparator(",\n"),
-            "};"].joinWithSeparator("\n")
+            enumTypeValues.joined(separator: ",\n"),
+            "};"].joined(separator: "\n")
     }
 
     func renderEncodeWithCoderStatement() -> String {
@@ -49,14 +49,14 @@ final class ObjectiveCIntegerProperty: ObjectiveCProperty {
         return "[aDecoder decodeIntegerForKey:@\"\(self.propertyDescriptor.name)\"]"
     }
 
-    func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String {
+    func propertyStatementFromDictionary(_ propertyVariableString: String, className: String) -> String {
         if self.propertyDescriptor.jsonType == JSONType.Number {
             return "[\(propertyVariableString) doubleValue]"
         }
        return "[\(propertyVariableString) integerValue]"
     }
 
-    func propertyAssignmentStatementFromDictionary(className: String) -> [String] {
+    func propertyAssignmentStatementFromDictionary(_ className: String) -> [String] {
         // this likely does not need to be overridden
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
@@ -83,7 +83,7 @@ final class ObjectiveCIntegerProperty: ObjectiveCProperty {
         return ObjCPrimitiveType.Integer.rawValue
     }
 
-    func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
+    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String] {
         // this likely does not need to be overridden
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)

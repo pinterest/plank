@@ -25,14 +25,14 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
     func renderEnumUtilityMethodsInterface() -> String {
         // Should this be an override? This only occurs for strings right now.
         return ["extern \(self.enumPropertyTypeName()) \(self.enumPropertyTypeName())FromString(NSString * _Nonnull str);",
-                "extern NSString * _Nonnull \(self.enumPropertyTypeName())ToString(\(self.enumPropertyTypeName()) enumType);"].joinWithSeparator("\n")
+                "extern NSString * _Nonnull \(self.enumPropertyTypeName())ToString(\(self.enumPropertyTypeName()) enumType);"].joined(separator: "\n")
     }
 
     func renderEnumDeclaration() -> String {
         assert(self.isEnumPropertyType()) // Replace with "guard" statement?
 
         let indent = "    "
-        let enumTypeValues = self.propertyDescriptor.enumValues.enumerate().map({ (index: Int, val: EnumValue<AnyObject>) -> String in
+        let enumTypeValues = self.propertyDescriptor.enumValues.enumerated().map({ (index: Int, val: EnumValue<AnyObject>) -> String in
             let description = val.description
             let defaultVal = val.defaultValue as! String
 
@@ -40,8 +40,8 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
             return indent + "\(enumValueName) /* \(defaultVal) */"
         })
         return ["typedef NS_ENUM(NSInteger, \(self.enumPropertyTypeName())) {",
-            enumTypeValues.joinWithSeparator(",\n"),
-            "};"].joinWithSeparator("\n")
+            enumTypeValues.joined(separator: ",\n"),
+            "};"].joined(separator: "\n")
     }
 
     func renderEncodeWithCoderStatement() -> String {
@@ -64,25 +64,25 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
                 self.propertyDescriptor.format == JSONStringFormatType.DateTime)
     }
 
-    func propertyStatementFromDictionary(propertyVariableString: String, className: String) -> String {
+    func propertyStatementFromDictionary(_ propertyVariableString: String, className: String) -> String {
         if self.isEnumPropertyType() {
             return "\(self.enumPropertyTypeName())FromString(\(propertyVariableString))"
         }
 
         var statement = propertyVariableString
         switch self.propertyDescriptor.format {
-        case .Some(JSONStringFormatType.Uri):
+        case .some(JSONStringFormatType.Uri):
             statement = "[NSURL URLWithString:\(propertyVariableString)]"
-        case .Some(JSONStringFormatType.DateTime):
+        case .some(JSONStringFormatType.DateTime):
             statement = "[[NSValueTransformer valueTransformerForName:\(DateValueTransformerKey)] transformedValue:\(propertyVariableString)]"
-        case .Some(_), .None:
+        case .some(_), .none:
             statement = propertyVariableString
         }
 
         return statement
     }
 
-    func propertyAssignmentStatementFromDictionary(className: String) -> [String] {
+    func propertyAssignmentStatementFromDictionary(_ className: String) -> [String] {
 
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
         let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
@@ -103,16 +103,16 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
         }
 
         switch self.propertyDescriptor.format {
-        case .Some(JSONStringFormatType.Uri) :
-            return NSStringFromClass(NSURL)
-        case .Some(JSONStringFormatType.DateTime):
-            return NSStringFromClass(NSDate)
+        case .some(JSONStringFormatType.Uri) :
+            return NSURL.className()
+        case .some(JSONStringFormatType.DateTime):
+            return NSDate.className()
         default:
-            return NSStringFromClass(NSString)
+            return NSString.className()
         }
     }
 
-    func propertyMergeStatementFromDictionary(originVariableString: String, className: String) -> [String] {
+    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String] {
         // This is pretty general and will likely be the same as the base class, might want to figure this one out..
         let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
 

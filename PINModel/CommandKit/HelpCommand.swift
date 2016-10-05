@@ -3,7 +3,7 @@ class HelpCommand: Command {
         super.init("help", "Show help for the given command.")
     }
 
-    override func run(manager: Manager, arguments: ARGV) {
+    override func run(_ manager: Manager, arguments: ARGV) {
         if let commandName = arguments.shift() {
             if let command = manager.findCommand(commandName) {
                 print("\(command.name):\n")
