@@ -27,3 +27,6 @@ compile_commands.json
 
 # Python
 *.pyc
+
+# Swift Package Manager
+.build

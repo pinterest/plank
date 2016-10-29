@@ -7,578 +7,708 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8125FF911B61AF68007E4B65 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8125FF901B61AF68007E4B65 /* FileGenerator.swift */; };
-		814AB85F1B60750A00CF4BC4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB85E1B60750A00CF4BC4 /* main.swift */; };
-		814AB8661B61580A00CF4BC4 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8651B61580A00CF4BC4 /* Schema.swift */; };
-		814AB8681B61584700CF4BC4 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */; };
-		8153D7501D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8153D74F1D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift */; };
-		816488241C320BF200483015 /* ARGV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164881F1C320BF200483015 /* ARGV.swift */; };
-		816488251C320BF200483015 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488201C320BF200483015 /* Command.swift */; };
-		816488261C320BF200483015 /* HelpCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488221C320BF200483015 /* HelpCommand.swift */; };
-		816488271C320BF200483015 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488231C320BF200483015 /* Manager.swift */; };
-		816488291C32160800483015 /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488281C32160800483015 /* ObjectiveCArrayProperty.swift */; };
-		8164882B1C321A8A00483015 /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */; };
-		8164882D1C321AFC00483015 /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */; };
-		8164882F1C321B4000483015 /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */; };
-		816488311C321C6400483015 /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488301C321C6400483015 /* ObjectiveCBooleanProperty.swift */; };
-		816B9D221B62EFDF00C494BE /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B9D211B62EFDF00C494BE /* StringExtensions.swift */; };
-		817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */; };
-		817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */; };
-		817B72361B697A7C0071DEF5 /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */; };
-		81871EDF1D88948F009A4975 /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81871EDE1D88948F009A4975 /* OptionalExtensions.swift */; };
-		81AC0B801B8D1C6F00ED599E /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */; };
-		81B00B761C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */; };
-		81B00BAB1C45C8280074364D /* ObjectiveCPolymorphicPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */; };
-		81B00BAD1C45CE7B0074364D /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488281C32160800483015 /* ObjectiveCArrayProperty.swift */; };
-		81B00BAE1C45CE7B0074364D /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488301C321C6400483015 /* ObjectiveCBooleanProperty.swift */; };
-		81B00BAF1C45CE7B0074364D /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */; };
-		81B00BB01C45CE7B0074364D /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */; };
-		81B00BB11C45CE7B0074364D /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */; };
-		81B00BB21C45CE7B0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */; };
-		81B00BB31C45CE7B0074364D /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */; };
-		81B00BB41C45CE7B0074364D /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */; };
-		81B00BB51C45CE880074364D /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8651B61580A00CF4BC4 /* Schema.swift */; };
-		81B00BB71C45CE960074364D /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8125FF901B61AF68007E4B65 /* FileGenerator.swift */; };
-		81B00BB81C45CEA20074364D /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */; };
-		81B00BB91C45CEA20074364D /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */; };
-		81B00BBA1C45CEA20074364D /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */; };
-		81B00BBB1C45CEA50074364D /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816B9D211B62EFDF00C494BE /* StringExtensions.swift */; };
-		81B00BBC1C45CEA50074364D /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */; };
-		81B00BBD1C45CEAA0074364D /* ARGV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164881F1C320BF200483015 /* ARGV.swift */; };
-		81B00BBE1C45CEAA0074364D /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488201C320BF200483015 /* Command.swift */; };
-		81B00BBF1C45CEAA0074364D /* HelpCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488221C320BF200483015 /* HelpCommand.swift */; };
-		81B00BC01C45CEAA0074364D /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816488231C320BF200483015 /* Manager.swift */; };
-		81B00BC11C45CED60074364D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814AB85E1B60750A00CF4BC4 /* main.swift */; };
-		81CB51CF1C3C91B900EB1834 /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */; };
-		F12F981C1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12F981B1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift */; };
-		F12F981E1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12F981D1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift */; };
-		F12F98201D0E70520094CD38 /* PINModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12F981F1D0E70520094CD38 /* PINModelTests.swift */; };
-		F1CDFEB41D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CDFEB31D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift */; };
-		F1EF27191D1457B600E1678E /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EF27181D1457B600E1678E /* SchemaLoader.swift */; };
-		F1EF271C1D145CD100E1678E /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EF271A1D145CC300E1678E /* Mock.swift */; };
-		F1EF271D1D145CD900E1678E /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EF27181D1457B600E1678E /* SchemaLoader.swift */; };
+		_LinkFileRef_Commander_via_pinmodel /* Commander.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Commander" /* Commander.framework */; };
+		_LinkFileRef_Commander_via_pinmodelTests /* Commander.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Commander" /* Commander.framework */; };
+		_LinkFileRef_Spectre_via_Commander /* Spectre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Spectre" /* Spectre.framework */; };
+		_LinkFileRef_Spectre_via_pinmodel /* Spectre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Spectre" /* Spectre.framework */; };
+		_LinkFileRef_Spectre_via_pinmodelTests /* Spectre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_Spectre" /* Spectre.framework */; };
+		_LinkFileRef_pinmodel_via_pinmodelTests /* pinmodel in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_pinmodel" /* pinmodel */; };
+		"__src_cc_ref_Packages/Commander-0.5.0/Sources/ArgumentConvertible.swift" /* ArgumentConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Commander-0.5.0/Sources/ArgumentConvertible.swift" /* ArgumentConvertible.swift */; };
+		"__src_cc_ref_Packages/Commander-0.5.0/Sources/ArgumentDescription.swift" /* ArgumentDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Commander-0.5.0/Sources/ArgumentDescription.swift" /* ArgumentDescription.swift */; };
+		"__src_cc_ref_Packages/Commander-0.5.0/Sources/ArgumentParser.swift" /* ArgumentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Commander-0.5.0/Sources/ArgumentParser.swift" /* ArgumentParser.swift */; };
+		"__src_cc_ref_Packages/Commander-0.5.0/Sources/Command.swift" /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Commander-0.5.0/Sources/Command.swift" /* Command.swift */; };
+		"__src_cc_ref_Packages/Commander-0.5.0/Sources/CommandRunner.swift" /* CommandRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Commander-0.5.0/Sources/CommandRunner.swift" /* CommandRunner.swift */; };
+		"__src_cc_ref_Packages/Commander-0.5.0/Sources/CommandType.swift" /* CommandType.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Commander-0.5.0/Sources/CommandType.swift" /* CommandType.swift */; };
+		"__src_cc_ref_Packages/Commander-0.5.0/Sources/Commands.swift" /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Commander-0.5.0/Sources/Commands.swift" /* Commands.swift */; };
+		"__src_cc_ref_Packages/Commander-0.5.0/Sources/Error.swift" /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Commander-0.5.0/Sources/Error.swift" /* Error.swift */; };
+		"__src_cc_ref_Packages/Commander-0.5.0/Sources/Group.swift" /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Commander-0.5.0/Sources/Group.swift" /* Group.swift */; };
+		"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Case.swift" /* Case.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Spectre-0.7.1/Sources/Case.swift" /* Case.swift */; };
+		"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Context.swift" /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Spectre-0.7.1/Sources/Context.swift" /* Context.swift */; };
+		"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Expectation.swift" /* Expectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Spectre-0.7.1/Sources/Expectation.swift" /* Expectation.swift */; };
+		"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Failure.swift" /* Failure.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Spectre-0.7.1/Sources/Failure.swift" /* Failure.swift */; };
+		"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Global.swift" /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Spectre-0.7.1/Sources/Global.swift" /* Global.swift */; };
+		"__src_cc_ref_Packages/Spectre-0.7.1/Sources/GlobalContext.swift" /* GlobalContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Spectre-0.7.1/Sources/GlobalContext.swift" /* GlobalContext.swift */; };
+		"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Reporter.swift" /* Reporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Spectre-0.7.1/Sources/Reporter.swift" /* Reporter.swift */; };
+		"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Reporters.swift" /* Reporters.swift in Sources */ = {isa = PBXBuildFile; fileRef = "__PBXFileRef_Packages/Spectre-0.7.1/Sources/Reporters.swift" /* Reporters.swift */; };
+		__src_cc_ref_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift */; };
+		__src_cc_ref_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift */; };
+		__src_cc_ref_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift */; };
+		__src_cc_ref_Sources/pinmodel/Schema.swift /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/Schema.swift /* Schema.swift */; };
+		__src_cc_ref_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift */; };
+		__src_cc_ref_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift */; };
+		__src_cc_ref_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift */; };
+		__src_cc_ref_Sources/pinmodel/main.swift /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/main.swift /* main.swift */; };
+		__src_cc_ref_Tests/pinmodelTests/Mock.swift /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/Mock.swift /* Mock.swift */; };
+		__src_cc_ref_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift */; };
+		__src_cc_ref_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift */; };
+		__src_cc_ref_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift */; };
+		__src_cc_ref_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift */; };
+		__src_cc_ref_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift */; };
+		__src_cc_ref_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		814AB8591B60750A00CF4BC4 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
+/* Begin PBXContainerItemProxy section */
+		81BF34711DC563DB00459369 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = __RootObject_ /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "______Target_Spectre";
+			remoteInfo = Spectre;
 		};
-/* End PBXCopyFilesBuildPhase section */
+		81BF34721DC563DB00459369 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = __RootObject_ /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "______Target_Commander";
+			remoteInfo = Commander;
+		};
+		81BF34731DC563DB00459369 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = __RootObject_ /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = "______Target_pinmodel";
+			remoteInfo = pinmodel;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8125FF901B61AF68007E4B65 /* FileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileGenerator.swift; path = ../FileGenerator.swift; sourceTree = "<group>"; };
-		814AB85B1B60750A00CF4BC4 /* pinmodel */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pinmodel; sourceTree = BUILT_PRODUCTS_DIR; };
-		814AB85E1B60750A00CF4BC4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = main.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		814AB8651B61580A00CF4BC4 /* Schema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
-		814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; };
-		8153D74F1D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGeneratorTests.swift; sourceTree = "<group>"; };
-		8164881F1C320BF200483015 /* ARGV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ARGV.swift; path = CommandKit/ARGV.swift; sourceTree = "<group>"; };
-		816488201C320BF200483015 /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Command.swift; path = CommandKit/Command.swift; sourceTree = "<group>"; };
-		816488211C320BF200483015 /* CommandKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommandKit.h; path = CommandKit/CommandKit.h; sourceTree = "<group>"; };
-		816488221C320BF200483015 /* HelpCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HelpCommand.swift; path = CommandKit/HelpCommand.swift; sourceTree = "<group>"; };
-		816488231C320BF200483015 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Manager.swift; path = CommandKit/Manager.swift; sourceTree = "<group>"; };
-		816488281C32160800483015 /* ObjectiveCArrayProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCArrayProperty.swift; sourceTree = "<group>"; };
-		8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCIntegerProperty.swift; sourceTree = "<group>"; };
-		8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCStringProperty.swift; sourceTree = "<group>"; };
-		8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCDictionaryProperty.swift; sourceTree = "<group>"; };
-		816488301C321C6400483015 /* ObjectiveCBooleanProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCBooleanProperty.swift; sourceTree = "<group>"; };
-		816B9D211B62EFDF00C494BE /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringExtensions.swift; path = ../StringExtensions.swift; sourceTree = "<group>"; };
-		817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCInterfaceFileGenerator.swift; sourceTree = "<group>"; };
-		817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCProperty.swift; sourceTree = "<group>"; };
-		81871EDE1D88948F009A4975 /* OptionalExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
-		81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
-		81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjectiveCPolymorphicProperty.swift; path = ../ObjectiveCPolymorphicProperty.swift; sourceTree = "<group>"; };
-		81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjectiveCPolymorphicPropertyTests.swift; path = ../PINModel/ObjectiveCPolymorphicPropertyTests.swift; sourceTree = "<group>"; };
-		81B00BA31C45C7F60074364D /* Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81B00BA71C45C7F70074364D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCClassProperty.swift; sourceTree = "<group>"; };
-		F12F981B1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInterfaceFileDescriptorTests.swift; sourceTree = "<group>"; };
-		F12F981D1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCPropertyTests.swift; sourceTree = "<group>"; };
-		F12F981F1D0E70520094CD38 /* PINModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PINModelTests.swift; sourceTree = "<group>"; };
-		F1CDFEB31D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGeneratorTests.swift; sourceTree = "<group>"; };
-		F1EF27181D1457B600E1678E /* SchemaLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchemaLoader.swift; sourceTree = "<group>"; };
-		F1EF271A1D145CC300E1678E /* Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Commander-0.5.0/Sources/ArgumentConvertible.swift" /* ArgumentConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentConvertible.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Commander-0.5.0/Sources/ArgumentDescription.swift" /* ArgumentDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentDescription.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Commander-0.5.0/Sources/ArgumentParser.swift" /* ArgumentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgumentParser.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Commander-0.5.0/Sources/Command.swift" /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Commander-0.5.0/Sources/CommandRunner.swift" /* CommandRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandRunner.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Commander-0.5.0/Sources/CommandType.swift" /* CommandType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandType.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Commander-0.5.0/Sources/Commands.swift" /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Commander-0.5.0/Sources/Error.swift" /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Commander-0.5.0/Sources/Group.swift" /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Case.swift" /* Case.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Case.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Context.swift" /* Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Expectation.swift" /* Expectation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expectation.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Failure.swift" /* Failure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Failure.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Global.swift" /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Spectre-0.7.1/Sources/GlobalContext.swift" /* GlobalContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalContext.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Reporter.swift" /* Reporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reporter.swift; sourceTree = "<group>"; };
+		"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Reporters.swift" /* Reporters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reporters.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGenerator.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCInterfaceFileGenerator.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCArrayProperty.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCBooleanProperty.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCClassProperty.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCDictionaryProperty.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCIntegerProperty.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPolymorphicProperty.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCProperty.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCStringProperty.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/Schema.swift /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaLoader.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/pinmodel/main.swift /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/pinmodelTests/Mock.swift /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGeneratorTests.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGeneratorTests.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCInterfaceFileDescriptorTests.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPolymorphicPropertyTests.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPropertyTests.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINModelTests.swift; sourceTree = "<group>"; };
+		__PBXFileRef_pinmodel.xcodeproj/Configs/Project.xcconfig /* pinmodel.xcodeproj/Configs/Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = pinmodel.xcodeproj/Configs/Project.xcconfig; sourceTree = "<group>"; };
+		"_____Product_Commander" /* Commander.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Commander.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_Spectre" /* Spectre.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Spectre.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_pinmodel" /* pinmodel */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = pinmodel; sourceTree = BUILT_PRODUCTS_DIR; };
+		"_____Product_pinmodelTests" /* pinmodelTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = pinmodelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		814AB8581B60750A00CF4BC4 /* Frameworks */ = {
+		"___LinkPhase_Commander" /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
+			files = (
+				_LinkFileRef_Spectre_via_Commander /* Spectre.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		"___LinkPhase_Spectre" /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		81B00BA01C45C7F60074364D /* Frameworks */ = {
+		"___LinkPhase_pinmodel" /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
+				_LinkFileRef_Spectre_via_pinmodel /* Spectre.framework in Frameworks */,
+				_LinkFileRef_Commander_via_pinmodel /* Commander.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		"___LinkPhase_pinmodelTests" /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				_LinkFileRef_Spectre_via_pinmodelTests /* Spectre.framework in Frameworks */,
+				_LinkFileRef_Commander_via_pinmodelTests /* Commander.framework in Frameworks */,
+				_LinkFileRef_pinmodel_via_pinmodelTests /* pinmodel in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		814AB8521B60750A00CF4BC4 = {
+		81BF34741DC563FD00459369 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				814AB85D1B60750A00CF4BC4 /* PINModel */,
-				81B00BA41C45C7F60074364D /* Tests */,
-				814AB85C1B60750A00CF4BC4 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		814AB85C1B60750A00CF4BC4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				814AB85B1B60750A00CF4BC4 /* pinmodel */,
-				81B00BA31C45C7F60074364D /* Unit Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		814AB85D1B60750A00CF4BC4 /* PINModel */ = {
-			isa = PBXGroup;
-			children = (
-				8153D74E1D1B2EF700BB4F60 /* Core */,
-				F1EF27171D14575900E1678E /* Protocols */,
-				8172EB3B1B83B28D005EF82E /* CommandKit */,
-				816B9D241B62EFF800C494BE /* Extensions */,
-				816B9D231B62EFED00C494BE /* ObjectiveC */,
-				814AB85E1B60750A00CF4BC4 /* main.swift */,
-			);
-			path = PINModel;
-			sourceTree = "<group>";
-		};
-		8153D74E1D1B2EF700BB4F60 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				814AB8651B61580A00CF4BC4 /* Schema.swift */,
+				__PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */,
+				__PBXFileRef_Sources/pinmodel/Schema.swift /* Schema.swift */,
+				__PBXFileRef_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
 		};
-		8164881C1C31FC9700483015 /* Properties */ = {
+		81BF34751DC5640D00459369 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				816488281C32160800483015 /* ObjectiveCArrayProperty.swift */,
-				816488301C321C6400483015 /* ObjectiveCBooleanProperty.swift */,
-				81CB51CE1C3C91B900EB1834 /* ObjectiveCClassProperty.swift */,
-				8164882E1C321B4000483015 /* ObjectiveCDictionaryProperty.swift */,
-				8164882A1C321A8A00483015 /* ObjectiveCIntegerProperty.swift */,
-				81B00B751C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift */,
-				817B72351B697A7C0071DEF5 /* ObjectiveCProperty.swift */,
-				8164882C1C321AFC00483015 /* ObjectiveCStringProperty.swift */,
-			);
-			name = Properties;
-			sourceTree = "<group>";
-		};
-		8164881D1C31FCA800483015 /* Files */ = {
-			isa = PBXGroup;
-			children = (
-				814AB8671B61584700CF4BC4 /* ObjectiveCFileGenerator.swift */,
-				817B72331B696D760071DEF5 /* ObjCImplementationFileGenerator.swift */,
-				817B72311B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift */,
-			);
-			name = Files;
-			sourceTree = "<group>";
-		};
-		816B9D231B62EFED00C494BE /* ObjectiveC */ = {
-			isa = PBXGroup;
-			children = (
-				8164881D1C31FCA800483015 /* Files */,
-				8164881C1C31FC9700483015 /* Properties */,
-			);
-			name = ObjectiveC;
-			sourceTree = "<group>";
-		};
-		816B9D241B62EFF800C494BE /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				816B9D211B62EFDF00C494BE /* StringExtensions.swift */,
-				81AC0B7F1B8D1C6F00ED599E /* UrlExtensions.swift */,
-				81871EDE1D88948F009A4975 /* OptionalExtensions.swift */,
+				__PBXFileRef_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift */,
+				__PBXFileRef_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift */,
+				__PBXFileRef_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
 		};
-		8172EB3B1B83B28D005EF82E /* CommandKit */ = {
+		81BF34771DC5642100459369 /* Objective-C */ = {
 			isa = PBXGroup;
 			children = (
-				8164881F1C320BF200483015 /* ARGV.swift */,
-				816488201C320BF200483015 /* Command.swift */,
-				816488211C320BF200483015 /* CommandKit.h */,
-				816488221C320BF200483015 /* HelpCommand.swift */,
-				816488231C320BF200483015 /* Manager.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift */,
+				__PBXFileRef_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift */,
 			);
-			name = CommandKit;
+			name = "Objective-C";
 			sourceTree = "<group>";
 		};
-		81B00BA41C45C7F60074364D /* Tests */ = {
+		Dependencies_ /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				81B00B781C45BAC60074364D /* ObjectiveCPolymorphicPropertyTests.swift */,
-				81B00BA71C45C7F70074364D /* Info.plist */,
-				F1CDFEB31D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift */,
-				8153D74F1D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift */,
-				F12F981B1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift */,
-				F12F981D1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift */,
-				F12F981F1D0E70520094CD38 /* PINModelTests.swift */,
-				F1EF271A1D145CC300E1678E /* Mock.swift */,
+				"_______Group_Commander" /* Commander */,
+				"_______Group_Spectre" /* Spectre */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		TestProducts_ /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				"_____Product_pinmodelTests" /* pinmodelTests.xctest */,
 			);
 			name = Tests;
-			path = "Unit Tests";
 			sourceTree = "<group>";
 		};
-		F1EF27171D14575900E1678E /* Protocols */ = {
+		"___RootGroup_" = {
 			isa = PBXGroup;
 			children = (
-				8125FF901B61AF68007E4B65 /* FileGenerator.swift */,
-				F1EF27181D1457B600E1678E /* SchemaLoader.swift */,
+				__PBXFileRef_Package.swift /* Package.swift */,
+				"_____Configs_" /* Configs */,
+				"_____Sources_" /* Sources */,
+				Dependencies_ /* Dependencies */,
+				"_______Tests_" /* Tests */,
+				"____Products_" /* Products */,
 			);
-			name = Protocols;
-			path = "../Unit Tests";
+			sourceTree = "<group>";
+		};
+		"____Products_" /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				TestProducts_ /* Tests */,
+				"_____Product_Spectre" /* Spectre.framework */,
+				"_____Product_Commander" /* Commander.framework */,
+				"_____Product_pinmodel" /* pinmodel */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		"_____Configs_" /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				__PBXFileRef_pinmodel.xcodeproj/Configs/Project.xcconfig /* pinmodel.xcodeproj/Configs/Project.xcconfig */,
+			);
+			name = Configs;
+			sourceTree = "<group>";
+		};
+		"_____Sources_" /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				"_______Group_pinmodel" /* pinmodel */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		"_______Group_Commander" /* Commander */ = {
+			isa = PBXGroup;
+			children = (
+				"__PBXFileRef_Packages/Commander-0.5.0/Sources/ArgumentConvertible.swift" /* ArgumentConvertible.swift */,
+				"__PBXFileRef_Packages/Commander-0.5.0/Sources/ArgumentDescription.swift" /* ArgumentDescription.swift */,
+				"__PBXFileRef_Packages/Commander-0.5.0/Sources/ArgumentParser.swift" /* ArgumentParser.swift */,
+				"__PBXFileRef_Packages/Commander-0.5.0/Sources/Command.swift" /* Command.swift */,
+				"__PBXFileRef_Packages/Commander-0.5.0/Sources/CommandRunner.swift" /* CommandRunner.swift */,
+				"__PBXFileRef_Packages/Commander-0.5.0/Sources/Commands.swift" /* Commands.swift */,
+				"__PBXFileRef_Packages/Commander-0.5.0/Sources/CommandType.swift" /* CommandType.swift */,
+				"__PBXFileRef_Packages/Commander-0.5.0/Sources/Error.swift" /* Error.swift */,
+				"__PBXFileRef_Packages/Commander-0.5.0/Sources/Group.swift" /* Group.swift */,
+			);
+			name = Commander;
+			path = "Packages/Commander-0.5.0/Sources";
+			sourceTree = "<group>";
+		};
+		"_______Group_Spectre" /* Spectre */ = {
+			isa = PBXGroup;
+			children = (
+				"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Case.swift" /* Case.swift */,
+				"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Context.swift" /* Context.swift */,
+				"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Expectation.swift" /* Expectation.swift */,
+				"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Failure.swift" /* Failure.swift */,
+				"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Global.swift" /* Global.swift */,
+				"__PBXFileRef_Packages/Spectre-0.7.1/Sources/GlobalContext.swift" /* GlobalContext.swift */,
+				"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Reporter.swift" /* Reporter.swift */,
+				"__PBXFileRef_Packages/Spectre-0.7.1/Sources/Reporters.swift" /* Reporters.swift */,
+			);
+			name = Spectre;
+			path = "Packages/Spectre-0.7.1/Sources";
+			sourceTree = "<group>";
+		};
+		"_______Group_pinmodel" /* pinmodel */ = {
+			isa = PBXGroup;
+			children = (
+				81BF34771DC5642100459369 /* Objective-C */,
+				81BF34751DC5640D00459369 /* Extensions */,
+				81BF34741DC563FD00459369 /* Core */,
+				__PBXFileRef_Sources/pinmodel/main.swift /* main.swift */,
+			);
+			name = pinmodel;
+			path = Sources/pinmodel;
+			sourceTree = "<group>";
+		};
+		"_______Group_pinmodelTests" /* pinmodelTests */ = {
+			isa = PBXGroup;
+			children = (
+				__PBXFileRef_Tests/pinmodelTests/Mock.swift /* Mock.swift */,
+				__PBXFileRef_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift */,
+				__PBXFileRef_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift */,
+				__PBXFileRef_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift */,
+				__PBXFileRef_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift */,
+				__PBXFileRef_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift */,
+				__PBXFileRef_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift */,
+			);
+			name = pinmodelTests;
+			path = Tests/pinmodelTests;
+			sourceTree = "<group>";
+		};
+		"_______Tests_" /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				"_______Group_pinmodelTests" /* pinmodelTests */,
+			);
+			name = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		814AB85A1B60750A00CF4BC4 /* PINModel */ = {
+		"______Target_Commander" /* Commander */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 814AB8621B60750A00CF4BC4 /* Build configuration list for PBXNativeTarget "PINModel" */;
+			buildConfigurationList = "_______Confs_Commander" /* Build configuration list for PBXNativeTarget "Commander" */;
 			buildPhases = (
-				814AB8571B60750A00CF4BC4 /* Sources */,
-				814AB8581B60750A00CF4BC4 /* Frameworks */,
-				814AB8591B60750A00CF4BC4 /* CopyFiles */,
-				8164881E1C32099700483015 /* ShellScript */,
+				CompilePhase_Commander /* Sources */,
+				"___LinkPhase_Commander" /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				__Dependency_Spectre /* PBXTargetDependency */,
+			);
+			name = Commander;
+			productName = Commander;
+			productReference = "_____Product_Commander" /* Commander.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"______Target_Spectre" /* Spectre */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = "_______Confs_Spectre" /* Build configuration list for PBXNativeTarget "Spectre" */;
+			buildPhases = (
+				CompilePhase_Spectre /* Sources */,
+				"___LinkPhase_Spectre" /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = PINModel;
-			productName = PINModel;
-			productReference = 814AB85B1B60750A00CF4BC4 /* pinmodel */;
+			name = Spectre;
+			productName = Spectre;
+			productReference = "_____Product_Spectre" /* Spectre.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		"______Target_pinmodel" /* pinmodel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = "_______Confs_pinmodel" /* Build configuration list for PBXNativeTarget "pinmodel" */;
+			buildPhases = (
+				CompilePhase_pinmodel /* Sources */,
+				"___LinkPhase_pinmodel" /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				__Dependency_Spectre /* PBXTargetDependency */,
+				__Dependency_Commander /* PBXTargetDependency */,
+			);
+			name = pinmodel;
+			productName = pinmodel;
+			productReference = "_____Product_pinmodel" /* pinmodel */;
 			productType = "com.apple.product-type.tool";
 		};
-		81B00BA21C45C7F60074364D /* Unit Tests */ = {
+		"______Target_pinmodelTests" /* pinmodelTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 81B00BA81C45C7F70074364D /* Build configuration list for PBXNativeTarget "Unit Tests" */;
+			buildConfigurationList = "_______Confs_pinmodelTests" /* Build configuration list for PBXNativeTarget "pinmodelTests" */;
 			buildPhases = (
-				81B00B9F1C45C7F60074364D /* Sources */,
-				81B00BA01C45C7F60074364D /* Frameworks */,
-				81B00BA11C45C7F60074364D /* Resources */,
+				CompilePhase_pinmodelTests /* Sources */,
+				"___LinkPhase_pinmodelTests" /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				__Dependency_Spectre /* PBXTargetDependency */,
+				__Dependency_Commander /* PBXTargetDependency */,
+				__Dependency_pinmodel /* PBXTargetDependency */,
 			);
-			name = "Unit Tests";
-			productName = "Unit Tests";
-			productReference = 81B00BA31C45C7F60074364D /* Unit Tests.xctest */;
+			name = pinmodelTests;
+			productName = pinmodelTests;
+			productReference = "_____Product_pinmodelTests" /* pinmodelTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		814AB8531B60750A00CF4BC4 /* Project object */ = {
+		__RootObject_ /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0800;
-				ORGANIZATIONNAME = "Rahul Malik";
-				TargetAttributes = {
-					814AB85A1B60750A00CF4BC4 = {
-						CreatedOnToolsVersion = 7.0;
-						LastSwiftMigration = 0800;
-					};
-					81B00BA21C45C7F60074364D = {
-						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0800;
-					};
-				};
+				LastUpgradeCheck = 9999;
 			};
-			buildConfigurationList = 814AB8561B60750A00CF4BC4 /* Build configuration list for PBXProject "pinmodel" */;
+			buildConfigurationList = "___RootConfs_" /* Build configuration list for PBXProject "pinmodel" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 814AB8521B60750A00CF4BC4;
-			productRefGroup = 814AB85C1B60750A00CF4BC4 /* Products */;
+			mainGroup = "___RootGroup_";
+			productRefGroup = "____Products_" /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				814AB85A1B60750A00CF4BC4 /* PINModel */,
-				81B00BA21C45C7F60074364D /* Unit Tests */,
+				"______Target_Spectre" /* Spectre */,
+				"______Target_Commander" /* Commander */,
+				"______Target_pinmodel" /* pinmodel */,
+				"______Target_pinmodelTests" /* pinmodelTests */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		81B00BA11C45C7F60074364D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		8164881E1C32099700483015 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		814AB8571B60750A00CF4BC4 /* Sources */ = {
+		CompilePhase_Commander /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
-				817B72361B697A7C0071DEF5 /* ObjectiveCProperty.swift in Sources */,
-				814AB8681B61584700CF4BC4 /* ObjectiveCFileGenerator.swift in Sources */,
-				816488291C32160800483015 /* ObjectiveCArrayProperty.swift in Sources */,
-				81871EDF1D88948F009A4975 /* OptionalExtensions.swift in Sources */,
-				8164882D1C321AFC00483015 /* ObjectiveCStringProperty.swift in Sources */,
-				816488261C320BF200483015 /* HelpCommand.swift in Sources */,
-				8125FF911B61AF68007E4B65 /* FileGenerator.swift in Sources */,
-				8164882F1C321B4000483015 /* ObjectiveCDictionaryProperty.swift in Sources */,
-				81AC0B801B8D1C6F00ED599E /* UrlExtensions.swift in Sources */,
-				81CB51CF1C3C91B900EB1834 /* ObjectiveCClassProperty.swift in Sources */,
-				8164882B1C321A8A00483015 /* ObjectiveCIntegerProperty.swift in Sources */,
-				817B72321B696D600071DEF5 /* ObjCInterfaceFileGenerator.swift in Sources */,
-				816488241C320BF200483015 /* ARGV.swift in Sources */,
-				816488251C320BF200483015 /* Command.swift in Sources */,
-				F1EF27191D1457B600E1678E /* SchemaLoader.swift in Sources */,
-				816B9D221B62EFDF00C494BE /* StringExtensions.swift in Sources */,
-				817B72341B696D760071DEF5 /* ObjCImplementationFileGenerator.swift in Sources */,
-				81B00B761C3F558A0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */,
-				814AB8661B61580A00CF4BC4 /* Schema.swift in Sources */,
-				814AB85F1B60750A00CF4BC4 /* main.swift in Sources */,
-				816488271C320BF200483015 /* Manager.swift in Sources */,
-				816488311C321C6400483015 /* ObjectiveCBooleanProperty.swift in Sources */,
+				"__src_cc_ref_Packages/Commander-0.5.0/Sources/ArgumentConvertible.swift" /* ArgumentConvertible.swift in Sources */,
+				"__src_cc_ref_Packages/Commander-0.5.0/Sources/ArgumentDescription.swift" /* ArgumentDescription.swift in Sources */,
+				"__src_cc_ref_Packages/Commander-0.5.0/Sources/ArgumentParser.swift" /* ArgumentParser.swift in Sources */,
+				"__src_cc_ref_Packages/Commander-0.5.0/Sources/Command.swift" /* Command.swift in Sources */,
+				"__src_cc_ref_Packages/Commander-0.5.0/Sources/CommandRunner.swift" /* CommandRunner.swift in Sources */,
+				"__src_cc_ref_Packages/Commander-0.5.0/Sources/Commands.swift" /* Commands.swift in Sources */,
+				"__src_cc_ref_Packages/Commander-0.5.0/Sources/CommandType.swift" /* CommandType.swift in Sources */,
+				"__src_cc_ref_Packages/Commander-0.5.0/Sources/Error.swift" /* Error.swift in Sources */,
+				"__src_cc_ref_Packages/Commander-0.5.0/Sources/Group.swift" /* Group.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		81B00B9F1C45C7F60074364D /* Sources */ = {
+		CompilePhase_Spectre /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 0;
 			files = (
-				81B00BAD1C45CE7B0074364D /* ObjectiveCArrayProperty.swift in Sources */,
-				8153D7501D1B53DB00BB4F60 /* ObjectiveCFileGeneratorTests.swift in Sources */,
-				F1EF271D1D145CD900E1678E /* SchemaLoader.swift in Sources */,
-				81B00BBC1C45CEA50074364D /* UrlExtensions.swift in Sources */,
-				81B00BB21C45CE7B0074364D /* ObjectiveCPolymorphicProperty.swift in Sources */,
-				81B00BB41C45CE7B0074364D /* ObjectiveCStringProperty.swift in Sources */,
-				81B00BAF1C45CE7B0074364D /* ObjectiveCClassProperty.swift in Sources */,
-				81B00BBE1C45CEAA0074364D /* Command.swift in Sources */,
-				F12F98201D0E70520094CD38 /* PINModelTests.swift in Sources */,
-				81B00BB51C45CE880074364D /* Schema.swift in Sources */,
-				81B00BB71C45CE960074364D /* FileGenerator.swift in Sources */,
-				81B00BC11C45CED60074364D /* main.swift in Sources */,
-				81B00BAB1C45C8280074364D /* ObjectiveCPolymorphicPropertyTests.swift in Sources */,
-				F1EF271C1D145CD100E1678E /* Mock.swift in Sources */,
-				81B00BB11C45CE7B0074364D /* ObjectiveCIntegerProperty.swift in Sources */,
-				81B00BBA1C45CEA20074364D /* ObjCInterfaceFileGenerator.swift in Sources */,
-				81B00BBF1C45CEAA0074364D /* HelpCommand.swift in Sources */,
-				81B00BB91C45CEA20074364D /* ObjCImplementationFileGenerator.swift in Sources */,
-				F12F981C1D0E6D400094CD38 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */,
-				81B00BAE1C45CE7B0074364D /* ObjectiveCBooleanProperty.swift in Sources */,
-				81B00BB81C45CEA20074364D /* ObjectiveCFileGenerator.swift in Sources */,
-				81B00BBD1C45CEAA0074364D /* ARGV.swift in Sources */,
-				81B00BBB1C45CEA50074364D /* StringExtensions.swift in Sources */,
-				81B00BB31C45CE7B0074364D /* ObjectiveCProperty.swift in Sources */,
-				81B00BB01C45CE7B0074364D /* ObjectiveCDictionaryProperty.swift in Sources */,
-				81B00BC01C45CEAA0074364D /* Manager.swift in Sources */,
-				F12F981E1D0E6FF30094CD38 /* ObjectiveCPropertyTests.swift in Sources */,
-				F1CDFEB41D0B7C940063B186 /* ObjCImplementationFileGeneratorTests.swift in Sources */,
+				"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Case.swift" /* Case.swift in Sources */,
+				"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Context.swift" /* Context.swift in Sources */,
+				"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Expectation.swift" /* Expectation.swift in Sources */,
+				"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Failure.swift" /* Failure.swift in Sources */,
+				"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Global.swift" /* Global.swift in Sources */,
+				"__src_cc_ref_Packages/Spectre-0.7.1/Sources/GlobalContext.swift" /* GlobalContext.swift in Sources */,
+				"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Reporter.swift" /* Reporter.swift in Sources */,
+				"__src_cc_ref_Packages/Spectre-0.7.1/Sources/Reporters.swift" /* Reporters.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CompilePhase_pinmodel /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				__src_cc_ref_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/main.swift /* main.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/Schema.swift /* Schema.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift in Sources */,
+				__src_cc_ref_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CompilePhase_pinmodelTests /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				__src_cc_ref_Tests/pinmodelTests/Mock.swift /* Mock.swift in Sources */,
+				__src_cc_ref_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift in Sources */,
+				__src_cc_ref_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift in Sources */,
+				__src_cc_ref_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */,
+				__src_cc_ref_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift in Sources */,
+				__src_cc_ref_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift in Sources */,
+				__src_cc_ref_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		__Dependency_Commander /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "______Target_Commander" /* Commander */;
+			targetProxy = 81BF34721DC563DB00459369 /* PBXContainerItemProxy */;
+		};
+		__Dependency_Spectre /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "______Target_Spectre" /* Spectre */;
+			targetProxy = 81BF34711DC563DB00459369 /* PBXContainerItemProxy */;
+		};
+		__Dependency_pinmodel /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = "______Target_pinmodel" /* pinmodel */;
+			targetProxy = 81BF34731DC563DB00459369 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		814AB8601B60750A00CF4BC4 /* Debug */ = {
+		_ReleaseConf_Commander /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = pinmodel;
-				SDKROOT = macosx;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				INFOPLIST_FILE = pinmodel.xcodeproj/Commander_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = Commander;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		_ReleaseConf_Spectre /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				INFOPLIST_FILE = pinmodel.xcodeproj/Spectre_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = Spectre;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		_ReleaseConf_pinmodel /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		_ReleaseConf_pinmodelTests /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				INFOPLIST_FILE = pinmodel.xcodeproj/pinmodelTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		"___DebugConf_Commander" /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				INFOPLIST_FILE = pinmodel.xcodeproj/Commander_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = Commander;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Debug;
-		};
-		814AB8611B60750A00CF4BC4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = pinmodel;
-				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Release;
-		};
-		814AB8631B60750A00CF4BC4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = pinmodel;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
-		814AB8641B60750A00CF4BC4 /* Release */ = {
+		"___DebugConf_Spectre" /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = pinmodel;
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
-		81B00BA91C45C7F70074364D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Unit Tests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.pinterest.pinmodel.Unit-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				INFOPLIST_FILE = pinmodel.xcodeproj/Spectre_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = Spectre;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
-		81B00BAA1C45C7F70074364D /* Release */ = {
+		"___DebugConf_pinmodel" /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Unit Tests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.pinterest.pinmodel.Unit-Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
+			name = Debug;
+		};
+		"___DebugConf_pinmodelTests" /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				INFOPLIST_FILE = pinmodel.xcodeproj/pinmodelTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		"_____Release_" /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = __PBXFileRef_pinmodel.xcodeproj/Configs/Project.xcconfig /* pinmodel.xcodeproj/Configs/Project.xcconfig */;
+			buildSettings = {
+			};
 			name = Release;
+		};
+		"_______Debug_" /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = __PBXFileRef_pinmodel.xcodeproj/Configs/Project.xcconfig /* pinmodel.xcodeproj/Configs/Project.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		814AB8561B60750A00CF4BC4 /* Build configuration list for PBXProject "pinmodel" */ = {
+		"___RootConfs_" /* Build configuration list for PBXProject "pinmodel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				814AB8601B60750A00CF4BC4 /* Debug */,
-				814AB8611B60750A00CF4BC4 /* Release */,
+				"_______Debug_" /* Debug */,
+				"_____Release_" /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		814AB8621B60750A00CF4BC4 /* Build configuration list for PBXNativeTarget "PINModel" */ = {
+		"_______Confs_Commander" /* Build configuration list for PBXNativeTarget "Commander" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				814AB8631B60750A00CF4BC4 /* Debug */,
-				814AB8641B60750A00CF4BC4 /* Release */,
+				"___DebugConf_Commander" /* Debug */,
+				_ReleaseConf_Commander /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		81B00BA81C45C7F70074364D /* Build configuration list for PBXNativeTarget "Unit Tests" */ = {
+		"_______Confs_Spectre" /* Build configuration list for PBXNativeTarget "Spectre" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				81B00BA91C45C7F70074364D /* Debug */,
-				81B00BAA1C45C7F70074364D /* Release */,
+				"___DebugConf_Spectre" /* Debug */,
+				_ReleaseConf_Spectre /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
+		};
+		"_______Confs_pinmodel" /* Build configuration list for PBXNativeTarget "pinmodel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"___DebugConf_pinmodel" /* Debug */,
+				_ReleaseConf_pinmodel /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		"_______Confs_pinmodelTests" /* Build configuration list for PBXNativeTarget "pinmodelTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"___DebugConf_pinmodelTests" /* Debug */,
+				_ReleaseConf_pinmodelTests /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 814AB8531B60750A00CF4BC4 /* Project object */;
+	rootObject = __RootObject_ /* Project object */;
 }
