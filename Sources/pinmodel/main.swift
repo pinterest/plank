@@ -18,9 +18,9 @@ func beginFileGeneration(_ schemaPath: String, outputDirectoryPath: String, gene
 
 Group {
   $0.command("generate",
+    Argument<String>("url"),
     Option("output_dir", "", description: "Relative path where file will be written"),
     Option("objc_class_prefix", "", description: "Prefix that will be used to prepend types generated for Objective-C files"),
-    Argument<String>("url"),
     description: "Generates immutable model and utilities code for the schema at the url"
   ) { (url:String, output_dir:String, objc_class_prefix:String) in
     if url.characters.count > 0 {
