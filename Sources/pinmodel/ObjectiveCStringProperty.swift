@@ -112,17 +112,4 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
         }
     }
 
-    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String] {
-        // This is pretty general and will likely be the same as the base class, might want to figure this one out..
-        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
-
-        if self.propertyRequiresAssignmentLogic() == false {
-            // Code optimization: Early-exit if we are simply doing a basic assignment
-            let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
-            return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]
-        }
-
-        let propFromDictionary = self.propertyStatementFromDictionary("value", className: className)
-        return ["\(originVariableString).\(formattedPropName) = \(propFromDictionary);"]
-    }
 }

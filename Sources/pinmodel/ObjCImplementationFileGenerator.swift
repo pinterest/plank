@@ -474,52 +474,6 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         return lines.joined(separator: "\n")
     }
 
-    func renderMergeWithDictionary() -> String {
-        let indentation = "    "
-
-        func renderMergeForProperty(_ propertyDescriptor: ObjectSchemaProperty) -> String {
-            var lines: [String] = []
-            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className, schemaLoader: self.schemaLoader)
-            let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
-
-            if property.propertyRequiresAssignmentLogic() {
-                let propFromDictionary = "valueOrNil(modelDictionary, @\"\(propertyDescriptor.name)\")"
-                let propertyLines = property.propertyMergeStatementFromDictionary("builder", className: self.className).map({ indentation + $0 })
-                lines = ["id value = \(propFromDictionary);",
-                    "if (value != nil) {"] +
-                    propertyLines +
-                    ["} else {",
-                    indentation + "builder.\(formattedPropName) = nil;",
-                    "}"]
-            } else {
-                lines = property.propertyMergeStatementFromDictionary("builder", className: self.className)
-            }
-            let result = ["if ([key isEqualToString:@\"\(propertyDescriptor.name)\"]) {"] + lines.map({indentation + $0}) + [ indentation + "return;", "}"]
-            return result.map({ indentation + indentation + $0 }).joined(separator: "\n")
-        }
-
-        var allProperties: [ObjectSchemaProperty] = self.classProperties() + self.parentClassProperties()
-        allProperties.sort(by: {$0.name < $1.name})
-        let propertyLines: [String] = allProperties.map({ renderMergeForProperty($0)})
-
-        let lines = [
-        "- (instancetype)mergeWithDictionary:(NSDictionary *)modelDictionary",
-        "{",
-        "   NSParameterAssert(modelDictionary);",
-        "   \(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
-
-        "   [modelDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key, id  _Nonnull obj, __unused BOOL * _Nonnull stop) {",
-        "        if (obj == [NSNull null]) { return; }",
-        "",
-            propertyLines.joined(separator: "\n\n"),
-        "   }];",
-        "   return [builder build];",
-        "}"
-        ]
-        return lines.joined(separator: "\n")
-    }
-
-
     func renderStringEnumUtilityMethods() -> String {
         let enumProperties = self.objectDescriptor.properties.filter({ PropertyFactory.propertyForDescriptor($0, className: self.className, schemaLoader: self.schemaLoader).isEnumPropertyType() && $0.jsonType == JSONType.String })
 
@@ -692,7 +646,6 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 self.pragmaMark("Mutation helper methods"),
                 self.renderCopyWithBlock(),
                 self.renderMergeWithModel(),
-                self.renderMergeWithDictionary(),
                 self.renderModelPropertyNames(),
                 self.renderModelArrayPropertyNames(),
                 self.renderModelDictionaryPropertyNames(),
@@ -717,7 +670,6 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             self.pragmaMark("Mutation helper methods"),
             self.renderCopyWithBlock(),
             self.renderMergeWithModel(),
-            self.renderMergeWithDictionary(),
             self.renderModelPropertyNames(),
             self.renderModelArrayPropertyNames(),
             self.renderModelDictionaryPropertyNames(),

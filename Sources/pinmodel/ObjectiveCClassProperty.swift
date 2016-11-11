@@ -91,23 +91,4 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
         return ObjectiveCInterfaceFileDescriptor(descriptor: self.resolvedSchema, generatorParameters: [GenerationParameterType.classPrefix: "PI"], parentDescriptor: self.parentProperty, schemaLoader: self.schemaLoader).className
     }
 
-    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String] {
-        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
-        if self.propertyRequiresAssignmentLogic() == false {
-            // Code optimization: Early-exit if we are simply doing a basic assignment
-            let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
-            return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]
-        }
-
-        let subclass = PropertyFactory.propertyForDescriptor(self.propertyDescriptor, className: self.className, schemaLoader: self.schemaLoader)
-        let propStmt = subclass.propertyStatementFromDictionary("value", className: className)
-        return [
-            "if (\(originVariableString).\(formattedPropName) != nil) {",
-            "   \(originVariableString).\(formattedPropName) = [\(originVariableString).\(formattedPropName) mergeWithDictionary:value];",
-            "} else {",
-            "   \(originVariableString).\(formattedPropName) = \(propStmt);",
-            "}"
-        ]
-    }
-
 }

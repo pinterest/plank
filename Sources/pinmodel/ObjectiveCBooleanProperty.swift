@@ -43,9 +43,4 @@ final class ObjectiveCBooleanProperty: ObjectiveCProperty {
         return ObjCPrimitiveType.Boolean.rawValue
     }
 
-    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String] {
-        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
-        let shortPropFromDictionary = self.propertyStatementFromDictionary("valueOrNil(modelDictionary, @\"\(self.propertyDescriptor.name)\")", className: className)
-        return ["\(originVariableString).\(formattedPropName) = \(shortPropFromDictionary);"]
-    }
 }

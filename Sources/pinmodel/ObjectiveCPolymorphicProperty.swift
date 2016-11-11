@@ -103,9 +103,4 @@ final class ObjectiveCPolymorphicProperty: ObjectiveCProperty {
 
         return self.templatedPropertyAssignmentStatementFromDictionary("_\(formattedPropName)", className: className)
     }
-
-    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String] {
-        let formattedPropName = self.propertyDescriptor.name.snakeCaseToPropertyName()
-        return self.templatedPropertyAssignmentStatementFromDictionary("\(originVariableString).\(formattedPropName)", className: className)
-    }
 }

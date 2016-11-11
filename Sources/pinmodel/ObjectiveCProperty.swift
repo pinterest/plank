@@ -63,7 +63,6 @@ protocol ObjectiveCProperty: class {
     func propertyStatementFromDictionary(_ propertyVariableString: String, className: String) -> String
     func propertyAssignmentStatementFromDictionary(_ className: String) -> [String]
     func objectiveCStringForJSONType() -> String
-    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String]
     func polymorphicTypeIdentifier() -> String
     func dirtyPropertyAssignmentStatement(_ dirtyPropertiesIVarName: String) -> String
 }
@@ -118,7 +117,6 @@ class AnyProperty: ObjectiveCProperty {
     fileprivate var _propertyStatementFromDictionary: (String, String) -> String
     fileprivate var _propertyAssignmentStatementFromDictionary: (String) -> [String]
     fileprivate var _objectiveCStringForJSONType: (Void) -> String
-    fileprivate var _propertyMergeStatementFromDictionary: (String, String) -> [String]
     fileprivate var _polymorphicTypeIdentifier: (Void) -> String
     fileprivate var _dirtyPropertyOption: (Void) -> String
     fileprivate var _dirtyPropertyAssignmentStatement: (String) -> String
@@ -140,7 +138,6 @@ class AnyProperty: ObjectiveCProperty {
         _renderDecodeWithCoderStatementForDirtyProperties = { base.renderDecodeWithCoderStatementForDirtyProperties($0) }
         _propertyRequiresAssignmentLogic = { base.propertyRequiresAssignmentLogic() }
         _objectiveCStringForJSONType = { base.objectiveCStringForJSONType() }
-        _propertyMergeStatementFromDictionary = { base.propertyMergeStatementFromDictionary($0, className: $1) }
         _propertyAssignmentStatementFromDictionary = { base.propertyAssignmentStatementFromDictionary($0) }
         _renderDeclaration = { base.renderDeclaration($0) }
         _propertyStatementFromDictionary = { base.propertyStatementFromDictionary($0, className: $1) }
@@ -169,7 +166,6 @@ class AnyProperty: ObjectiveCProperty {
         _renderDecodeWithCoderStatementForDirtyProperties = { base.renderDecodeWithCoderStatementForDirtyProperties($0) }
         _propertyRequiresAssignmentLogic = { base.propertyRequiresAssignmentLogic() }
         _objectiveCStringForJSONType = { base.objectiveCStringForJSONType() }
-        _propertyMergeStatementFromDictionary = { base.propertyMergeStatementFromDictionary($0, className: $1) }
         _propertyAssignmentStatementFromDictionary = { base.propertyAssignmentStatementFromDictionary($0) }
         _renderDeclaration = { base.renderDeclaration($0) }
         _propertyStatementFromDictionary = { base.propertyStatementFromDictionary($0, className: $1) }
@@ -252,10 +248,6 @@ class AnyProperty: ObjectiveCProperty {
 
     func objectiveCStringForJSONType() -> String {
         return _objectiveCStringForJSONType()
-    }
-
-    func propertyMergeStatementFromDictionary(_ originVariableString: String, className: String) -> [String] {
-        return _propertyMergeStatementFromDictionary(originVariableString, className)
     }
 
     func dirtyPropertyAssignmentStatement(_ dirtyPropertiesIVarName: String) -> String {
