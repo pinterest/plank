@@ -56,10 +56,7 @@ final class ObjectiveCClassProperty: ObjectiveCProperty {
             // TODO: Figure out how to expose generation parameters here or alternate ways to create the class name
             var generationParameters =  [GenerationParameterType.classPrefix: "PI"]
             if let classPrefix = generationParameters[GenerationParameterType.classPrefix] as String? {
-                classNameForSchema = String(format: "%@%@", arguments: [
-                    classPrefix,
-                    schema.name.snakeCaseToCamelCase()
-                    ])
+                classNameForSchema = "\(classPrefix)\(schema.name.snakeCaseToCamelCase())"
             } else {
                 classNameForSchema = schema.name.snakeCaseToCamelCase()
             }

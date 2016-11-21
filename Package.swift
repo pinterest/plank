@@ -1,5 +1,6 @@
 import PackageDescription
 
 let package = Package(
-    name: "pinmodel"
+    name: "pinmodel",
+    exclude: ["Tests/Utility"]
 )

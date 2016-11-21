@@ -39,9 +39,8 @@ extension FileGenerator {
         formatter.timeStyle = .medium
         formatter.timeZone = TimeZone(identifier: "UTC")
         formatter.dateFormat = "MM-dd-yyyy 'at' HH:mm:ss"
-        
-        let calendar = Calendar.current
-        let year: Int = (calendar as NSCalendar).components(NSCalendar.Unit.year, from: date).year!
+
+        let year: Int = Calendar.current.component(.year, from: date)
         
         let header = [
             "//",

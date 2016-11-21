@@ -323,22 +323,13 @@ extension ObjectiveCProperty {
     internal func renderDeclaration(_ isMutable: Bool) -> String {
         let mutabilityType = isMutable ? ObjCMutabilityType.ReadWrite: ObjCMutabilityType.ReadOnly
         let propName = self.propertyDescriptor.name.snakeCaseToPropertyName()
-        let format: String = self.isScalarType() ?  "%@ (%@) %@ %@;": "%@ (%@) %@ *%@;"
+        let typeName = self.objectiveCStringForJSONType()
         if self.isScalarType() {
-            return String(format: format, "@property",
-                [ObjCAtomicityType.NonAtomic.rawValue,
-                    self.memoryAssignmentType().rawValue,
-                    mutabilityType.rawValue].joined(separator: ", "),
-                self.objectiveCStringForJSONType(),
-                propName)
+            let propAttributes =  [ObjCAtomicityType.NonAtomic.rawValue, self.memoryAssignmentType().rawValue, mutabilityType.rawValue]
+            return  "@property (\(propAttributes.joined(separator: ", "))) \(typeName) \(propName);"
         } else {
-            return String(format: format, "@property",
-                ["nullable", // We don't have a notion of required fields so we must assume all are nullable
-                    ObjCAtomicityType.NonAtomic.rawValue,
-                    self.memoryAssignmentType().rawValue,
-                    mutabilityType.rawValue].joined(separator: ", "),
-                self.objectiveCStringForJSONType(),
-                propName)
+            let propAttributes =  ["nullable", ObjCAtomicityType.NonAtomic.rawValue, self.memoryAssignmentType().rawValue, mutabilityType.rawValue]
+            return  "@property (\(propAttributes.joined(separator: ", "))) \(typeName) *\(propName);"
         }
     }
 

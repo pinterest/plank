@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 @testable import pinmodel
 
 let TEST_NOTIFICATION_MODEL_INSTANCE = ObjectSchemaObjectProperty(

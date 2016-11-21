@@ -20,14 +20,13 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
 
     required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?, schemaLoader: SchemaLoader) {
         self.objectDescriptor = descriptor
+
         if let classPrefix = generatorParameters[GenerationParameterType.classPrefix] as String? {
-            self.className = String(format: "%@%@", arguments: [
-                classPrefix,
-                self.objectDescriptor.name.snakeCaseToCamelCase()
-                ])
+            self.className = "\(classPrefix)\(self.objectDescriptor.name.snakeCaseToCamelCase())"
         } else {
             self.className = self.objectDescriptor.name.snakeCaseToCamelCase()
         }
+
         self.builderClassName = "\(self.className)Builder"
         self.dirtyPropertyOptionName = "\(self.className)DirtyProperties"
         self.generationParameters = generatorParameters
@@ -63,7 +62,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                     parentDescriptor: nil,
                     schemaLoader: self.schemaLoader).className
         }
-        return NSObject.className()
+        return NSObject.pin_className()
     }
 
     func parentBuilderClassName() -> String {
@@ -74,7 +73,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
                 parentDescriptor: nil,
                 schemaLoader: self.schemaLoader).builderClassName
         }
-        return NSObject.className()
+        return NSObject.pin_className()
     }
 
     func renderBuilderInterface() -> String {
@@ -82,7 +81,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderImplementationDeclaration()
         }
 
-        let parentClassName = NSObject.className()
+        let parentClassName = NSObject.pin_className()
         if self.isBaseClass() {
             let interfaceDeclaration = "@interface \(self.builderClassName)<ObjectType:\(self.className) *> : \(parentClassName)"
             let lines = [

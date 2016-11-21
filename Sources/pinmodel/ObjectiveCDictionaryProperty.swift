@@ -68,7 +68,7 @@ final class ObjectiveCDictionaryProperty: ObjectiveCProperty {
             return "\(NSDictionary.className()) <\(NSString.className()) *, \(prop.objectiveCStringForJSONType()) *>"
         }
 
-        return "\(NSDictionary.className()) <\(NSString.className()) *, __kindof \(NSObject.className()) *>"
+        return "\(NSDictionary.className()) <\(NSString.className()) *, __kindof \(NSObject.pin_className()) *>"
     }
 
 

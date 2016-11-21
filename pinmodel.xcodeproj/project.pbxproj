@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		818867301DE3DD8E00E61069 /* LinuxTestIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188672F1DE3DD8E00E61069 /* LinuxTestIndex.swift */; };
 		_LinkFileRef_pinmodel_via_pinmodelTests /* pinmodel in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_pinmodel" /* pinmodel */; };
 		__src_cc_ref_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */; };
 		__src_cc_ref_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8188672F1DE3DD8E00E61069 /* LinuxTestIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxTestIndex.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGenerator.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 		"_______Group_pinmodelTests" /* pinmodelTests */ = {
 			isa = PBXGroup;
 			children = (
+				8188672F1DE3DD8E00E61069 /* LinuxTestIndex.swift */,
 				__PBXFileRef_Tests/pinmodelTests/Mock.swift /* Mock.swift */,
 				__PBXFileRef_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift */,
 				__PBXFileRef_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift */,
@@ -282,6 +285,7 @@
 			files = (
 				__src_cc_ref_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift in Sources */,
 				__src_cc_ref_Sources/pinmodel/main.swift /* main.swift in Sources */,
+				818867301DE3DD8E00E61069 /* LinuxTestIndex.swift in Sources */,
 				__src_cc_ref_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift in Sources */,
 				__src_cc_ref_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift in Sources */,
 				__src_cc_ref_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift in Sources */,

@@ -8,6 +8,50 @@
 
 import Foundation
 
+#if os(Linux)
+    // className is not found in Linux implementation of NSObject https://bugs.swift.org/browse/SR-957
+    extension NSString {
+        class func className() -> String {
+            return "NSString"
+        }
+    }
+
+    extension NSArray {
+        class func className() -> String {
+            return "NSArray"
+        }
+    }
+
+    extension NSURL {
+        class func className() -> String {
+            return "NSURL"
+        }
+    }
+
+    extension NSDate {
+        class func className() -> String {
+            return "NSDate"
+        }
+    }
+
+    extension NSDictionary {
+        class func className() -> String {
+            return "NSDictionary"
+        }
+    }
+#endif
+
+
+extension NSObject {
+    // prefix with "pin_" since protocol extensions cannot override parent implementations
+    class func pin_className() -> String {
+        #if os(Linux)
+            return "NSObject"
+        #else
+            return NSObject.className()
+        #endif
+    }
+}
 
 let OBJC_RESERVED_WORDS_REPLACEMENTS = [
     "description": "description_text",

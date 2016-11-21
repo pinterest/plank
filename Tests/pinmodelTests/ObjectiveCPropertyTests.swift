@@ -7,6 +7,9 @@
 //
 
 import XCTest
+
+import Foundation
+
 @testable import pinmodel
 
 class ObjectiveCPropertyTests: PINModelTests {
@@ -15,8 +18,6 @@ class ObjectiveCPropertyTests: PINModelTests {
 
     override func setUp() {
         super.setUp()
-//        self.baseProperty = PropertyFactory.propertyForDescriptor(self.baseImpl.objectDescriptor, className: "PIModel", schemaLoader: self.schemaLoader)
-//        self.childProperty = PropertyFactory.propertyForDescriptor(self.childImpl.objectDescriptor, className: "PINotification", schemaLoader: self.schemaLoader)
     }
 
     override func tearDown() {

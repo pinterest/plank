@@ -23,10 +23,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?, schemaLoader: SchemaLoader) {
         self.objectDescriptor = descriptor
         if let classPrefix = generatorParameters[GenerationParameterType.classPrefix] as String? {
-            self.className = String(format: "%@%@", arguments: [
-                classPrefix,
-                self.objectDescriptor.name.snakeCaseToCamelCase()
-            ])
+            self.className = "\(classPrefix)\(self.objectDescriptor.name.snakeCaseToCamelCase())"
         } else {
             self.className = self.objectDescriptor.name.snakeCaseToCamelCase()
         }
@@ -68,7 +65,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 parentDescriptor: nil,
                 schemaLoader: self.schemaLoader).className
         }
-        return NSObject.className()
+        return NSObject.pin_className()
     }
 
     func classProperties() -> [ObjectSchemaProperty] {

@@ -14,6 +14,10 @@ func beginFileGeneration(_ schemaPath: String, outputDirectoryPath: String, gene
   generateFilesWithInitialUrl(baseUrl, outputDirectory: outputDirectory, generationParameters: generationParameters)
 }
 
+protocol HelpCommandOutput {
+    static func printHelp() -> String
+}
+
 enum CommandOptions: String {
     case Generate = "generate"
     case Help = "help"
@@ -22,6 +26,22 @@ enum CommandOptions: String {
 enum FlagOptions: String {
     case OutputDirectory = "output_dir"
     case ObjectiveCClassPrefix = "objc_class_prefix"
+}
+
+extension FlagOptions : HelpCommandOutput {
+    internal static func printHelp() -> String {
+        return [
+            "    --\(FlagOptions.ObjectiveCClassPrefix.rawValue) - The prefix to add to all generated class names (i.e. \"PIN\" for \"PINModel\")",
+            "    --\(FlagOptions.OutputDirectory.rawValue) - The directory where generated code will be written"].joined(separator: "\n")
+    }
+}
+
+extension CommandOptions : HelpCommandOutput {
+    internal static func printHelp() -> String {
+        return [
+            "    \(CommandOptions.Generate.rawValue) - Generates immutable model and utilities code for the schema at the url",
+            "    \(CommandOptions.Help.rawValue) - Print help information"].joined(separator: "\n")
+    }
 }
 
 func handleProcess(processInfo: ProcessInfo) {
@@ -124,12 +144,10 @@ func handleHelpCommand() {
         "    $ pinmodel [command] [options]",
         "",
         "Commands:",
-        "    \(CommandOptions.Generate.rawValue) - Generates immutable model and utilities code for the schema at the url",
-        "    \(CommandOptions.Help.rawValue) - Print help information",
+        "\(CommandOptions.printHelp())",
         "",
         "Options:",
-        "    --\(FlagOptions.ObjectiveCClassPrefix.rawValue) - The prefix to add to all generated class names (i.e. \"PIN\" for \"PINModel\")",
-        "    --\(FlagOptions.OutputDirectory.rawValue) - The directory where generated code will be written",
+        "\(FlagOptions.printHelp())",
     ].joined(separator: "\n")
 
     print(helpDocs)

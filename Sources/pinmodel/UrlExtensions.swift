@@ -8,6 +8,10 @@
 
 import Foundation
 
+#if os(Linux)
+import Dispatch
+#endif
+
 
 extension URLSession {
     func synchronousDataTaskWithUrl(_ url: URL) -> Data? {
