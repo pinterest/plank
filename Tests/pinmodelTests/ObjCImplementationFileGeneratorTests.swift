@@ -443,7 +443,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
         let copyWithBlockImpl = baseImpl.renderCopyWithBlock()
 
         let expectedCopyWithBlockImpl = [
-            "- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(id builder))block",
+            "- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(\(baseImpl.builderClassName) *builder))block",
             "{",
             "    NSParameterAssert(block);",
             "    \(baseImpl.builderClassName) *builder = [[\(baseImpl.builderClassName) alloc] initWithModel:self];",

@@ -81,25 +81,16 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderImplementationDeclaration()
         }
 
-        let parentClassName = NSObject.pin_className()
-        if self.isBaseClass() {
-            let interfaceDeclaration = "@interface \(self.builderClassName)<ObjectType:\(self.className) *> : \(parentClassName)"
-            let lines = [
-                interfaceDeclaration,
-                propertyLines.joined(separator: "\n"),
-                "- (nullable instancetype)initWithModel:(ObjectType)modelObject;",
-                "- (ObjectType)build;",
-                "@end"
-            ]
-            return lines.joined(separator: "\n\n")
-        } else {
-            let lines = [
-                "@interface \(self.builderClassName) : \(self.parentBuilderClassName())<\(self.className) *>",
-                propertyLines.joined(separator: "\n"),
-                "@end"
-            ]
-            return lines.joined(separator: "\n\n")
-        }
+        let parentClassName = self.isBaseClass() ? NSObject.pin_className() : "\(self.parentClassName())Builder"
+        let interfaceDeclaration = "@interface \(self.builderClassName) : \(parentClassName)"
+        let lines = [
+            interfaceDeclaration,
+            propertyLines.joined(separator: "\n"),
+            "- (nullable instancetype)initWithModel:(\(self.className) *)modelObject;",
+            "- (\(self.className) *)build;",
+            "@end"
+        ]
+        return lines.joined(separator: "\n\n")
     }
 
     func renderInterface() -> String {
@@ -110,36 +101,40 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
 
         if self.isBaseClass() {
             let implementedProtocols = ["NSSecureCoding", "NSCopying", self.protocolName()].joined(separator: ", ")
-            let interfaceDeclaration = "@interface \(self.className)<__covariant BuilderObjectType /* \(self.builderClassName) * */> : NSObject<\(implementedProtocols)>"
+            let interfaceDeclaration = "@interface \(self.className) : NSObject<\(implementedProtocols)>"
             let lines = [
                 interfaceDeclaration,
                 propertyLines.joined(separator: "\n"),
                 "+ (NSString *)className;",
                 "+ (NSString *)polymorphicTypeIdentifier;",
                 "+ (nullable instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;",
-                "- (nullable instancetype)initWithDictionary:(NSDictionary *)modelDictionary NS_DESIGNATED_INITIALIZER;",
-                "- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;",
-                "- (nullable instancetype)initWithBuilder:(BuilderObjectType)builder NS_DESIGNATED_INITIALIZER;",
-                "- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(BuilderObjectType builder))block;",
+                "- (nullable instancetype)initWithDictionary:(NSDictionary *)modelDictionary;",
+                "- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder;",
+                "- (nullable instancetype)initWithBuilder:(\(self.builderClassName) *)builder;",
+                "- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(\(self.builderClassName) *builder))block;",
                 "- (instancetype)mergeWithModel:(\(self.className) *)modelObject;",
                 "// Merges the fields of the receiver with another model. If callDidMerge is NO, this\n" +
-                "// method will call the normal post init hook PIModelDidInitialize when merge is complete.\n" +
-                "// If callDidInit is YES, this method will call PIModelDidMerge.\n" +
+                    "// method will call the normal post init hook PIModelDidInitialize when merge is complete.\n" +
+                    "// If callDidInit is YES, this method will call PIModelDidMerge.\n" +
                 "- (instancetype)mergeWithModel:(\(self.className) *)modelObject initType:(PIModelInitType)initType;",
                 "- (NSArray<NSString *> *)modelPropertyNames;",
                 "- (NSArray<NSString *> *)modelArrayPropertyNames;",
                 "- (NSArray<NSString *> *)modelDictionaryPropertyNames;",
                 "@end",
-            ]
+                ]
             return lines.joined(separator: "\n\n")
         } else {
+            let interfaceDeclaration = "@interface \(self.className) : \(self.parentClassName())"
             let lines = [
-                "@interface \(self.className) : \(self.parentClassName())<\(self.builderClassName) *>",
+                interfaceDeclaration,
                 propertyLines.joined(separator: "\n"),
+                "- (nullable instancetype)initWithBuilder:(\(self.builderClassName) *)builder;",
+                "- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(\(self.builderClassName) *builder))block;",
+                "- (instancetype)mergeWithModel:(\(self.className) *)modelObject;",
+                "- (instancetype)mergeWithModel:(\(self.className) *)modelObject initType:(PIModelInitType)initType;",
                 "@end",
-            ]
+                ]
             return lines.joined(separator: "\n\n")
-
         }
     }
 
@@ -252,8 +247,10 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             self.renderEnums(),
             self.renderStringEnumUtilityMethods(),
             self.renderForwardDeclarations(),
+            "NS_ASSUME_NONNULL_BEGIN",
             self.renderInterface(),
-            self.renderBuilderInterface()
+            self.renderBuilderInterface(),
+            "NS_ASSUME_NONNULL_END"
         ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
         return lines.joined(separator: "\n\n")
     }

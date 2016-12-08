@@ -7,8 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		818867301DE3DD8E00E61069 /* LinuxTestIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188672F1DE3DD8E00E61069 /* LinuxTestIndex.swift */; };
-		_LinkFileRef_pinmodel_via_pinmodelTests /* pinmodel in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_pinmodel" /* pinmodel */; };
+		81E939451DF8F81F000513A5 /* LinuxTestIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188672F1DE3DD8E00E61069 /* LinuxTestIndex.swift */; };
+		81E939471DF8FAE1000513A5 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */; };
+		81E939481DF8FAE1000513A5 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift */; };
+		81E939491DF8FAE1000513A5 /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift */; };
+		81E9394A1DF8FAE1000513A5 /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift */; };
+		81E9394B1DF8FAE1000513A5 /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift */; };
+		81E9394C1DF8FAE1000513A5 /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift */; };
+		81E9394D1DF8FAE1000513A5 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift */; };
+		81E9394E1DF8FAE1000513A5 /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift */; };
+		81E9394F1DF8FAE1000513A5 /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift */; };
+		81E939501DF8FAE1000513A5 /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift */; };
+		81E939511DF8FAE1000513A5 /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift */; };
+		81E939521DF8FAE5000513A5 /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift */; };
+		81E939531DF8FAE5000513A5 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift */; };
+		81E939541DF8FAE5000513A5 /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift */; };
+		81E939551DF8FAE9000513A5 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */; };
+		81E939561DF8FAE9000513A5 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/Schema.swift /* Schema.swift */; };
+		81E939571DF8FAE9000513A5 /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift */; };
+		_LinkFileRef_pinmodel_via_pinmodelTests /* pinmodel in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_pinmodel" /* pinmodel */; settings = {ATTRIBUTES = (Required, ); }; };
 		__src_cc_ref_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */; };
 		__src_cc_ref_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */; };
 		__src_cc_ref_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift */; };
@@ -285,7 +302,6 @@
 			files = (
 				__src_cc_ref_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift in Sources */,
 				__src_cc_ref_Sources/pinmodel/main.swift /* main.swift in Sources */,
-				818867301DE3DD8E00E61069 /* LinuxTestIndex.swift in Sources */,
 				__src_cc_ref_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift in Sources */,
 				__src_cc_ref_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift in Sources */,
 				__src_cc_ref_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift in Sources */,
@@ -309,13 +325,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				81E939561DF8FAE9000513A5 /* Schema.swift in Sources */,
 				__src_cc_ref_Tests/pinmodelTests/Mock.swift /* Mock.swift in Sources */,
+				81E9394B1DF8FAE1000513A5 /* ObjectiveCClassProperty.swift in Sources */,
 				__src_cc_ref_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift in Sources */,
+				81E939531DF8FAE5000513A5 /* StringExtensions.swift in Sources */,
+				81E939491DF8FAE1000513A5 /* ObjectiveCArrayProperty.swift in Sources */,
+				81E939541DF8FAE5000513A5 /* UrlExtensions.swift in Sources */,
 				__src_cc_ref_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift in Sources */,
 				__src_cc_ref_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */,
+				81E9394C1DF8FAE1000513A5 /* ObjectiveCDictionaryProperty.swift in Sources */,
+				81E939571DF8FAE9000513A5 /* SchemaLoader.swift in Sources */,
+				81E9394A1DF8FAE1000513A5 /* ObjectiveCBooleanProperty.swift in Sources */,
+				81E939511DF8FAE1000513A5 /* ObjectiveCStringProperty.swift in Sources */,
+				81E9394F1DF8FAE1000513A5 /* ObjectiveCPolymorphicProperty.swift in Sources */,
 				__src_cc_ref_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift in Sources */,
 				__src_cc_ref_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift in Sources */,
+				81E939551DF8FAE9000513A5 /* FileGenerator.swift in Sources */,
+				81E939481DF8FAE1000513A5 /* ObjCInterfaceFileGenerator.swift in Sources */,
+				81E939521DF8FAE5000513A5 /* OptionalExtensions.swift in Sources */,
+				81E939501DF8FAE1000513A5 /* ObjectiveCProperty.swift in Sources */,
+				81E9394E1DF8FAE1000513A5 /* ObjectiveCIntegerProperty.swift in Sources */,
 				__src_cc_ref_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift in Sources */,
+				81E9394D1DF8FAE1000513A5 /* ObjectiveCFileGenerator.swift in Sources */,
+				81E939471DF8FAE1000513A5 /* ObjCImplementationFileGenerator.swift in Sources */,
+				81E939451DF8F81F000513A5 /* LinuxTestIndex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

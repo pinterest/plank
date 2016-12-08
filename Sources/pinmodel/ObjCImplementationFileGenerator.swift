@@ -233,7 +233,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
     func renderCopyWithBlock() -> String {
         let lines = [
-            "- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(id builder))block",
+            "- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(\(self.builderClassName) *builder))block",
             "{",
             "    NSParameterAssert(block);",
             "    \(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
