@@ -1,6 +1,9 @@
 import PackageDescription
 
 let package = Package(
-    name: "pinmodel",
+    name: "PINModel",
+    targets: [Target(name: "pinmodel", dependencies:["Core"]),
+              Target(name: "Core", dependencies:[])],
     exclude: ["Tests/Utility"]
 )
+

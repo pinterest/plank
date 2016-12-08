@@ -7,463 +7,537 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		81E939451DF8F81F000513A5 /* LinuxTestIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8188672F1DE3DD8E00E61069 /* LinuxTestIndex.swift */; };
-		81E939471DF8FAE1000513A5 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */; };
-		81E939481DF8FAE1000513A5 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift */; };
-		81E939491DF8FAE1000513A5 /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift */; };
-		81E9394A1DF8FAE1000513A5 /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift */; };
-		81E9394B1DF8FAE1000513A5 /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift */; };
-		81E9394C1DF8FAE1000513A5 /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift */; };
-		81E9394D1DF8FAE1000513A5 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift */; };
-		81E9394E1DF8FAE1000513A5 /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift */; };
-		81E9394F1DF8FAE1000513A5 /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift */; };
-		81E939501DF8FAE1000513A5 /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift */; };
-		81E939511DF8FAE1000513A5 /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift */; };
-		81E939521DF8FAE5000513A5 /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift */; };
-		81E939531DF8FAE5000513A5 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift */; };
-		81E939541DF8FAE5000513A5 /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift */; };
-		81E939551DF8FAE9000513A5 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */; };
-		81E939561DF8FAE9000513A5 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/Schema.swift /* Schema.swift */; };
-		81E939571DF8FAE9000513A5 /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift */; };
-		_LinkFileRef_pinmodel_via_pinmodelTests /* pinmodel in Frameworks */ = {isa = PBXBuildFile; fileRef = "_____Product_pinmodel" /* pinmodel */; settings = {ATTRIBUTES = (Required, ); }; };
-		__src_cc_ref_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift */; };
-		__src_cc_ref_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift */; };
-		__src_cc_ref_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift */; };
-		__src_cc_ref_Sources/pinmodel/Schema.swift /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/Schema.swift /* Schema.swift */; };
-		__src_cc_ref_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift */; };
-		__src_cc_ref_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift */; };
-		__src_cc_ref_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift */; };
-		__src_cc_ref_Sources/pinmodel/main.swift /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/pinmodel/main.swift /* main.swift */; };
-		__src_cc_ref_Tests/pinmodelTests/Mock.swift /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/Mock.swift /* Mock.swift */; };
-		__src_cc_ref_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift */; };
-		__src_cc_ref_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift */; };
-		__src_cc_ref_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift */; };
-		__src_cc_ref_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift */; };
-		__src_cc_ref_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift */; };
-		__src_cc_ref_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift */; };
+		OBJ_47 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileGenerator.swift */; };
+		OBJ_48 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ObjCImplementationFileGenerator.swift */; };
+		OBJ_49 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ObjCInterfaceFileGenerator.swift */; };
+		OBJ_50 /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* ObjectiveCArrayProperty.swift */; };
+		OBJ_51 /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* ObjectiveCBooleanProperty.swift */; };
+		OBJ_52 /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* ObjectiveCClassProperty.swift */; };
+		OBJ_53 /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* ObjectiveCDictionaryProperty.swift */; };
+		OBJ_54 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* ObjectiveCFileGenerator.swift */; };
+		OBJ_55 /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* ObjectiveCIntegerProperty.swift */; };
+		OBJ_56 /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* ObjectiveCPolymorphicProperty.swift */; };
+		OBJ_57 /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* ObjectiveCProperty.swift */; };
+		OBJ_58 /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* ObjectiveCStringProperty.swift */; };
+		OBJ_59 /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* OptionalExtensions.swift */; };
+		OBJ_60 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Schema.swift */; };
+		OBJ_61 /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* SchemaLoader.swift */; };
+		OBJ_62 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* StringExtensions.swift */; };
+		OBJ_63 /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* UrlExtensions.swift */; };
+		OBJ_70 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* main.swift */; };
+		OBJ_72 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* Core.framework */; };
+		OBJ_79 /* LinuxTestIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* LinuxTestIndex.swift */; };
+		OBJ_80 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* Mock.swift */; };
+		OBJ_81 /* ObjCImplementationFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* ObjCImplementationFileGeneratorTests.swift */; };
+		OBJ_82 /* ObjectiveCFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ObjectiveCFileGeneratorTests.swift */; };
+		OBJ_83 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* ObjectiveCInterfaceFileDescriptorTests.swift */; };
+		OBJ_84 /* ObjectiveCPolymorphicPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* ObjectiveCPolymorphicPropertyTests.swift */; };
+		OBJ_85 /* ObjectiveCPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* ObjectiveCPropertyTests.swift */; };
+		OBJ_86 /* PINModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* PINModelTests.swift */; };
+		OBJ_88 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* Core.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		81BF34731DC563DB00459369 /* PBXContainerItemProxy */ = {
+		81E9397A1DFA0BD7000513A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = __RootObject_ /* Project object */;
+			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = "______Target_pinmodel";
-			remoteInfo = pinmodel;
+			remoteGlobalIDString = OBJ_42;
+			remoteInfo = Core;
+		};
+		81E9397B1DFA0BD7000513A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = OBJ_42;
+			remoteInfo = Core;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8188672F1DE3DD8E00E61069 /* LinuxTestIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxTestIndex.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGenerator.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCInterfaceFileGenerator.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCArrayProperty.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCBooleanProperty.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCClassProperty.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCDictionaryProperty.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCIntegerProperty.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPolymorphicProperty.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCProperty.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCStringProperty.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/Schema.swift /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaLoader.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Sources/pinmodel/main.swift /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/pinmodelTests/Mock.swift /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGeneratorTests.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGeneratorTests.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCInterfaceFileDescriptorTests.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPolymorphicPropertyTests.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPropertyTests.swift; sourceTree = "<group>"; };
-		__PBXFileRef_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINModelTests.swift; sourceTree = "<group>"; };
-		__PBXFileRef_pinmodel.xcodeproj/Configs/Project.xcconfig /* pinmodel.xcodeproj/Configs/Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = pinmodel.xcodeproj/Configs/Project.xcconfig; sourceTree = "<group>"; };
-		"_____Product_pinmodel" /* pinmodel */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = pinmodel; sourceTree = BUILT_PRODUCTS_DIR; };
-		"_____Product_pinmodelTests" /* pinmodelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = pinmodelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_10 /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; };
+		OBJ_11 /* ObjCInterfaceFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCInterfaceFileGenerator.swift; sourceTree = "<group>"; };
+		OBJ_12 /* ObjectiveCArrayProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCArrayProperty.swift; sourceTree = "<group>"; };
+		OBJ_13 /* ObjectiveCBooleanProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCBooleanProperty.swift; sourceTree = "<group>"; };
+		OBJ_14 /* ObjectiveCClassProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCClassProperty.swift; sourceTree = "<group>"; };
+		OBJ_15 /* ObjectiveCDictionaryProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCDictionaryProperty.swift; sourceTree = "<group>"; };
+		OBJ_16 /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; };
+		OBJ_17 /* ObjectiveCIntegerProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCIntegerProperty.swift; sourceTree = "<group>"; };
+		OBJ_18 /* ObjectiveCPolymorphicProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPolymorphicProperty.swift; sourceTree = "<group>"; };
+		OBJ_19 /* ObjectiveCProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCProperty.swift; sourceTree = "<group>"; };
+		OBJ_20 /* ObjectiveCStringProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCStringProperty.swift; sourceTree = "<group>"; };
+		OBJ_21 /* OptionalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
+		OBJ_22 /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
+		OBJ_23 /* SchemaLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaLoader.swift; sourceTree = "<group>"; };
+		OBJ_24 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		OBJ_25 /* UrlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
+		OBJ_27 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		OBJ_30 /* LinuxTestIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinuxTestIndex.swift; sourceTree = "<group>"; };
+		OBJ_31 /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
+		OBJ_32 /* ObjCImplementationFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGeneratorTests.swift; sourceTree = "<group>"; };
+		OBJ_33 /* ObjectiveCFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGeneratorTests.swift; sourceTree = "<group>"; };
+		OBJ_34 /* ObjectiveCInterfaceFileDescriptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCInterfaceFileDescriptorTests.swift; sourceTree = "<group>"; };
+		OBJ_35 /* ObjectiveCPolymorphicPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPolymorphicPropertyTests.swift; sourceTree = "<group>"; };
+		OBJ_36 /* ObjectiveCPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPropertyTests.swift; sourceTree = "<group>"; };
+		OBJ_37 /* PINModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINModelTests.swift; sourceTree = "<group>"; };
+		OBJ_39 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_40 /* pinmodel */ = {isa = PBXFileReference; lastKnownFileType = text; path = pinmodel; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_41 /* CoreTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		OBJ_9 /* FileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		"___LinkPhase_pinmodel" /* Frameworks */ = {
+		OBJ_64 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		"___LinkPhase_pinmodelTests" /* Frameworks */ = {
+		OBJ_71 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				_LinkFileRef_pinmodel_via_pinmodelTests /* pinmodel in Frameworks */,
+				OBJ_72 /* Core.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_87 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_88 /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		81BF34741DC563FD00459369 /* Core */ = {
+		OBJ_26 /* pinmodel */ = {
 			isa = PBXGroup;
 			children = (
-				__PBXFileRef_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift */,
-				__PBXFileRef_Sources/pinmodel/Schema.swift /* Schema.swift */,
-				__PBXFileRef_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift */,
-			);
-			name = Core;
-			sourceTree = "<group>";
-		};
-		81BF34751DC5640D00459369 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				__PBXFileRef_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift */,
-				__PBXFileRef_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift */,
-				__PBXFileRef_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift */,
-			);
-			name = Extensions;
-			sourceTree = "<group>";
-		};
-		81BF34771DC5642100459369 /* Objective-C */ = {
-			isa = PBXGroup;
-			children = (
-				__PBXFileRef_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift */,
-				__PBXFileRef_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift */,
-			);
-			name = "Objective-C";
-			sourceTree = "<group>";
-		};
-		TestProducts_ /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				"_____Product_pinmodelTests" /* pinmodelTests.xctest */,
-			);
-			name = Tests;
-			sourceTree = "<group>";
-		};
-		"___RootGroup_" = {
-			isa = PBXGroup;
-			children = (
-				__PBXFileRef_Package.swift /* Package.swift */,
-				"_____Configs_" /* Configs */,
-				"_______Tests_" /* Tests */,
-				"____Products_" /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		"____Products_" /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				TestProducts_ /* Tests */,
-				"_____Product_pinmodel" /* pinmodel */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		"_____Configs_" /* Configs */ = {
-			isa = PBXGroup;
-			children = (
-				"_____Sources_" /* Sources */,
-				__PBXFileRef_pinmodel.xcodeproj/Configs/Project.xcconfig /* pinmodel.xcodeproj/Configs/Project.xcconfig */,
-			);
-			name = Configs;
-			sourceTree = "<group>";
-		};
-		"_____Sources_" /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				"_______Group_pinmodel" /* pinmodel */,
-			);
-			name = Sources;
-			sourceTree = "<group>";
-		};
-		"_______Group_pinmodel" /* pinmodel */ = {
-			isa = PBXGroup;
-			children = (
-				81BF34771DC5642100459369 /* Objective-C */,
-				81BF34751DC5640D00459369 /* Extensions */,
-				81BF34741DC563FD00459369 /* Core */,
-				__PBXFileRef_Sources/pinmodel/main.swift /* main.swift */,
+				OBJ_27 /* main.swift */,
 			);
 			name = pinmodel;
 			path = Sources/pinmodel;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
-		"_______Group_pinmodelTests" /* pinmodelTests */ = {
+		OBJ_28 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				8188672F1DE3DD8E00E61069 /* LinuxTestIndex.swift */,
-				__PBXFileRef_Tests/pinmodelTests/Mock.swift /* Mock.swift */,
-				__PBXFileRef_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift */,
-				__PBXFileRef_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift */,
-				__PBXFileRef_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift */,
-				__PBXFileRef_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift */,
-				__PBXFileRef_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift */,
-				__PBXFileRef_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift */,
+				OBJ_29 /* CoreTests */,
 			);
-			name = pinmodelTests;
-			path = Tests/pinmodelTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
-		"_______Tests_" /* Tests */ = {
+		OBJ_29 /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				"_______Group_pinmodelTests" /* pinmodelTests */,
+				OBJ_30 /* LinuxTestIndex.swift */,
+				OBJ_31 /* Mock.swift */,
+				OBJ_32 /* ObjCImplementationFileGeneratorTests.swift */,
+				OBJ_33 /* ObjectiveCFileGeneratorTests.swift */,
+				OBJ_34 /* ObjectiveCInterfaceFileDescriptorTests.swift */,
+				OBJ_35 /* ObjectiveCPolymorphicPropertyTests.swift */,
+				OBJ_36 /* ObjectiveCPropertyTests.swift */,
+				OBJ_37 /* PINModelTests.swift */,
 			);
-			name = Tests;
+			name = CoreTests;
+			path = Tests/CoreTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_38 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_39 /* Core.framework */,
+				OBJ_40 /* pinmodel */,
+				OBJ_41 /* CoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		OBJ_5 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_6 /* Package.swift */,
+				OBJ_7 /* Sources */,
+				OBJ_28 /* Tests */,
+				OBJ_38 /* Products */,
+			);
+			name = "";
 			sourceTree = "<group>";
+		};
+		OBJ_7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_8 /* Core */,
+				OBJ_26 /* pinmodel */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		OBJ_8 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_9 /* FileGenerator.swift */,
+				OBJ_10 /* ObjCImplementationFileGenerator.swift */,
+				OBJ_11 /* ObjCInterfaceFileGenerator.swift */,
+				OBJ_12 /* ObjectiveCArrayProperty.swift */,
+				OBJ_13 /* ObjectiveCBooleanProperty.swift */,
+				OBJ_14 /* ObjectiveCClassProperty.swift */,
+				OBJ_15 /* ObjectiveCDictionaryProperty.swift */,
+				OBJ_16 /* ObjectiveCFileGenerator.swift */,
+				OBJ_17 /* ObjectiveCIntegerProperty.swift */,
+				OBJ_18 /* ObjectiveCPolymorphicProperty.swift */,
+				OBJ_19 /* ObjectiveCProperty.swift */,
+				OBJ_20 /* ObjectiveCStringProperty.swift */,
+				OBJ_21 /* OptionalExtensions.swift */,
+				OBJ_22 /* Schema.swift */,
+				OBJ_23 /* SchemaLoader.swift */,
+				OBJ_24 /* StringExtensions.swift */,
+				OBJ_25 /* UrlExtensions.swift */,
+			);
+			name = Core;
+			path = Sources/Core;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		"______Target_pinmodel" /* pinmodel */ = {
+		OBJ_42 /* Core */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = "_______Confs_pinmodel" /* Build configuration list for PBXNativeTarget "pinmodel" */;
+			buildConfigurationList = OBJ_43 /* Build configuration list for PBXNativeTarget "Core" */;
 			buildPhases = (
-				CompilePhase_pinmodel /* Sources */,
-				"___LinkPhase_pinmodel" /* Frameworks */,
+				OBJ_46 /* Sources */,
+				OBJ_64 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+			);
+			name = Core;
+			productName = Core;
+			productReference = OBJ_39 /* Core.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		OBJ_65 /* pinmodel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_66 /* Build configuration list for PBXNativeTarget "pinmodel" */;
+			buildPhases = (
+				OBJ_69 /* Sources */,
+				OBJ_71 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_73 /* PBXTargetDependency */,
 			);
 			name = pinmodel;
 			productName = pinmodel;
-			productReference = "_____Product_pinmodel" /* pinmodel */;
+			productReference = OBJ_40 /* pinmodel */;
 			productType = "com.apple.product-type.tool";
 		};
-		"______Target_pinmodelTests" /* pinmodelTests */ = {
+		OBJ_74 /* CoreTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = "_______Confs_pinmodelTests" /* Build configuration list for PBXNativeTarget "pinmodelTests" */;
+			buildConfigurationList = OBJ_75 /* Build configuration list for PBXNativeTarget "CoreTests" */;
 			buildPhases = (
-				CompilePhase_pinmodelTests /* Sources */,
-				"___LinkPhase_pinmodelTests" /* Frameworks */,
+				OBJ_78 /* Sources */,
+				OBJ_87 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				__Dependency_pinmodel /* PBXTargetDependency */,
+				OBJ_89 /* PBXTargetDependency */,
 			);
-			name = pinmodelTests;
-			productName = pinmodelTests;
-			productReference = "_____Product_pinmodelTests" /* pinmodelTests.xctest */;
+			name = CoreTests;
+			productName = CoreTests;
+			productReference = OBJ_41 /* CoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		__RootObject_ /* Project object */ = {
+		OBJ_1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 9999;
 			};
-			buildConfigurationList = "___RootConfs_" /* Build configuration list for PBXProject "pinmodel" */;
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "PINModel" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = "___RootGroup_";
-			productRefGroup = "____Products_" /* Products */;
+			mainGroup = OBJ_5 /*  */;
+			productRefGroup = OBJ_38 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				"______Target_pinmodel" /* pinmodel */,
-				"______Target_pinmodelTests" /* pinmodelTests */,
+				OBJ_42 /* Core */,
+				OBJ_65 /* pinmodel */,
+				OBJ_74 /* CoreTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		CompilePhase_pinmodel /* Sources */ = {
+		OBJ_46 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				__src_cc_ref_Sources/pinmodel/FileGenerator.swift /* FileGenerator.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/main.swift /* main.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjCImplementationFileGenerator.swift /* ObjCImplementationFileGenerator.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjCInterfaceFileGenerator.swift /* ObjCInterfaceFileGenerator.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjectiveCArrayProperty.swift /* ObjectiveCArrayProperty.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjectiveCBooleanProperty.swift /* ObjectiveCBooleanProperty.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjectiveCClassProperty.swift /* ObjectiveCClassProperty.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjectiveCDictionaryProperty.swift /* ObjectiveCDictionaryProperty.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjectiveCFileGenerator.swift /* ObjectiveCFileGenerator.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjectiveCIntegerProperty.swift /* ObjectiveCIntegerProperty.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjectiveCPolymorphicProperty.swift /* ObjectiveCPolymorphicProperty.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjectiveCProperty.swift /* ObjectiveCProperty.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/ObjectiveCStringProperty.swift /* ObjectiveCStringProperty.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/OptionalExtensions.swift /* OptionalExtensions.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/Schema.swift /* Schema.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/SchemaLoader.swift /* SchemaLoader.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/StringExtensions.swift /* StringExtensions.swift in Sources */,
-				__src_cc_ref_Sources/pinmodel/UrlExtensions.swift /* UrlExtensions.swift in Sources */,
+				OBJ_47 /* FileGenerator.swift in Sources */,
+				OBJ_48 /* ObjCImplementationFileGenerator.swift in Sources */,
+				OBJ_49 /* ObjCInterfaceFileGenerator.swift in Sources */,
+				OBJ_50 /* ObjectiveCArrayProperty.swift in Sources */,
+				OBJ_51 /* ObjectiveCBooleanProperty.swift in Sources */,
+				OBJ_52 /* ObjectiveCClassProperty.swift in Sources */,
+				OBJ_53 /* ObjectiveCDictionaryProperty.swift in Sources */,
+				OBJ_54 /* ObjectiveCFileGenerator.swift in Sources */,
+				OBJ_55 /* ObjectiveCIntegerProperty.swift in Sources */,
+				OBJ_56 /* ObjectiveCPolymorphicProperty.swift in Sources */,
+				OBJ_57 /* ObjectiveCProperty.swift in Sources */,
+				OBJ_58 /* ObjectiveCStringProperty.swift in Sources */,
+				OBJ_59 /* OptionalExtensions.swift in Sources */,
+				OBJ_60 /* Schema.swift in Sources */,
+				OBJ_61 /* SchemaLoader.swift in Sources */,
+				OBJ_62 /* StringExtensions.swift in Sources */,
+				OBJ_63 /* UrlExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CompilePhase_pinmodelTests /* Sources */ = {
+		OBJ_69 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				81E939561DF8FAE9000513A5 /* Schema.swift in Sources */,
-				__src_cc_ref_Tests/pinmodelTests/Mock.swift /* Mock.swift in Sources */,
-				81E9394B1DF8FAE1000513A5 /* ObjectiveCClassProperty.swift in Sources */,
-				__src_cc_ref_Tests/pinmodelTests/ObjCImplementationFileGeneratorTests.swift /* ObjCImplementationFileGeneratorTests.swift in Sources */,
-				81E939531DF8FAE5000513A5 /* StringExtensions.swift in Sources */,
-				81E939491DF8FAE1000513A5 /* ObjectiveCArrayProperty.swift in Sources */,
-				81E939541DF8FAE5000513A5 /* UrlExtensions.swift in Sources */,
-				__src_cc_ref_Tests/pinmodelTests/ObjectiveCFileGeneratorTests.swift /* ObjectiveCFileGeneratorTests.swift in Sources */,
-				__src_cc_ref_Tests/pinmodelTests/ObjectiveCInterfaceFileDescriptorTests.swift /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */,
-				81E9394C1DF8FAE1000513A5 /* ObjectiveCDictionaryProperty.swift in Sources */,
-				81E939571DF8FAE9000513A5 /* SchemaLoader.swift in Sources */,
-				81E9394A1DF8FAE1000513A5 /* ObjectiveCBooleanProperty.swift in Sources */,
-				81E939511DF8FAE1000513A5 /* ObjectiveCStringProperty.swift in Sources */,
-				81E9394F1DF8FAE1000513A5 /* ObjectiveCPolymorphicProperty.swift in Sources */,
-				__src_cc_ref_Tests/pinmodelTests/ObjectiveCPolymorphicPropertyTests.swift /* ObjectiveCPolymorphicPropertyTests.swift in Sources */,
-				__src_cc_ref_Tests/pinmodelTests/ObjectiveCPropertyTests.swift /* ObjectiveCPropertyTests.swift in Sources */,
-				81E939551DF8FAE9000513A5 /* FileGenerator.swift in Sources */,
-				81E939481DF8FAE1000513A5 /* ObjCInterfaceFileGenerator.swift in Sources */,
-				81E939521DF8FAE5000513A5 /* OptionalExtensions.swift in Sources */,
-				81E939501DF8FAE1000513A5 /* ObjectiveCProperty.swift in Sources */,
-				81E9394E1DF8FAE1000513A5 /* ObjectiveCIntegerProperty.swift in Sources */,
-				__src_cc_ref_Tests/pinmodelTests/PINModelTests.swift /* PINModelTests.swift in Sources */,
-				81E9394D1DF8FAE1000513A5 /* ObjectiveCFileGenerator.swift in Sources */,
-				81E939471DF8FAE1000513A5 /* ObjCImplementationFileGenerator.swift in Sources */,
-				81E939451DF8F81F000513A5 /* LinuxTestIndex.swift in Sources */,
+				OBJ_70 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_78 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_79 /* LinuxTestIndex.swift in Sources */,
+				OBJ_80 /* Mock.swift in Sources */,
+				OBJ_81 /* ObjCImplementationFileGeneratorTests.swift in Sources */,
+				OBJ_82 /* ObjectiveCFileGeneratorTests.swift in Sources */,
+				OBJ_83 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */,
+				OBJ_84 /* ObjectiveCPolymorphicPropertyTests.swift in Sources */,
+				OBJ_85 /* ObjectiveCPropertyTests.swift in Sources */,
+				OBJ_86 /* PINModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		__Dependency_pinmodel /* PBXTargetDependency */ = {
+		OBJ_73 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = "______Target_pinmodel" /* pinmodel */;
-			targetProxy = 81BF34731DC563DB00459369 /* PBXContainerItemProxy */;
+			target = OBJ_42 /* Core */;
+			targetProxy = 81E9397A1DFA0BD7000513A5 /* PBXContainerItemProxy */;
+		};
+		OBJ_89 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = OBJ_42 /* Core */;
+			targetProxy = 81E9397B1DFA0BD7000513A5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		_ReleaseConf_pinmodel /* Release */ = {
+		OBJ_3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
-				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		OBJ_4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 3.0;
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
-		_ReleaseConf_pinmodelTests /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
-				INFOPLIST_FILE = pinmodel.xcodeproj/pinmodelTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
-		"___DebugConf_pinmodel" /* Debug */ = {
+		OBJ_44 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PINModel.xcodeproj/Core_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = Core;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				TARGET_NAME = Core;
+			};
+			name = Debug;
+		};
+		OBJ_45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PINModel.xcodeproj/Core_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = Core;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				TARGET_NAME = Core;
+			};
+			name = Release;
+		};
+		OBJ_67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PINModel.xcodeproj/pinmodel_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
 				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				TARGET_NAME = pinmodel;
 			};
 			name = Debug;
 		};
-		"___DebugConf_pinmodelTests" /* Debug */ = {
+		OBJ_68 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(PLATFORM_DIR)/Developer/Library/Frameworks";
-				INFOPLIST_FILE = pinmodel.xcodeproj/pinmodelTests_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PINModel.xcodeproj/pinmodel_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		"_____Release_" /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = __PBXFileRef_pinmodel.xcodeproj/Configs/Project.xcconfig /* pinmodel.xcodeproj/Configs/Project.xcconfig */;
-			buildSettings = {
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+				TARGET_NAME = pinmodel;
 			};
 			name = Release;
 		};
-		"_______Debug_" /* Debug */ = {
+		OBJ_76 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = __PBXFileRef_pinmodel.xcodeproj/Configs/Project.xcconfig /* pinmodel.xcodeproj/Configs/Project.xcconfig */;
 			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PINModel.xcodeproj/CoreTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				TARGET_NAME = CoreTests;
 			};
 			name = Debug;
+		};
+		OBJ_77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = PINModel.xcodeproj/CoreTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				TARGET_NAME = CoreTests;
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		"___RootConfs_" /* Build configuration list for PBXProject "pinmodel" */ = {
+		OBJ_2 /* Build configuration list for PBXProject "PINModel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				"_______Debug_" /* Debug */,
-				"_____Release_" /* Release */,
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		"_______Confs_pinmodel" /* Build configuration list for PBXNativeTarget "pinmodel" */ = {
+		OBJ_43 /* Build configuration list for PBXNativeTarget "Core" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				"___DebugConf_pinmodel" /* Debug */,
-				_ReleaseConf_pinmodel /* Release */,
+				OBJ_44 /* Debug */,
+				OBJ_45 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		"_______Confs_pinmodelTests" /* Build configuration list for PBXNativeTarget "pinmodelTests" */ = {
+		OBJ_66 /* Build configuration list for PBXNativeTarget "pinmodel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				"___DebugConf_pinmodelTests" /* Debug */,
-				_ReleaseConf_pinmodelTests /* Release */,
+				OBJ_67 /* Debug */,
+				OBJ_68 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		OBJ_75 /* Build configuration list for PBXNativeTarget "CoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_76 /* Debug */,
+				OBJ_77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = __RootObject_ /* Project object */;
+	rootObject = OBJ_1 /* Project object */;
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias GenerationParameters = [GenerationParameterType:String]
+public typealias GenerationParameters = [GenerationParameterType:String]
 
 let formatter = DateFormatter()
 let date = Date()
@@ -33,7 +33,7 @@ protocol FileGenerator {
 
 
 extension FileGenerator {
-    
+
     func renderCommentHeader() -> String {
         formatter.dateStyle = DateFormatter.Style.long
         formatter.timeStyle = .medium
@@ -41,7 +41,7 @@ extension FileGenerator {
         formatter.dateFormat = "MM-dd-yyyy 'at' HH:mm:ss"
 
         let year: Int = Calendar.current.component(.year, from: date)
-        
+
         let header = [
             "//",
             "//  \(self.fileName())",
@@ -54,7 +54,7 @@ extension FileGenerator {
         ]
         return header.joined(separator: "\n")
     }
-    
+
 }
 
 func generateFile(_ schema: ObjectSchemaObjectProperty, outputDirectory: URL, generationParameters: GenerationParameters){
@@ -74,7 +74,7 @@ func generateFile(_ schema: ObjectSchemaObjectProperty, outputDirectory: URL, ge
     }
 }
 
-func generateFilesWithInitialUrl(_ url: URL, outputDirectory: URL, generationParameters: GenerationParameters) {
+public func generateFilesWithInitialUrl(_ url: URL, outputDirectory: URL, generationParameters: GenerationParameters) {
     if let _ = RemoteSchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
         var processedSchemas = Set<URL>([])
         repeat {
@@ -82,9 +82,9 @@ func generateFilesWithInitialUrl(_ url: URL, outputDirectory: URL, generationPar
                 if processedSchemas.contains(url) {
                     return
                 }
-                
+
                 processedSchemas.insert(url)
-                
+
                 if let objectSchema = schema as? ObjectSchemaObjectProperty {
                     generateFile(objectSchema, outputDirectory: outputDirectory, generationParameters: generationParameters)
                 }

@@ -10,7 +10,7 @@ import XCTest
 
 import Foundation
 
-@testable import pinmodel
+@testable import Core
 
 class ObjCImplementationFileGeneratorTests: PINModelTests {
 

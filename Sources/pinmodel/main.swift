@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Core
 
 func beginFileGeneration(_ schemaPath: String, outputDirectoryPath: String, generationParameters: GenerationParameters = [:]) {
   let baseUrl = URL(fileURLWithPath: schemaPath).standardizedFileURL
