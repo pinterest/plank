@@ -35,4 +35,16 @@ class ObjectiveCInterfaceFileDescriptorTests: PINModelTests {
 
         PINModelTests.tokenizeAndAssertFlexibleEquality(dirtyPropertyOptions, expectedCode: expectedDirtyPropertyOptions)
     }
+
+    func testDescriptionOnProperty() {
+        let interface =  ObjectiveCInterfaceFileDescriptor(
+            descriptor: self.schemaLoader.loadSchema(URL(fileURLWithPath: "model.json")) as! ObjectSchemaObjectProperty,
+            generatorParameters: [GenerationParameterType.classPrefix: "PI"],
+            parentDescriptor: nil,
+            schemaLoader: self.schemaLoader
+        )
+
+        let propertyDecls = interface.renderPropertyDeclarations()
+        XCTAssertTrue(propertyDecls.contains("/* The identifier of the model object */"))
+    }
 }

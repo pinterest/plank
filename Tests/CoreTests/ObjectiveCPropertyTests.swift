@@ -24,6 +24,18 @@ class ObjectiveCPropertyTests: PINModelTests {
         super.tearDown()
     }
 
+
+    func testThatDescriptionStringsAreExtractedFromSchema() {
+        let propInfo = [
+            "type": "string",
+            "description" : "This is some useful comment about this property."
+            ] as JSONObject
+
+        let descriptor = ObjectSchemaProperty.propertyForJSONObject(propInfo, scopeUrl: URL(fileURLWithPath: ""))
+        XCTAssertNotNil(descriptor.descriptionString)
+        XCTAssertEqual(descriptor.descriptionString, propInfo["description"] as? String)
+    }
+
     func testThatItDoesNotIncludeTypeInTheNameOfAnEnumEndingWithType()  {
         let integer = integerProperty(descriptorName: "type", className: "PIModel")
         XCTAssertTrue(integer.enumPropertyTypeName() != "PIModelTypeType")

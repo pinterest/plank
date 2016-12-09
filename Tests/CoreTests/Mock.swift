@@ -72,7 +72,7 @@ let TEST_BASE_MODEL_INSTANCE = ObjectSchemaObjectProperty(
     objectType: JSONType.Object,
     propertyInfo: [
         "properties": [
-            "id": [ "type": "string"],
+            "id": [ "type": "string", "description" : "The identifier of the model object"],
             "additional_local_non_API_properties": [ "type": "object"]
         ]
     ],

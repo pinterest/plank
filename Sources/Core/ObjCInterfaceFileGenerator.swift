@@ -93,11 +93,20 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         return lines.joined(separator: "\n\n")
     }
 
-    func renderInterface() -> String {
-        let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
+    func renderPropertyDeclarations() -> [String] {
+        let propertyLines: [String] = self.classProperties().flatMap { (property: ObjectSchemaProperty) -> [String] in
             let prop = PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader)
-            return prop.renderInterfaceDeclaration()
+            if let propDescription = prop.propertyDescriptor.descriptionString {
+                return ["/* \(propDescription) */", prop.renderInterfaceDeclaration()]
+            } else {
+                return [prop.renderInterfaceDeclaration()]
+            }
         }
+        return propertyLines
+    }
+
+    func renderInterface() -> String {
+        let propertyLines = self.renderPropertyDeclarations()
 
         if self.isBaseClass() {
             let implementedProtocols = ["NSSecureCoding", "NSCopying", self.protocolName()].joined(separator: ", ")

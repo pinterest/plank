@@ -54,6 +54,7 @@ class ObjectSchemaProperty {
     let sourceId: URL
     let enumValues: [EnumValue<AnyObject>] // TODO: Improve type constraints beyond AnyObject here.
     let defaultValue: Any?
+    let descriptionString: String?
     let algebraicDataTypeIdentifier: String
     var isModelProperty: Bool {
         return false
@@ -73,6 +74,7 @@ class ObjectSchemaProperty {
         }
         self.algebraicDataTypeIdentifier = propertyInfo["algebraicDataTypeIdentifier"] as? String ?? name
         self.defaultValue = propertyInfo["default"] ?? nil
+        self.descriptionString = propertyInfo["description"] as? String
     }
 
     class func propertyForJSONObject(_ json: JSONObject, name: String = "", scopeUrl: URL) -> ObjectSchemaProperty {

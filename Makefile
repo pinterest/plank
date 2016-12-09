@@ -15,5 +15,5 @@ test: build
 	swift test
 
 archive: clean
-	swift build -Xswiftc -static-stdlib # static linking required for distribution
+	swift build -c release -Xswiftc -static-stdlib
 
