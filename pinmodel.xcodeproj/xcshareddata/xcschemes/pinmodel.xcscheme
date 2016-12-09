@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_42"
+               BlueprintIdentifier = "OBJ_45"
                BuildableName = "Core.framework"
                BlueprintName = "Core"
                ReferencedContainer = "container:PINModel.xcodeproj">
@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_65"
+               BlueprintIdentifier = "OBJ_68"
                BuildableName = "pinmodel"
                BlueprintName = "pinmodel"
                ReferencedContainer = "container:PINModel.xcodeproj">
@@ -47,7 +47,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_74"
+               BlueprintIdentifier = "OBJ_78"
                BuildableName = "CoreTests.xctest"
                BlueprintName = "CoreTests"
                ReferencedContainer = "container:PINModel.xcodeproj">
@@ -70,7 +70,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "OBJ_42"
+            BlueprintIdentifier = "OBJ_45"
             BuildableName = "Core.framework"
             BlueprintName = "Core"
             ReferencedContainer = "container:PINModel.xcodeproj">

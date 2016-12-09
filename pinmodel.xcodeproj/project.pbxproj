@@ -7,49 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		OBJ_47 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileGenerator.swift */; };
-		OBJ_48 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ObjCImplementationFileGenerator.swift */; };
-		OBJ_49 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ObjCInterfaceFileGenerator.swift */; };
-		OBJ_50 /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* ObjectiveCArrayProperty.swift */; };
-		OBJ_51 /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* ObjectiveCBooleanProperty.swift */; };
-		OBJ_52 /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* ObjectiveCClassProperty.swift */; };
-		OBJ_53 /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* ObjectiveCDictionaryProperty.swift */; };
-		OBJ_54 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* ObjectiveCFileGenerator.swift */; };
-		OBJ_55 /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* ObjectiveCIntegerProperty.swift */; };
-		OBJ_56 /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* ObjectiveCPolymorphicProperty.swift */; };
-		OBJ_57 /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* ObjectiveCProperty.swift */; };
-		OBJ_58 /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* ObjectiveCStringProperty.swift */; };
-		OBJ_59 /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* OptionalExtensions.swift */; };
-		OBJ_60 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Schema.swift */; };
-		OBJ_61 /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* SchemaLoader.swift */; };
-		OBJ_62 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* StringExtensions.swift */; };
-		OBJ_63 /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* UrlExtensions.swift */; };
-		OBJ_70 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* main.swift */; };
-		OBJ_72 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* Core.framework */; };
-		OBJ_79 /* LinuxTestIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* LinuxTestIndex.swift */; };
-		OBJ_80 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* Mock.swift */; };
-		OBJ_81 /* ObjCImplementationFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* ObjCImplementationFileGeneratorTests.swift */; };
-		OBJ_82 /* ObjectiveCFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ObjectiveCFileGeneratorTests.swift */; };
-		OBJ_83 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* ObjectiveCInterfaceFileDescriptorTests.swift */; };
-		OBJ_84 /* ObjectiveCPolymorphicPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* ObjectiveCPolymorphicPropertyTests.swift */; };
-		OBJ_85 /* ObjectiveCPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* ObjectiveCPropertyTests.swift */; };
-		OBJ_86 /* PINModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* PINModelTests.swift */; };
-		OBJ_88 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_39 /* Core.framework */; };
+		OBJ_50 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileGenerator.swift */; };
+		OBJ_51 /* ObjCImplementationFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ObjCImplementationFileGenerator.swift */; };
+		OBJ_52 /* ObjCInterfaceFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ObjCInterfaceFileGenerator.swift */; };
+		OBJ_53 /* ObjectiveCArrayProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* ObjectiveCArrayProperty.swift */; };
+		OBJ_54 /* ObjectiveCBooleanProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* ObjectiveCBooleanProperty.swift */; };
+		OBJ_55 /* ObjectiveCClassProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* ObjectiveCClassProperty.swift */; };
+		OBJ_56 /* ObjectiveCDictionaryProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* ObjectiveCDictionaryProperty.swift */; };
+		OBJ_57 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* ObjectiveCFileGenerator.swift */; };
+		OBJ_58 /* ObjectiveCIntegerProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* ObjectiveCIntegerProperty.swift */; };
+		OBJ_59 /* ObjectiveCPolymorphicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* ObjectiveCPolymorphicProperty.swift */; };
+		OBJ_60 /* ObjectiveCProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* ObjectiveCProperty.swift */; };
+		OBJ_61 /* ObjectiveCStringProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* ObjectiveCStringProperty.swift */; };
+		OBJ_62 /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* OptionalExtensions.swift */; };
+		OBJ_63 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Schema.swift */; };
+		OBJ_64 /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* SchemaLoader.swift */; };
+		OBJ_65 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* StringExtensions.swift */; };
+		OBJ_66 /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* UrlExtensions.swift */; };
+		OBJ_73 /* Cli.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* Cli.swift */; };
+		OBJ_74 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* main.swift */; };
+		OBJ_76 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* Core.framework */; };
+		OBJ_83 /* LinuxTestIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* LinuxTestIndex.swift */; };
+		OBJ_84 /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* Mock.swift */; };
+		OBJ_85 /* ObjCImplementationFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* ObjCImplementationFileGeneratorTests.swift */; };
+		OBJ_86 /* ObjectiveCFileGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* ObjectiveCFileGeneratorTests.swift */; };
+		OBJ_87 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* ObjectiveCInterfaceFileDescriptorTests.swift */; };
+		OBJ_88 /* ObjectiveCPolymorphicPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* ObjectiveCPolymorphicPropertyTests.swift */; };
+		OBJ_89 /* ObjectiveCPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* ObjectiveCPropertyTests.swift */; };
+		OBJ_90 /* PINModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* PINModelTests.swift */; };
+		OBJ_92 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* Core.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		81E9397A1DFA0BD7000513A5 /* PBXContainerItemProxy */ = {
+		81E9397C1DFB25C1000513A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = OBJ_42;
+			remoteGlobalIDString = OBJ_45;
 			remoteInfo = Core;
 		};
-		81E9397B1DFA0BD7000513A5 /* PBXContainerItemProxy */ = {
+		81E9397D1DFB25C1000513A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = OBJ_42;
+			remoteGlobalIDString = OBJ_45;
 			remoteInfo = Core;
 		};
 /* End PBXContainerItemProxy section */
@@ -71,43 +72,44 @@
 		OBJ_23 /* SchemaLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaLoader.swift; sourceTree = "<group>"; };
 		OBJ_24 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		OBJ_25 /* UrlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
-		OBJ_27 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		OBJ_30 /* LinuxTestIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinuxTestIndex.swift; sourceTree = "<group>"; };
-		OBJ_31 /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
-		OBJ_32 /* ObjCImplementationFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGeneratorTests.swift; sourceTree = "<group>"; };
-		OBJ_33 /* ObjectiveCFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGeneratorTests.swift; sourceTree = "<group>"; };
-		OBJ_34 /* ObjectiveCInterfaceFileDescriptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCInterfaceFileDescriptorTests.swift; sourceTree = "<group>"; };
-		OBJ_35 /* ObjectiveCPolymorphicPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPolymorphicPropertyTests.swift; sourceTree = "<group>"; };
-		OBJ_36 /* ObjectiveCPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPropertyTests.swift; sourceTree = "<group>"; };
-		OBJ_37 /* PINModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINModelTests.swift; sourceTree = "<group>"; };
-		OBJ_39 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_40 /* pinmodel */ = {isa = PBXFileReference; lastKnownFileType = text; path = pinmodel; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_41 /* CoreTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_27 /* Cli.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cli.swift; sourceTree = "<group>"; };
+		OBJ_28 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		OBJ_31 /* LinuxTestIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinuxTestIndex.swift; sourceTree = "<group>"; };
+		OBJ_32 /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
+		OBJ_33 /* ObjCImplementationFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGeneratorTests.swift; sourceTree = "<group>"; };
+		OBJ_34 /* ObjectiveCFileGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGeneratorTests.swift; sourceTree = "<group>"; };
+		OBJ_35 /* ObjectiveCInterfaceFileDescriptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCInterfaceFileDescriptorTests.swift; sourceTree = "<group>"; };
+		OBJ_36 /* ObjectiveCPolymorphicPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPolymorphicPropertyTests.swift; sourceTree = "<group>"; };
+		OBJ_37 /* ObjectiveCPropertyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCPropertyTests.swift; sourceTree = "<group>"; };
+		OBJ_38 /* PINModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINModelTests.swift; sourceTree = "<group>"; };
+		OBJ_42 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_43 /* pinmodel */ = {isa = PBXFileReference; lastKnownFileType = text; path = pinmodel; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_44 /* CoreTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_9 /* FileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		OBJ_64 /* Frameworks */ = {
+		OBJ_67 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_71 /* Frameworks */ = {
+		OBJ_75 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_72 /* Core.framework in Frameworks */,
+				OBJ_76 /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_87 /* Frameworks */ = {
+		OBJ_91 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_88 /* Core.framework in Frameworks */,
+				OBJ_92 /* Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,42 +119,43 @@
 		OBJ_26 /* pinmodel */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_27 /* main.swift */,
+				OBJ_27 /* Cli.swift */,
+				OBJ_28 /* main.swift */,
 			);
 			name = pinmodel;
 			path = Sources/pinmodel;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_28 /* Tests */ = {
+		OBJ_29 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_29 /* CoreTests */,
+				OBJ_30 /* CoreTests */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		OBJ_29 /* CoreTests */ = {
+		OBJ_30 /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_30 /* LinuxTestIndex.swift */,
-				OBJ_31 /* Mock.swift */,
-				OBJ_32 /* ObjCImplementationFileGeneratorTests.swift */,
-				OBJ_33 /* ObjectiveCFileGeneratorTests.swift */,
-				OBJ_34 /* ObjectiveCInterfaceFileDescriptorTests.swift */,
-				OBJ_35 /* ObjectiveCPolymorphicPropertyTests.swift */,
-				OBJ_36 /* ObjectiveCPropertyTests.swift */,
-				OBJ_37 /* PINModelTests.swift */,
+				OBJ_31 /* LinuxTestIndex.swift */,
+				OBJ_32 /* Mock.swift */,
+				OBJ_33 /* ObjCImplementationFileGeneratorTests.swift */,
+				OBJ_34 /* ObjectiveCFileGeneratorTests.swift */,
+				OBJ_35 /* ObjectiveCInterfaceFileDescriptorTests.swift */,
+				OBJ_36 /* ObjectiveCPolymorphicPropertyTests.swift */,
+				OBJ_37 /* ObjectiveCPropertyTests.swift */,
+				OBJ_38 /* PINModelTests.swift */,
 			);
 			name = CoreTests;
 			path = Tests/CoreTests;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_38 /* Products */ = {
+		OBJ_41 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_39 /* Core.framework */,
-				OBJ_40 /* pinmodel */,
-				OBJ_41 /* CoreTests.xctest */,
+				OBJ_42 /* Core.framework */,
+				OBJ_43 /* pinmodel */,
+				OBJ_44 /* CoreTests.xctest */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -162,8 +165,8 @@
 			children = (
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
-				OBJ_28 /* Tests */,
-				OBJ_38 /* Products */,
+				OBJ_29 /* Tests */,
+				OBJ_41 /* Products */,
 			);
 			name = "";
 			sourceTree = "<group>";
@@ -205,12 +208,12 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		OBJ_42 /* Core */ = {
+		OBJ_45 /* Core */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_43 /* Build configuration list for PBXNativeTarget "Core" */;
+			buildConfigurationList = OBJ_46 /* Build configuration list for PBXNativeTarget "Core" */;
 			buildPhases = (
-				OBJ_46 /* Sources */,
-				OBJ_64 /* Frameworks */,
+				OBJ_49 /* Sources */,
+				OBJ_67 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -218,41 +221,41 @@
 			);
 			name = Core;
 			productName = Core;
-			productReference = OBJ_39 /* Core.framework */;
+			productReference = OBJ_42 /* Core.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		OBJ_65 /* pinmodel */ = {
+		OBJ_68 /* pinmodel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_66 /* Build configuration list for PBXNativeTarget "pinmodel" */;
+			buildConfigurationList = OBJ_69 /* Build configuration list for PBXNativeTarget "pinmodel" */;
 			buildPhases = (
-				OBJ_69 /* Sources */,
-				OBJ_71 /* Frameworks */,
+				OBJ_72 /* Sources */,
+				OBJ_75 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_73 /* PBXTargetDependency */,
+				OBJ_77 /* PBXTargetDependency */,
 			);
 			name = pinmodel;
 			productName = pinmodel;
-			productReference = OBJ_40 /* pinmodel */;
+			productReference = OBJ_43 /* pinmodel */;
 			productType = "com.apple.product-type.tool";
 		};
-		OBJ_74 /* CoreTests */ = {
+		OBJ_78 /* CoreTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJ_75 /* Build configuration list for PBXNativeTarget "CoreTests" */;
+			buildConfigurationList = OBJ_79 /* Build configuration list for PBXNativeTarget "CoreTests" */;
 			buildPhases = (
-				OBJ_78 /* Sources */,
-				OBJ_87 /* Frameworks */,
+				OBJ_82 /* Sources */,
+				OBJ_91 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJ_89 /* PBXTargetDependency */,
+				OBJ_93 /* PBXTargetDependency */,
 			);
 			name = CoreTests;
 			productName = CoreTests;
-			productReference = OBJ_41 /* CoreTests.xctest */;
+			productReference = OBJ_44 /* CoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -271,77 +274,78 @@
 				en,
 			);
 			mainGroup = OBJ_5 /*  */;
-			productRefGroup = OBJ_38 /* Products */;
+			productRefGroup = OBJ_41 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				OBJ_42 /* Core */,
-				OBJ_65 /* pinmodel */,
-				OBJ_74 /* CoreTests */,
+				OBJ_45 /* Core */,
+				OBJ_68 /* pinmodel */,
+				OBJ_78 /* CoreTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJ_46 /* Sources */ = {
+		OBJ_49 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_47 /* FileGenerator.swift in Sources */,
-				OBJ_48 /* ObjCImplementationFileGenerator.swift in Sources */,
-				OBJ_49 /* ObjCInterfaceFileGenerator.swift in Sources */,
-				OBJ_50 /* ObjectiveCArrayProperty.swift in Sources */,
-				OBJ_51 /* ObjectiveCBooleanProperty.swift in Sources */,
-				OBJ_52 /* ObjectiveCClassProperty.swift in Sources */,
-				OBJ_53 /* ObjectiveCDictionaryProperty.swift in Sources */,
-				OBJ_54 /* ObjectiveCFileGenerator.swift in Sources */,
-				OBJ_55 /* ObjectiveCIntegerProperty.swift in Sources */,
-				OBJ_56 /* ObjectiveCPolymorphicProperty.swift in Sources */,
-				OBJ_57 /* ObjectiveCProperty.swift in Sources */,
-				OBJ_58 /* ObjectiveCStringProperty.swift in Sources */,
-				OBJ_59 /* OptionalExtensions.swift in Sources */,
-				OBJ_60 /* Schema.swift in Sources */,
-				OBJ_61 /* SchemaLoader.swift in Sources */,
-				OBJ_62 /* StringExtensions.swift in Sources */,
-				OBJ_63 /* UrlExtensions.swift in Sources */,
+				OBJ_50 /* FileGenerator.swift in Sources */,
+				OBJ_51 /* ObjCImplementationFileGenerator.swift in Sources */,
+				OBJ_52 /* ObjCInterfaceFileGenerator.swift in Sources */,
+				OBJ_53 /* ObjectiveCArrayProperty.swift in Sources */,
+				OBJ_54 /* ObjectiveCBooleanProperty.swift in Sources */,
+				OBJ_55 /* ObjectiveCClassProperty.swift in Sources */,
+				OBJ_56 /* ObjectiveCDictionaryProperty.swift in Sources */,
+				OBJ_57 /* ObjectiveCFileGenerator.swift in Sources */,
+				OBJ_58 /* ObjectiveCIntegerProperty.swift in Sources */,
+				OBJ_59 /* ObjectiveCPolymorphicProperty.swift in Sources */,
+				OBJ_60 /* ObjectiveCProperty.swift in Sources */,
+				OBJ_61 /* ObjectiveCStringProperty.swift in Sources */,
+				OBJ_62 /* OptionalExtensions.swift in Sources */,
+				OBJ_63 /* Schema.swift in Sources */,
+				OBJ_64 /* SchemaLoader.swift in Sources */,
+				OBJ_65 /* StringExtensions.swift in Sources */,
+				OBJ_66 /* UrlExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_69 /* Sources */ = {
+		OBJ_72 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_70 /* main.swift in Sources */,
+				OBJ_73 /* Cli.swift in Sources */,
+				OBJ_74 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJ_78 /* Sources */ = {
+		OBJ_82 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_79 /* LinuxTestIndex.swift in Sources */,
-				OBJ_80 /* Mock.swift in Sources */,
-				OBJ_81 /* ObjCImplementationFileGeneratorTests.swift in Sources */,
-				OBJ_82 /* ObjectiveCFileGeneratorTests.swift in Sources */,
-				OBJ_83 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */,
-				OBJ_84 /* ObjectiveCPolymorphicPropertyTests.swift in Sources */,
-				OBJ_85 /* ObjectiveCPropertyTests.swift in Sources */,
-				OBJ_86 /* PINModelTests.swift in Sources */,
+				OBJ_83 /* LinuxTestIndex.swift in Sources */,
+				OBJ_84 /* Mock.swift in Sources */,
+				OBJ_85 /* ObjCImplementationFileGeneratorTests.swift in Sources */,
+				OBJ_86 /* ObjectiveCFileGeneratorTests.swift in Sources */,
+				OBJ_87 /* ObjectiveCInterfaceFileDescriptorTests.swift in Sources */,
+				OBJ_88 /* ObjectiveCPolymorphicPropertyTests.swift in Sources */,
+				OBJ_89 /* ObjectiveCPropertyTests.swift in Sources */,
+				OBJ_90 /* PINModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJ_73 /* PBXTargetDependency */ = {
+		OBJ_77 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = OBJ_42 /* Core */;
-			targetProxy = 81E9397A1DFA0BD7000513A5 /* PBXContainerItemProxy */;
+			target = OBJ_45 /* Core */;
+			targetProxy = 81E9397C1DFB25C1000513A5 /* PBXContainerItemProxy */;
 		};
-		OBJ_89 /* PBXTargetDependency */ = {
+		OBJ_93 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = OBJ_42 /* Core */;
-			targetProxy = 81E9397B1DFA0BD7000513A5 /* PBXContainerItemProxy */;
+			target = OBJ_45 /* Core */;
+			targetProxy = 81E9397D1DFB25C1000513A5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -388,7 +392,7 @@
 			};
 			name = Release;
 		};
-		OBJ_44 /* Debug */ = {
+		OBJ_47 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -408,7 +412,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_45 /* Release */ = {
+		OBJ_48 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ENABLE_TESTABILITY = YES;
@@ -428,7 +432,7 @@
 			};
 			name = Release;
 		};
-		OBJ_67 /* Debug */ = {
+		OBJ_70 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
@@ -446,7 +450,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_68 /* Release */ = {
+		OBJ_71 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
@@ -464,7 +468,7 @@
 			};
 			name = Release;
 		};
-		OBJ_76 /* Debug */ = {
+		OBJ_80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -481,7 +485,7 @@
 			};
 			name = Debug;
 		};
-		OBJ_77 /* Release */ = {
+		OBJ_81 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -510,29 +514,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		OBJ_43 /* Build configuration list for PBXNativeTarget "Core" */ = {
+		OBJ_46 /* Build configuration list for PBXNativeTarget "Core" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_44 /* Debug */,
-				OBJ_45 /* Release */,
+				OBJ_47 /* Debug */,
+				OBJ_48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		OBJ_66 /* Build configuration list for PBXNativeTarget "pinmodel" */ = {
+		OBJ_69 /* Build configuration list for PBXNativeTarget "pinmodel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_67 /* Debug */,
-				OBJ_68 /* Release */,
+				OBJ_70 /* Debug */,
+				OBJ_71 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		OBJ_75 /* Build configuration list for PBXNativeTarget "CoreTests" */ = {
+		OBJ_79 /* Build configuration list for PBXNativeTarget "CoreTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJ_76 /* Debug */,
-				OBJ_77 /* Release */,
+				OBJ_80 /* Debug */,
+				OBJ_81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
