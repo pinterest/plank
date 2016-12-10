@@ -11,9 +11,14 @@ clean:
 build:
 	swift build
 
-test: build
+build_test_index_linux:
+	swift Utility/GenerateTestCaseProvider.swift $(PWD)/Tests/CoreTests
+
+test: build_test_index_linux build
 	swift test
 
 archive: clean
 	swift build -c release -Xswiftc -static-stdlib
 
+archive_linux: clean
+	swift build -c release

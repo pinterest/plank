@@ -9,7 +9,7 @@
 import Foundation
 
 func handleProcess(processInfo: ProcessInfo) {
-    let arguments = ProcessInfo.processInfo.arguments.dropFirst() // Drop executable name
+    let arguments = processInfo.arguments.dropFirst() // Drop executable name
     if let command = CommandOptions(rawValue: arguments.first ?? "") {
         switch command {
         case CommandOptions.Generate:

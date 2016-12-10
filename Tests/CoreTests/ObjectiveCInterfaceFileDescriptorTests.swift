@@ -43,7 +43,6 @@ class ObjectiveCInterfaceFileDescriptorTests: PINModelTests {
             parentDescriptor: nil,
             schemaLoader: self.schemaLoader
         )
-
         let propertyDecls = interface.renderPropertyDeclarations()
         XCTAssertTrue(propertyDecls.contains("/* The identifier of the model object */"))
     }

@@ -44,7 +44,8 @@ extension ObjectiveCFileGeneratorTests {
 // Generated Test Extension for ObjectiveCInterfaceFileDescriptorTests
 extension ObjectiveCInterfaceFileDescriptorTests {
    static var allTests = [
-       ("testRenderDirtyPropertyOptions", testRenderDirtyPropertyOptions)
+       ("testRenderDirtyPropertyOptions", testRenderDirtyPropertyOptions),
+       ("testDescriptionOnProperty", testDescriptionOnProperty)
    ]
 }
 
@@ -60,6 +61,7 @@ extension ObjectiveCPolymorphicPropertyTests {
 // Generated Test Extension for ObjectiveCPropertyTests
 extension ObjectiveCPropertyTests {
    static var allTests = [
+       ("testThatDescriptionStringsAreExtractedFromSchema", testThatDescriptionStringsAreExtractedFromSchema),
        ("testThatItDoesNotIncludeTypeInTheNameOfAnEnumEndingWithType", testThatItDoesNotIncludeTypeInTheNameOfAnEnumEndingWithType),
        ("testThatItCorrectlyHandlesAEnumNameLessThan4Characters", testThatItCorrectlyHandlesAEnumNameLessThan4Characters)
    ]

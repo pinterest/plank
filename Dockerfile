@@ -16,5 +16,5 @@ RUN cd /usr/local/pinmodel && swift build -c release
 ENV PINMODEL_HOME /usr/local/pinmodel
 ENV PATH ${PINMODEL_HOME}/.build/release:${PATH}
 
-ENTRYPOINT ["pinmodel"]
-CMD ["help"]
+#ENTRYPOINT ["pinmodel"]
+#CMD ["help"]
