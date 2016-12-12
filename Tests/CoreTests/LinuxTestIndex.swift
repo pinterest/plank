@@ -24,6 +24,7 @@ extension ObjCImplementationFileGeneratorTests {
        ("testRenderEncodeWithCoderForBaseClass", testRenderEncodeWithCoderForBaseClass),
        ("testRenderMergeWithModelForBaseClass", testRenderMergeWithModelForBaseClass),
        ("testRenderMergeWithModelForChildClass", testRenderMergeWithModelForChildClass),
+       ("testRenderBuilderMergeWithModelForChildClass", testRenderBuilderMergeWithModelForChildClass),
        ("testRenderBuilderSettingsForBaseClass", testRenderBuilderSettingsForBaseClass),
        ("testRenderBuilderSettingsForChildClass", testRenderBuilderSettingsForChildClass),
        ("testRenderCopyWithBlock", testRenderCopyWithBlock),

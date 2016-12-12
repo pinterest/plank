@@ -25,14 +25,14 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
 
     func testDirtyPropertiesIVarNameForBaseClass() {
         let dirtyPropertiesIVarName = baseImpl.dirtyPropertiesIVarName
-        let expectedIVarName = "baseDirtyProperties"
+        let expectedIVarName = "modelDirtyProperties"
 
         XCTAssertEqual(dirtyPropertiesIVarName, expectedIVarName)
     }
 
     func testDirtyPropertiesIVarNameForChildClass() {
         let dirtyPropertiesIVarName = childImpl.dirtyPropertiesIVarName
-        let expectedIVarName = "dirtyProperties"
+        let expectedIVarName = "notificationDirtyProperties"
 
         XCTAssertEqual(dirtyPropertiesIVarName, expectedIVarName)
     }
@@ -41,10 +41,10 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
         let importsString = baseImpl.renderPrivateInterface()
         let expectedImports = [
             "@interface PIModel ()",
-            "@property (nonatomic, assign) struct PIModelDirtyProperties baseDirtyProperties;",
+            "@property (nonatomic, assign) struct PIModelDirtyProperties modelDirtyProperties;",
             "@end\n",
             "@interface PIModelBuilder ()",
-            "@property (nonatomic, assign) struct PIModelDirtyProperties baseDirtyProperties;",
+            "@property (nonatomic, assign) struct PIModelDirtyProperties modelDirtyProperties;",
             "@end"
         ].joined(separator: "\n")
 
@@ -55,13 +55,11 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
         let importsString = childImpl.renderPrivateInterface()
         let expectedImports = [
             "@interface PINotification ()",
-            "@property (nonatomic, assign) struct PIModelDirtyProperties baseDirtyProperties;",
-            "@property (nonatomic, assign) struct PINotificationDirtyProperties dirtyProperties;",
+            "@property (nonatomic, assign) struct PINotificationDirtyProperties notificationDirtyProperties;",
             "@end",
             "",
             "@interface PINotificationBuilder ()",
-            "@property (nonatomic, assign) struct PIModelDirtyProperties baseDirtyProperties;",
-            "@property (nonatomic, assign) struct PINotificationDirtyProperties dirtyProperties;",
+            "@property (nonatomic, assign) struct PINotificationDirtyProperties notificationDirtyProperties;",
             "@end"
             ].joined(separator: "\n")
 
@@ -105,13 +103,13 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "        if ([key isEqualToString:@\"additional_local_non_API_properties\"]) {",
             "            _additionalLocalNonApiProperties = valueOrNil(modelDictionary, @\"additional_local_non_API_properties\");",
-            "            _baseDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties = 1;",
+            "            _modelDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties = 1;",
             "            return;",
             "        }",
             "",
             "        if ([key isEqualToString:@\"id\"]) {",
             "            _identifier = valueOrNil(modelDictionary, @\"id\");",
-            "            _baseDirtyProperties.PIModelDirtyPropertyIdentifier = 1;",
+            "            _modelDirtyProperties.PIModelDirtyPropertyIdentifier = 1;",
             "            return;",
             "        }",
             "    }];",
@@ -139,13 +137,13 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "            if (value != nil) {",
             "                _sections = [[PINotificationSections alloc] initWithDictionary:value];",
             "            }",
-            "            _dirtyProperties.PINotificationDirtyPropertySections = 1;",
+            "            _notificationDirtyProperties.PINotificationDirtyPropertySections = 1;",
             "            return;",
             "        }",
             "",
             "        if ([key isEqualToString:@\"style\"]) {",
             "            _style = valueOrNil(modelDictionary, @\"style\");",
-            "            _dirtyProperties.PINotificationDirtyPropertyStyle = 1;",
+            "            _notificationDirtyProperties.PINotificationDirtyPropertyStyle = 1;",
             "            return;",
             "        }",
             "    }];",
@@ -168,7 +166,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    if (!(self = [super init])) { return self; }",
             "    _additionalLocalNonApiProperties = builder.additionalLocalNonApiProperties;",
             "    _identifier = builder.identifier;",
-            "    _baseDirtyProperties = builder.baseDirtyProperties;",
+            "    _modelDirtyProperties = builder.modelDirtyProperties;",
             "    return self;",
             "}"
         ].joined(separator: "\n")
@@ -190,7 +188,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    if (!(self = [super initWithBuilder:builder])) { return self; }",
             "    _sections = builder.sections;",
             "    _style = builder.style;",
-            "    _dirtyProperties = builder.dirtyProperties;",
+            "    _notificationDirtyProperties = builder.notificationDirtyProperties;",
             "    [self PIModelDidInitialize:initType];",
             "    return self;",
             "}",
@@ -207,16 +205,16 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    NSParameterAssert(modelObject);",
             "    if (!(self = [super init])) { return self; }",
             "",
-            "    struct PIModelDirtyProperties baseDirtyProperties = modelObject.baseDirtyProperties;",
+            "    struct PIModelDirtyProperties modelDirtyProperties = modelObject.modelDirtyProperties;",
             "",
-            "    if (baseDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties) {",
+            "    if (modelDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties) {",
             "        _additionalLocalNonApiProperties = modelObject.additionalLocalNonApiProperties;",
             "    }",
-            "    if (baseDirtyProperties.PIModelDirtyPropertyIdentifier) {",
+            "    if (modelDirtyProperties.PIModelDirtyPropertyIdentifier) {",
             "        _identifier = modelObject.identifier;",
             "    }",
             "",
-            "    _baseDirtyProperties = baseDirtyProperties;",
+            "    _modelDirtyProperties = modelDirtyProperties;",
             "",
             "    return self;",
             "}"
@@ -233,16 +231,16 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    NSParameterAssert(modelObject);",
             "    if (!(self = [super initWithModel:modelObject])) { return self; }",
             "",
-            "    struct PINotificationDirtyProperties dirtyProperties = modelObject.dirtyProperties;",
+            "    struct PINotificationDirtyProperties notificationDirtyProperties = modelObject.notificationDirtyProperties;",
             "",
-            "    if (dirtyProperties.PINotificationDirtyPropertySections) {",
+            "    if (notificationDirtyProperties.PINotificationDirtyPropertySections) {",
             "        _sections = modelObject.sections;",
             "    }",
-            "    if (dirtyProperties.PINotificationDirtyPropertyStyle) {",
+            "    if (notificationDirtyProperties.PINotificationDirtyPropertyStyle) {",
             "        _style = modelObject.style;",
             "    }",
             "",
-            "    _dirtyProperties = dirtyProperties;",
+            "    _notificationDirtyProperties = notificationDirtyProperties;",
             "",
             "    return self;",
             "}"
@@ -263,9 +261,9 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@\"id\"];",
             "",
             "",
-            "    _baseDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties = [aDecoder decodeIntForKey:@\"additional_local_non_API_properties_dirty_property\"];",
+            "    _modelDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties = [aDecoder decodeIntForKey:@\"additional_local_non_API_properties_dirty_property\"];",
             "",
-            "    _baseDirtyProperties.PIModelDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@\"id_dirty_property\"];",
+            "    _modelDirtyProperties.PIModelDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@\"id_dirty_property\"];",
             "",
             "    return self;",
             "}"
@@ -286,9 +284,9 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "    _style = [aDecoder decodeObjectOfClass:[NSString class] forKey:@\"style\"];",
             "",
             "",
-            "    _dirtyProperties.PINotificationDirtyPropertySections = [aDecoder decodeIntForKey:@\"sections_dirty_property\"];",
+            "    _notificationDirtyProperties.PINotificationDirtyPropertySections = [aDecoder decodeIntForKey:@\"sections_dirty_property\"];",
             "",
-            "    _dirtyProperties.PINotificationDirtyPropertyStyle = [aDecoder decodeIntForKey:@\"style_dirty_property\"];",
+            "    _notificationDirtyProperties.PINotificationDirtyPropertyStyle = [aDecoder decodeIntForKey:@\"style_dirty_property\"];",
             "",
             "    [self PIModelDidInitialize:PIModelInitTypeDefault];",
             "",
@@ -308,9 +306,9 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "",
             "    [aCoder encodeObject:self.identifier forKey:@\"id\"];",
             "",
-            "    [aCoder encodeInt:_baseDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties forKey:@\"additional_local_non_API_properties_dirty_property\"];",
+            "    [aCoder encodeInt:_modelDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties forKey:@\"additional_local_non_API_properties_dirty_property\"];",
             "",
-            "    [aCoder encodeInt:_baseDirtyProperties.PIModelDirtyPropertyIdentifier forKey:@\"id_dirty_property\"];",
+            "    [aCoder encodeInt:_modelDirtyProperties.PIModelDirtyPropertyIdentifier forKey:@\"id_dirty_property\"];",
             "}"
         ].joined(separator: "\n")
 
@@ -320,7 +318,8 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
     func testRenderMergeWithModelForBaseClass() {
         let mergeWithModelString = baseImpl.renderMergeWithModel()
         let expectedMergeWithModel = [
-            "- (instancetype)mergeWithModel:(PIModel *)modelObject {",
+            "- (instancetype)mergeWithModel:(PIModel *)modelObject",
+            "{",
             "    return [self mergeWithModel:modelObject initType:PIModelInitTypeFromMerge];",
             "}",
             "",
@@ -328,22 +327,7 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "{",
             "    NSParameterAssert(modelObject);",
             "    PIModelBuilder *builder = [[PIModelBuilder alloc] initWithModel:self];",
-            "",
-            "",
-            "    if (modelObject.baseDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties) {",
-            "        if (builder.additionalLocalNonApiProperties) {",
-            "            NSMutableDictionary *mutableProperties = [[NSMutableDictionary alloc] initWithDictionary:builder.additionalLocalNonApiProperties];",
-            "            [mutableProperties addEntriesFromDictionary:modelObject.additionalLocalNonApiProperties];",
-            "            builder.additionalLocalNonApiProperties = mutableProperties;",
-            "        } else {",
-            "            builder.additionalLocalNonApiProperties = modelObject.additionalLocalNonApiProperties;",
-            "        }",
-            "    }",
-            "",
-            "    if (modelObject.baseDirtyProperties.PIModelDirtyPropertyIdentifier) {",
-            "        builder.identifier = modelObject.identifier;",
-            "    }",
-            "",
+            "    [builder mergeWithModel:modelObject];",
             "    return [builder build];",
             "}"
         ].joined(separator: "\n")
@@ -351,10 +335,12 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
         PINModelTests.tokenizeAndAssertFlexibleEquality(mergeWithModelString, expectedCode: expectedMergeWithModel)
     }
 
+
     func testRenderMergeWithModelForChildClass() {
         let mergeWithModelString = childImpl.renderMergeWithModel()
         let expectedMergeWithModel = [
-            "- (instancetype)mergeWithModel:(PINotification *)modelObject {",
+            "- (instancetype)mergeWithModel:(PINotification *)modelObject",
+            "{",
             "    return [self mergeWithModel:modelObject initType:PIModelInitTypeFromMerge];",
             "}",
             "",
@@ -362,21 +348,25 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "{",
             "    NSParameterAssert(modelObject);",
             "    PINotificationBuilder *builder = [[PINotificationBuilder alloc] initWithModel:self];",
+            "    [builder mergeWithModel:modelObject];",
+            "    return [[PINotification alloc] initWithBuilder:builder initType:initType];",
+            "}"
+            ].joined(separator: "\n")
+
+        PINModelTests.tokenizeAndAssertFlexibleEquality(mergeWithModelString, expectedCode: expectedMergeWithModel)
+    }
+
+
+    func testRenderBuilderMergeWithModelForChildClass() {
+        let mergeWithModelString = childImpl.renderBuilderMergeWithModel()
+        let expectedMergeWithModel = [
+            "- (void)mergeWithModel:(PINotification *)modelObject",
+            "{",
+            "    NSParameterAssert(modelObject);",
+            "    [super mergeWithModel:modelObject];",
+            "    PINotificationBuilder *builder = self;",
             "",
-            "    if (modelObject.baseDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties) {",
-            "        if (builder.additionalLocalNonApiProperties) {",
-            "            NSMutableDictionary *mutableProperties = [[NSMutableDictionary alloc] initWithDictionary:builder.additionalLocalNonApiProperties];",
-            "            [mutableProperties addEntriesFromDictionary:modelObject.additionalLocalNonApiProperties];",
-            "            builder.additionalLocalNonApiProperties = mutableProperties;",
-            "        } else {",
-            "            builder.additionalLocalNonApiProperties = modelObject.additionalLocalNonApiProperties;",
-            "        }",
-            "    }",
-            "",
-            "    if (modelObject.baseDirtyProperties.PIModelDirtyPropertyIdentifier) {",
-            "        builder.identifier = modelObject.identifier;",
-            "    }",
-            "    if (modelObject.dirtyProperties.PINotificationDirtyPropertySections) {",
+            "    if (modelObject.notificationDirtyProperties.PINotificationDirtyPropertySections) {",
             "        id value = modelObject.sections;",
             "        if (value != nil) {",
             "            if (builder.sections != nil) {",
@@ -388,12 +378,10 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "            builder.sections = nil;",
             "        }",
             "    }",
-            "",
-            "    if (modelObject.dirtyProperties.PINotificationDirtyPropertyStyle) {",
+            "    if (modelObject.notificationDirtyProperties.PINotificationDirtyPropertyStyle) {",
             "        builder.style = modelObject.style;",
             "    }",
             "",
-            "    return [[PINotification alloc] initWithBuilder:builder initType:initType];",
             "}"
         ].joined(separator: "\n")
 
@@ -406,13 +394,13 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "- (void)setAdditionalLocalNonApiProperties:(NSDictionary <NSString *, __kindof NSObject *> *)additionalLocalNonApiProperties",
             "{",
             "    _additionalLocalNonApiProperties = additionalLocalNonApiProperties;",
-            "    _baseDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties = 1;",
+            "    _modelDirtyProperties.PIModelDirtyPropertyAdditionalLocalNonApiProperties = 1;",
             "}",
             "",
             "- (void)setIdentifier:(NSString *)identifier",
             "{",
             "    _identifier = identifier;",
-            "    _baseDirtyProperties.PIModelDirtyPropertyIdentifier = 1;",
+            "    _modelDirtyProperties.PIModelDirtyPropertyIdentifier = 1;",
             "}"
         ].joined(separator: "\n")
 
@@ -425,13 +413,13 @@ class ObjCImplementationFileGeneratorTests: PINModelTests {
             "- (void)setSections:(PINotificationSections *)sections",
             "{",
             "    _sections = sections;",
-            "    _dirtyProperties.PINotificationDirtyPropertySections = 1;",
+            "    _notificationDirtyProperties.PINotificationDirtyPropertySections = 1;",
             "}",
             "",
             "- (void)setStyle:(NSString *)style",
             "{",
             "    _style = style;",
-            "    _dirtyProperties.PINotificationDirtyPropertyStyle = 1;",
+            "    _notificationDirtyProperties.PINotificationDirtyPropertyStyle = 1;",
             "}"
         ].joined(separator: "\n")
 

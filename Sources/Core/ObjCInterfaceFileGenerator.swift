@@ -87,6 +87,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
             interfaceDeclaration,
             propertyLines.joined(separator: "\n"),
             "- (nullable instancetype)initWithModel:(\(self.className) *)modelObject;",
+            "- (void)mergeWithModel:(\(self.className) *)modelObject;",
             "- (\(self.className) *)build;",
             "@end"
         ]

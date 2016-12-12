@@ -45,16 +45,23 @@ class PINModelTests: XCTestCase {
     //    i.e. "    if (YES) { }" == " if (YES) { }  "
     class func tokenizeAndAssertFlexibleEquality(_ renderedCode: String, expectedCode: String) {
         func tokenizeAndAssertWhiteSpaceEquality(_ renderedCode: String, expectedCode: String) {
-            let renderedWhiteSpaces = renderedCode.components(separatedBy: " ").filter { $0 == "" }
-            let expectedWhiteSpaces = expectedCode.components(separatedBy: " ").filter { $0 == "" }
-
+            let renderedWhiteSpaces = renderedCode.components(separatedBy: " ")
+                .map { return $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { $0 == "" }
+            let expectedWhiteSpaces = expectedCode.components(separatedBy: " ")
+                .map { return $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { $0 == ""
+            }
             XCTAssertEqual(renderedWhiteSpaces.count, expectedWhiteSpaces.count)
         }
 
         func tokenizeAndAssertContentEquality(_ renderedCode: String, expectedCode: String) {
-            let renderedContent = renderedCode.components(separatedBy: " ").filter { $0 != "" }
-            let expectedContent = expectedCode.components(separatedBy: " ").filter { $0 != "" }
-
+            let renderedContent = renderedCode.components(separatedBy: " ")
+                .map { return $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { $0 != "" }
+            let expectedContent = expectedCode.components(separatedBy: " ")
+                .map { return $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { $0 != "" }
             XCTAssertEqual(renderedContent.count, expectedContent.count)
             XCTAssertEqual(renderedContent, expectedContent)
         }
