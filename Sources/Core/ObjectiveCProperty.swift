@@ -121,7 +121,6 @@ class AnyProperty: ObjectiveCProperty {
     fileprivate var _dirtyPropertyOption: (Void) -> String
     fileprivate var _dirtyPropertyAssignmentStatement: (String) -> String
 
-
     required init(descriptor: ObjectSchemaProperty, className: String, schemaLoader: SchemaLoader) {
         let base = PropertyFactory.propertyForDescriptor(descriptor, className: className, schemaLoader: schemaLoader)
         _renderInterfaceDeclaration = { base.renderInterfaceDeclaration() }
@@ -292,8 +291,16 @@ extension ObjectiveCProperty {
     }
     
     func renderEnumUtilityMethodsInterface() -> String {
-        return ["extern \(self.enumPropertyTypeName()) \(self.enumPropertyTypeName())FromString(NSString * _Nonnull str);",
-            "extern NSString * _Nonnull \(self.enumPropertyTypeName())ToString(\(self.enumPropertyTypeName()) enumType);"].joined(separator: "\n")
+        return ["extern \(self.enumPropertyTypeName()) \(self.renderEnumUtilityMethodEnumToString())(NSString * _Nonnull str);",
+            "extern NSString * _Nonnull \(self.renderEnumUtilityMethodStringToEnum())(\(self.enumPropertyTypeName()) enumType);"].joined(separator: "\n")
+    }
+
+    func renderEnumUtilityMethodEnumToString() -> String {
+        return "\(self.enumPropertyTypeName())ToString"
+    }
+
+    func renderEnumUtilityMethodStringToEnum() -> String {
+        return "\(self.enumPropertyTypeName())FromString"
 
     }
 

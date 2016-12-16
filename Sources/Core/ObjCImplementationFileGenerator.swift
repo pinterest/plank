@@ -441,6 +441,63 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         return lines.joined(separator: "\n")
     }
 
+    func renderDebugDescription() -> String {
+
+        func renderPropertyToString(property prop: AnyProperty) -> String {
+            let propIVarName = "_\(prop.propertyDescriptor.name.snakeCaseToPropertyName())"
+
+            if prop.isEnumPropertyType() && prop.propertyDescriptor.jsonType == .String {
+                return "\(prop.renderEnumUtilityMethodEnumToString())(\(propIVarName))"
+            }
+            if prop.isScalarType() {
+                return "@(\(propIVarName))"
+            }
+            return propIVarName
+        }
+
+        let propertyLines = self.classProperties()
+            .map { PropertyFactory.propertyForDescriptor($0, className: self.className, schemaLoader: self.schemaLoader) }
+            .flatMap {
+                [
+                    "if (props.\($0.dirtyPropertyOption())) {",
+                    "\(Indentation)[descriptionFields addObject:[@\"_\($0.propertyDescriptor.name.snakeCaseToPropertyName()) = \" stringByAppendingFormat:@\"%@\", \(renderPropertyToString(property: $0))]];",
+                    "}"
+                ]
+            }
+
+        let lines = [
+            "- (NSString *)debugDescription",
+            "{",
+                [
+                    "NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@\"\\n\"];",
+                    "NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:\(self.classProperties().count)];",
+                    "[descriptionFields addObject:parentDebugDescription];",
+                    "struct \(self.dirtyPropertyOptionName) props = _\(self.dirtyPropertiesIVarName);",
+                ].map{ Indentation + $0 }.joined(separator: "\n"),
+                    propertyLines.map{ Indentation + $0 }.joined(separator: "\n"),
+                [ 
+                    "NSMutableString *stringBuf = [NSMutableString string];",
+                    "NSString *newline = @\"\\n\";",
+                    "NSString *format = @\"\(Indentation)%@\";",
+                    "for (id obj in descriptionFields) {",
+                    "   if ([obj isKindOfClass:[NSArray class]]) {",
+                    "       NSArray<NSString *> *objArray = (NSArray *)obj;",
+                    "       for (NSString *element in objArray) {",
+                    "           [stringBuf appendFormat:format, element];",
+                    "           if (element != [objArray lastObject]) { [stringBuf appendString:newline]; };",
+                    "       }",
+                    "   } else {",
+                    "       [stringBuf appendFormat:format, [obj description]];",
+                    "   }",
+                    "   if (obj != [descriptionFields lastObject]) { [stringBuf appendString:newline]; };",
+                    "}",
+                    "return [NSString stringWithFormat:@\"\(self.className) = {\\n%@\\n}\", stringBuf];",
+                ].map{ Indentation + $0 }.joined(separator: "\n"),
+            "}"
+        ]
+        return lines.joined(separator: "\n")
+    }
+
     func renderBuilderMergeWithModel() -> String {
         let propertyLines = self.classProperties().sorted(by: {$0.name < $1.name}).map({ renderMergeForProperty($0, isParentProperty: false)})
         let superCallStatement = isBaseClass() ? "" : "[super mergeWithModel:modelObject];"
@@ -618,6 +675,8 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
                 self.renderDesignatedInit(),
                 self.renderInitWithDictionary(),
                 self.renderInitWithBuilder(),
+                self.pragmaMark("Debug methods"),
+                self.renderDebugDescription(),
                 self.pragmaMark("NSSecureCoding implementation"),
                 self.renderSupportsSecureCoding(),
                 self.renderInitWithCoder(),
@@ -642,6 +701,8 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             self.renderPolymorphicTypeIdentifier(),
             self.renderInitWithDictionary(),
             self.renderInitWithBuilder(),
+            self.pragmaMark("Debug methods"),
+            self.renderDebugDescription(),
             self.pragmaMark("NSSecureCoding implementation"),
             self.renderInitWithCoder(),
             self.renderEncodeWithCoder(),
