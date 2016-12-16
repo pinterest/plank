@@ -500,13 +500,13 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
     func renderBuilderMergeWithModel() -> String {
         let propertyLines = self.classProperties().sorted(by: {$0.name < $1.name}).map({ renderMergeForProperty($0, isParentProperty: false)})
-        let superCallStatement = isBaseClass() ? "" : "[super mergeWithModel:modelObject];"
+        let superCallStatement = isBaseClass() ? "" : Indentation + "[super mergeWithModel:modelObject];"
 
         let lines = [
             "- (void)mergeWithModel:(\(self.className) *)modelObject",
             "{",
             "    NSParameterAssert(modelObject);",
-            "    " + superCallStatement,
+                 superCallStatement,
             "    \(self.builderClassName) *builder = self;",
             "",
             propertyLines.joined(separator: "\n\n"),
