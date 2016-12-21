@@ -60,8 +60,8 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
     }
 
     func propertyRequiresAssignmentLogic() -> Bool {
-        return (self.propertyDescriptor.format == JSONStringFormatType.Uri ||
-                self.propertyDescriptor.format == JSONStringFormatType.DateTime)
+        return (self.propertyDescriptor.format == StringFormatType.Uri ||
+                self.propertyDescriptor.format == StringFormatType.DateTime)
     }
 
     func propertyStatementFromDictionary(_ propertyVariableString: String, className: String) -> String {
@@ -71,9 +71,9 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
 
         var statement = propertyVariableString
         switch self.propertyDescriptor.format {
-        case .some(JSONStringFormatType.Uri):
+        case .some(StringFormatType.Uri):
             statement = "[NSURL URLWithString:\(propertyVariableString)]"
-        case .some(JSONStringFormatType.DateTime):
+        case .some(StringFormatType.DateTime):
             statement = "[[NSValueTransformer valueTransformerForName:\(DateValueTransformerKey)] transformedValue:\(propertyVariableString)]"
         case .some(_), .none:
             statement = propertyVariableString
@@ -103,9 +103,9 @@ final class ObjectiveCStringProperty: ObjectiveCProperty {
         }
 
         switch self.propertyDescriptor.format {
-        case .some(JSONStringFormatType.Uri) :
+        case .some(StringFormatType.Uri) :
             return NSURL.className()
-        case .some(JSONStringFormatType.DateTime):
+        case .some(StringFormatType.DateTime):
             return NSDate.className()
         default:
             return NSString.className()

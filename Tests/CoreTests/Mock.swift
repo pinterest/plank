@@ -101,6 +101,13 @@ class MockSchemaLoader: SchemaLoader {
     ]
 
     var loadedSchema = false
+    func loadSchema2(_ schemaUrl: URL) -> Schema? {
+        loadedSchema = true
+        if let objectSchemaProp = refs[schemaUrl.absoluteString] {
+            return Schema.propertyForType(propertyInfo: objectSchemaProp.propInfo, source: schemaUrl)
+        }
+        assert(false)
+    }
 
     func loadSchema(_ schemaUrl: URL) -> ObjectSchemaProperty? {
         loadedSchema = true

@@ -17,12 +17,19 @@ public enum JSONType: String {
     case Integer = "integer"
     case Number = "number"
     case Boolean = "boolean"
-    case Null = "null"
+//    case Null = "null"
     case Pointer = "$ref" // Used for combining schemas via references.
     case Polymorphic = "oneOf" // JSONType composed of other JSONTypes
+
+    static func typeFromProperty(prop: JSONObject) -> JSONType? {
+        if let _ = prop["$ref"] as? String {
+            return JSONType.Pointer
+        }
+        return (prop["type"] as? String).flatMap(JSONType.init)
+    }
 }
 
-public enum JSONStringFormatType: String {
+public enum StringFormatType: String {
     case DateTime = "date-time"  // Date representation, as defined by RFC 3339, section 5.6.
     case Email = "email"  // Internet email address, see RFC 5322, section 3.4.1.
     case Hostname = "hostname"  // Internet host name, see RFC 1034, section 3.1.
@@ -30,8 +37,6 @@ public enum JSONStringFormatType: String {
     case Ipv6 = "ipv6"  // IPv6 address, as defined in RFC 2373, section 2.2.
     case Uri = "uri"  // A universal resource identifier (URI), according to RFC3986.
 }
-
-struct JSONParseError: Error {}
 
 struct EnumValue<ValueType> {
     let defaultValue: ValueType
@@ -46,6 +51,154 @@ struct EnumValue<ValueType> {
         }
     }
 }
+
+indirect enum EnumType {
+    case Integer([EnumValue<Int>])
+    case String([EnumValue<String>])
+}
+
+typealias LazySchemaReference = () -> Schema?
+
+indirect enum Schema {
+    case Object(name: String, properties: [String:Schema], extends: LazySchemaReference?)
+    case Array(itemType: Schema?)
+    case Map(valueType: Schema?) // TODO: Should we have an option to specify the key type? (probably yes)
+    case Integer
+    case Float
+    case Boolean
+    case String(format: StringFormatType?)
+    case OneOf(types: [Schema]) // ADT
+    case Enum(EnumType)
+    case Reference(with: LazySchemaReference)
+}
+
+
+extension Schema : CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .Array(itemType: let itemType):
+            return "Array: \(itemType.debugDescription)"
+        case .Object(name: let name, properties: let properties, extends: let extendsSchema):
+            return (["Object: \(name)\n extends from \(extendsSchema.map{ $0()?.debugDescription })\n"] + properties.map { (k, v) in "\t\(k): \(v.debugDescription)\n" }).reduce("", +)
+        case .Map(valueType: let valueType):
+            return "Map: \(valueType?.debugDescription)"
+        case .Integer:
+            return "Integer"
+        case .Float:
+            return "Float"
+        case .Boolean:
+            return "Boolean"
+        case .String:
+            return "String"
+        case .OneOf(types: let types):
+            return (["OneOf"] + types.map { v in "\t\(v.debugDescription)\n" }).reduce("", +)
+        case .Enum(let enumType):
+            return "Enum: \(enumType)"
+        case .Reference(with: _):
+            return "Reference"
+        }
+    }
+}
+
+
+extension Schema {
+    static func propertyForType(propertyInfo: JSONObject, source: URL) -> Schema? {
+        let title = propertyInfo["title"] as? String
+
+        // Check for "type"
+        guard let propType = JSONType.typeFromProperty(prop: propertyInfo) else { return nil }
+
+        switch propType {
+        case JSONType.String:
+            if let enumValues = propertyInfo["enum"] as? [JSONObject] {
+                return try? Schema.Enum(EnumType.String(enumValues.map(EnumValue<String>.init)))
+            } else {
+                return Schema.String(format: (propertyInfo["format"] as? String).flatMap(StringFormatType.init))
+            }
+        case JSONType.Array:
+            return (propertyInfo["items"] as? JSONObject)
+                .flatMap { Schema.propertyForType(propertyInfo: $0, source: source) }
+                .map { items in .Array(itemType: items) }
+        case JSONType.Integer:
+            if let enumValues = propertyInfo["enum"] as? [JSONObject] {
+                return try? Schema.Enum(EnumType.Integer(enumValues.map(EnumValue<Int>.init)))
+            } else {
+                return .Integer
+            }
+        case JSONType.Number:
+            return .Float
+        case JSONType.Boolean:
+            return .Boolean
+        case JSONType.Pointer:
+            return (propertyInfo["$ref"] as? String).map { ref in
+                .Reference(with: { () -> Schema? in
+                    RemoteSchemaLoader.sharedInstance.loadSchema2(decodeRef(from: source, with: ref))
+                })
+            }
+        case JSONType.Object:
+            if let propMap = propertyInfo["properties"] as? JSONObject, let objectTitle = title {
+                // Class
+                let optTuples: [PropertyTuple?] = propMap.map { (k, v) -> (String, Schema?) in
+                    let schemaOpt = (v as? JSONObject).flatMap { Schema.propertyForType(propertyInfo: $0, source: source) }
+                    return (k, schemaOpt)
+                    }.map { (name, optSchema) in optSchema.map{ (name, $0) } }
+                let lifted: [PropertyTuple]? = optTuples.reduce([], { (build: [PropertyTuple]?, tupleOption: PropertyTuple?) -> [PropertyTuple]? in
+                    build.flatMap { (b: [PropertyTuple]) -> [PropertyTuple]? in tupleOption.map{ b + [$0] } }
+                })
+                let extends = (propertyInfo["extends"] as? JSONObject)
+                    .flatMap { ($0["$ref"] as? String).map { ref in {
+                        RemoteSchemaLoader.sharedInstance.loadSchema2(decodeRef(from: source, with: ref)) } } }
+
+                return lifted.map { Schema.Object(name: objectTitle,
+                                                  properties: Dictionary(elements: $0),
+                                                  extends: extends) }
+            } else {
+                // Map type
+                return Schema.Map(valueType:(propertyInfo["additionalProperties"] as? JSONObject)
+                    .flatMap { Schema.propertyForType(propertyInfo: $0, source: source) })
+            }
+        case JSONType.Polymorphic:
+            return (propertyInfo["oneOf"] as? [JSONObject]) // [JSONObject]
+                .map { jsonObjs in jsonObjs.map { Schema.propertyForType(propertyInfo: $0, source: source) } } // [Schema?]?
+                .flatMap { schemas in schemas.reduce([], { (build: [Schema]?, tupleOption: Schema?) -> [Schema]? in
+                    build.flatMap { (b: [Schema]) -> [Schema]? in tupleOption.map{ b + [$0] } }
+                }) }
+                .map{ Schema.OneOf(types: $0) }
+        }
+    }
+}
+
+typealias PropertyTuple = (String, Schema)
+
+struct JSONParseError: Error {}
+
+typealias SchemaProvider<T> = (T) -> Schema
+typealias DAGSchemaProvider = (Schema) -> Schema
+
+extension Dictionary {
+    init(elements:[(Key, Value)]) {
+        self.init()
+        for (key, value) in elements {
+            updateValue(value, forKey: key)
+        }
+    }
+}
+
+func decodeRef(from source: URL, with ref: String) -> URL {
+    if ref.hasPrefix("#") {
+        // Local URL
+        return URL(string:ref, relativeTo:source)!
+    } else {
+        var baseUrl = source.deletingLastPathComponent()
+        if baseUrl.path == "." {
+            baseUrl = URL(fileURLWithPath: (baseUrl.path))
+        }
+        let lastPathComponentString = URL(string: ref)?.pathComponents.last
+        return URL(string:lastPathComponentString!, relativeTo:baseUrl)!
+    }
+}
+
+
 
 class ObjectSchemaProperty {
     let name: String
@@ -134,9 +287,6 @@ class ObjectSchemaProperty {
             return ObjectSchemaObjectProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
         case JSONType.Polymorphic:
             return ObjectSchemaPolymorphicProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-        default:
-            assert(false)
-            return ObjectSchemaObjectProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
         }
     }
 }
@@ -274,11 +424,11 @@ class ObjectSchemaObjectProperty: ObjectSchemaProperty {
 
 
 class ObjectSchemaStringProperty: ObjectSchemaProperty {
-    let format: JSONStringFormatType?
+    let format: StringFormatType?
 
     override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
         if let formatString = propertyInfo["format"] as? String {
-            self.format = JSONStringFormatType(rawValue:formatString)
+            self.format = StringFormatType(rawValue:formatString)
         } else {
             self.format = nil
         }
