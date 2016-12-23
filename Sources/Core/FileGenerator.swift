@@ -18,19 +18,17 @@ public enum GenerationParameterType {
 }
 
 protocol FileGeneratorManager {
-    init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, schemaLoader: SchemaLoader)
-    func filesToGenerate() -> Array<FileGenerator>
+    static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> Array<FileGenerator>
 }
 
 protocol FileGenerator {
-    init(descriptor: ObjectSchemaObjectProperty,
-         generatorParameters: GenerationParameters,
-         parentDescriptor: ObjectSchemaObjectProperty?,
-         schemaLoader: SchemaLoader)
-    func fileName() -> String
     func renderFile() -> String
+    var fileName: String { mutating get }
 }
 
+protocol FilePrinter {
+    func print(statement: String)
+}
 
 extension FileGenerator {
 
@@ -42,30 +40,30 @@ extension FileGenerator {
 
         let year: Int = Calendar.current.component(.year, from: date)
 
+        var copy = self
+
         let header = [
             "//",
-            "//  \(self.fileName())",
-            "//  Pinterest",
+            "//  \(copy.fileName)",
+            "//  Pinterest", // TODO (allow other copyrights?)
             "//",
             "//  DO NOT EDIT - EDITS WILL BE OVERWRITTEN",
             "//  Copyright (c) \(year) Pinterest, Inc. All rights reserved.",
             "//  @generated",
             "//"
         ]
+
         return header.joined(separator: "\n")
     }
 
 }
 
-func generateFile(_ schema: ObjectSchemaObjectProperty, outputDirectory: URL, generationParameters: GenerationParameters){
-    let manager = ObjectiveCFileGeneratorManager(descriptor: schema,
-                                                 generatorParameters: generationParameters,
-                                                 schemaLoader: RemoteSchemaLoader.sharedInstance)
-    for file in manager.filesToGenerate() {
-        let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file.
+func generateFile(_ schema: SchemaObjectRoot, outputDirectory: URL, generationParameters: GenerationParameters) {
+    for var file in ObjectiveCFileGenerator.filesToGenerate(descriptor: schema, generatorParameters: generationParameters) {
+        let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file. // TODO - Have `FilePrinter` take care of things like this.
         do {
             try fileContents.write(
-                to: URL(string: file.fileName(), relativeTo: outputDirectory)!,
+                to: URL(string: file.fileName, relativeTo: outputDirectory)!,
                 atomically: true,
                 encoding: String.Encoding.utf8)
         } catch {
@@ -75,18 +73,21 @@ func generateFile(_ schema: ObjectSchemaObjectProperty, outputDirectory: URL, ge
 }
 
 public func generateFilesWithInitialUrl(_ url: URL, outputDirectory: URL, generationParameters: GenerationParameters) {
-    if let _ = RemoteSchemaLoader.sharedInstance.loadSchema(url) as ObjectSchemaProperty? {
+    if let _ = RemoteSchemaLoader.sharedInstance.loadSchema(url) as Schema? {
         var processedSchemas = Set<URL>([])
         repeat {
-            let _ = RemoteSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: ObjectSchemaProperty) -> Void in
+            let _ = RemoteSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: Schema) -> Void in
                 if processedSchemas.contains(url) {
                     return
                 }
-
                 processedSchemas.insert(url)
-
-                if let objectSchema = schema as? ObjectSchemaObjectProperty {
-                    generateFile(objectSchema, outputDirectory: outputDirectory, generationParameters: generationParameters)
+                switch schema {
+                case .Object(let rootObject):
+                    generateFile(rootObject,
+                                 outputDirectory: outputDirectory,
+                                 generationParameters: generationParameters)
+                default:
+                    assert(false, "Incorrect Schema for root") // TODO Better error message.
                 }
             })
         } while (processedSchemas.count != RemoteSchemaLoader.sharedInstance.refs.keys.count)

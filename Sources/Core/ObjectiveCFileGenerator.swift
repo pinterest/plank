@@ -10,28 +10,52 @@ import Foundation
 
 // MARK: File Generation Manager
 
-class ObjectiveCFileGeneratorManager: FileGeneratorManager {
-    let objectDescriptor: ObjectSchemaObjectProperty
-    let generatorParams: [GenerationParameterType:String]
-    let parentObjectDescriptor: ObjectSchemaObjectProperty?
-    var schemaLoader: SchemaLoader
-    
-    required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: [GenerationParameterType:String], schemaLoader: SchemaLoader) {
-        self.objectDescriptor = descriptor
-        self.generatorParams = generatorParameters
-        if let parentObjectSchema = descriptor.extends as ObjectSchemaPointerProperty? {
-            self.parentObjectDescriptor = schemaLoader.loadSchema(parentObjectSchema.ref) as? ObjectSchemaObjectProperty
-        } else {
-            self.parentObjectDescriptor = nil
-        }
+struct ObjectiveCFileGenerator : FileGeneratorManager {
+    static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> Array<FileGenerator> {
 
-        self.schemaLoader = schemaLoader
+        let rootsRenderer = ObjCRootsRenderer(rootSchema: descriptor, params: generatorParameters)
+
+        return [
+            ObjCHeaderFile(roots: rootsRenderer.renderRoots(), className: rootsRenderer.className),
+            ObjCImplementationFile(roots: rootsRenderer.renderRoots(), className: rootsRenderer.className)
+        ]
+    }
+}
+
+struct ObjCHeaderFile: FileGenerator {
+    let roots: [ObjCIR.Root]
+    let className: String
+
+    var fileName: String {
+        get {
+            return "\(className).h"
+        }
     }
 
-    func filesToGenerate() -> Array<FileGenerator> {
-        return [
-            ObjectiveCInterfaceFileDescriptor(descriptor: objectDescriptor, generatorParameters: self.generatorParams, parentDescriptor: self.parentObjectDescriptor, schemaLoader: self.schemaLoader),
-            ObjectiveCImplementationFileDescriptor(descriptor: objectDescriptor, generatorParameters: self.generatorParams, parentDescriptor: self.parentObjectDescriptor, schemaLoader: self.schemaLoader)
-        ]
+    func renderFile() -> String {
+        let output = (
+            [self.renderCommentHeader()] +
+                self.roots.flatMap { $0.renderHeader().joined(separator: "\n") })
+            .filter { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) != "" }
+            .joined(separator: "\n\n")
+        return output
+    }
+}
+
+struct ObjCImplementationFile: FileGenerator {
+    let roots: [ObjCIR.Root]
+    let className: String
+
+    var fileName: String {
+        get {
+            return "\(className).m"
+        }
+    }
+
+    func renderFile() -> String {
+        let output = (
+            [self.renderCommentHeader()] +
+                self.roots.map { $0.renderImplementation().joined(separator: "\n") }).joined(separator: "\n\n")
+        return output
     }
 }

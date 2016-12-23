@@ -13,28 +13,6 @@ import Foundation
 @testable import Core
 
 class PINModelTests: XCTestCase {
-    let schemaLoader = MockSchemaLoader()
-    var baseImpl: ObjectiveCImplementationFileDescriptor!
-
-    var childImpl: ObjectiveCImplementationFileDescriptor!
-
-    override func setUp() {
-        super.setUp()
-
-        self.baseImpl = ObjectiveCImplementationFileDescriptor(
-            descriptor: self.schemaLoader.loadSchema(URL(fileURLWithPath: "model.json")) as! ObjectSchemaObjectProperty,
-            generatorParameters: [GenerationParameterType.classPrefix: "PI"],
-            parentDescriptor: nil,
-            schemaLoader: self.schemaLoader
-        )
-
-        self.childImpl = ObjectiveCImplementationFileDescriptor(
-            descriptor: self.schemaLoader.loadSchema(URL(fileURLWithPath: "notification.json")) as! ObjectSchemaObjectProperty,
-            generatorParameters: [GenerationParameterType.classPrefix: "PI"],
-            parentDescriptor: self.baseImpl.objectDescriptor,
-            schemaLoader: self.schemaLoader
-        )
-    }
 
     // Performs a flexible string assertion by making sure the content of the rendered code strings are equal.
     // Flexible string comparison is done by making sure the number of white space tokens are equal between

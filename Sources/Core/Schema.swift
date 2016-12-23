@@ -17,14 +17,18 @@ public enum JSONType: String {
     case Integer = "integer"
     case Number = "number"
     case Boolean = "boolean"
-//    case Null = "null"
     case Pointer = "$ref" // Used for combining schemas via references.
     case Polymorphic = "oneOf" // JSONType composed of other JSONTypes
 
     static func typeFromProperty(prop: JSONObject) -> JSONType? {
+        if let _ = prop["oneOf"] as? [JSONObject] {
+            return JSONType.Polymorphic
+        }
+
         if let _ = prop["$ref"] as? String {
             return JSONType.Pointer
         }
+
         return (prop["type"] as? String).flatMap(JSONType.init)
     }
 }
@@ -53,127 +57,15 @@ struct EnumValue<ValueType> {
 }
 
 indirect enum EnumType {
-    case Integer([EnumValue<Int>])
-    case String([EnumValue<String>])
+    case Integer([EnumValue<Int>]) // TODO: Revisit if we should have default values for integer enums
+    case String([EnumValue<String>], defaultValue: EnumValue<String>)
 }
 
 typealias LazySchemaReference = () -> Schema?
 
-indirect enum Schema {
-    case Object(name: String, properties: [String:Schema], extends: LazySchemaReference?)
-    case Array(itemType: Schema?)
-    case Map(valueType: Schema?) // TODO: Should we have an option to specify the key type? (probably yes)
-    case Integer
-    case Float
-    case Boolean
-    case String(format: StringFormatType?)
-    case OneOf(types: [Schema]) // ADT
-    case Enum(EnumType)
-    case Reference(with: LazySchemaReference)
-}
-
-
-extension Schema : CustomDebugStringConvertible {
-    public var debugDescription: String {
-        switch self {
-        case .Array(itemType: let itemType):
-            return "Array: \(itemType.debugDescription)"
-        case .Object(name: let name, properties: let properties, extends: let extendsSchema):
-            return (["Object: \(name)\n extends from \(extendsSchema.map{ $0()?.debugDescription })\n"] + properties.map { (k, v) in "\t\(k): \(v.debugDescription)\n" }).reduce("", +)
-        case .Map(valueType: let valueType):
-            return "Map: \(valueType?.debugDescription)"
-        case .Integer:
-            return "Integer"
-        case .Float:
-            return "Float"
-        case .Boolean:
-            return "Boolean"
-        case .String:
-            return "String"
-        case .OneOf(types: let types):
-            return (["OneOf"] + types.map { v in "\t\(v.debugDescription)\n" }).reduce("", +)
-        case .Enum(let enumType):
-            return "Enum: \(enumType)"
-        case .Reference(with: _):
-            return "Reference"
-        }
-    }
-}
-
-
-extension Schema {
-    static func propertyForType(propertyInfo: JSONObject, source: URL) -> Schema? {
-        let title = propertyInfo["title"] as? String
-
-        // Check for "type"
-        guard let propType = JSONType.typeFromProperty(prop: propertyInfo) else { return nil }
-
-        switch propType {
-        case JSONType.String:
-            if let enumValues = propertyInfo["enum"] as? [JSONObject] {
-                return try? Schema.Enum(EnumType.String(enumValues.map(EnumValue<String>.init)))
-            } else {
-                return Schema.String(format: (propertyInfo["format"] as? String).flatMap(StringFormatType.init))
-            }
-        case JSONType.Array:
-            return (propertyInfo["items"] as? JSONObject)
-                .flatMap { Schema.propertyForType(propertyInfo: $0, source: source) }
-                .map { items in .Array(itemType: items) }
-        case JSONType.Integer:
-            if let enumValues = propertyInfo["enum"] as? [JSONObject] {
-                return try? Schema.Enum(EnumType.Integer(enumValues.map(EnumValue<Int>.init)))
-            } else {
-                return .Integer
-            }
-        case JSONType.Number:
-            return .Float
-        case JSONType.Boolean:
-            return .Boolean
-        case JSONType.Pointer:
-            return (propertyInfo["$ref"] as? String).map { ref in
-                .Reference(with: { () -> Schema? in
-                    RemoteSchemaLoader.sharedInstance.loadSchema2(decodeRef(from: source, with: ref))
-                })
-            }
-        case JSONType.Object:
-            if let propMap = propertyInfo["properties"] as? JSONObject, let objectTitle = title {
-                // Class
-                let optTuples: [PropertyTuple?] = propMap.map { (k, v) -> (String, Schema?) in
-                    let schemaOpt = (v as? JSONObject).flatMap { Schema.propertyForType(propertyInfo: $0, source: source) }
-                    return (k, schemaOpt)
-                    }.map { (name, optSchema) in optSchema.map{ (name, $0) } }
-                let lifted: [PropertyTuple]? = optTuples.reduce([], { (build: [PropertyTuple]?, tupleOption: PropertyTuple?) -> [PropertyTuple]? in
-                    build.flatMap { (b: [PropertyTuple]) -> [PropertyTuple]? in tupleOption.map{ b + [$0] } }
-                })
-                let extends = (propertyInfo["extends"] as? JSONObject)
-                    .flatMap { ($0["$ref"] as? String).map { ref in {
-                        RemoteSchemaLoader.sharedInstance.loadSchema2(decodeRef(from: source, with: ref)) } } }
-
-                return lifted.map { Schema.Object(name: objectTitle,
-                                                  properties: Dictionary(elements: $0),
-                                                  extends: extends) }
-            } else {
-                // Map type
-                return Schema.Map(valueType:(propertyInfo["additionalProperties"] as? JSONObject)
-                    .flatMap { Schema.propertyForType(propertyInfo: $0, source: source) })
-            }
-        case JSONType.Polymorphic:
-            return (propertyInfo["oneOf"] as? [JSONObject]) // [JSONObject]
-                .map { jsonObjs in jsonObjs.map { Schema.propertyForType(propertyInfo: $0, source: source) } } // [Schema?]?
-                .flatMap { schemas in schemas.reduce([], { (build: [Schema]?, tupleOption: Schema?) -> [Schema]? in
-                    build.flatMap { (b: [Schema]) -> [Schema]? in tupleOption.map{ b + [$0] } }
-                }) }
-                .map{ Schema.OneOf(types: $0) }
-        }
-    }
-}
-
-typealias PropertyTuple = (String, Schema)
+typealias Property = (Parameter, Schema)
 
 struct JSONParseError: Error {}
-
-typealias SchemaProvider<T> = (T) -> Schema
-typealias DAGSchemaProvider = (Schema) -> Schema
 
 extension Dictionary {
     init(elements:[(Key, Value)]) {
@@ -198,300 +90,169 @@ func decodeRef(from source: URL, with ref: String) -> URL {
     }
 }
 
-
-
-class ObjectSchemaProperty {
+struct SchemaObjectRoot: Equatable {
     let name: String
-    let jsonType: JSONType
-    let propInfo: JSONObject
-    let sourceId: URL
-    let enumValues: [EnumValue<AnyObject>] // TODO: Improve type constraints beyond AnyObject here.
-    let defaultValue: Any?
-    let descriptionString: String?
-    let algebraicDataTypeIdentifier: String
-    var isModelProperty: Bool {
-        return false
-    }
+    let properties: [String:Schema]
+    let extends: LazySchemaReference?
+    let algebraicTypeIdentifier: String?
 
-    init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
-        self.name = name
-        self.jsonType = objectType
-        self.propInfo = propertyInfo
-        self.sourceId = sourceId
-        self.enumValues = ((propertyInfo["enum"] as? [JSONObject]) ?? []).flatMap {
-            if let val = try? EnumValue<AnyObject>(object: $0) {
-                return val
-            }
-            assertionFailure("Invalid enumeration value in \(name) schema property: \($0)")
+    var typeIdentifier: String {
+        get {
+            return algebraicTypeIdentifier ?? name
+        }
+    }
+}
+
+func ==(lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
+    return lhs.name == rhs.name
+}
+
+
+let RootNSObject = SchemaObjectRoot(name: "NSObject", properties: [:], extends: nil, algebraicTypeIdentifier: nil)
+
+extension SchemaObjectRoot : CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return (["\(name)\n extends from \(extends.map{ $0()?.debugDescription })\n"] + properties.map { (k, v) in "\t\(k): \(v.debugDescription)\n" }).reduce("", +)
+    }
+}
+
+indirect enum Schema {
+    case Object(SchemaObjectRoot)
+    case Array(itemType: Schema?)
+    case Map(valueType: Schema?) // TODO: Should we have an option to specify the key type? (probably yes)
+    case Integer
+    case Float
+    case Boolean
+    case String(format: StringFormatType?)
+    case OneOf(types: [Schema]) // ADT
+    case Enum(EnumType)
+    case Reference(with: LazySchemaReference)
+}
+
+
+extension Schema : CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .Array(itemType: let itemType):
+            return "Array: \(itemType.debugDescription)"
+        case .Object(let root):
+            return "Object: \(root.debugDescription)"
+        case .Map(valueType: let valueType):
+            return "Map: \(valueType?.debugDescription)"
+        case .Integer:
+            return "Integer"
+        case .Float:
+            return "Float"
+        case .Boolean:
+            return "Boolean"
+        case .String:
+            return "String"
+        case .OneOf(types: let types):
+            return (["OneOf"] + types.map { v in "\t\(v.debugDescription)\n" }).reduce("", +)
+        case .Enum(let enumType):
+            return "Enum: \(enumType)"
+        case .Reference(with: _):
+            return "Reference"
+        }
+    }
+}
+
+
+extension Schema {
+    // Computed Properties
+    var title: String? {
+        switch self {
+        case .Object(let rootObject):
+            return rootObject.name
+        default:
             return nil
         }
-        self.algebraicDataTypeIdentifier = propertyInfo["algebraicDataTypeIdentifier"] as? String ?? name
-        self.defaultValue = propertyInfo["default"] ?? nil
-        self.descriptionString = propertyInfo["description"] as? String
     }
 
-    class func propertyForJSONObject(_ json: JSONObject, name: String = "", scopeUrl: URL) -> ObjectSchemaProperty {
-        var propertyName = name
-        if let title = json["title"] as? String {
-            propertyName = title
-        }
-
-        // Check for "type"
-        if let propTypeString = json["type"] as? String, let propType = JSONType(rawValue: propTypeString) {
-            return ObjectSchemaProperty.propertyForType(propertyName, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
-        }
-
-        var sourceUrl = scopeUrl
-        if let rawId = json["id"] as? String {
-            if rawId.hasPrefix("http") {
-                sourceUrl = URL(string: rawId)!
-            } else {
-                sourceUrl = URL(fileURLWithPath: rawId).standardizedFileURL
-            }
-        }
-
-
-        // Check for reference to relative or remote path.
-        if let _ = json["$ref"] as? String {
-            if sourceUrl.absoluteString != "" {
-                return ObjectSchemaPointerProperty(name: propertyName, objectType: JSONType.Pointer,
-                    propertyInfo: json, sourceId: sourceUrl)
-            } else {
-                assert(false) // Shouldn't be reached
-            }
-        }
-
-        if let _ = json["oneOf"] as? [JSONObject] {
-            return ObjectSchemaPolymorphicProperty(name: propertyName, objectType: JSONType.Polymorphic, propertyInfo: json, sourceId: scopeUrl)
-        }
-
-
-        assert(false) // Shouldn't be reached
-        let propType: JSONType = JSONType(rawValue: (json["type"] as? String)!)!
-        return ObjectSchemaProperty.propertyForType(propertyName, objectType: propType, propertyInfo: json, sourceId: scopeUrl)
-    }
-
-    class func propertyForType(_ name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) -> ObjectSchemaProperty {
-        switch objectType {
-        case JSONType.String:
-            return ObjectSchemaStringProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-        case JSONType.Array:
-            return ObjectSchemaArrayProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-        case JSONType.Integer, JSONType.Number:
-            return ObjectSchemaNumberProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-        case JSONType.Boolean:
-            return ObjectSchemaBooleanProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-        case JSONType.Pointer:
-            return ObjectSchemaPointerProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-        case JSONType.Object:
-            return ObjectSchemaObjectProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-        case JSONType.Polymorphic:
-            return ObjectSchemaPolymorphicProperty(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
+    func extends() -> Schema? {
+        switch self {
+        case .Object(let rootObject):
+            return rootObject.extends.flatMap { $0() }
+        default:
+            return nil
         }
     }
 }
 
-class ObjectSchemaPolymorphicProperty: ObjectSchemaProperty {
-    let oneOf: [ObjectSchemaProperty]
-    override var isModelProperty: Bool {
-        return oneOf.filter({ $0.isModelProperty }).count == oneOf.count;
-    }
+extension Schema {
+    static func propertyFunctionForType(loader: SchemaLoader) -> (JSONObject, URL) -> Schema? {
+        func propertyForType(propertyInfo: JSONObject, source: URL) -> Schema? {
+            let title = propertyInfo["title"] as? String
+            // Check for "type"
+            guard let propType = JSONType.typeFromProperty(prop: propertyInfo) else { return nil }
 
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
-        if let oneOfValues = propertyInfo["oneOf"] as? [JSONObject] {
-            self.oneOf = oneOfValues.map { ObjectSchemaProperty.propertyForJSONObject($0, scopeUrl: sourceId) }
-        } else {
-            assert(false, "Insufficient amount of items specified for oneOf")
-            self.oneOf = []
-        }
-        super.init(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-    }
-
-}
-
-class ObjectSchemaObjectProperty: ObjectSchemaProperty {
-    let definitions: [ObjectSchemaProperty]
-    let properties: [ObjectSchemaProperty]
-    let additionalProperties: ObjectSchemaProperty?
-    let extends: ObjectSchemaPointerProperty?
-
-    var referencedClasses: [ObjectSchemaPointerProperty] {
-        let seenReferences = NSMutableSet()
-
-        var allReferences = Array<ObjectSchemaPointerProperty>()
-        var propertyQueue = Array<ObjectSchemaProperty>()
-        propertyQueue.append(contentsOf: self.properties)
-
-        while propertyQueue.count > 0 {
-            if let obj = propertyQueue.popLast() {
-                switch obj {
-                // References to other models defined in this object property list
-                case let pointerObj as ObjectSchemaPointerProperty:
-                    if !seenReferences.contains(pointerObj.ref) {
-                        seenReferences.add(pointerObj.ref)
-                        allReferences.append(pointerObj)
-                    }
-                // References to other models defined through Generics on Collection Types (Array, Object)
-                case let arrayObj as ObjectSchemaArrayProperty:
-                    if let items = arrayObj.items {
-                        propertyQueue.append(items)
-                    }
-                case let dictObj as ObjectSchemaObjectProperty:
-                    if let additionalProps = dictObj.additionalProperties {
-                        propertyQueue.append(additionalProps)
-
-                    }
-                case let polymorphicObj as ObjectSchemaPolymorphicProperty:
-                    propertyQueue.append(contentsOf: polymorphicObj.oneOf)
-                default: break
-                }
-            }
-        }
-
-
-
-        return allReferences
-    }
-
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
-        var id = sourceId
-        if let rawId = propertyInfo["id"] as? String {
-            if rawId.hasPrefix("http") {
-                id = URL(string: rawId)!
-            } else {
-                id = URL(string: rawId, relativeTo: sourceId)!
-            }
-        }
-
-        if let rawProperties = propertyInfo["properties"] as? JSONObject {
-            self.properties = rawProperties.keys.sorted().map { (key: String) -> ObjectSchemaProperty in
-
-                let propInfo = (rawProperties[key] as? JSONObject)!
-                // Check for "type"
-                if let propTypeString = propInfo["type"] as? String {
-                    if let propType = JSONType(rawValue: propTypeString) {
-                        return ObjectSchemaProperty.propertyForType(key, objectType: propType, propertyInfo: propInfo, sourceId: id)
-                    }
-                }
-
-                // Check for reference to relative or remote path.
-                if let _ = propInfo["$ref"] as? String {
-                    return ObjectSchemaPointerProperty(name: key, objectType: JSONType.Pointer, propertyInfo: propInfo, sourceId: id)
-                }
-
-                if let _ = propInfo["oneOf"] as? [JSONObject] {
-                    return ObjectSchemaPolymorphicProperty(name: key, objectType: JSONType.Polymorphic, propertyInfo: propInfo, sourceId: id)
-                }
-
-                // MARK: Shouldn't reach here
-                assert(false, "Unsupported property definition for \(key)")
-                let propType: JSONType = JSONType(rawValue: (propInfo["type"] as? String)!)!
-                return ObjectSchemaProperty.propertyForType(key, objectType: propType, propertyInfo: propInfo, sourceId: id)
-            }
-        } else {
-            self.properties = [ObjectSchemaProperty]()
-        }
-
-        // TODO: Parse definitions
-        // https://phabricator.pinadmin.com/T48
-        self.definitions = [ObjectSchemaProperty]()
-
-        if let rawItems = propertyInfo["additionalProperties"] as? JSONObject {
-            self.additionalProperties = ObjectSchemaProperty.propertyForJSONObject(rawItems, scopeUrl: id)
-        } else {
-            self.additionalProperties = nil
-        }
-
-        if let rawExtendsFrom = propertyInfo["extends"] as? JSONObject {
-            if let extendsFromSchema = ObjectSchemaProperty.propertyForJSONObject(rawExtendsFrom, scopeUrl: id) as? ObjectSchemaPointerProperty {
-                self.extends = extendsFromSchema
-            } else {
-                assert(false, "Invalid extends schema specified in \(id)")
-                self.extends = nil;
-            }
-        } else {
-            self.extends = nil;
-        }
-
-        // Use title if available as the object name, fall-back to the provided name in this constructor.
-        if let objectName = propertyInfo["title"] as? String {
-            super.init(name: objectName, objectType: objectType, propertyInfo: propertyInfo, sourceId: id)
-        } else {
-            super.init(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: id)
-        }
-    }
-}
-
-
-class ObjectSchemaStringProperty: ObjectSchemaProperty {
-    let format: StringFormatType?
-
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
-        if let formatString = propertyInfo["format"] as? String {
-            self.format = StringFormatType(rawValue:formatString)
-        } else {
-            self.format = nil
-        }
-        super.init(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-    }
-}
-
-class ObjectSchemaPointerProperty: ObjectSchemaProperty {
-    var ref: URL {
-        get {
-
-            if let refString = self.refString {
-                if refString.hasPrefix("#") {
-                    // Local URL
-                    return URL(string:refString, relativeTo:sourceId)!
+            switch propType {
+            case JSONType.String:
+                if let enumValues = propertyInfo["enum"] as? [JSONObject], let defaultValue = propertyInfo["default"] as? String {
+                    let enumVals = try? enumValues.map(EnumValue<String>.init)
+                    let defaultVal = enumVals?.first(where: { $0.defaultValue == defaultValue })
+                    return enumVals
+                        .flatMap{ v in defaultVal.map{ ($0, v) } }
+                        .map{ defaultVal, enumVals in
+                            Schema.Enum(EnumType.String(enumVals, defaultValue: defaultVal))
+                        }
                 } else {
-                    var baseUrl = sourceId.deletingLastPathComponent()
-                    if baseUrl.path == "." {
-                        baseUrl = URL(fileURLWithPath: (baseUrl.path))
-                    }
-                    let lastPathComponentString = URL(string: refString)?.pathComponents.last
-                    return URL(string:lastPathComponentString!, relativeTo:baseUrl)!
+                    return Schema.String(format: (propertyInfo["format"] as? String).flatMap(StringFormatType.init))
                 }
-            } else {
-                assert(false)
-                return URL(fileURLWithPath: "")
+            case JSONType.Array:
+                return .Array(itemType: (propertyInfo["items"] as? JSONObject)
+                        .flatMap { propertyForType(propertyInfo: $0, source: source)})
+            case JSONType.Integer:
+                if let enumValues = propertyInfo["enum"] as? [JSONObject] {
+                    return try? Schema.Enum(EnumType.Integer(enumValues.map(EnumValue<Int>.init)))
+                } else {
+                    return .Integer
+                }
+            case JSONType.Number:
+                return .Float
+            case JSONType.Boolean:
+                return .Boolean
+            case JSONType.Pointer:
+                return (propertyInfo["$ref"] as? String).map { ref in
+                    .Reference(with: { () -> Schema? in
+                        loader.loadSchema(decodeRef(from: source, with: ref))
+                    })
+                }
+            case JSONType.Object:
+                if let propMap = propertyInfo["properties"] as? JSONObject, let objectTitle = title {
+                    // Class
+                    let optTuples: [Property?] = propMap.map { (k, v) -> (String, Schema?) in
+                        let schemaOpt = (v as? JSONObject).flatMap {
+                                propertyForType(propertyInfo: $0, source: source)
+                        }
+                        return (k, schemaOpt)
+                        }.map { (name, optSchema) in optSchema.map{ (name, $0) } }
+                    let lifted: [Property]? = optTuples.reduce([], { (build: [Property]?, tupleOption: Property?) -> [Property]? in
+                        build.flatMap { (b: [Property]) -> [Property]? in tupleOption.map{ b + [$0] } }
+                    })
+                    let extends = (propertyInfo["extends"] as? JSONObject)
+                        .flatMap { ($0["$ref"] as? String).map { ref in {
+                            loader.loadSchema(decodeRef(from: source, with: ref)) } }
+                        }
+                    return lifted.map { Schema.Object(SchemaObjectRoot(name: objectTitle,
+                                                                       properties: Dictionary(elements: $0),
+                                                                       extends: extends,
+                                                                       algebraicTypeIdentifier: propertyInfo["algebraicDataTypeIdentifier"] as? String)) }
+                } else {
+                    // Map type
+                    return Schema.Map(valueType:(propertyInfo["additionalProperties"] as? JSONObject)
+                        .flatMap { propertyForType(propertyInfo: $0, source: source) })
+                }
+            case JSONType.Polymorphic:
+                return (propertyInfo["oneOf"] as? [JSONObject]) // [JSONObject]
+                    .map { jsonObjs in jsonObjs.map { propertyForType(propertyInfo: $0, source: source) } } // [Schema?]?
+                    .flatMap { schemas in schemas.reduce([], { (build: [Schema]?, tupleOption: Schema?) -> [Schema]? in
+                        build.flatMap { (b: [Schema]) -> [Schema]? in tupleOption.map{ b + [$0] } }
+                    }) }
+                    .map{ Schema.OneOf(types: $0) }
             }
+
         }
-    }
-    override var isModelProperty: Bool {
-        return true
-    }
-
-    fileprivate let refString: String?
-
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
-        if let refString = propertyInfo["$ref"] as? String {
-            self.refString = refString
-        } else {
-            self.refString = nil
-            assert(false)
-        }
-
-        super.init(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
+        return propertyForType
     }
 }
-
-
-// Explore using NSOrderedSet as the type if "uniqueItems": true is present.
-class ObjectSchemaArrayProperty: ObjectSchemaProperty {
-    let items: ObjectSchemaProperty?
-    override init(name: String, objectType: JSONType, propertyInfo: JSONObject, sourceId: URL) {
-        if let rawItems = propertyInfo["items"] as? JSONObject {
-            self.items = ObjectSchemaProperty.propertyForJSONObject(rawItems, scopeUrl: sourceId)
-        } else {
-            self.items = nil
-        }
-        super.init(name: name, objectType: objectType, propertyInfo: propertyInfo, sourceId: sourceId)
-    }
-}
-
-class ObjectSchemaBooleanProperty: ObjectSchemaProperty {}
-
-class ObjectSchemaNumberProperty: ObjectSchemaProperty {}
-
-class ObjectSchemaNullProperty: ObjectSchemaProperty {}
