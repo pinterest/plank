@@ -9,7 +9,7 @@
 import Foundation
 
 
-class ObjectiveCInterfaceFileDescriptor: FileGenerator {
+/*class ObjectiveCInterfaceFileDescriptor: FileGenerator {
     let objectDescriptor: ObjectSchemaObjectProperty
     let className: String
     let builderClassName: String
@@ -18,7 +18,7 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
     let parentDescriptor: ObjectSchemaObjectProperty?
     var schemaLoader: SchemaLoader
 
-    required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?, schemaLoader: SchemaLoader) {
+    required init(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) {
         self.objectDescriptor = descriptor
 
         if let classPrefix = generatorParameters[GenerationParameterType.classPrefix] as String? {
@@ -264,4 +264,4 @@ class ObjectiveCInterfaceFileDescriptor: FileGenerator {
         ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
         return lines.joined(separator: "\n\n")
     }
-}
+}*/

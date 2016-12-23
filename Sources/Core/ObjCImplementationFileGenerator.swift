@@ -9,61 +9,336 @@
 import Foundation
 
 let Indentation = "    " // Four space indentation for now. Might be configurable in the future.
+let DateValueTransformerKey = "kPINModelDateValueTransformerKey"
 
+
+struct ObjCImplementationFile : FileGenerator {
+    let rootSchema: SchemaObjectRoot
+    let params: GenerationParameters
+
+    init(rootSchema: SchemaObjectRoot, params: GenerationParameters) {
+        self.rootSchema = rootSchema
+        self.params = params
+    }
+
+    var className: String {
+        get {
+            return self.rootSchema.className(with: self.params)
+        }
+    }
+
+    var builderClassName: String {
+        get {
+            return "\(self.className)Builder"
+        }
+    }
+
+    var dirtyPropertyOptionName: String {
+        get {
+            return "\(self.className)DirtyProperties"
+        }
+    }
+
+    var parentDescriptor: Schema?  {
+        get {
+            return self.rootSchema.extends.flatMap { $0() }
+        }
+    }
+
+
+    var properties: [(Parameter, Schema)] {
+        get {
+            return self.rootSchema.properties.map { $0 }
+        }
+    }
+
+    var dirtyPropertiesIVarName: String {
+        get {
+            return "\(rootSchema.name)DirtyProperties"
+        }
+    }
+
+
+    var isBaseClass: Bool {
+        get {
+            return rootSchema.extends == nil
+        }
+    }
+
+    var fileName: String {
+        get {
+            return "\(className).m"
+        }
+    }
+
+    func renderClassName() -> ObjCIR.Method {
+        return ObjCIR.method("+ (NSString *)className") {
+            ["return \(self.className.objcLiteral())"]
+        }
+    }
+
+    func renderPolymorphicTypeIdentifier() -> ObjCIR.Method {
+        return ObjCIR.method("+ (NSString *)polymorphicTypeIdentifier") {
+            ["return \(self.rootSchema.name.objcLiteral())"]
+        }
+    }
+
+    func renderModelObjectWithDictionary() -> ObjCIR.Method {
+        return ObjCIR.method("+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary") {
+            ["return [[self alloc] initWithDictionary:dictionary]"]
+        }
+    }
+
+
+    func renderDesignatedInit() -> ObjCIR.Method {
+        return ObjCIR.method("- (instancetype)init") {
+            [
+                "self = [self initWithDictionary:@{}];",
+                "return self;"
+            ]
+        }
+    }
+
+    func renderInitWithDictionary() -> ObjCIR.Method {
+        // TODO - Actually use labels for this function?
+        func renderPropertyInit(
+            _ propertyToAssign: String,
+            _ rawObjectName: String,
+            schema: Schema,
+            firstName: String, // TODO: HACK to get enums to work (not clean)
+            counter: Int = 0
+        ) -> [String] {
+            switch schema {
+            case .Array(itemType: .some(let itemType)):
+                let currentResult = "result\(counter)"
+                let currentTmp = "tmp\(counter)"
+                return [
+                    "NSArray *items = \(rawObjectName);",
+                    "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items.count];",
+                    ObjCIR.forStmt("id obj in items") { [
+                        ObjCIR.ifStmt("[obj isEqual:[NSNull null]] == NO") { [
+                                "id \(currentTmp) = nil;",
+                            renderPropertyInit(currentTmp, "obj", schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n"),
+                            ObjCIR.ifStmt("\(currentTmp) != nil") {[
+                                "[\(currentResult) addObject:\(currentTmp)];"
+                            ]}
+                        ]}
+                    ]}
+                ]
+            case .Map(valueType: .some(let valueType)):
+                let currentResult = "result\(counter)"
+                return [
+                    "NSDictionary *items = \(rawObjectName);",
+                    "NSMutableDictionary *\(currentResult) = [NSMutableDictionary dictionaryWithCapacity:items.count];",
+                    ObjCIR.msg("modelDictionary",
+                               ("enumerateKeysAndObjectsUsingBlock",
+                                ObjCIR.block(["NSString *  _Nonnull key",
+                                              "id  _Nonnull obj",
+                                              "__unused BOOL * _Nonnull stop"]) {
+                                    [
+                                        ObjCIR.ifStmt("obj != nil && [obj isEqual:[NSNull null]] == NO") {
+                                            renderPropertyInit("\(currentResult)[key]", "obj", schema: valueType, firstName: firstName, counter: counter + 1)
+                                        }
+                                    ]
+                               })
+                    ),
+                    "\(propertyToAssign) = \(currentResult)"
+                ]
+            case .Float:
+                return ["\(propertyToAssign) = [\(rawObjectName) doubleValue];"]
+            case .Integer:
+                return ["\(propertyToAssign) = [\(rawObjectName) integerValue];"]
+            case .Boolean:
+                return ["\(propertyToAssign) = [\(rawObjectName) boolValue];"]
+            case .String(format: .some(.Uri)):
+                return ["\(propertyToAssign) = [NSURL URLWithString:\(rawObjectName)];"]
+            case .String(format: .some(.DateTime)):
+                return ["\(propertyToAssign) = [[NSValueTransformer valueTransformerForName:\(DateValueTransformerKey)] transformedValue:\(rawObjectName)];"]
+            case .Reference(with: let refFunc):
+                return refFunc().map {
+                    renderPropertyInit(propertyToAssign, rawObjectName, schema: $0, firstName: firstName, counter: counter)
+                } ?? {
+                    assert(false, "TODO: Forward optional across methods")
+                    return []
+                }()
+            case .Enum(.Integer(let variants)):
+                return renderPropertyInit(propertyToAssign, rawObjectName, schema: .Integer, firstName: firstName, counter: counter)
+            case .Enum(.String(let variants)):
+                return ["\(propertyToAssign) = \(enumFromStringMethodName(propertyName: firstName, className: className))(value);"]
+            case .OneOf(types: let schemas):
+                func loop(schema: Schema) -> String {
+                    switch schema {
+                    case .Object(let objectRoot):
+                        return ObjCIR.ifStmt("[\(rawObjectName)[\("type".objcLiteral())] isEqualToString:\(objectRoot.name.objcLiteral())]") {[
+                            "\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"
+                            ]}
+                    case .Reference(with: let refFunc):
+                        return refFunc().map(loop) ?? {
+                            assert(false, "TODO: Forward optional across methods")
+                            return ""
+                        }()
+                    default:
+                        assert(false, "Unsupported OneOf type (for now)")
+                        return ""
+                    }
+                }
+
+                return schemas.map(loop)
+            case .Object(_):
+                // TODO: Add support for ADT overrides of "type"
+                return renderPropertyInit(propertyToAssign, rawObjectName, schema: .OneOf(types: [schema]), firstName: firstName, counter: counter)
+            default:
+                return ["\(propertyToAssign) = \(rawObjectName);"]
+            }
+        }
+
+        return ObjCIR.method("- (instancetype)initWithDictionary:(NSDictionary *)modelDictionary") {
+            let x: [String] = self.properties.map{ (name, schema) in
+                ObjCIR.ifStmt("[key isEqualToString:\(name.objcLiteral())]") {
+                    [
+                        "id value = valueOrNil(modelDictionary, \(name.objcLiteral()));",
+                        ObjCIR.ifStmt("value != nil") {
+                            renderPropertyInit("_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
+                        },
+                        "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
+                    ]
+                }
+            }
+
+            return [
+                "NSParameterAssert(modelDictionary);",
+                "if (!(self = [super initWithDictionary:modelDictionary])) { return self; }",
+                ObjCIR.msg("modelDictionary",
+                           ("enumerateKeysAndObjectsUsingBlock", ObjCIR.block(["NSString *  _Nonnull key",
+                                                                               "id  _Nonnull obj",
+                                                                               "__unused BOOL * _Nonnull stop"]) {
+                                        x
+                        })
+                ),
+                "[self PIModelDidInitialize:PIModelInitTypeDefault];",
+                "return self;"
+            ]
+        }
+    }
+
+
+    func renderInitWithBuilder() -> ObjCIR.Method {
+        return ObjCIR.method("- (instancetype)initWithBuilder:(\(builderClassName) *)builder") {
+            [
+                "NSParameterAssert(builder);",
+                ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] },
+                self.properties.map { (name, schema) in
+                    "_\(name.snakeCaseToPropertyName()) = builder.\(name.snakeCaseToPropertyName());"
+                }.joined(separator: "\n"),
+                "return self;"
+            ]
+        }
+    }
+
+    func renderImplementation() -> ObjCIR.Root {
+        let properties: [(Parameter, Schema)] = rootSchema.properties.map { $0 } // Convert [String:Schema] -> [(String, Schema)]
+        let methods: [ObjCIR.Method] = [
+            self.renderClassName(),
+            self.renderPolymorphicTypeIdentifier(),
+            self.renderModelObjectWithDictionary(),
+            self.renderDesignatedInit(),
+            self.renderInitWithDictionary(),
+            self.renderInitWithBuilder()
+        ]
+
+        return ObjCIR.Root.Class(
+            name: self.className,
+            methods: methods,
+            properties: properties
+        )
+/*
+        if self.isBaseClass {
+            return ObjCIR.Root(name: self.className, methods: [
+                "@implementation \(self.className)",
+                self.renderClassName(),
+                self.renderPolymorphicTypeIdentifier(),
+                self.renderModelObjectWithDictionary(),
+                self.renderDesignatedInit(),
+                self.renderInitWithDictionary(),
+                self.renderInitWithBuilder()])
+                self.pragmaMark("Debug methods"),
+                self.renderDebugDescription(),
+                self.pragmaMark("NSSecureCoding implementation"),
+                self.renderSupportsSecureCoding(),
+                self.renderInitWithCoder(),
+                self.renderEncodeWithCoder(),
+                self.pragmaMark("Mutation helper methods"),
+                self.renderCopyWithBlock(),
+                self.renderMergeWithModel(),
+                self.renderModelPropertyNames(),
+                self.renderModelArrayPropertyNames(),
+                self.renderModelDictionaryPropertyNames(),
+                self.pragmaMark("NSCopying implementation"),
+                self.renderCopyWithZone(),
+                "@end"
+                ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
+            return lines.joined(separator: "\n\n")
+
+        }
+
+        let lines = [
+            "@implementation \(self.className)",
+            self.renderClassName(),
+            self.renderPolymorphicTypeIdentifier(),
+            self.renderInitWithDictionary(),
+            self.renderInitWithBuilder(),
+            self.pragmaMark("Debug methods"),
+            self.renderDebugDescription(),
+            self.pragmaMark("NSSecureCoding implementation"),
+            self.renderInitWithCoder(),
+            self.renderEncodeWithCoder(),
+            self.pragmaMark("Mutation helper methods"),
+            self.renderCopyWithBlock(),
+            self.renderMergeWithModel(),
+            self.renderModelPropertyNames(),
+            self.renderModelArrayPropertyNames(),
+            self.renderModelDictionaryPropertyNames(),
+            "@end"
+            ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
+        return lines.joined(separator: "\n\n") */
+    }
+
+    func renderFile() -> String {
+        let implementation = renderImplementation()
+
+        return "\(implementation)"
+        /*
+        if self.isBaseClass() {
+            let lines = [
+                self.renderCommentHeader(),
+                self.renderImports(),
+                self.renderPrivateInterface(),
+                self.renderUtilityFunctions(),
+                self.renderImplementation(),
+                self.renderBuilderImplementation()
+                ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
+            return lines.joined(separator: "\n\n")
+        }
+
+        let lines = [
+            self.renderCommentHeader(),
+            self.renderImports(),
+            self.renderDirtyPropertyOptions(),
+            self.renderPrivateInterface(),
+            self.renderUtilityFunctions(),
+            self.renderImplementation(),
+            self.renderBuilderImplementation()
+            ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
+        return lines.joined(separator: "\n\n")
+         */
+    }
+}
+/**
 class ObjectiveCImplementationFileDescriptor: FileGenerator {
-    let objectDescriptor: ObjectSchemaObjectProperty
-    let className: String
-    let builderClassName: String
-    let dirtyPropertyOptionName: String
-    let generationParameters: GenerationParameters
-    let parentDescriptor: ObjectSchemaObjectProperty?
-    let dirtyPropertiesIVarName: String
-    let schemaLoader: SchemaLoader
+    let objectDescriptor: SchemaObjectRoot
 
-    required init(descriptor: ObjectSchemaObjectProperty, generatorParameters: GenerationParameters, parentDescriptor: ObjectSchemaObjectProperty?, schemaLoader: SchemaLoader) {
-        self.objectDescriptor = descriptor
-        if let classPrefix = generatorParameters[GenerationParameterType.classPrefix] as String? {
-            self.className = "\(classPrefix)\(self.objectDescriptor.name.snakeCaseToCamelCase())"
-        } else {
-            self.className = self.objectDescriptor.name.snakeCaseToCamelCase()
-        }
-        self.builderClassName = "\(self.className)Builder"
-        self.dirtyPropertyOptionName = "\(self.className)DirtyProperties"
-        self.generationParameters = generatorParameters
-        self.parentDescriptor = parentDescriptor
-        self.dirtyPropertiesIVarName = "\(self.objectDescriptor.name)DirtyProperties"
-        self.schemaLoader = schemaLoader
-    }
-
-    func fileName() -> String {
-        return "\(self.className).m"
-    }
-
-    func isBaseClass() -> Bool {
-        return self.parentDescriptor == nil
-    }
-
-    func baseClass() -> ObjectSchemaObjectProperty? {
-        var baseClass = self.parentDescriptor
-        while let parentClassSchema = baseClass?.extends as ObjectSchemaPointerProperty? {
-            baseClass = schemaLoader.loadSchema(parentClassSchema.ref) as? ObjectSchemaObjectProperty
-        }
-        return baseClass
-    }
-
-    func baseClassName() -> String {
-        if let parentSchema = self.baseClass() as ObjectSchemaObjectProperty? {
-            return ObjectiveCInterfaceFileDescriptor(
-                descriptor: parentSchema,
-                generatorParameters: self.generationParameters,
-                parentDescriptor: nil,
-                schemaLoader: self.schemaLoader).className
-        }
-        return NSObject.pin_className()
-    }
-
-    func classProperties() -> [ObjectSchemaProperty] {
-        if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
+    func classProperties() -> [String:Schema] {
+        if let baseClass = self.parentDescriptor as Schema? {
             let baseProperties = Set(baseClass.properties.map({ $0.name }))
             return self.objectDescriptor.properties.filter({ !baseProperties.contains($0.name) })
         }
@@ -71,14 +346,14 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     }
 
     func parentClassProperties() -> [ObjectSchemaProperty] {
-        if let baseClass = self.parentDescriptor as ObjectSchemaObjectProperty? {
+        if let baseClass = self.parentDescriptor as Schema? {
             return baseClass.properties
         }
         return []
     }
 
     func parentClassName() -> String {
-        if let parentSchema = self.parentDescriptor as ObjectSchemaObjectProperty? {
+        if let parentSchema = self.parentDescriptor as Schema? {
             return ObjectiveCInterfaceFileDescriptor(
                 descriptor: parentSchema,
                 generatorParameters: self.generationParameters,
@@ -141,84 +416,6 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         return lines.joined(separator: "\n")
     }
 
-    func renderModelObjectWithDictionary() -> String {
-        return [
-            "+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary",
-            "{",
-            "    return [[self alloc] initWithDictionary:dictionary];",
-            "}"
-        ].joined(separator: "\n")
-    }
-
-    func renderClassName() -> String {
-
-        return [
-            "+ (NSString *)className",
-            "{",
-            "    return @\"\(self.className)\";",
-            "}"
-        ].joined(separator: "\n")
-    }
-
-    func renderPolymorphicTypeIdentifier() -> String {
-        let typeIdentifier = PropertyFactory.propertyForDescriptor(self.objectDescriptor,
-                                                                   className: self.className,
-                                                                   schemaLoader: self.schemaLoader).polymorphicTypeIdentifier()
-        return [
-            "+ (NSString *)polymorphicTypeIdentifier",
-            "{",
-            "    return @\"\(typeIdentifier)\";",
-            "}"
-        ].joined(separator: "\n")
-    }
-
-    func renderInitWithDictionary() -> String {
-        func renderInitForProperty(_ propertyDescriptor: ObjectSchemaProperty) -> String {
-            var lines: [String] = []
-            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className, schemaLoader: self.schemaLoader)
-
-            if property.propertyRequiresAssignmentLogic() {
-                lines = ["id value = valueOrNil(modelDictionary, @\"\(propertyDescriptor.name)\");",
-                    "if (value != nil) {"]
-                    + property.propertyAssignmentStatementFromDictionary(self.className).map({ Indentation + $0 })
-                    + ["}"]
-            } else {
-                lines = property.propertyAssignmentStatementFromDictionary(self.className)
-            }
-
-            lines.append(property.dirtyPropertyAssignmentStatement(self.dirtyPropertiesIVarName))
-            let result = ["if ([key isEqualToString:@\"\(propertyDescriptor.name)\"]) {"] + lines.map({Indentation + $0}) + [ Indentation + "return;", "}"]
-            return result.map({ Indentation + Indentation + $0 }).joined(separator: "\n")
-        }
-
-        let propertyLines: [String] = self.classProperties().map({ renderInitForProperty($0)})
-
-        var superInitCall = "if (!(self = [super initWithDictionary:modelDictionary])) { return self; }"
-        if self.isBaseClass() {
-            superInitCall = "if (!(self = [super init])) { return self; }"
-        }
-
-        var lines = [
-            "- (instancetype) __attribute__((annotate(\"oclint:suppress[high npath complexity]\")))",
-            "    initWithDictionary:(NSDictionary *)modelDictionary",
-            "{",
-            "    NSParameterAssert(modelDictionary);",
-            Indentation + superInitCall,
-            "",
-            "    [modelDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key, id  _Nonnull obj, __unused BOOL * _Nonnull stop) {",
-            "",
-                        propertyLines.joined(separator: "\n\n"),
-            "    }];",
-            "",
-            "    return self;",
-            "}"
-        ]
-        if self.isBaseClass() == false {
-            lines.insert(Indentation + "[self \(self.baseClassName())DidInitialize:PIModelInitTypeDefault];\n", at: lines.count - 2)
-        }
-        return lines.joined(separator: "\n")
-    }
-
     func renderCopyWithBlock() -> String {
         let lines = [
             "- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(\(self.builderClassName) *builder))block",
@@ -227,97 +424,6 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
             "    \(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
             "    block(builder);",
             "    return [builder build];",
-            "}"
-        ]
-        return lines.joined(separator: "\n")
-    }
-
-    func renderDesignatedInit() -> String {
-        let lines = [
-            "- (instancetype)init",
-            "{",
-            "   self = [self initWithDictionary:@{}];",
-            "   return self;",
-            "}"
-        ]
-        return lines.joined(separator: "\n")
-    }
-
-    func renderInitWithBuilder() -> String {
-        let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
-            let formattedPropName = property.name.snakeCaseToPropertyName()
-            return "_\(formattedPropName) = builder.\(formattedPropName);"
-        }
-
-        var superInitCall = Indentation + "if (!(self = [super initWithBuilder:builder])) { return self; }"
-        if self.isBaseClass() {
-            superInitCall = Indentation + "if (!(self = [super init])) { return self; }"
-        }
-
-        var lines: [String] = []
-        if self.isBaseClass() {
-            lines = [
-                "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder",
-                "{",
-                "    NSParameterAssert(builder);",
-                superInitCall,
-                propertyLines.map({ Indentation + $0 }).joined(separator: "\n"),
-                "    _\(self.dirtyPropertiesIVarName) = builder.\(self.dirtyPropertiesIVarName);",
-                "    return self;",
-                "}"
-            ]
-        } else {
-            lines = [
-                "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder",
-                "{",
-                "    return [self initWithBuilder:builder initType:PIModelInitTypeDefault];",
-                "}",
-                "",
-                "- (instancetype)initWithBuilder:(\(self.builderClassName) *)builder initType:(PIModelInitType)initType",
-                "{",
-                "    NSParameterAssert(builder);",
-                superInitCall,
-                propertyLines.map({ Indentation + $0 }).joined(separator: "\n"),
-                "    _\(self.dirtyPropertiesIVarName) = builder.\(self.dirtyPropertiesIVarName);",
-                "    [self \(self.baseClassName())DidInitialize:initType];",
-                "    return self;",
-                "}"
-            ]
-        }
-        return lines.joined(separator: "\n")
-    }
-
-    func renderBuilderInitWithModelObject() -> String {
-
-        func renderInitForProperty(_ propertyDescriptor: ObjectSchemaProperty) -> String {
-            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className, schemaLoader: self.schemaLoader)
-            let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
-            let lines: [String] = [
-                "if (\(self.dirtyPropertiesIVarName).\(property.dirtyPropertyOption())) {",
-                "    _\(formattedPropName) = modelObject.\(formattedPropName);",
-                "}"
-            ]
-            return lines.map({ Indentation + $0 }).joined(separator: "\n")
-        }
-        let propertyLines: [String] = self.classProperties().map({ renderInitForProperty($0)})
-
-        var superInitCall = Indentation + "if (!(self = [super initWithModel:modelObject])) { return self; }"
-        if self.isBaseClass() {
-            superInitCall = Indentation + "if (!(self = [super init])) { return self; }"
-        }
-        let lines = [
-            "- (instancetype)initWithModel:(\(self.className) *)modelObject",
-            "{",
-            "    NSParameterAssert(modelObject);",
-            superInitCall,
-            "",
-            "    struct \(self.dirtyPropertyOptionName) \(self.dirtyPropertiesIVarName) = modelObject.\(self.dirtyPropertiesIVarName);",
-            "",
-            propertyLines.joined(separator: "\n"),
-            "",
-            "    _\(self.dirtyPropertiesIVarName) = \(self.dirtyPropertiesIVarName);",
-            "",
-            "    return self;",
             "}"
         ]
         return lines.joined(separator: "\n")
@@ -335,13 +441,13 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
     func renderInitWithCoder() -> String {
         let propertyLines: [String] = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
             let formattedPropName = property.name.snakeCaseToPropertyName()
-            let prop = PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader)
+            let prop = PropertyFactory.propertyForDescriptor(property, className: self.className)
             let decodeStmt = prop.renderDecodeWithCoderStatement()
             return "_\(formattedPropName) = \(decodeStmt);"
         }
         // Done in one line here because Swift complains about complexity when placed in array
         let dirtyPropertyLines = self.classProperties().map { (property: ObjectSchemaProperty) -> String in
-            return PropertyFactory.propertyForDescriptor(property, className: self.className, schemaLoader: self.schemaLoader).renderDecodeWithCoderStatementForDirtyProperties(self.dirtyPropertiesIVarName)
+            return PropertyFactory.propertyForDescriptor(property, className: self.className).renderDecodeWithCoderStatementForDirtyProperties(self.dirtyPropertiesIVarName)
         }.map({ Indentation + $0 }).joined(separator: "\n\n") + "\n"
 
         var superInitCall = Indentation + "if (!(self = [super initWithCoder:aDecoder])) { return self; }"
@@ -578,7 +684,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
     func renderModelDictionaryPropertyNames() -> String {
         return self.renderPropertyNames("modelDictionaryPropertyNames",
-            includeProperty: { ($0 as? ObjectSchemaObjectProperty)?.additionalProperties?.isModelProperty ?? false })
+            includeProperty: { ($0 as? Schema)?.additionalProperties?.isModelProperty ?? false })
     }
 
     func renderPropertyNames(_ methodName: String, includeProperty: (ObjectSchemaProperty) -> Bool) -> String {
@@ -628,7 +734,7 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
 
     func renderBuilderSetters() -> String {
         func renderBuilderSetterForProperty(_ propertyDescriptor: ObjectSchemaProperty) -> String {
-            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className, schemaLoader: self.schemaLoader)
+            let property = PropertyFactory.propertyForDescriptor(propertyDescriptor, className: self.className)
             let formattedPropName = propertyDescriptor.name.snakeCaseToPropertyName()
             let capitalizedPropertyName = propertyDescriptor.name.snakeCaseToCapitalizedPropertyName()
             let type = property.isScalarType() ? property.objectiveCStringForJSONType() : property.objectiveCStringForJSONType() + " *"
@@ -741,4 +847,4 @@ class ObjectiveCImplementationFileDescriptor: FileGenerator {
         ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
         return lines.joined(separator: "\n\n")
     }
-}
+} */

@@ -56,6 +56,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		81E939A21E0C5610000513A5 /* PIAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PIAddress.h; path = ../../../iOS/Pinterest/Core/Models/Generated/PIAddress.h; sourceTree = "<group>"; };
+		81E939A31E0C5610000513A5 /* PIAddress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PIAddress.m; path = ../../../iOS/Pinterest/Core/Models/Generated/PIAddress.m; sourceTree = "<group>"; };
 		OBJ_10 /* ObjCImplementationFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCImplementationFileGenerator.swift; sourceTree = "<group>"; };
 		OBJ_11 /* ObjCInterfaceFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCInterfaceFileGenerator.swift; sourceTree = "<group>"; };
 		OBJ_12 /* ObjectiveCArrayProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCArrayProperty.swift; sourceTree = "<group>"; };
@@ -160,7 +162,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -168,7 +170,6 @@
 				OBJ_29 /* Tests */,
 				OBJ_41 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -200,6 +201,8 @@
 				OBJ_23 /* SchemaLoader.swift */,
 				OBJ_24 /* StringExtensions.swift */,
 				OBJ_25 /* UrlExtensions.swift */,
+				81E939A21E0C5610000513A5 /* PIAddress.h */,
+				81E939A31E0C5610000513A5 /* PIAddress.m */,
 			);
 			name = Core;
 			path = Sources/Core;
@@ -273,7 +276,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_41 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
