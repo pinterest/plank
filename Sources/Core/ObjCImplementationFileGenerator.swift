@@ -8,9 +8,7 @@
 
 import Foundation
 
-let Indentation = "    " // Four space indentation for now. Might be configurable in the future.
 let DateValueTransformerKey = "kPINModelDateValueTransformerKey"
-
 
 struct ObjCImplementationFile : FileGenerator {
     let rootSchema: SchemaObjectRoot
@@ -586,7 +584,6 @@ struct ObjCImplementationFile : FileGenerator {
     }
 
     func renderBuilderPropertySetters() -> [ObjCIR.Method] {
-
         return self.properties.map({ (param, schema) -> ObjCIR.Method in
             ObjCIR.method("- (void)set\(param.snakeCaseToCamelCase()):(\(objcClassFromSchema(param, schema)))\(param.snakeCaseToPropertyName())") {
                 [
@@ -595,6 +592,48 @@ struct ObjCImplementationFile : FileGenerator {
                 ]
             }
         })
+    }
+
+    func renderStringEnumerationMethods() -> [ObjCIR.Method] {
+      func renderToStringMethod(param: String, enumValues: [EnumValue<String>]) -> ObjCIR.Method {
+        let enumTypeString = enumTypeName(propertyName: param, className: self.className)
+        return ObjCIR.method("extern NSString * \(enumTypeString)ToString(\(enumTypeString) enumType)") {
+          enumValues.map({ (val) -> String in
+            ObjCIR.ifStmt("enumType == \(val.objcOptionName(param: param, className: self.className))") {
+              [
+                "return \(val.defaultValue.objcLiteral());"
+              ]
+            }
+          })
+        }
+      }
+
+      func renderFromStringMethod(param: String, enumValues: [EnumValue<String>]) -> ObjCIR.Method {
+        let enumTypeString = enumTypeName(propertyName: param, className: self.className)
+
+        return ObjCIR.method("extern \(enumTypeString) \(enumTypeString)FromString(NSString *str)") {
+          enumValues.map({ (val) -> String in
+            ObjCIR.ifStmt("[str isEqualToString:\(val.defaultValue.objcLiteral())]") {
+              [
+                "return \(val.objcOptionName(param: param, className: self.className));"
+              ]
+            }
+          })
+
+        }
+      }
+
+      return self.properties.flatMap { (param, schema) -> [ObjCIR.Method] in
+        switch schema {
+        case .Enum(.String(let enumValues)):
+          return [
+            renderToStringMethod(param: param, enumValues: enumValues),
+            renderFromStringMethod(param: param, enumValues: enumValues)
+          ]
+        default:
+          return []
+        }
+      }
     }
 
     func renderImplementation() -> [ObjCIR.Root] {

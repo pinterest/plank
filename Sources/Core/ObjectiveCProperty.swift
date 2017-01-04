@@ -8,6 +8,8 @@
 
 import Foundation
 
+let Indentation = "    " // Four space indentation for now. Might be configurable in the future.
+
 public enum ObjCMemoryAssignmentType: String {
     case Copy = "copy"
     case Strong = "strong"
@@ -98,6 +100,12 @@ extension Schema {
     }
 }
 
+extension EnumValue {
+  func objcOptionName(param: String, className: String) -> String {
+    return enumTypeName(propertyName: param, className: className) + self.description.snakeCaseToCamelCase()
+  }
+}
+
 fileprivate func explodeThenIndent(strs: [String]) -> String {
     return strs.flatMap { $0.components(separatedBy: "\n").map{$0.indent()} }.joined(separator: "\n")
 }
@@ -176,14 +184,13 @@ struct ObjCIR {
         case Imports(filenames: [String])
         case Category(className: String, categoryName: String?, methods: [ObjCIR.Method],
             properties: [SimpleProperty])
+        case Function(method: ObjCIR.Method)
         case Class(
             name: String,
             methods: [ObjCIR.Method],
             properties: [SimpleProperty],
             protocols: [String:[ObjCIR.Method]]
         )
-
-
 
         func renderImplementation() -> [String] {
             switch self {
@@ -215,6 +222,8 @@ struct ObjCIR {
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                     ].filter{ $0 != "" }
+            case .Function(method: let method):
+              return method.render()
             }
         }
     }

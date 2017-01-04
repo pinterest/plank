@@ -24,7 +24,6 @@ protocol FileGeneratorManager {
 protocol FileGenerator {
     init(rootSchema: SchemaObjectRoot,
          params: GenerationParameters)
-//    func fileName() -> String
     mutating func renderFile() -> String
     var fileName: String { mutating get }
 }
