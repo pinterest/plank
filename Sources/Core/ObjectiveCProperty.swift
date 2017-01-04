@@ -66,15 +66,20 @@ func dirtyPropertyOption(propertyName aPropertyName: String, className: String) 
 }
 
 func enumFromStringMethodName(propertyName: String, className: String) -> String {
-    return "\(className)\(propertyName.snakeCaseToCamelCase())TypeFromString"
+    return "\(enumTypeName(propertyName: propertyName, className: className))FromString"
 }
 
 func enumToStringMethodName(propertyName: String, className: String) -> String {
-    return "\(className)\(propertyName.snakeCaseToCamelCase())TypeToString"
+    return "\(enumTypeName(propertyName: propertyName, className: className))ToString"
 }
 
 func enumTypeName(propertyName: String, className: String) -> String {
-    return "\(className)\(propertyName.snakeCaseToCamelCase())Type"
+    let typeName = "\(className)\(propertyName.snakeCaseToCamelCase())"
+    if typeName.hasSuffix("Type") {
+        return typeName
+    } else {
+        return typeName + "Type"
+    }
 }
 
 extension SchemaObjectRoot {
@@ -133,6 +138,39 @@ struct ObjCIR {
         ].joined(separator: "\n")
     }
 
+    enum SwitchCase {
+        case Case(condition: String, body: () -> [String])
+        case Default(body: () -> [String])
+
+        func render() -> String {
+            switch self {
+            case .Case(let condition, let body):
+                return [ "case \(condition):",
+                    explodeThenIndent(strs: body())
+                ].joined(separator: "\n")
+            case .Default(let body):
+                return [ "default:",
+                    explodeThenIndent(strs: body())
+                ].joined(separator: "\n")
+            }
+        }
+    }
+
+    static func caseStmt(_ condition: String, body: @escaping () -> [String]) -> SwitchCase {
+        return .Case(condition: condition, body: body)
+    }
+
+    static func defaultCaseStmt(body: @escaping () -> [String]) -> SwitchCase {
+        return .Default(body: body)
+    }
+
+    static func switchStmt(_ switchVariable: String, body: () -> [SwitchCase]) -> String {
+        return [
+            "switch (\(switchVariable)) {",
+            body().map{ $0.render() }.joined(separator: "\n"),
+            "}"
+        ].joined(separator: "\n")
+    }
     static func ifStmt(_ condition: String, body: () -> [String]) -> String {
         return [
             "if (\(condition)) {",
@@ -184,7 +222,7 @@ struct ObjCIR {
         case Imports(filenames: [String])
         case Category(className: String, categoryName: String?, methods: [ObjCIR.Method],
             properties: [SimpleProperty])
-        case Function(method: ObjCIR.Method)
+        case Function(ObjCIR.Method)
         case Class(
             name: String,
             methods: [ObjCIR.Method],
@@ -222,7 +260,7 @@ struct ObjCIR {
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                     ].filter{ $0 != "" }
-            case .Function(method: let method):
+            case .Function(let method):
               return method.render()
             }
         }

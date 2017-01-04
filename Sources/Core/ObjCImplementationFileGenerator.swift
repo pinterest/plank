@@ -76,7 +76,7 @@ struct ObjCImplementationFile : FileGenerator {
 
     func renderPolymorphicTypeIdentifier() -> ObjCIR.Method {
         return ObjCIR.method("+ (NSString *)polymorphicTypeIdentifier") {
-            ["return \(self.rootSchema.name.objcLiteral());"]
+            ["return \(self.rootSchema.typeIdentifier.objcLiteral());"]
         }
     }
 
@@ -126,7 +126,7 @@ struct ObjCImplementationFile : FileGenerator {
                 return [
                     "NSDictionary *items = \(rawObjectName);",
                     "NSMutableDictionary *\(currentResult) = [NSMutableDictionary dictionaryWithCapacity:items.count];",
-                    ObjCIR.msg("modelDictionary",
+                    ObjCIR.msg("items",
                                ("enumerateKeysAndObjectsUsingBlock",
                                 ObjCIR.block(["NSString *  _Nonnull key",
                                               "id  _Nonnull obj",
@@ -165,7 +165,7 @@ struct ObjCImplementationFile : FileGenerator {
                 func loop(schema: Schema) -> String {
                     switch schema {
                     case .Object(let objectRoot):
-                        return ObjCIR.ifStmt("[\(rawObjectName)[\("type".objcLiteral())] isEqualToString:\(objectRoot.name.objcLiteral())]") {[
+                        return ObjCIR.ifStmt("[\(rawObjectName)[\("type".objcLiteral())] isEqualToString:\(objectRoot.typeIdentifier.objcLiteral())]") {[
                             "\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"
                             ]}
                     case .Reference(with: let refFunc):
@@ -180,9 +180,8 @@ struct ObjCImplementationFile : FileGenerator {
                 }
 
                 return schemas.map(loop)
-            case .Object(_):
-                // TODO: Add support for ADT overrides of "type"
-                return renderPropertyInit(propertyToAssign, rawObjectName, schema: .OneOf(types: [schema]), firstName: firstName, counter: counter)
+            case .Object(let objectRoot):
+                return ["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"]
             default:
                 return ["\(propertyToAssign) = \(rawObjectName);"]
             }
@@ -203,7 +202,8 @@ struct ObjCImplementationFile : FileGenerator {
 
             return [
                 "NSParameterAssert(modelDictionary);",
-                "if (!(self = [super initWithDictionary:modelDictionary])) { return self; }",
+                self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
+                                   "if (!(self = [super initWithDictionary:modelDictionary])) { return self; }",
                 ObjCIR.msg("modelDictionary",
                            ("enumerateKeysAndObjectsUsingBlock", ObjCIR.block(["NSString *  _Nonnull key",
                                                                                "id  _Nonnull obj",
@@ -211,7 +211,9 @@ struct ObjCImplementationFile : FileGenerator {
                                         x
                         })
                 ),
-                "[self PIModelDidInitialize:PIModelInitTypeDefault];",
+                ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
+                    ["[self PIModelDidInitialize:PIModelInitTypeDefault];"]
+                },
                 "return self;"
             ]
         }
@@ -227,13 +229,18 @@ struct ObjCImplementationFile : FileGenerator {
     }
 
     func renderInitWithBuilderWithInitType() -> ObjCIR.Method {
-        return ObjCIR.method("- (instancetype)initWithBuilder:(\(builderClassName) *)builder  initType:(PIModelInitType)initType") {
+        return ObjCIR.method("- (instancetype)initWithBuilder:(\(builderClassName) *)builder initType:(PIModelInitType)initType") {
             [
                 "NSParameterAssert(builder);",
-                ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] },
+                self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
+                                   ObjCIR.ifStmt("!(self = [super initWithBuilder:builder initType:initType])") { ["return self;"] },
                 self.properties.map { (name, schema) in
                     "_\(name.snakeCaseToPropertyName()) = builder.\(name.snakeCaseToPropertyName());"
                 }.joined(separator: "\n"),
+                "_\(self.dirtyPropertiesIVarName) = builder.\(self.dirtyPropertiesIVarName);",
+                ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
+                    ["[self PIModelDidInitialize:initType];"]
+                },
                 "return self;"
             ]
         }
@@ -384,12 +391,15 @@ struct ObjCImplementationFile : FileGenerator {
 
         return ObjCIR.method("- (instancetype)initWithCoder:(NSCoder *)aDecoder") {
             [
-                "if (!(self = [super initWithCoder:aDecoder])) { return self; }",
+                self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
+                                   "if (!(self = [super initWithCoder:aDecoder])) { return self; }",
                 self.properties.map(formatParam).joined(separator: "\n"),
                 self.properties.map { (param, _) -> String in
                     "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = [aDecoder decodeIntForKey:\((param + "_dirty_property").objcLiteral())];"
                 }.joined(separator: "\n"),
-                "[self PIModelDidInitialize:PIModelInitTypeDefault];",
+                ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
+                    ["[self PIModelDidInitialize:PIModelInitTypeDefault];"]
+                },
                 "return self;"
             ]
         }
@@ -416,7 +426,7 @@ struct ObjCImplementationFile : FileGenerator {
 
         return ObjCIR.method("- (void)encodeWithCoder:(NSCoder *)aCoder") {
             [
-                "[super encodeWithCoder:aCoder];",
+                self.isBaseClass ? "" : "[super encodeWithCoder:aCoder];",
                 self.properties.map(formatParam).joined(separator: "\n"),
                 self.properties.map { (param, _) -> String in
                     "[aCoder encodeInt:_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) forKey:\((param + "_dirty_property").objcLiteral())];"}.joined(separator: "\n")
@@ -463,7 +473,8 @@ struct ObjCImplementationFile : FileGenerator {
         return ObjCIR.method("- (instancetype)initWithModel:(\(self.className) *)modelObject") {
             [
                 "NSParameterAssert(modelObject);",
-                "if (!(self = [super initWithModel:modelObject])) { return self; }",
+                self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
+                                   "if (!(self = [super initWithModel:modelObject])) { return self; }",
                 "struct \(self.dirtyPropertyOptionName) \(dirtyPropertiesIVarName) = modelObject.\(dirtyPropertiesIVarName);",
                 self.properties.map({ (param, schema) -> String in
                     ObjCIR.ifStmt("\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
@@ -513,7 +524,7 @@ struct ObjCImplementationFile : FileGenerator {
         return ObjCIR.method("- (void)mergeWithModel:(\(self.className) *)modelObject") {
             [
                 "NSParameterAssert(modelObject);",
-                "[super mergeWithModel:modelObject];",
+                self.isBaseClass ? "" : "[super mergeWithModel:modelObject];",
                 "\(self.builderClassName) *builder = self;",
                 self.properties.map(formatParam).joined(separator: "\n")
             ]
@@ -595,40 +606,41 @@ struct ObjCImplementationFile : FileGenerator {
     }
 
     func renderStringEnumerationMethods() -> [ObjCIR.Method] {
-      func renderToStringMethod(param: String, enumValues: [EnumValue<String>]) -> ObjCIR.Method {
-        let enumTypeString = enumTypeName(propertyName: param, className: self.className)
-        return ObjCIR.method("extern NSString * \(enumTypeString)ToString(\(enumTypeString) enumType)") {
-          enumValues.map({ (val) -> String in
-            ObjCIR.ifStmt("enumType == \(val.objcOptionName(param: param, className: self.className))") {
-              [
-                "return \(val.defaultValue.objcLiteral());"
-              ]
+
+        func renderToStringMethod(param: String, enumValues: [EnumValue<String>]) -> ObjCIR.Method {
+            let enumTypeString = enumTypeName(propertyName: param, className: self.className)
+            return ObjCIR.method("extern NSString * \(enumTypeString)ToString(\(enumTypeString) enumType)") {[
+                ObjCIR.switchStmt("enumType") {
+                    enumValues.map({ (val) -> ObjCIR.SwitchCase in
+                        ObjCIR.caseStmt(val.objcOptionName(param: param, className: self.className)) {
+                            ["return \(val.defaultValue.objcLiteral());"]
+                        }
+                    })
+                }
+            ]}
+          }
+
+        func renderFromStringMethod(param: String, enumValues: [EnumValue<String>], defaultValue: EnumValue<String>) -> ObjCIR.Method {
+            let enumTypeString = enumTypeName(propertyName: param, className: self.className)
+
+            return ObjCIR.method("extern \(enumTypeString) \(enumTypeString)FromString(NSString *str)") {
+              enumValues.map { (val) -> String in
+                ObjCIR.ifStmt("[str isEqualToString:\(val.defaultValue.objcLiteral())]") {
+                  [
+                    "return \(val.objcOptionName(param: param, className: self.className));"
+                  ]
+                }
+              }
+              + ["return \(defaultValue.objcOptionName(param: param, className: self.className));"]
             }
-          })
         }
-      }
-
-      func renderFromStringMethod(param: String, enumValues: [EnumValue<String>]) -> ObjCIR.Method {
-        let enumTypeString = enumTypeName(propertyName: param, className: self.className)
-
-        return ObjCIR.method("extern \(enumTypeString) \(enumTypeString)FromString(NSString *str)") {
-          enumValues.map({ (val) -> String in
-            ObjCIR.ifStmt("[str isEqualToString:\(val.defaultValue.objcLiteral())]") {
-              [
-                "return \(val.objcOptionName(param: param, className: self.className));"
-              ]
-            }
-          })
-
-        }
-      }
 
       return self.properties.flatMap { (param, schema) -> [ObjCIR.Method] in
         switch schema {
-        case .Enum(.String(let enumValues)):
+        case .Enum(.String(let enumValues, let defaultValue)):
           return [
             renderToStringMethod(param: param, enumValues: enumValues),
-            renderFromStringMethod(param: param, enumValues: enumValues)
+            renderFromStringMethod(param: param, enumValues: enumValues, defaultValue: defaultValue)
           ]
         default:
           return []
@@ -657,7 +669,10 @@ struct ObjCImplementationFile : FileGenerator {
             ObjCIR.Root.Category(className: self.builderClassName,
                                  categoryName: nil,
                                  methods: [],
-                                 properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)", .Integer)]),
+                                 properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)", .Integer)])
+        ] +
+            self.renderStringEnumerationMethods().map { ObjCIR.Root.Function($0) } +
+        [
             ObjCIR.Root.Class(
                 name: self.className,
                 methods: [

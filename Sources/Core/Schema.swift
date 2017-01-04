@@ -58,8 +58,8 @@ struct EnumValue<ValueType> {
 }
 
 indirect enum EnumType {
-    case Integer([EnumValue<Int>])
-    case String([EnumValue<String>])
+    case Integer([EnumValue<Int>]) // TODO: Revisit if we should have default values for integer enums
+    case String([EnumValue<String>], defaultValue: EnumValue<String>)
 }
 
 typealias LazySchemaReference = () -> Schema?
@@ -95,6 +95,13 @@ struct SchemaObjectRoot: Equatable {
     let name: String
     let properties: [String:Schema]
     let extends: LazySchemaReference?
+    let algebraicTypeIdentifier: String?
+
+    var typeIdentifier: String {
+        get {
+            return algebraicTypeIdentifier ?? name
+        }
+    }
 }
 
 func ==(lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
@@ -102,7 +109,7 @@ func ==(lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
 }
 
 
-let RootNSObject = SchemaObjectRoot(name: "NSObject", properties: [:], extends: nil)
+let RootNSObject = SchemaObjectRoot(name: "NSObject", properties: [:], extends: nil, algebraicTypeIdentifier: nil)
 
 extension SchemaObjectRoot : CustomDebugStringConvertible {
     public var debugDescription: String {
@@ -182,8 +189,14 @@ extension Schema {
 
             switch propType {
             case JSONType.String:
-                if let enumValues = propertyInfo["enum"] as? [JSONObject] {
-                    return try? Schema.Enum(EnumType.String(enumValues.map(EnumValue<String>.init)))
+                if let enumValues = propertyInfo["enum"] as? [JSONObject], let defaultValue = propertyInfo["default"] as? String {
+                    let enumVals = try? enumValues.map(EnumValue<String>.init)
+                    let defaultVal = enumVals?.first(where: { $0.defaultValue == defaultValue })
+                    return enumVals
+                        .flatMap{ v in defaultVal.map{ ($0, v) } }
+                        .map{ defaultVal, enumVals in
+                            Schema.Enum(EnumType.String(enumVals, defaultValue: defaultVal))
+                        }
                 } else {
                     return Schema.String(format: (propertyInfo["format"] as? String).flatMap(StringFormatType.init))
                 }
@@ -224,7 +237,8 @@ extension Schema {
 
                     return lifted.map { Schema.Object(SchemaObjectRoot(name: objectTitle,
                                                                        properties: Dictionary(elements: $0),
-                                                                       extends: extends)) }
+                                                                       extends: extends,
+                                                                       algebraicTypeIdentifier: propertyInfo["algebraicDataTypeIdentifier"] as? String)) }
                 } else {
                     // Map type
                     return Schema.Map(valueType:(propertyInfo["additionalProperties"] as? JSONObject)

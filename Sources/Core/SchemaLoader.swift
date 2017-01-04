@@ -25,29 +25,19 @@ class RemoteSchemaLoader: SchemaLoader {
         if let cachedValue = refs[schemaUrl] {
             return cachedValue
         }
-        print(schemaUrl)
         // Load from local file
         do {
         
             if let data = try? Data(contentsOf: URL(fileURLWithPath: schemaUrl.path)) {
-                print("Parse data")
-
                 let jsonResult = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! JSONObject
-
-                let x = RemoteSchemaLoader.sharedPropertyLoader(jsonResult, schemaUrl)
-                assert(x != nil, "what")
-                refs[schemaUrl] = x
+                refs[schemaUrl] = RemoteSchemaLoader.sharedPropertyLoader(jsonResult, schemaUrl)
                 return refs[schemaUrl]
-            } else {
-                print("Failed to parse data")
             }
         } catch {
             // TODO: Better failure handling and reporting
             // https://phabricator.pinadmin.com/T49
-            assert(false, "WTF")
+            fatalError("Error loading or parsing schema at URL: \(schemaUrl)")
         }
-        assert(false, "WTF")
-        print("P")
         return nil
     }
 }
