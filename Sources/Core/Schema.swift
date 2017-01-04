@@ -91,11 +91,18 @@ func decodeRef(from source: URL, with ref: String) -> URL {
     }
 }
 
-struct SchemaObjectRoot {
+struct SchemaObjectRoot: Equatable {
     let name: String
     let properties: [String:Schema]
     let extends: LazySchemaReference?
 }
+
+func ==(lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
+    return lhs.name == rhs.name
+}
+
+
+let RootNSObject = SchemaObjectRoot(name: "NSObject", properties: [:], extends: nil)
 
 extension SchemaObjectRoot : CustomDebugStringConvertible {
     public var debugDescription: String {

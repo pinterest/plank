@@ -38,12 +38,26 @@ extension String {
     func objcLiteral() -> String {
         return "@\"\(self)\""
     }
+
+    func indent() -> String {
+        return Indentation + self
+    }
 }
+
+extension Sequence {
+    func objcLiteral() -> String {
+        let inner = self.map { "\($0)" }.joined(separator: ", ")
+        return "@[\(inner)]"
+    }
+}
+
+
 
 typealias Argument = String
 typealias Parameter = String
 
-func dirtyPropertyOption(propertyName: String, className: String) -> String {
+func dirtyPropertyOption(propertyName aPropertyName: String, className: String) -> String {
+    let propertyName = aPropertyName.snakeCaseToPropertyName()
     let capitalizedFirstLetter = String(propertyName[propertyName.startIndex]).uppercased()
     let capitalizedPropertyName = capitalizedFirstLetter + String(propertyName.characters.dropFirst())
     return className + "DirtyProperty" + capitalizedPropertyName
@@ -57,6 +71,10 @@ func enumToStringMethodName(propertyName: String, className: String) -> String {
     return "\(className)\(propertyName.snakeCaseToCamelCase())TypeToString"
 }
 
+func enumTypeName(propertyName: String, className: String) -> String {
+    return "\(className)\(propertyName.snakeCaseToCamelCase())Type"
+}
+
 extension SchemaObjectRoot {
     func className(with params: GenerationParameters) -> String {
         if let classPrefix = params[GenerationParameterType.classPrefix] as String? {
@@ -67,6 +85,23 @@ extension SchemaObjectRoot {
     }
 }
 
+extension Schema {
+    var isObjCPrimitiveType: Bool {
+        get {
+            switch self {
+            case .Boolean, .Integer, .Enum(_), .Float:
+                return true
+            default:
+                return false
+            }
+        }
+    }
+}
+
+fileprivate func explodeThenIndent(strs: [String]) -> String {
+    return strs.flatMap { $0.components(separatedBy: "\n").map{$0.indent()} }.joined(separator: "\n")
+}
+
 struct ObjCIR {
 
     static let ret = "return"
@@ -75,18 +110,17 @@ struct ObjCIR {
         return ObjCIR.Method(body: body(), signature: signature)
     }
 
-
     static func msg(_ variable: String, _ messages: (Parameter, Argument)...) -> String {
         return
             "[\(variable) " +
                 messages.map{ (param, arg) in "\(param):\(arg)" }.joined(separator: " ") +
-            "]"
+            "];"
     }
 
     static func block(_ params: [Parameter], body: () -> [String]) -> String {
         return [
             "^" + (params.count == 0 ? "" : "(\(params.joined(separator: ", ")))") + "{",
-            body().map{ Indentation + $0 }.joined(separator: "\n"),
+                explodeThenIndent(strs: body()),
             "}"
         ].joined(separator: "\n")
     }
@@ -94,24 +128,96 @@ struct ObjCIR {
     static func ifStmt(_ condition: String, body: () -> [String]) -> String {
         return [
             "if (\(condition)) {",
-            body().map{ Indentation + $0 }.joined(separator: "\n"), // helper function?
+                explodeThenIndent(strs: body()),
             "}"
         ].joined(separator: "\n")
     }
 
+    static func elseStmt(_ body: () -> [String]) -> String {
+        return [
+            " else {",
+                explodeThenIndent(strs: body()),
+            "}"
+        ].joined(separator: "\n")
+    }
+
+    static func ifElseStmt(_ condition: String, body: @escaping () -> [String]) -> (() -> [String]) -> String {
+        return { elseBody in [
+            ObjCIR.ifStmt(condition, body: body),
+            ObjCIR.elseStmt(elseBody)
+        ].joined(separator: "\n") }
+    }
     static func forStmt(_ condition: String, body: () -> [String]) -> String {
         return [
             "for (\(condition)) {",
-                body().map{ Indentation + $0 }.joined(separator: "\n"), // helper function?
+                explodeThenIndent(strs: body()),
             "}"
             ].joined(separator: "\n")
     }
     struct Method {
         let body : [String]
         let signature : String
+
+        func render() -> [String] {
+            return [
+                signature,
+                "{",
+                explodeThenIndent(strs: body),
+                "}"
+            ]
+        }
     }
 
+    typealias TypeName = String
+    typealias SimpleProperty = (Parameter, TypeName, Schema)
+
     enum Root {
-        case Class(name: String, methods: [ObjCIR.Method], properties: [Property])
+        case Struct(name: String, fields: [String])
+        case Imports(filenames: [String])
+        case Category(className: String, categoryName: String?, methods: [ObjCIR.Method],
+            properties: [SimpleProperty])
+        case Class(
+            name: String,
+            methods: [ObjCIR.Method],
+            properties: [SimpleProperty],
+            protocols: [String:[ObjCIR.Method]]
+        )
+
+
+
+        func renderImplementation() -> [String] {
+            switch self {
+            case .Struct(name: let name, fields: let fields):
+                return [
+                    "struct \(name) {",
+                    fields.map { Indentation + $0 }.joined(separator: "\n"),
+                    "};"
+                ]
+            case .Imports(filenames: let filenames):
+                return [filenames.joined(separator: "\n")]
+            case .Class(name: let className, methods: let methods, properties: _, protocols: let protocols):
+                return [
+                    "@implementation \(className)",
+                    methods.flatMap{$0.render()}.joined(separator: "\n"),
+                    protocols.flatMap({ (protocolName, methods) -> [String] in
+                        return ["#pragma mark - \(protocolName)"] + methods.flatMap{$0.render()}
+                    }).joined(separator: "\n"),
+                    "@end"
+                ]
+            case .Category(className: let className, categoryName: let categoryName, methods: let methods, properties: let properties):
+                // Only render anonymous categories in the implementation
+                guard categoryName == nil else { return [] }
+                return [
+                    "@interface \(className) ()",
+                    properties.map { (param, typeName, schema) in
+                        "@property (nonatomic, \(schema.isObjCPrimitiveType ? "assign" : "strong")) \(typeName) \(param.snakeCaseToPropertyName());"
+                    }.joined(separator: "\n"),
+                    methods.map { $0.signature + ";" }.joined(separator: "\n"),
+                    "@end"
+                    ].filter{ $0 != "" }
+            }
+        }
     }
 }
+
+
