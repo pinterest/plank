@@ -233,8 +233,8 @@ extension Schema {
                     })
                     let extends = (propertyInfo["extends"] as? JSONObject)
                         .flatMap { ($0["$ref"] as? String).map { ref in {
-                            loader.loadSchema(decodeRef(from: source, with: ref)) } } }
-
+                            loader.loadSchema(decodeRef(from: source, with: ref)) } }
+                        }
                     return lifted.map { Schema.Object(SchemaObjectRoot(name: objectTitle,
                                                                        properties: Dictionary(elements: $0),
                                                                        extends: extends,

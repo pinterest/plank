@@ -12,10 +12,12 @@ import Foundation
 
 struct ObjectiveCFileGenerator : FileGeneratorManager {
     static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> Array<FileGenerator> {
+
+        let rootsRenderer = ObjCRootsRenderer(rootSchema: descriptor, params: generatorParameters)
+
         return [
-            //ObjectiveCInterfaceFileDescriptor(descriptor: descriptor,
-            //                                  generatorParameters: generatorParameters),
-            ObjCImplementationFile(rootSchema: descriptor, params: generatorParameters)
+            ObjCHeaderFile(roots: rootsRenderer.renderRoots(), className: rootsRenderer.className),
+            ObjCImplementationFile(roots: rootsRenderer.renderRoots(), className: rootsRenderer.className)
         ]
     }
 }

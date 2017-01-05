@@ -115,6 +115,19 @@ fileprivate func explodeThenIndent(strs: [String]) -> String {
     return strs.flatMap { $0.components(separatedBy: "\n").map{$0.indent()} }.joined(separator: "\n")
 }
 
+enum MethodVisibility: Equatable {
+    case Public
+    case Private
+}
+
+func ==(lhs: MethodVisibility, rhs: MethodVisibility) -> Bool {
+    switch (lhs, rhs) {
+    case (.Public, .Public): return true
+    case (.Private, .Private): return true
+    case (_, _): return false
+    }
+}
+
 struct ObjCIR {
 
     static let ret = "return"
@@ -200,6 +213,20 @@ struct ObjCIR {
             "}"
             ].joined(separator: "\n")
     }
+
+    static func fileImportStmt(_ filename: String) -> String {
+        return "#import \"\(filename).h\""
+    }
+
+
+    static func enumStmt(_ enumName: String, body: () -> [String]) -> String {
+        return [
+            "typedef NS_ENUM(NSInteger, \(enumName)) {",
+            explodeThenIndent(strs: [body().joined(separator: ",\n")]),
+            "};"
+        ].joined(separator: "\n")
+    }
+
     struct Method {
         let body : [String]
         let signature : String
@@ -215,35 +242,86 @@ struct ObjCIR {
     }
 
     typealias TypeName = String
-    typealias SimpleProperty = (Parameter, TypeName, Schema)
+
+    typealias SimpleProperty = (Parameter, TypeName, Schema, ObjCMutabilityType)
 
     enum Root {
         case Struct(name: String, fields: [String])
-        case Imports(filenames: [String])
+        case Imports(classNames: Set<String>, myName: String, parentName: String?)
         case Category(className: String, categoryName: String?, methods: [ObjCIR.Method],
             properties: [SimpleProperty])
+        case Macro(String)
         case Function(ObjCIR.Method)
         case Class(
             name: String,
-            methods: [ObjCIR.Method],
+            extends: String?,
+            methods: [(MethodVisibility, ObjCIR.Method)],
             properties: [SimpleProperty],
             protocols: [String:[ObjCIR.Method]]
         )
+        case Enum(name: String, values: EnumType)
+
+
+        func renderHeader() -> [String] {
+            switch self {
+            case .Struct(_, _):
+                // skip structs in header
+                return []
+            case .Macro(let macro):
+                return [macro]
+            case .Imports(let classNames, let myName, let parentName):
+                return [
+                    "#import <Foundation/Foundation.h>",
+                    parentName.map(ObjCIR.fileImportStmt) ?? "",
+                    "#import \"PINModelRuntime.h\"",
+                    ].filter { $0 != "" }  + (["\(myName)Builder"] + classNames).sorted().map{ "@class \($0);" }
+            case .Class(let className, let extends, let methods, let properties, let protocols):
+                let protocolList = protocols.keys.sorted().joined(separator: ", ")
+                let protocolDeclarations = protocols.count > 0 ? "<\(protocolList)>" : ""
+                let superClass = extends ?? "NSObject\(protocolDeclarations)"
+                return [
+                    "@interface \(className) : \(superClass)",
+                    properties.map{ (param, typeName, schema, access) in
+                        "@property (\(schema.isObjCPrimitiveType ? "" : "nullable, ")nonatomic, \(schema.isObjCPrimitiveType ? "assign" : "strong"), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
+                    }.joined(separator: "\n"),
+                    methods.filter { visibility, _ in visibility == .Public }
+                            .map { $1 }.map{ $0.signature + ";" }.joined(separator: "\n"),
+                    "@end"
+                ]
+            case .Category(className: _, categoryName: _, methods: _, properties: _):
+                // skip categories in header
+                return []
+            case .Function(let method):
+                return ["\(method.signature);"]
+            case .Enum(let name, let values):
+                return [ObjCIR.enumStmt(name) {
+                    switch values {
+                    case .Integer(let options):
+                        return options.map { "\(name + $0.description.snakeCaseToCamelCase()) = \($0.defaultValue)" }
+                    case .String(let options, _):
+                        return options.map { "\(name + $0.description.snakeCaseToCamelCase()) /* \($0.defaultValue) */" }
+                    }
+                }]
+            }
+        }
 
         func renderImplementation() -> [String] {
             switch self {
             case .Struct(name: let name, fields: let fields):
                 return [
                     "struct \(name) {",
-                    fields.map { Indentation + $0 }.joined(separator: "\n"),
+                        fields.map { Indentation + $0 }.joined(separator: "\n"),
                     "};"
                 ]
-            case .Imports(filenames: let filenames):
-                return [filenames.joined(separator: "\n")]
-            case .Class(name: let className, methods: let methods, properties: _, protocols: let protocols):
+            case .Macro(_):
+                // skip macro in impl
+                return []
+            case .Imports(let classNames, let myName, _):
+                return [classNames.union(Set([myName])).sorted().map(ObjCIR.fileImportStmt).joined(separator: "\n")]
+            case .Class(name: let className, extends: _, methods: let methods, properties: _, protocols: let protocols):
                 return [
                     "@implementation \(className)",
-                    methods.flatMap{$0.render()}.joined(separator: "\n"),
+                    methods.flatMap{$1.render()}.joined(separator: "\n"),
                     protocols.flatMap({ (protocolName, methods) -> [String] in
                         return ["#pragma mark - \(protocolName)"] + methods.flatMap{$0.render()}
                     }).joined(separator: "\n"),
@@ -254,15 +332,18 @@ struct ObjCIR {
                 guard categoryName == nil else { return [] }
                 return [
                     "@interface \(className) ()",
-                    properties.map { (param, typeName, schema) in
-                        "@property (nonatomic, \(schema.isObjCPrimitiveType ? "assign" : "strong")) \(typeName) \(param.snakeCaseToPropertyName());"
+                    properties.map { (param, typeName, schema, access) in
+                        "@property (nonatomic, \(schema.isObjCPrimitiveType ? "assign" : "strong"), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                     ].filter{ $0 != "" }
             case .Function(let method):
-              return method.render()
+                return method.render()
+            case .Enum(_, _):
+                return []
             }
+
         }
     }
 }
