@@ -1,5 +1,5 @@
 //
-//  ObjCProperty.swift
+//  ObjectiveCIR.swift
 //  PINModel
 //
 //  Created by Rahul Malik on 7/29/15.

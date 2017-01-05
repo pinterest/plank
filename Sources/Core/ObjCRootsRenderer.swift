@@ -1,5 +1,5 @@
 //
-//  ObjCImplementationFileGenerator.swift
+//  ObjCRootsRenderer.swift
 //  PINModel
 //
 //  Created by Rahul Malik on 7/29/15.
@@ -9,44 +9,6 @@
 import Foundation
 
 let DateValueTransformerKey = "kPINModelDateValueTransformerKey"
-
-struct ObjCHeaderFile: FileGenerator {
-    let roots: [ObjCIR.Root]
-    let className: String
-
-    var fileName: String {
-        get {
-            return "\(className).h"
-        }
-    }
-
-    func renderFile() -> String {
-        let output = (
-            [self.renderCommentHeader()] +
-                self.roots.flatMap { $0.renderHeader().joined(separator: "\n") })
-            .filter { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) != "" }
-            .joined(separator: "\n\n")
-        return output
-    }
-}
-
-struct ObjCImplementationFile: FileGenerator {
-    let roots: [ObjCIR.Root]
-    let className: String
-
-    var fileName: String {
-        get {
-            return "\(className).m"
-        }
-    }
-
-    func renderFile() -> String {
-        let output = (
-            [self.renderCommentHeader()] +
-                self.roots.map { $0.renderImplementation().joined(separator: "\n") }).joined(separator: "\n\n")
-        return output
-    }
-}
 
 struct ObjCRootsRenderer {
     let rootSchema: SchemaObjectRoot
@@ -757,6 +719,7 @@ struct ObjCRootsRenderer {
                 protocols: [:]),
             ObjCIR.Root.Macro("NS_ASSUME_NONNULL_END")
         ]
+<<<<<<< HEAD:Sources/Core/ObjCImplementationFileGenerator.swift
 
         /*
         if self.isBaseClass {
@@ -802,5 +765,7 @@ struct ObjCRootsRenderer {
             "@end"
             ].filter { "" != $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
         return lines.joined(separator: "\n\n") */
+=======
+>>>>>>> Refactor PINModel:Sources/Core/ObjCRootsRenderer.swift
     }
 }

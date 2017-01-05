@@ -17,7 +17,6 @@ public enum JSONType: String {
     case Integer = "integer"
     case Number = "number"
     case Boolean = "boolean"
-//    case Null = "null"
     case Pointer = "$ref" // Used for combining schemas via references.
     case Polymorphic = "oneOf" // JSONType composed of other JSONTypes
 

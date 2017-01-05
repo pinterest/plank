@@ -21,3 +21,41 @@ struct ObjectiveCFileGenerator : FileGeneratorManager {
         ]
     }
 }
+
+struct ObjCHeaderFile: FileGenerator {
+    let roots: [ObjCIR.Root]
+    let className: String
+
+    var fileName: String {
+        get {
+            return "\(className).h"
+        }
+    }
+
+    func renderFile() -> String {
+        let output = (
+            [self.renderCommentHeader()] +
+                self.roots.flatMap { $0.renderHeader().joined(separator: "\n") })
+            .filter { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) != "" }
+            .joined(separator: "\n\n")
+        return output
+    }
+}
+
+struct ObjCImplementationFile: FileGenerator {
+    let roots: [ObjCIR.Root]
+    let className: String
+
+    var fileName: String {
+        get {
+            return "\(className).m"
+        }
+    }
+
+    func renderFile() -> String {
+        let output = (
+            [self.renderCommentHeader()] +
+                self.roots.map { $0.renderImplementation().joined(separator: "\n") }).joined(separator: "\n\n")
+        return output
+    }
+}
