@@ -11,11 +11,9 @@
 		OBJ_51 /* ObjCRootsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ObjCRootsRenderer.swift */; };
 		OBJ_57 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* ObjectiveCFileGenerator.swift */; };
 		OBJ_60 /* ObjectiveCIR.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* ObjectiveCIR.swift */; };
-		OBJ_62 /* OptionalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* OptionalExtensions.swift */; };
 		OBJ_63 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* Schema.swift */; };
 		OBJ_64 /* SchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* SchemaLoader.swift */; };
 		OBJ_65 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_24 /* StringExtensions.swift */; };
-		OBJ_66 /* UrlExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* UrlExtensions.swift */; };
 		OBJ_73 /* Cli.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* Cli.swift */; };
 		OBJ_74 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* main.swift */; };
 		OBJ_76 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* Core.framework */; };
@@ -45,11 +43,9 @@
 		OBJ_10 /* ObjCRootsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjCRootsRenderer.swift; sourceTree = "<group>"; };
 		OBJ_16 /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; };
 		OBJ_19 /* ObjectiveCIR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCIR.swift; sourceTree = "<group>"; };
-		OBJ_21 /* OptionalExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtensions.swift; sourceTree = "<group>"; };
 		OBJ_22 /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schema.swift; sourceTree = "<group>"; };
 		OBJ_23 /* SchemaLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaLoader.swift; sourceTree = "<group>"; };
 		OBJ_24 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
-		OBJ_25 /* UrlExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlExtensions.swift; sourceTree = "<group>"; };
 		OBJ_27 /* Cli.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cli.swift; sourceTree = "<group>"; };
 		OBJ_28 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		OBJ_31 /* LinuxTestIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinuxTestIndex.swift; sourceTree = "<group>"; };
@@ -152,11 +148,9 @@
 				OBJ_10 /* ObjCRootsRenderer.swift */,
 				OBJ_16 /* ObjectiveCFileGenerator.swift */,
 				OBJ_19 /* ObjectiveCIR.swift */,
-				OBJ_21 /* OptionalExtensions.swift */,
 				OBJ_22 /* Schema.swift */,
 				OBJ_23 /* SchemaLoader.swift */,
 				OBJ_24 /* StringExtensions.swift */,
-				OBJ_25 /* UrlExtensions.swift */,
 			);
 			name = Core;
 			path = Sources/Core;
@@ -251,11 +245,9 @@
 				OBJ_51 /* ObjCRootsRenderer.swift in Sources */,
 				OBJ_57 /* ObjectiveCFileGenerator.swift in Sources */,
 				OBJ_60 /* ObjectiveCIR.swift in Sources */,
-				OBJ_62 /* OptionalExtensions.swift in Sources */,
 				OBJ_63 /* Schema.swift in Sources */,
 				OBJ_64 /* SchemaLoader.swift in Sources */,
 				OBJ_65 /* StringExtensions.swift in Sources */,
-				OBJ_66 /* UrlExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

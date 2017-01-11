@@ -34,9 +34,11 @@ struct ObjCHeaderFile: FileGenerator {
 
     func renderFile() -> String {
         let output = (
-            [self.renderCommentHeader()] +
-                self.roots.flatMap { $0.renderHeader().joined(separator: "\n") })
-            .filter { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) != "" }
+                [self.renderCommentHeader()] +
+                self.roots.flatMap { $0.renderHeader().joined(separator: "\n") }
+            )
+            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
+            .filter { $0 != "" }
             .joined(separator: "\n\n")
         return output
     }
@@ -54,8 +56,12 @@ struct ObjCImplementationFile: FileGenerator {
 
     func renderFile() -> String {
         let output = (
-            [self.renderCommentHeader()] +
-                self.roots.map { $0.renderImplementation().joined(separator: "\n") }).joined(separator: "\n\n")
+                [self.renderCommentHeader()] +
+                self.roots.map { $0.renderImplementation().joined(separator: "\n") }
+            )
+            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
+            .filter { $0 != "" }
+            .joined(separator: "\n\n")
         return output
     }
 }

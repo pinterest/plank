@@ -422,7 +422,7 @@ struct ObjCRootsRenderer {
                 self.properties.map(formatParam).joined(separator: "\n"),
                 self.properties.map { (param, _) -> String in
                     "[aCoder encodeInt:_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) forKey:\((param + "_dirty_property").objcLiteral())];"}.joined(separator: "\n")
-            ]
+            ].filter { $0 != "" }
         }
     }
 
@@ -506,9 +506,8 @@ struct ObjCRootsRenderer {
                     }
                 default:
                     return ["builder.\(param.snakeCaseToPropertyName()) = modelObject.\(param.snakeCaseToPropertyName());"]
+                    }
                 }
-                }
-
                 return loop(schema)
             }
         }
@@ -519,7 +518,7 @@ struct ObjCRootsRenderer {
                 self.isBaseClass ? "" : "[super mergeWithModel:modelObject];",
                 "\(self.builderClassName) *builder = self;",
                 self.properties.map(formatParam).joined(separator: "\n")
-            ]
+            ].filter { $0 != "" }
         }
     }
 

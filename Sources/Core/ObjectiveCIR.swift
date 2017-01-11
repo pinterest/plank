@@ -310,7 +310,7 @@ struct ObjCIR {
             case .Struct(name: let name, fields: let fields):
                 return [
                     "struct \(name) {",
-                        fields.map { Indentation + $0 }.joined(separator: "\n"),
+                        fields.sorted().map{ $0.indent() }.joined(separator: "\n"),
                     "};"
                 ]
             case .Macro(_):
@@ -326,7 +326,7 @@ struct ObjCIR {
                         return ["#pragma mark - \(protocolName)"] + methods.flatMap{$0.render()}
                     }).joined(separator: "\n"),
                     "@end"
-                ]
+                ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter{ $0 != "" }
             case .Category(className: let className, categoryName: let categoryName, methods: let methods, properties: let properties):
                 // Only render anonymous categories in the implementation
                 guard categoryName == nil else { return [] }
@@ -337,7 +337,7 @@ struct ObjCIR {
                     }.joined(separator: "\n"),
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
-                    ].filter{ $0 != "" }
+                ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter{ $0 != "" }
             case .Function(let method):
                 return method.render()
             case .Enum(_, _):
