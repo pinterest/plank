@@ -587,7 +587,7 @@ struct ObjCRootsRenderer {
 
     func renderBuilderPropertySetters() -> [ObjCIR.Method] {
         return self.properties.map({ (param, schema) -> ObjCIR.Method in
-            ObjCIR.method("- (void)set\(param.snakeCaseToCamelCase()):(\(objcClassFromSchema(param, schema)))\(param.snakeCaseToPropertyName())") {
+            ObjCIR.method("- (void)set\(param.snakeCaseToCapitalizedPropertyName()):(\(objcClassFromSchema(param, schema)))\(param.snakeCaseToPropertyName())") {
                 [
                     "_\(param.snakeCaseToPropertyName()) = \(param.snakeCaseToPropertyName());",
                     "_\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = 1;"
