@@ -428,7 +428,7 @@ struct ObjCRootsRenderer {
 
 
     func renderCopyWithBlock() -> ObjCIR.Method {
-        return ObjCIR.method("- (instancetype)copyWithBlock:(__attribute__((noescape)) void (^)(\(self.builderClassName) *builder))block") {
+        return ObjCIR.method("- (instancetype)copyWithBlock:(PINMODEL_NOESCAPE void (^)(\(self.builderClassName) *builder))block") {
             [
                 "NSParameterAssert(block);",
                 "\(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",

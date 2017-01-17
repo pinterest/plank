@@ -273,7 +273,7 @@ struct ObjCIR {
                 return [
                     "#import <Foundation/Foundation.h>",
                     parentName.map(ObjCIR.fileImportStmt) ?? "",
-                    "#import \"PINModelRuntime.h\"",
+                    "#import <PINModelRuntime/PINModelRuntime.h>",
                     ].filter { $0 != "" }  + (["\(myName)Builder"] + classNames).sorted().map{ "@class \($0);" }
             case .Class(let className, let extends, let methods, let properties, let protocols):
                 let protocolList = protocols.keys.sorted().joined(separator: ", ")
