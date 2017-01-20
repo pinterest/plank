@@ -26,16 +26,14 @@ class RemoteSchemaLoader: SchemaLoader {
             return cachedValue
         }
         // Load from local file
-        do {
-        
-            if let data = try? Data(contentsOf: URL(fileURLWithPath: schemaUrl.path)) {
-                let jsonResult = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! JSONObject
+        if let data = try? Data(contentsOf: URL(fileURLWithPath: schemaUrl.path)) {
+            if let jsonResult = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! JSONObject {
                 refs[schemaUrl] = RemoteSchemaLoader.sharedPropertyLoader(jsonResult, schemaUrl)
                 return refs[schemaUrl]
+            } else {
+               fatalError("Invalid JSON. Unable to parse schema at URL: \(schemaUrl)")
             }
-        } catch {
-            // TODO: Better failure handling and reporting
-            // https://phabricator.pinadmin.com/T49
+        } else {
             fatalError("Error loading or parsing schema at URL: \(schemaUrl)")
         }
         return nil
