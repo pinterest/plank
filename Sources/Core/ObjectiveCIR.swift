@@ -111,10 +111,6 @@ extension EnumValue {
   }
 }
 
-fileprivate func explodeThenIndent(strs: [String]) -> String {
-    return strs.flatMap { $0.components(separatedBy: "\n").map{$0.indent()} }.joined(separator: "\n")
-}
-
 enum MethodVisibility: Equatable {
     case Public
     case Private
@@ -126,6 +122,17 @@ func ==(lhs: MethodVisibility, rhs: MethodVisibility) -> Bool {
     case (.Private, .Private): return true
     case (_, _): return false
     }
+}
+
+prefix operator -->
+
+prefix func --> (strs: Array<String>) -> String {
+  return strs.flatMap { $0.components(separatedBy: "\n").map{$0.indent() } }
+    .joined(separator: "\n")
+}
+
+prefix func --> (body: () -> [String]) -> String {
+  return -->body()
 }
 
 struct ObjCIR {
@@ -146,7 +153,7 @@ struct ObjCIR {
     static func block(_ params: [Parameter], body: () -> [String]) -> String {
         return [
             "^" + (params.count == 0 ? "" : "(\(params.joined(separator: ", ")))") + "{",
-                explodeThenIndent(strs: body()),
+              -->body,
             "}"
         ].joined(separator: "\n")
     }
@@ -159,11 +166,11 @@ struct ObjCIR {
             switch self {
             case .Case(let condition, let body):
                 return [ "case \(condition):",
-                    explodeThenIndent(strs: body())
+                    -->body
                 ].joined(separator: "\n")
             case .Default(let body):
                 return [ "default:",
-                    explodeThenIndent(strs: body())
+                    -->body
                 ].joined(separator: "\n")
             }
         }
@@ -187,7 +194,7 @@ struct ObjCIR {
     static func ifStmt(_ condition: String, body: () -> [String]) -> String {
         return [
             "if (\(condition)) {",
-                explodeThenIndent(strs: body()),
+                -->body,
             "}"
         ].joined(separator: "\n")
     }
@@ -195,7 +202,7 @@ struct ObjCIR {
     static func elseStmt(_ body: () -> [String]) -> String {
         return [
             " else {",
-                explodeThenIndent(strs: body()),
+                -->body,
             "}"
         ].joined(separator: "\n")
     }
@@ -209,7 +216,7 @@ struct ObjCIR {
     static func forStmt(_ condition: String, body: () -> [String]) -> String {
         return [
             "for (\(condition)) {",
-                explodeThenIndent(strs: body()),
+              -->body,
             "}"
             ].joined(separator: "\n")
     }
@@ -222,7 +229,7 @@ struct ObjCIR {
     static func enumStmt(_ enumName: String, body: () -> [String]) -> String {
         return [
             "typedef NS_ENUM(NSInteger, \(enumName)) {",
-            explodeThenIndent(strs: [body().joined(separator: ",\n")]),
+              -->[body().joined(separator: ",\n")],
             "};"
         ].joined(separator: "\n")
     }
@@ -235,7 +242,7 @@ struct ObjCIR {
             return [
                 signature,
                 "{",
-                explodeThenIndent(strs: body),
+                  -->body,
                 "}"
             ]
         }
