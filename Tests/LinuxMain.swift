@@ -3,9 +3,5 @@ import XCTest
 @testable import CoreTests
 
 var tests = [XCTestCaseEntry]()
-   tests += [testCase(ObjCImplementationFileGeneratorTests.allTests)]
-   tests += [testCase(ObjectiveCFileGeneratorTests.allTests)]
-   tests += [testCase(ObjectiveCInterfaceFileDescriptorTests.allTests)]
-   tests += [testCase(ObjectiveCPolymorphicPropertyTests.allTests)]
-   tests += [testCase(ObjectiveCPropertyTests.allTests)]
+
 XCTMain(tests)

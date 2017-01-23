@@ -12,9 +12,9 @@ protocol SchemaLoader {
     func loadSchema(_ schemaUrl: URL) -> Schema?
 }
 
-class RemoteSchemaLoader: SchemaLoader {
-    static let sharedInstance = RemoteSchemaLoader()
-    static let sharedPropertyLoader = Schema.propertyFunctionForType(loader: RemoteSchemaLoader.sharedInstance)
+class FileSchemaLoader: SchemaLoader {
+    static let sharedInstance = FileSchemaLoader()
+    static let sharedPropertyLoader = Schema.propertyFunctionForType(loader: FileSchemaLoader.sharedInstance)
     var refs: [URL:Schema]
 
     init() {
@@ -28,7 +28,7 @@ class RemoteSchemaLoader: SchemaLoader {
         // Load from local file
         if let data = try? Data(contentsOf: URL(fileURLWithPath: schemaUrl.path)) {
             if let jsonResult = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! JSONObject {
-                refs[schemaUrl] = RemoteSchemaLoader.sharedPropertyLoader(jsonResult, schemaUrl)
+                refs[schemaUrl] = FileSchemaLoader.sharedPropertyLoader(jsonResult, schemaUrl)
                 return refs[schemaUrl]
             } else {
                fatalError("Invalid JSON. Unable to parse schema at URL: \(schemaUrl)")

@@ -143,11 +143,16 @@ struct ObjCIR {
         return ObjCIR.Method(body: body(), signature: signature)
     }
 
+
+    static func stmt(_ body: String) -> String {
+        return "\(body);"
+    }
+
     static func msg(_ variable: String, _ messages: (Parameter, Argument)...) -> String {
         return
             "[\(variable) " +
                 messages.map{ (param, arg) in "\(param):\(arg)" }.joined(separator: " ") +
-            "];"
+            "]"
     }
 
     static func block(_ params: [Parameter], body: () -> [String]) -> String {
