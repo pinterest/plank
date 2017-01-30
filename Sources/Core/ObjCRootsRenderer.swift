@@ -177,9 +177,8 @@ struct ObjCRootsRenderer {
         return ObjCIR.method("- (BOOL)isEqualTo\(self.rootSchema.name.snakeCaseToCamelCase()):(\(self.className) *)anObject") {
             [
                 "return (",
-                -->["anObject != nil",
-                    "self == anObject",
-                    propReturnStmts.map{ "(\($0))" }.joined(separator: " &&\n")],
+                -->[(["anObject != nil", "self == anObject"] + propReturnStmts)
+                        .map{ "(\($0))" }.joined(separator: " &&\n")],
                 ");"
             ]
         }
