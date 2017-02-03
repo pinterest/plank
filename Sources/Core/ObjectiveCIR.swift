@@ -103,6 +103,17 @@ extension Schema {
             }
         }
     }
+
+    func memoryAssignmentType() -> ObjCMemoryAssignmentType {
+        switch self {
+        case .String(format: .none):
+            return .Copy
+        case .Boolean, .Float, .Integer, .Enum(_):
+            return .Assign
+        default:
+            return .Strong
+        }
+    }
 }
 
 extension EnumValue {
@@ -294,7 +305,7 @@ struct ObjCIR {
                 return [
                     "@interface \(className) : \(superClass)",
                     properties.map{ (param, typeName, schema, access) in
-                        "@property (\(schema.isObjCPrimitiveType ? "" : "nullable, ")nonatomic, \(schema.isObjCPrimitiveType ? "assign" : "strong"), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
+                        "@property (\(schema.isObjCPrimitiveType ? "" : "nullable, ")nonatomic, \(schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
                     methods.filter { visibility, _ in visibility == .Public }
                             .map { $1 }.map{ $0.signature + ";" }.joined(separator: "\n"),
@@ -345,7 +356,7 @@ struct ObjCIR {
                 return [
                     "@interface \(className) ()",
                     properties.map { (param, typeName, schema, access) in
-                        "@property (nonatomic, \(schema.isObjCPrimitiveType ? "assign" : "strong"), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
+                        "@property (nonatomic, \(schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
