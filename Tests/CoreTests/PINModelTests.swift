@@ -1,6 +1,6 @@
 //
-//  PINModelTests.swift
-//  pinmodel
+//  PlankTests.swift
+//  Plank
 //
 //  Created by Andrew Chun on 6/12/16.
 //  Copyright © 2016 Rahul Malik. All rights reserved.
@@ -12,7 +12,7 @@ import Foundation
 
 @testable import Core
 
-class PINModelTests: XCTestCase {
+class PlankTests: XCTestCase {
 
     // Performs a flexible string assertion by making sure the content of the rendered code strings are equal.
     // Flexible string comparison is done by making sure the number of white space tokens are equal between

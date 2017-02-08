@@ -9,12 +9,12 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         vim clang libicu-dev libcurl4-openssl-dev libssl-dev
 
-# Install PINModel
-COPY . /usr/local/pinmodel
-RUN cd /usr/local/pinmodel && swift build -c release
+# Install plank
+COPY . /usr/local/plank
+RUN cd /usr/local/plank && swift build -c release
 
-ENV PINMODEL_HOME /usr/local/pinmodel
-ENV PATH ${PINMODEL_HOME}/.build/release:${PATH}
+ENV plank_HOME /usr/local/plank
+ENV PATH ${plank_HOME}/.build/release:${PATH}
 
-#ENTRYPOINT ["pinmodel"]
-#CMD ["help"]
+ENTRYPOINT ["plank"]
+CMD ["help"]

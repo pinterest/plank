@@ -1,6 +1,6 @@
 //
 //  schema.swift
-//  PINModel
+//  Plank
 //
 //  Created by Rahul Malik on 7/23/15.
 //  Copyright © 2015 Rahul Malik. All rights reserved.

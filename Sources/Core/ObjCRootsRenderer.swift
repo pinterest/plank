@@ -1,6 +1,6 @@
 //
 //  ObjCRootsRenderer.swift
-//  PINModel
+//  Plank
 //
 //  Created by Rahul Malik on 7/29/15.
 //  Copyright © 2015 Rahul Malik. All rights reserved.
@@ -354,7 +354,7 @@ struct ObjCRootsRenderer {
     func renderReferencedClasses() -> Set<String> {
         // Referenced Classes
         // The current class header
-        // PINModel Runtime header
+        // Plank Runtime header
         func referencedClassNames(schema: Schema) -> [String] {
             switch schema {
             case .Reference(with: let fn):

@@ -1,6 +1,6 @@
 //
 //  StringExtensions.swift
-//  PINModel
+//  Plank
 //
 //  Created by Rahul Malik on 7/24/15.
 //  Copyright © 2015 Rahul Malik. All rights reserved.

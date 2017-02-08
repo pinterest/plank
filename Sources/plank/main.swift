@@ -1,6 +1,6 @@
 //
 //  main.swift
-//  PINModel
+//  Plank
 //
 //  Created by Rahul Malik on 7/22/15.
 //  Copyright © 2015 Rahul Malik. All rights reserved.
@@ -21,7 +21,9 @@ func handleProcess(processInfo: ProcessInfo) {
         }
 
     } else {
-        print("Error: Unrecognized command: \(arguments.first!)")
+        if let firstArg = arguments.first {
+            print("Unrecognized command: \(firstArg)\n")
+        }
         handleHelpCommand() // Print help information when we reach a command we don't understand
     }
 }

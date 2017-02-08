@@ -1,6 +1,6 @@
 //
 //  ObjectiveCIR.swift
-//  PINModel
+//  Plank
 //
 //  Created by Rahul Malik on 7/29/15.
 //  Copyright © 2015 Rahul Malik. All rights reserved.

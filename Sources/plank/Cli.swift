@@ -1,6 +1,6 @@
 //
 //  Cli.swift
-//  PINModel
+//  Plank
 //
 //  Created by Rahul Malik on 7/22/15.
 //  Copyright © 2015 Rahul Malik. All rights reserved.
@@ -32,7 +32,7 @@ enum FlagOptions: String {
 extension FlagOptions : HelpCommandOutput {
     internal static func printHelp() -> String {
         return [
-            "    --\(FlagOptions.ObjectiveCClassPrefix.rawValue) - The prefix to add to all generated class names (i.e. \"PIN\" for \"PINModel\")",
+            "    --\(FlagOptions.ObjectiveCClassPrefix.rawValue) - The prefix to add to all generated class names",
             "    --\(FlagOptions.OutputDirectory.rawValue) - The directory where generated code will be written"].joined(separator: "\n")
     }
 }
@@ -103,7 +103,7 @@ func handleGenerateCommand(withArguments arguments:ArraySlice<String>) {
     var outputDirectory: URL!
 
     if let executionPath = ProcessInfo.processInfo.environment["PWD"] {
-        // What directory path is the user in when invoke pinmodel
+        // What directory path is the user in when invoke Plank
         outputDirectory = URL(string: executionPath)
         if output_dir.characters.count > 0 {
             if output_dir.hasPrefix("/") {
@@ -124,7 +124,7 @@ func handleGenerateCommand(withArguments arguments:ArraySlice<String>) {
 func handleHelpCommand() {
     let helpDocs = [
         "Usage:",
-        "    $ pinmodel [command] [options]",
+        "    $ plank [command] [options]",
         "",
         "Commands:",
         "\(CommandOptions.printHelp())",
