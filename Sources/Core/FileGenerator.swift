@@ -72,24 +72,27 @@ func generateFile(_ schema: SchemaObjectRoot, outputDirectory: URL, generationPa
     }
 }
 
-public func generateFilesWithInitialUrl(_ url: URL, outputDirectory: URL, generationParameters: GenerationParameters) {
-    if let _ = FileSchemaLoader.sharedInstance.loadSchema(url) as Schema? {
-        var processedSchemas = Set<URL>([])
-        repeat {
-            let _ = FileSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: Schema) -> Void in
-                if processedSchemas.contains(url) {
-                    return
-                }
-                processedSchemas.insert(url)
-                switch schema {
-                case .Object(let rootObject):
-                    generateFile(rootObject,
-                                 outputDirectory: outputDirectory,
-                                 generationParameters: generationParameters)
-                default:
-                    assert(false, "Incorrect Schema for root") // TODO Better error message.
-                }
-            })
-        } while (processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count)
-    }
+public func loadSchemasForUrls(urls: Set<URL>) {
+    _ = urls.flatMap { FileSchemaLoader.sharedInstance.loadSchema($0)}
+}
+
+public func generateFilesWithInitialUrl(urls: Set<URL>, outputDirectory: URL, generationParameters: GenerationParameters) {
+    loadSchemasForUrls(urls: urls)
+    var processedSchemas = Set<URL>([])
+    repeat {
+        let _ = FileSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: Schema) -> Void in
+            if processedSchemas.contains(url) {
+                return
+            }
+            processedSchemas.insert(url)
+            switch schema {
+            case .Object(let rootObject):
+                generateFile(rootObject,
+                             outputDirectory: outputDirectory,
+                             generationParameters: generationParameters)
+            default:
+                assert(false, "Incorrect Schema for root") // TODO Better error message.
+            }
+        })
+    } while (processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count)
 }

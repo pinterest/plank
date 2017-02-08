@@ -17,7 +17,7 @@ build_test_index_linux:
 test: build_test_index_linux build
 	swift test
 
-archive: clean
+archive:
 	swift build -c release -Xswiftc -static-stdlib
 
 archive_linux: clean
