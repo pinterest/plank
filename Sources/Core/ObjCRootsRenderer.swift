@@ -81,7 +81,7 @@ struct ObjCRootsRenderer {
 
     func renderModelObjectWithDictionary() -> ObjCIR.Method {
         return ObjCIR.method("+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary") {
-            ["return [[self alloc] initWithDictionary:dictionary];"]
+            ["return [[self alloc] initWithModelDictionary:dictionary];"]
         }
     }
 
@@ -89,7 +89,7 @@ struct ObjCRootsRenderer {
     func renderDesignatedInit() -> ObjCIR.Method {
         return ObjCIR.method("- (instancetype)init") {
             [
-                "return [self initWithDictionary:@{}];",
+                "return [self initWithModelDictionary:@{}];",
             ]
         }
     }
@@ -195,7 +195,7 @@ struct ObjCRootsRenderer {
         }
     }
 
-    func renderInitWithDictionary() -> ObjCIR.Method {
+    func renderInitWithModelDictionary() -> ObjCIR.Method {
         func renderPropertyInit(
             _ propertyToAssign: String,
             _ rawObjectName: String,
@@ -207,13 +207,14 @@ struct ObjCRootsRenderer {
             case .Array(itemType: .some(let itemType)):
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
+                let currentObj = "obj\(counter)"
                 return [
                     "NSArray *items = \(rawObjectName);",
                     "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items.count];",
-                    ObjCIR.forStmt("id obj in items") { [
-                        ObjCIR.ifStmt("[obj isEqual:[NSNull null]] == NO") { [
+                    ObjCIR.forStmt("id \(currentObj) in items") { [
+                        ObjCIR.ifStmt("[\(currentObj) isEqual:[NSNull null]] == NO") { [
                                 "id \(currentTmp) = nil;",
-                            renderPropertyInit(currentTmp, "obj", schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n"),
+                            renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n"),
                             ObjCIR.ifStmt("\(currentTmp) != nil") {[
                                 "[\(currentResult) addObject:\(currentTmp)];"
                             ]}
@@ -223,18 +224,20 @@ struct ObjCRootsRenderer {
                 ]
             case .Map(valueType: .some(let valueType)):
                 let currentResult = "result\(counter)"
+                let currentItems = "items\(counter)"
+                let (currentKey, currentObj, currentStop) = ("key\(counter)", "obj\(counter)", "stop\(counter)")
                 return [
-                    "NSDictionary *items = \(rawObjectName);",
-                    "NSMutableDictionary *\(currentResult) = [NSMutableDictionary dictionaryWithCapacity:items.count];",
+                    "NSDictionary *\(currentItems) = \(rawObjectName);",
+                    "NSMutableDictionary *\(currentResult) = [NSMutableDictionary dictionaryWithCapacity:\(currentItems).count];",
                     ObjCIR.stmt(
-                        ObjCIR.msg("items",
+                        ObjCIR.msg(currentItems,
                                ("enumerateKeysAndObjectsUsingBlock",
-                                ObjCIR.block(["NSString *  _Nonnull key",
-                                              "id  _Nonnull obj",
-                                              "__unused BOOL * _Nonnull stop"]) {
+                                ObjCIR.block(["NSString *  _Nonnull \(currentKey)",
+                                              "id  _Nonnull \(currentObj)",
+                                              "__unused BOOL * _Nonnull \(currentStop)"]) {
                                     [
-                                        ObjCIR.ifStmt("obj != nil && [obj isEqual:[NSNull null]] == NO") {
-                                            renderPropertyInit("\(currentResult)[key]", "obj", schema: valueType, firstName: firstName, counter: counter + 1)
+                                        ObjCIR.ifStmt("\(currentObj) != nil && [\(currentObj) isEqual:[NSNull null]] == NO") {
+                                            renderPropertyInit("\(currentResult)[\(currentKey)]", currentObj, schema: valueType, firstName: firstName, counter: counter + 1)
                                         }
                                     ]
                                })
@@ -289,15 +292,15 @@ struct ObjCRootsRenderer {
             }
         }
 
-        return ObjCIR.method("- (instancetype)initWithDictionary:(NSDictionary *)modelDictionary") {
+        return ObjCIR.method("- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary") {
             let x: [String] = self.properties.map{ (name, schema) in
                 ObjCIR.ifStmt("[key isEqualToString:\(name.objcLiteral())]") {
                     [
                         "id value = valueOrNil(modelDictionary, \(name.objcLiteral()));",
                         ObjCIR.ifStmt("value != nil") {
-                            renderPropertyInit("_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
+                            renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
                         },
-                        "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
+                        "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
                     ]
                 }
             }
@@ -305,7 +308,7 @@ struct ObjCRootsRenderer {
             return [
                 "NSParameterAssert(modelDictionary);",
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
-                                   "if (!(self = [super initWithDictionary:modelDictionary])) { return self; }",
+                                   "if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }",
                 ObjCIR.stmt(
                     ObjCIR.msg("modelDictionary",
                                ("enumerateKeysAndObjectsUsingBlock", ObjCIR.block(["NSString *  _Nonnull key",
@@ -496,7 +499,7 @@ struct ObjCRootsRenderer {
                                    "if (!(self = [super initWithCoder:aDecoder])) { return self; }",
                 self.properties.map(formatParam).joined(separator: "\n"),
                 self.properties.map { (param, _) -> String in
-                    "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = [aDecoder decodeIntForKey:\((param + "_dirty_property").objcLiteral())];"
+                    "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = [aDecoder decodeIntForKey:\((param + "_dirty_property").objcLiteral())] & 0x1;"
                 }.joined(separator: "\n"),
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
                     ["[self PIModelDidInitialize:PIModelInitTypeDefault];"]
@@ -804,7 +807,7 @@ struct ObjCRootsRenderer {
                     (self.isBaseClass ? .Public : .Private, self.renderPolymorphicTypeIdentifier()),
                     (self.isBaseClass ? .Public : .Private, self.renderModelObjectWithDictionary()),
                     (.Private, self.renderDesignatedInit()),
-                    (self.isBaseClass ? .Public : .Private, self.renderInitWithDictionary()),
+                    (self.isBaseClass ? .Public : .Private, self.renderInitWithModelDictionary()),
                     (.Public, self.renderInitWithBuilder()),
                     (self.isBaseClass ? .Public : .Private, self.renderInitWithBuilderWithInitType()),
                     (.Private, self.renderDebugDescription()),
