@@ -127,10 +127,12 @@ struct ObjCRootsRenderer {
             return schemaHashStatement(with: formattedParam, for: schema)
         }
 
+
         return ObjCIR.method("- (NSUInteger)hash") {[
-            "return (",
-                -->[propReturnStatements.map{ "(\($0))" }.joined(separator: " ^\n")],
-            ");"
+            "NSUInteger subhashes[] = {",
+            -->[propReturnStatements.joined(separator: ",\n")],
+            "};",
+            "return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));"
         ]}
     }
 
