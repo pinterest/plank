@@ -28,10 +28,19 @@ class FileSchemaLoader: SchemaLoader {
         // Load from local file
         if let data = try? Data(contentsOf: URL(fileURLWithPath: schemaUrl.path)) {
             if let jsonResult = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! JSONObject {
-                refs[schemaUrl] = FileSchemaLoader.sharedPropertyLoader(jsonResult, schemaUrl)
-                return refs[schemaUrl]
+                let id = jsonResult["id"] as? String ?? ""
+                if id.hasSuffix(schemaUrl.lastPathComponent) == false {
+                    fatalError("Invalid Schema: The value for the `id` (\(id) must end with the filename \(schemaUrl.lastPathComponent).")
+                }
+
+                if let schema = FileSchemaLoader.sharedPropertyLoader(jsonResult, schemaUrl) {
+                    refs[schemaUrl] = schema
+                    return schema
+                } else {
+                    fatalError("Invalid Schema. Unable to parse schema at URL: \(schemaUrl)")
+                }
             } else {
-               fatalError("Invalid JSON. Unable to parse schema at URL: \(schemaUrl)")
+               fatalError("Invalid JSON. Unable to parse json at URL: \(schemaUrl)")
             }
         } else {
             fatalError("Error loading or parsing schema at URL: \(schemaUrl)")
