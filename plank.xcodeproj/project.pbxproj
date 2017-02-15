@@ -154,17 +154,17 @@
 		OBJ_8 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */,
-				812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */,
-				812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */,
 				OBJ_9 /* FileGenerator.swift */,
 				OBJ_10 /* ObjCRootsRenderer.swift */,
+				812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */,
+				812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */,
 				OBJ_11 /* ObjectiveCFileGenerator.swift */,
+				812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */,
 				OBJ_12 /* ObjectiveCIR.swift */,
+				812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */,
 				OBJ_13 /* Schema.swift */,
 				OBJ_14 /* SchemaLoader.swift */,
 				OBJ_15 /* StringExtensions.swift */,
-				812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */,
 			);
 			name = Core;
 			path = Sources/Core;
