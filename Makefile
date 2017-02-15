@@ -1,7 +1,6 @@
 # This makefile exposes targets that unify building, testing and archiving of
 # PINModel
 
-SWIFT_LINT_EXEC=`which swiftlint`
 
 .PHONY: all clean build test archive
 
@@ -11,7 +10,7 @@ clean:
 	swift build --clean
 
 lint:
-	$(SWIFT_LINT_EXEC) lint --reporter emoji
+	./Utility/lint.sh
 
 build: lint
 	swift build
