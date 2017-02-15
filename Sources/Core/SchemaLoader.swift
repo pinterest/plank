@@ -18,7 +18,7 @@ class FileSchemaLoader: SchemaLoader {
     var refs: [URL:Schema]
 
     init() {
-        self.refs = [URL:Schema]()
+        self.refs = [URL: Schema]()
     }
 
     func loadSchema(_ schemaUrl: URL) -> Schema? {

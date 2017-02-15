@@ -41,7 +41,6 @@ import Foundation
     }
 #endif
 
-
 extension NSObject {
     // prefix with "pin_" since protocol extensions cannot override parent implementations
     class func pin_className() -> String {
@@ -53,7 +52,7 @@ extension NSObject {
     }
 }
 
-let OBJC_RESERVED_WORDS_REPLACEMENTS = [
+let objectiveCReservedWordReplacements = [
     "description": "description_text",
     "id": "identifier"
   // TODO: Fill out more objc keywords with replacements.
@@ -62,7 +61,7 @@ let OBJC_RESERVED_WORDS_REPLACEMENTS = [
 extension String {
     func snakeCaseToCamelCase() -> String {
         var str: String = self
-        if let replacementString = OBJC_RESERVED_WORDS_REPLACEMENTS[self] as String?  {
+        if let replacementString = objectiveCReservedWordReplacements[self] as String? {
             str = replacementString
         }
 
@@ -76,7 +75,7 @@ extension String {
     func snakeCaseToPropertyName() -> String {
         var str: String = self
 
-        if let replacementString = OBJC_RESERVED_WORDS_REPLACEMENTS[self] as String?  {
+        if let replacementString = objectiveCReservedWordReplacements[self] as String? {
             str = replacementString
         }
 
@@ -100,7 +99,7 @@ extension String {
         let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercased()
         return capitalizedFirstLetter + String(formattedPropName.characters.dropFirst())
     }
-    
+
     /// Get the last n characters of a string
     func suffixSubstring(_ length: Int) -> String {
         return self.substring(from: self.characters.index(self.endIndex, offsetBy: -length))

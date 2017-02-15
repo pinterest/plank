@@ -14,4 +14,3 @@ func handleProcess(processInfo: ProcessInfo) {
 }
 
 handleProcess(processInfo: ProcessInfo.processInfo)
-

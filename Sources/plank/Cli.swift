@@ -37,7 +37,6 @@ extension FlagOptions : HelpCommandOutput {
     }
 }
 
-
 func parseFlag(arguments: ArraySlice<String>) -> ([FlagOptions:String], ArraySlice<String>)? {
     var remainingArgs = arguments
     if remainingArgs.isEmpty == false {
@@ -60,7 +59,7 @@ func parseFlag(arguments: ArraySlice<String>) -> ([FlagOptions:String], ArraySli
             }
 
             if let flagType = FlagOptions(rawValue: flagName.trimmingCharacters(in: CharacterSet(charactersIn: "-"))) {
-                return ([flagType : flagValue], remainingArgs)
+                return ([flagType: flagValue], remainingArgs)
             } else {
                 print("Error: Unexpected flag \(flagName) with value \(flagValue)")
                 handleHelpCommand()
@@ -91,7 +90,7 @@ func parseFlags(fromArguments arguments: ArraySlice<String>) -> ([FlagOptions:St
     return ([:], arguments)
 }
 
-func handleGenerateCommand(withArguments arguments:ArraySlice<String>) {
+func handleGenerateCommand(withArguments arguments: ArraySlice<String>) {
 
     var generationParameters: GenerationParameters = [:]
     let (flags, args) = parseFlags(fromArguments: arguments)
@@ -145,10 +144,8 @@ func handleHelpCommand() {
         "    $ plank [options] file1 file2 ...",
         "",
         "Options:",
-        "\(FlagOptions.printHelp())",
+        "\(FlagOptions.printHelp())"
     ].joined(separator: "\n")
 
     print(helpDocs)
 }
-
-

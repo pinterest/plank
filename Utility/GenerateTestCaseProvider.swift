@@ -4,7 +4,7 @@ import Foundation
 
 var classNames: [String] = []
 
-func printTestCaseExtension(withClassName className:String, andTestNames testNames:[String]) -> String {
+func printTestCaseExtension(withClassName className: String, andTestNames testNames: [String]) -> String {
     classNames.append(className)
     let testLines = testNames.map { (testName) -> String in
         return  "       (\"\(testName)\", \(testName))"
@@ -23,8 +23,7 @@ func printTestCaseExtension(withClassName className:String, andTestNames testNam
     return output
 }
 
-
-func printLinuxMain(withClassNames classNames:[String]) -> String {
+func printLinuxMain(withClassNames classNames: [String]) -> String {
     let classNameList = classNames.map { (className) -> String in
         return "   tests += [testCase(\(className).allTests)]"
     }.joined(separator: "\n")
@@ -39,7 +38,7 @@ func printLinuxMain(withClassNames classNames:[String]) -> String {
     ].joined(separator: "\n")
 }
 
-func processFile(withPath path:String) -> String {
+func processFile(withPath path: String) -> String {
     if path == "GenerateTestCaseProvider.swift" {
         return ""
     }
@@ -48,7 +47,7 @@ func processFile(withPath path:String) -> String {
 		var output: [String] = []
         var currentClassName: String? = nil
         var testNames: [String] = []
-        file.enumerateLines { (currentLine, stop) in
+        file.enumerateLines { (currentLine, _) in
             let line = currentLine.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             if line.hasPrefix("class") {
                 // class FooBar: XCTestCase
@@ -66,13 +65,13 @@ func processFile(withPath path:String) -> String {
             } else if line.contains("test") && line.contains("func") {
 				let testComponent =
 					line.components(separatedBy: " ")
-					.map{ $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
+					.map { $0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) }
 					.filter { $0 != "" }
 					.filter { $0.hasPrefix("test") }
 
 				if let testName = testComponent.first?.replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "") {
 					testNames.append(testName)
-				}	else {
+				} else {
 					print("Error parsing test declaration with line: \(line)")
 				}
 			}
@@ -87,7 +86,7 @@ func processFile(withPath path:String) -> String {
     return ""
 }
 
-func processDirectory(atPath path:String) {
+func processDirectory(atPath path: String) {
     guard path != "" else { return }
     if let files = try? FileManager.default.contentsOfDirectory(atPath: path) {
 
