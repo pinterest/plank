@@ -2,7 +2,7 @@
 //  ObjectiveCEqualityExtension.swift
 //  plank
 //
-//  Created by rmalik on 2/14/17.
+//  Created by Rahul Malik on 2/14/17.
 //
 //
 
@@ -44,10 +44,11 @@ extension ObjCRootsRenderer {
         }
 
         return ObjCIR.method("- (NSUInteger)hash") {[
-            "return (",
-            -->[propReturnStatements.map { "(\($0))" }.joined(separator: " ^\n")],
-            ");"
-            ]}
+            "NSUInteger subhashes[] = {",
+            -->[propReturnStatements.joined(separator: ",\n")],
+            "};",
+            "return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));"
+        ]}
     }
 
     // MARK: Equality Methods inspired from NSHipster article on Equality: http://nshipster.com/equality/

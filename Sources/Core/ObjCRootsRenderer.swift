@@ -83,10 +83,15 @@ struct ObjCRootsRenderer {
         switch schema {
         case .Array(itemType: .none):
             return "NSArray *"
+        case .Array(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
+            // Objective-C primitive types are represented as NSNumber
+            return "NSArray<NSNumber /* \(itemType.debugDescription) */ *> *"
         case .Array(itemType: .some(let itemType)):
             return "NSArray<\(objcClassFromSchema(param, itemType))> *"
         case .Map(valueType: .none):
             return "NSDictionary *"
+        case .Map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
+            return "NSDictionary<NSString *, NSNumber /* \(valueType.debugDescription) */ *> *"
         case .Map(valueType: .some(let valueType)):
             return "NSDictionary<NSString *, \(objcClassFromSchema(param, valueType))> *"
         case .String(format: .none),

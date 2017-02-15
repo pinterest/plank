@@ -2,7 +2,7 @@
 //  ObjectiveCInitExtension.swift
 //  plank
 //
-//  Created by rmalik on 2/14/17.
+//  Created by Rahul Malik on 2/14/17.
 //
 //
 
@@ -80,7 +80,7 @@ extension ObjCRootsRenderer {
                         ]},
                     "\(propertyToAssign) = \(currentResult);"
                 ]
-            case .Map(valueType: .some(let valueType)):
+            case .Map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType == false:
                 let currentResult = "result\(counter)"
                 let currentItems = "items\(counter)"
                 let (currentKey, currentObj, currentStop) = ("key\(counter)", "obj\(counter)", "stop\(counter)")
