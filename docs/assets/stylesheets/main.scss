@@ -1,0 +1,50 @@
+---
+---
+
+.site-header {
+	padding: 20px 0;
+}
+
+.docs-section {
+	h5 {
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+
+		> li {
+			list-style: none;
+			margin: 0;
+
+			a {
+				display: block;
+			}
+		}
+	}
+}
+
+// Highlighting
+
+@import "monokai";
+
+.doc-header {
+	.edit-link {
+		float: right;
+		margin-top: 15px;
+	}
+
+	.page-header {
+		margin-top: 0;
+	}
+}
+
+.highlight {
+	pre {
+		border-color: #222;
+		background-color: #333;
+		color: #f8f8f2;
+	}
+}

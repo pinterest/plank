@@ -1,0 +1,12 @@
+<nav class="doc-sidebar">
+	{% for collection in site.collections %}
+	<div class="docs-section">
+		<h5>{{ collection.title }}</h5>
+		<ul>
+		{% for doc in collection.docs %}
+			<li><a href="{{ doc.url }}">{{ doc.title }}</a></li>
+		{% endfor %}
+		</ul>
+	</div>
+	{% endfor %}
+</nav>
