@@ -18,7 +18,7 @@ extension ObjCRootsRenderer {
             case .Enum(_), .Integer:
                 // - The value equality statement is sufficient for equality testing
                 // - All enum types are treated as Integers so we do not need to treat String Enumerations differently
-                return "_\(param)"
+                return "(NSUInteger)_\(param)"
             case .Float:
                 return " [@(_\(param)) hash]"
             case .Boolean:
