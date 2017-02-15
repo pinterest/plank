@@ -27,17 +27,22 @@ class FileSchemaLoader: SchemaLoader {
         }
         // Load from local file
         if let data = try? Data(contentsOf: URL(fileURLWithPath: schemaUrl.path)) {
-            if let jsonResult = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! JSONObject {
-                let id = jsonResult["id"] as? String ?? ""
-                if id.hasSuffix(schemaUrl.lastPathComponent) == false {
-                    fatalError("Invalid Schema: The value for the `id` (\(id) must end with the filename \(schemaUrl.lastPathComponent).")
-                }
+            if let jsonResult = try? JSONSerialization.jsonObject(with: data,
+                                                                  options: JSONSerialization.ReadingOptions.mutableContainers) {
+                if let jsonDict = jsonResult as? JSONObject {
+                    let id = jsonDict["id"] as? String ?? ""
+                    if id.hasSuffix(schemaUrl.lastPathComponent) == false {
+                        fatalError("Invalid Schema: The value for the `id` (\(id) must end with the filename \(schemaUrl.lastPathComponent).")
+                    }
 
-                if let schema = FileSchemaLoader.sharedPropertyLoader(jsonResult, schemaUrl) {
-                    refs[schemaUrl] = schema
-                    return schema
+                    if let schema = FileSchemaLoader.sharedPropertyLoader(jsonDict, schemaUrl) {
+                        refs[schemaUrl] = schema
+                        return schema
+                    } else {
+                        fatalError("Invalid Schema. Unable to parse schema at URL: \(schemaUrl)")
+                    }
                 } else {
-                    fatalError("Invalid Schema. Unable to parse schema at URL: \(schemaUrl)")
+                    fatalError("Invalid Schema. Expected dictionary as the root object type for schema at URL: \(schemaUrl)")
                 }
             } else {
                fatalError("Invalid JSON. Unable to parse json at URL: \(schemaUrl)")
