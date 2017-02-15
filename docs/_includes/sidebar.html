@@ -1,12 +1,10 @@
 <nav class="doc-sidebar">
-	{% for collection in site.collections %}
 	<div class="docs-section">
-		<h5>{{ collection.title }}</h5>
+		<h5>Getting Started</h5>
 		<ul>
-		{% for doc in collection.docs %}
-			<li><a href="{{ doc.url }}">{{ doc.title }}</a></li>
+		{% for post in site.posts %}
+			<li><a href="{{ post.url }}">{{ post.title }}</a></li>
 		{% endfor %}
 		</ul>
 	</div>
-	{% endfor %}
 </nav>

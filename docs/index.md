@@ -2,10 +2,9 @@
 layout: default
 ---
 
-# Generating Code with Plank
-## What is Plank?
+# Plank
 
-[Plank](https://phabricator.pinadmin.com/diffusion/PMD/) (working title) is a command-line code generation tool. The goal of this project is to generate model classes for Objective-C (iOS) initially and then expand to Java (Android) in the future. The model schema definitions are represented in the json-schema v4 format.
+[Plank](https://github.com/pinterest/plank/) is a command-line code generation tool. The goal of this project is to generate model classes for Objective-C (iOS) initially and then expand to Java (Android) in the future. The model schema definitions are represented in the json-schema v4 format.
 **Goals of the model classes**
 
 - **Immutability** : Model classes will be generated with Immutability as a requirement. Each class will have "Builder" classes that will aid in mutation.
