@@ -8,8 +8,6 @@
 
 import Foundation
 
-let Indentation = "    " // Four space indentation for now. Might be configurable in the future.
-
 public enum ObjCMemoryAssignmentType: String {
     case Copy = "copy"
     case Strong = "strong"
@@ -27,7 +25,6 @@ public enum ObjCMutabilityType: String {
     case ReadWrite = "readwrite"
 }
 
-
 public enum ObjCPrimitiveType: String {
     case Float = "float"
     case Double = "double"
@@ -42,7 +39,7 @@ extension String {
     }
 
     func indent() -> String {
-        return Indentation + self
+        return "    "  + self // Four space indentation for now. Might be configurable in the future.
     }
 }
 
@@ -52,8 +49,6 @@ extension Sequence {
         return "@[\(inner)]"
     }
 }
-
-
 
 typealias Argument = String
 typealias Parameter = String
@@ -94,13 +89,11 @@ extension SchemaObjectRoot {
 
 extension Schema {
     var isObjCPrimitiveType: Bool {
-        get {
-            switch self {
-            case .Boolean, .Integer, .Enum(_), .Float:
-                return true
-            default:
-                return false
-            }
+        switch self {
+        case .Boolean, .Integer, .Enum(_), .Float:
+            return true
+        default:
+            return false
         }
     }
 
@@ -127,7 +120,7 @@ enum MethodVisibility: Equatable {
     case Private
 }
 
-func ==(lhs: MethodVisibility, rhs: MethodVisibility) -> Bool {
+func == (lhs: MethodVisibility, rhs: MethodVisibility) -> Bool {
     switch (lhs, rhs) {
     case (.Public, .Public): return true
     case (.Private, .Private): return true
@@ -137,8 +130,8 @@ func ==(lhs: MethodVisibility, rhs: MethodVisibility) -> Bool {
 
 prefix operator -->
 
-prefix func --> (strs: Array<String>) -> String {
-  return strs.flatMap { $0.components(separatedBy: "\n").map{$0.indent() } }
+prefix func --> (strs: [String]) -> String {
+  return strs.flatMap { $0.components(separatedBy: "\n").map {$0.indent() } }
     .joined(separator: "\n")
 }
 
@@ -154,7 +147,6 @@ struct ObjCIR {
         return ObjCIR.Method(body: body(), signature: signature)
     }
 
-
     static func stmt(_ body: String) -> String {
         return "\(body);"
     }
@@ -162,7 +154,7 @@ struct ObjCIR {
     static func msg(_ variable: String, _ messages: (Parameter, Argument)...) -> String {
         return
             "[\(variable) " +
-                messages.map{ (param, arg) in "\(param):\(arg)" }.joined(separator: " ") +
+                messages.map { (param, arg) in "\(param):\(arg)" }.joined(separator: " ") +
             "]"
     }
 
@@ -203,7 +195,7 @@ struct ObjCIR {
     static func switchStmt(_ switchVariable: String, body: () -> [SwitchCase]) -> String {
         return [
             "switch (\(switchVariable)) {",
-            body().map{ $0.render() }.joined(separator: "\n"),
+            body().map { $0.render() }.joined(separator: "\n"),
             "}"
         ].joined(separator: "\n")
     }
@@ -241,7 +233,6 @@ struct ObjCIR {
         return "#import \"\(filename).h\""
     }
 
-
     static func enumStmt(_ enumName: String, body: () -> [String]) -> String {
         return [
             "typedef NS_ENUM(NSInteger, \(enumName)) {",
@@ -251,8 +242,8 @@ struct ObjCIR {
     }
 
     struct Method {
-        let body : [String]
-        let signature : String
+        let body: [String]
+        let signature: String
 
         func render() -> [String] {
             return [
@@ -284,7 +275,6 @@ struct ObjCIR {
         )
         case Enum(name: String, values: EnumType)
 
-
         func renderHeader() -> [String] {
             switch self {
             case .Struct(_, _):
@@ -296,19 +286,19 @@ struct ObjCIR {
                 return [
                     "#import <Foundation/Foundation.h>",
                     parentName.map(ObjCIR.fileImportStmt) ?? "",
-                    "#import <PINModelRuntime/PINModelRuntime.h>",
-                    ].filter { $0 != "" }  + (["\(myName)Builder"] + classNames).sorted().map{ "@class \($0);" }
+                    "#import <PINModelRuntime/PINModelRuntime.h>"
+                    ].filter { $0 != "" }  + (["\(myName)Builder"] + classNames).sorted().map { "@class \($0);" }
             case .Class(let className, let extends, let methods, let properties, let protocols):
                 let protocolList = protocols.keys.sorted().joined(separator: ", ")
                 let protocolDeclarations = protocols.count > 0 ? "<\(protocolList)>" : ""
                 let superClass = extends ?? "NSObject\(protocolDeclarations)"
                 return [
                     "@interface \(className) : \(superClass)",
-                    properties.map{ (param, typeName, schema, access) in
+                    properties.map { (param, typeName, schema, access) in
                         "@property (\(schema.isObjCPrimitiveType ? "" : "nullable, ")nonatomic, \(schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
                     methods.filter { visibility, _ in visibility == .Public }
-                            .map { $1 }.map{ $0.signature + ";" }.joined(separator: "\n"),
+                            .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                 ]
             case .Category(className: _, categoryName: _, methods: _, properties: _):
@@ -333,7 +323,7 @@ struct ObjCIR {
             case .Struct(name: let name, fields: let fields):
                 return [
                     "struct \(name) {",
-                        fields.sorted().map{ $0.indent() }.joined(separator: "\n"),
+                        fields.sorted().map { $0.indent() }.joined(separator: "\n"),
                     "};"
                 ]
             case .Macro(_):
@@ -344,12 +334,12 @@ struct ObjCIR {
             case .Class(name: let className, extends: _, methods: let methods, properties: _, protocols: let protocols):
                 return [
                     "@implementation \(className)",
-                    methods.flatMap{$1.render()}.joined(separator: "\n"),
+                    methods.flatMap {$1.render()}.joined(separator: "\n"),
                     protocols.flatMap({ (protocolName, methods) -> [String] in
-                        return ["#pragma mark - \(protocolName)"] + methods.flatMap{$0.render()}
+                        return ["#pragma mark - \(protocolName)"] + methods.flatMap {$0.render()}
                     }).joined(separator: "\n"),
                     "@end"
-                ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter{ $0 != "" }
+                ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .Category(className: let className, categoryName: let categoryName, methods: let methods, properties: let properties):
                 // Only render anonymous categories in the implementation
                 guard categoryName == nil else { return [] }
@@ -360,7 +350,7 @@ struct ObjCIR {
                     }.joined(separator: "\n"),
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
-                ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter{ $0 != "" }
+                ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .Function(let method):
                 return method.render()
             case .Enum(_, _):
@@ -370,5 +360,3 @@ struct ObjCIR {
         }
     }
 }
-
-

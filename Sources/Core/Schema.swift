@@ -68,7 +68,7 @@ typealias Property = (Parameter, Schema)
 struct JSONParseError: Error {}
 
 extension Dictionary {
-    init(elements:[(Key, Value)]) {
+    init(elements: [(Key, Value)]) {
         self.init()
         for (key, value) in elements {
             updateValue(value, forKey: key)
@@ -97,22 +97,17 @@ struct SchemaObjectRoot: Equatable {
     let algebraicTypeIdentifier: String?
 
     var typeIdentifier: String {
-        get {
-            return algebraicTypeIdentifier ?? name
-        }
+        return algebraicTypeIdentifier ?? name
     }
 }
 
-func ==(lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
+func == (lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
     return lhs.name == rhs.name
 }
 
-
-let RootNSObject = SchemaObjectRoot(name: "NSObject", properties: [:], extends: nil, algebraicTypeIdentifier: nil)
-
 extension SchemaObjectRoot : CustomDebugStringConvertible {
     public var debugDescription: String {
-        return (["\(name)\n extends from \(extends.map{ $0()?.debugDescription })\n"] + properties.map { (k, v) in "\t\(k): \(v.debugDescription)\n" }).reduce("", +)
+        return (["\(name)\n extends from \(extends.map { $0()?.debugDescription })\n"] + properties.map { (k, v) in "\t\(k): \(v.debugDescription)\n" }).reduce("", +)
     }
 }
 
@@ -128,7 +123,6 @@ indirect enum Schema {
     case Enum(EnumType)
     case Reference(with: LazySchemaReference)
 }
-
 
 extension Schema : CustomDebugStringConvertible {
     public var debugDescription: String {
@@ -156,7 +150,6 @@ extension Schema : CustomDebugStringConvertible {
         }
     }
 }
-
 
 extension Schema {
     // Computed Properties
@@ -192,8 +185,8 @@ extension Schema {
                     let enumVals = try? enumValues.map(EnumValue<String>.init)
                     let defaultVal = enumVals?.first(where: { $0.defaultValue == defaultValue })
                     return enumVals
-                        .flatMap{ v in defaultVal.map{ ($0, v) } }
-                        .map{ defaultVal, enumVals in
+                        .flatMap { v in defaultVal.map { ($0, v) } }
+                        .map { defaultVal, enumVals in
                             Schema.Enum(EnumType.String(enumVals, defaultValue: defaultVal))
                         }
                 } else {
@@ -226,9 +219,9 @@ extension Schema {
                                 propertyForType(propertyInfo: $0, source: source)
                         }
                         return (k, schemaOpt)
-                        }.map { (name, optSchema) in optSchema.map{ (name, $0) } }
+                        }.map { (name, optSchema) in optSchema.map { (name, $0) } }
                     let lifted: [Property]? = optTuples.reduce([], { (build: [Property]?, tupleOption: Property?) -> [Property]? in
-                        build.flatMap { (b: [Property]) -> [Property]? in tupleOption.map{ b + [$0] } }
+                        build.flatMap { (b: [Property]) -> [Property]? in tupleOption.map { b + [$0] } }
                     })
                     let extends = (propertyInfo["extends"] as? JSONObject)
                         .flatMap { ($0["$ref"] as? String).map { ref in {
@@ -247,9 +240,9 @@ extension Schema {
                 return (propertyInfo["oneOf"] as? [JSONObject]) // [JSONObject]
                     .map { jsonObjs in jsonObjs.map { propertyForType(propertyInfo: $0, source: source) } } // [Schema?]?
                     .flatMap { schemas in schemas.reduce([], { (build: [Schema]?, tupleOption: Schema?) -> [Schema]? in
-                        build.flatMap { (b: [Schema]) -> [Schema]? in tupleOption.map{ b + [$0] } }
+                        build.flatMap { (b: [Schema]) -> [Schema]? in tupleOption.map { b + [$0] } }
                     }) }
-                    .map{ Schema.OneOf(types: $0) }
+                    .map { Schema.OneOf(types: $0) }
             }
 
         }

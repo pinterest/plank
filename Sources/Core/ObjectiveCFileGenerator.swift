@@ -10,8 +10,8 @@ import Foundation
 
 // MARK: File Generation Manager
 
-struct ObjectiveCFileGenerator : FileGeneratorManager {
-    static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> Array<FileGenerator> {
+struct ObjectiveCFileGenerator: FileGeneratorManager {
+    static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> [FileGenerator] {
 
         let rootsRenderer = ObjCRootsRenderer(rootSchema: descriptor, params: generatorParameters)
 
@@ -27,9 +27,7 @@ struct ObjCHeaderFile: FileGenerator {
     let className: String
 
     var fileName: String {
-        get {
-            return "\(className).h"
-        }
+        return "\(className).h"
     }
 
     func renderFile() -> String {
@@ -49,9 +47,7 @@ struct ObjCImplementationFile: FileGenerator {
     let className: String
 
     var fileName: String {
-        get {
-            return "\(className).m"
-        }
+        return "\(className).m"
     }
 
     func renderFile() -> String {

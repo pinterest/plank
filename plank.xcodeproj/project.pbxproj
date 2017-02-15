@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		812A69D01E53D2A1006A510E /* ObjectiveCEqualityExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */; };
+		812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */; };
+		812A69D41E53D35F006A510E /* ObjectiveCBuilderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */; };
+		812A69D61E53D44D006A510E /* ObjectiveCNSCodingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */; };
 		OBJ_33 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileGenerator.swift */; };
 		OBJ_34 /* ObjCRootsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ObjCRootsRenderer.swift */; };
 		OBJ_35 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ObjectiveCFileGenerator.swift */; };
@@ -40,6 +44,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCEqualityExtension.swift; sourceTree = "<group>"; };
+		812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInitExtension.swift; sourceTree = "<group>"; };
+		812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCBuilderExtension.swift; sourceTree = "<group>"; };
+		812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCNSCodingExtension.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ObjCRootsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCRootsRenderer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_11 /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_12 /* ObjectiveCIR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjectiveCIR.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -123,7 +131,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -132,7 +140,6 @@
 				OBJ_23 /* Utility */,
 				OBJ_24 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
@@ -147,6 +154,9 @@
 		OBJ_8 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */,
+				812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */,
+				812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */,
 				OBJ_9 /* FileGenerator.swift */,
 				OBJ_10 /* ObjCRootsRenderer.swift */,
 				OBJ_11 /* ObjectiveCFileGenerator.swift */,
@@ -154,6 +164,7 @@
 				OBJ_13 /* Schema.swift */,
 				OBJ_14 /* SchemaLoader.swift */,
 				OBJ_15 /* StringExtensions.swift */,
+				812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */,
 			);
 			name = Core;
 			path = Sources/Core;
@@ -166,6 +177,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_29 /* Build configuration list for PBXNativeTarget "Core" */;
 			buildPhases = (
+				812A69CC1E53D00E006A510E /* ShellScript */,
 				OBJ_32 /* Sources */,
 				OBJ_40 /* Frameworks */,
 			);
@@ -227,7 +239,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_24 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -239,18 +251,38 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		812A69CC1E53D00E006A510E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_32 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
 				OBJ_33 /* FileGenerator.swift in Sources */,
+				812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */,
 				OBJ_34 /* ObjCRootsRenderer.swift in Sources */,
 				OBJ_35 /* ObjectiveCFileGenerator.swift in Sources */,
 				OBJ_36 /* ObjectiveCIR.swift in Sources */,
 				OBJ_37 /* Schema.swift in Sources */,
+				812A69D41E53D35F006A510E /* ObjectiveCBuilderExtension.swift in Sources */,
 				OBJ_38 /* SchemaLoader.swift in Sources */,
 				OBJ_39 /* StringExtensions.swift in Sources */,
+				812A69D01E53D2A1006A510E /* ObjectiveCEqualityExtension.swift in Sources */,
+				812A69D61E53D44D006A510E /* ObjectiveCNSCodingExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,12 +323,23 @@
 		OBJ_3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES_AGGRESSIVE;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-DXcode";
@@ -305,6 +348,7 @@
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
 				SWIFT_VERSION = 3.0;
 				USE_HEADERMAP = NO;
 			};
@@ -353,11 +397,22 @@
 		OBJ_4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES_AGGRESSIVE;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -365,6 +420,7 @@
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
 				SWIFT_VERSION = 3.0;
 				USE_HEADERMAP = NO;
 			};
