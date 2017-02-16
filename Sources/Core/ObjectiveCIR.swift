@@ -139,7 +139,7 @@ prefix func --> (body: () -> [String]) -> String {
   return -->body()
 }
 
-struct ObjCIR {
+public struct ObjCIR {
 
     static let ret = "return"
 
@@ -243,7 +243,7 @@ struct ObjCIR {
         ].joined(separator: "\n")
     }
 
-    struct Method {
+    public struct Method {
         let body: [String]
         let signature: String
 

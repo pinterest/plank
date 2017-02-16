@@ -57,7 +57,7 @@ extension ObjCRootsRenderer {
         }
     }
 
-    func renderInitWithModelDictionary() -> ObjCIR.Method {
+    public func renderInitWithModelDictionary() -> ObjCIR.Method {
         func renderPropertyInit(
             _ propertyToAssign: String,
             _ rawObjectName: String,
@@ -140,9 +140,57 @@ extension ObjCRootsRenderer {
                             assert(false, "TODO: Forward optional across methods")
                             return ""
                             }()
-                    default:
-                        assert(false, "Unsupported OneOf type (for now)")
-                        return ""
+                    case .Float:
+                        let encodingConditions = [
+                            "strcmp([\(rawObjectName) objCType], @encode(float)) == 0",
+                            "strcmp([\(rawObjectName) objCType], @encode(double)) == 0"
+                        ]
+
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && \n"
+                                             + encodingConditions.joined(separator: " ||\n")) {
+                            return renderPropertyInit(propertyToAssign, rawObjectName, schema: .Float, firstName: firstName, counter: counter)
+                        }
+                    case .Integer, .Enum(.Integer(_)):
+                        let encodingConditions = [
+                            "strcmp([\(rawObjectName) objCType], @encode(int)) == 0",
+                            "strcmp([\(rawObjectName) objCType], @encode(unsigned int)) == 0",
+                            "strcmp([\(rawObjectName) objCType], @encode(short)) == 0",
+                            "strcmp([\(rawObjectName) objCType], @encode(unsigned short)) == 0",
+                            "strcmp([\(rawObjectName) objCType], @encode(long)) == 0",
+                            "strcmp([\(rawObjectName) objCType], @encode(long long)) == 0",
+                            "strcmp([\(rawObjectName) objCType], @encode(unsigned long)) == 0",
+                            "strcmp([\(rawObjectName) objCType], @encode(unsigned long long)) == 0"
+                        ]
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && \n"
+                            + encodingConditions.joined(separator: " ||\n")) {
+                            return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
+                        }
+
+                    case .Boolean:
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && strcmp([\(rawObjectName) objCType], @encode(BOOL)) == 0") {
+                            return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
+                        }
+                    case .Array(itemType: _):
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSArray class]]") {
+                            return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
+                        }
+                    case .Map(valueType: _):
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSDictionary class]]") {
+                            return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
+                        }
+                    case .String(.some(.Uri)):
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]] && [NSURL URLWithString:\(rawObjectName)] != nil") {
+                            return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
+                        }
+                    case .String(.some(.DateTime)):
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]] && [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] transformedValue:\(rawObjectName)] != nil") {
+                            return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
+                        }                    case .String(.some(_)), .String(.none), .Enum(.String(_)):
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]]") {
+                            return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
+                        }
+                    case .OneOf(types:_):
+                        fatalError("Nested oneOf types are unsupported at this time. Please file an issue if you require this.")
                     }
                 }
 

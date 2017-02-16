@@ -10,7 +10,7 @@ import Foundation
 
 let rootNSObject = SchemaObjectRoot(name: "NSObject", properties: [:], extends: nil, algebraicTypeIdentifier: nil)
 
-struct ObjCRootsRenderer {
+public struct ObjCRootsRenderer {
     let rootSchema: SchemaObjectRoot
     let params: GenerationParameters
 
@@ -122,16 +122,15 @@ struct ObjCRootsRenderer {
                 fatalError("Bad reference found in schema for class: \(self.className)")
             }
         case .OneOf(types: let schemaTypes):
+            // TODO replace this with ADT generated name
             func inheritanceChain(schema: Schema?) -> [SchemaObjectRoot] {
                 switch schema {
-                case .none:
-                    return []
                 case .some(.Object(let root)):
                     return [root] + inheritanceChain(schema: root.extends.flatMap { $0() })
                 case .some(.Reference(with: let fn)):
                     return inheritanceChain(schema: fn())
                 default:
-                    fatalError("Unimplemented one of: \(schema)")
+                    return []
                 }
             }
 

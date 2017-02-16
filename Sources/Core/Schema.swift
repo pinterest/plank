@@ -42,7 +42,7 @@ public enum StringFormatType: String {
     case Uri = "uri"  // A universal resource identifier (URI), according to RFC3986.
 }
 
-struct EnumValue<ValueType> {
+public struct EnumValue<ValueType> {
     let defaultValue: ValueType
     let description: String
 
@@ -56,12 +56,12 @@ struct EnumValue<ValueType> {
     }
 }
 
-indirect enum EnumType {
+public indirect enum EnumType {
     case Integer([EnumValue<Int>]) // TODO: Revisit if we should have default values for integer enums
     case String([EnumValue<String>], defaultValue: EnumValue<String>)
 }
 
-typealias LazySchemaReference = () -> Schema?
+public typealias LazySchemaReference = () -> Schema?
 
 typealias Property = (Parameter, Schema)
 
@@ -90,7 +90,7 @@ func decodeRef(from source: URL, with ref: String) -> URL {
     }
 }
 
-struct SchemaObjectRoot: Equatable {
+public struct SchemaObjectRoot: Equatable {
     let name: String
     let properties: [String:Schema]
     let extends: LazySchemaReference?
@@ -101,7 +101,7 @@ struct SchemaObjectRoot: Equatable {
     }
 }
 
-func == (lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
+public func == (lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
     return lhs.name == rhs.name
 }
 
@@ -111,7 +111,7 @@ extension SchemaObjectRoot : CustomDebugStringConvertible {
     }
 }
 
-indirect enum Schema {
+public indirect enum Schema {
     case Object(SchemaObjectRoot)
     case Array(itemType: Schema?)
     case Map(valueType: Schema?) // TODO: Should we have an option to specify the key type? (probably yes)
