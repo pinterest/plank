@@ -142,7 +142,8 @@ public struct ObjCRootsRenderer {
                 chains.filter { $0[idx] == val }.count == chains.count
                 }.last.map {$0.1}
 
-            return "__kindof \((commonParent ?? rootNSObject).className(with: self.params)) *"
+            let schemaRoot = commonParent ?? rootNSObject
+            return "__kindof \((schemaRoot == commonParent ? schemaRoot.className(with: self.params) : schemaRoot.name)) *"
         }
     }
 

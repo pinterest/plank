@@ -132,7 +132,7 @@ extension ObjCRootsRenderer {
                 func loop(schema: Schema) -> String {
                     switch schema {
                     case .Object(let objectRoot):
-                        return ObjCIR.ifStmt("[\(rawObjectName)[\("type".objcLiteral())] isEqualToString:\(objectRoot.typeIdentifier.objcLiteral())]") {[
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSDictionary class]] && [\(rawObjectName)[\("type".objcLiteral())] isEqualToString:\(objectRoot.typeIdentifier.objcLiteral())]") {[
                             "\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"
                             ]}
                     case .Reference(with: let refFunc):
@@ -146,8 +146,7 @@ extension ObjCRootsRenderer {
                             "strcmp([\(rawObjectName) objCType], @encode(double)) == 0"
                         ]
 
-                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && \n"
-                                             + encodingConditions.joined(separator: " ||\n")) {
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && (\(encodingConditions.joined(separator: " ||\n")))") {
                             return renderPropertyInit(propertyToAssign, rawObjectName, schema: .Float, firstName: firstName, counter: counter)
                         }
                     case .Integer, .Enum(.Integer(_)):
@@ -161,8 +160,7 @@ extension ObjCRootsRenderer {
                             "strcmp([\(rawObjectName) objCType], @encode(unsigned long)) == 0",
                             "strcmp([\(rawObjectName) objCType], @encode(unsigned long long)) == 0"
                         ]
-                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && \n"
-                            + encodingConditions.joined(separator: " ||\n")) {
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && (\(encodingConditions.joined(separator: " ||\n")))") {
                             return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
                         }
 
@@ -185,7 +183,8 @@ extension ObjCRootsRenderer {
                     case .String(.some(.DateTime)):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]] && [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] transformedValue:\(rawObjectName)] != nil") {
                             return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
-                        }                    case .String(.some(_)), .String(.none), .Enum(.String(_)):
+                        }
+                    case .String(.some(_)), .String(.none), .Enum(.String(_)):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]]") {
                             return renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter)
                         }
