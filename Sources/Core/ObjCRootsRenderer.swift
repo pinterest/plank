@@ -10,6 +10,77 @@ import Foundation
 
 let rootNSObject = SchemaObjectRoot(name: "NSObject", properties: [:], extends: nil, algebraicTypeIdentifier: nil)
 
+func objcClassFromSchemaFn(_ className: String, _ params: GenerationParameters) -> (String, Schema) -> String {
+    func objcClassFromSchema(_ param: String, _ schema: Schema) -> String {
+        switch schema {
+        case .Array(itemType: .none):
+            return "NSArray *"
+        case .Array(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
+            // Objective-C primitive types are represented as NSNumber
+            return "NSArray<NSNumber /* \(itemType.debugDescription) */ *> *"
+        case .Array(itemType: .some(let itemType)):
+            return "NSArray<\(objcClassFromSchema(param, itemType))> *"
+        case .Map(valueType: .none):
+            return "NSDictionary *"
+        case .Map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
+            return "NSDictionary<NSString *, NSNumber /* \(valueType.debugDescription) */ *> *"
+        case .Map(valueType: .some(let valueType)):
+            return "NSDictionary<NSString *, \(objcClassFromSchema(param, valueType))> *"
+        case .String(format: .none),
+             .String(format: .some(.Email)),
+             .String(format: .some(.Hostname)),
+             .String(format: .some(.Ipv4)),
+             .String(format: .some(.Ipv6)):
+            return "NSString *"
+        case .String(format: .some(.DateTime)):
+            return "NSDate *"
+        case .String(format: .some(.Uri)):
+            return "NSURL *"
+        case .Integer:
+            return "NSInteger"
+        case .Float:
+            return "double"
+        case .Boolean:
+            return "BOOL"
+        case .Enum(_):
+            return enumTypeName(propertyName: param, className: className)
+        case .Object(let objSchemaRoot):
+            return "\(objSchemaRoot.className(with: params)) *"
+        case .Reference(with: let fn):
+            switch fn() {
+            case .some(.Object(let schemaRoot)):
+                return objcClassFromSchema(param, .Object(schemaRoot))
+            default:
+                fatalError("Bad reference found in schema for class: \(className)")
+            }
+        case .OneOf(types: let schemaTypes):
+            // TODO replace this with ADT generated name
+            func inheritanceChain(schema: Schema?) -> [SchemaObjectRoot] {
+                switch schema {
+                case .some(.Object(let root)):
+                    return [root] + inheritanceChain(schema: root.extends.flatMap { $0() })
+                case .some(.Reference(with: let fn)):
+                    return inheritanceChain(schema: fn())
+                default:
+                    return []
+                }
+            }
+
+            let chains: [[SchemaObjectRoot]] = schemaTypes
+                .map(inheritanceChain)
+                .map { $0.reversed() }
+
+            let commonParent = chains[0].enumerated().filter { idx, val in
+                chains.filter { $0[idx] == val }.count == chains.count
+                }.last.map {$0.1}
+
+            let schemaRoot = commonParent ?? rootNSObject
+            return "__kindof \((schemaRoot == commonParent ? schemaRoot.className(with: params) : schemaRoot.name)) *"
+        }
+    }
+    return objcClassFromSchema
+}
+
 public struct ObjCRootsRenderer {
     let rootSchema: SchemaObjectRoot
     let params: GenerationParameters
@@ -20,6 +91,10 @@ public struct ObjCRootsRenderer {
     }
 
     // MARK: Properties
+
+    var objcClassFromSchema: (String, Schema) -> String {
+        return objcClassFromSchemaFn(self.className, self.params)
+    }
 
     var className: String {
         return self.rootSchema.className(with: self.params)
@@ -77,74 +152,6 @@ public struct ObjCRootsRenderer {
 
         return Set(rootSchema.properties.values
                     .flatMap(referencedClassNames))
-    }
-
-    func objcClassFromSchema(_ param: String, _ schema: Schema) -> String {
-        switch schema {
-        case .Array(itemType: .none):
-            return "NSArray *"
-        case .Array(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
-            // Objective-C primitive types are represented as NSNumber
-            return "NSArray<NSNumber /* \(itemType.debugDescription) */ *> *"
-        case .Array(itemType: .some(let itemType)):
-            return "NSArray<\(objcClassFromSchema(param, itemType))> *"
-        case .Map(valueType: .none):
-            return "NSDictionary *"
-        case .Map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
-            return "NSDictionary<NSString *, NSNumber /* \(valueType.debugDescription) */ *> *"
-        case .Map(valueType: .some(let valueType)):
-            return "NSDictionary<NSString *, \(objcClassFromSchema(param, valueType))> *"
-        case .String(format: .none),
-             .String(format: .some(.Email)),
-             .String(format: .some(.Hostname)),
-             .String(format: .some(.Ipv4)),
-             .String(format: .some(.Ipv6)):
-            return "NSString *"
-        case .String(format: .some(.DateTime)):
-            return "NSDate *"
-        case .String(format: .some(.Uri)):
-            return "NSURL *"
-        case .Integer:
-            return "NSInteger"
-        case .Float:
-            return "double"
-        case .Boolean:
-            return "BOOL"
-        case .Enum(_):
-            return enumTypeName(propertyName: param, className: self.className)
-        case .Object(let objSchemaRoot):
-            return "\(objSchemaRoot.className(with: self.params)) *"
-        case .Reference(with: let fn):
-            switch fn() {
-            case .some(.Object(let schemaRoot)):
-                return objcClassFromSchema(param, .Object(schemaRoot))
-            default:
-                fatalError("Bad reference found in schema for class: \(self.className)")
-            }
-        case .OneOf(types: let schemaTypes):
-            // TODO replace this with ADT generated name
-            func inheritanceChain(schema: Schema?) -> [SchemaObjectRoot] {
-                switch schema {
-                case .some(.Object(let root)):
-                    return [root] + inheritanceChain(schema: root.extends.flatMap { $0() })
-                case .some(.Reference(with: let fn)):
-                    return inheritanceChain(schema: fn())
-                default:
-                    return []
-                }
-            }
-
-            let chains: [[SchemaObjectRoot]] = schemaTypes
-                .map(inheritanceChain)
-                .map { $0.reversed() }
-
-            let commonParent = chains[0].enumerated().filter { idx, val in
-                chains.filter { $0[idx] == val }.count == chains.count
-                }.last.map {$0.1}
-
-            let schemaRoot = commonParent ?? rootNSObject
-            return "__kindof \((schemaRoot == commonParent ? schemaRoot.className(with: self.params) : schemaRoot.name)) *"
-        }
     }
 
     // MARK: Model methods
@@ -308,9 +315,21 @@ public struct ObjCRootsRenderer {
             default: return []
             }
         }
+
+        // TODO: Synthesize oneOf ADT Classes and Class Extension
+
+        let adtRoots = self.properties.flatMap { (param, schema) -> [ObjCIR.Root] in
+            switch schema {
+            case .OneOf(types: let possibleTypes):
+                return adtRootsForSchema(property: param, schemas: possibleTypes)
+            // TODO: Handle collections that have oneOf values
+            default: return []
+            }
+        }
+
         return [
             ObjCIR.Root.Imports(classNames: self.renderReferencedClasses(), myName: self.className, parentName: parentName)
-        ] + enumRoots + [
+        ] + enumRoots + adtRoots + [
             ObjCIR.Root.Struct(name: self.dirtyPropertyOptionName,
                                fields: rootSchema.properties.keys
                                 .map { "unsigned int \(dirtyPropertyOption(propertyName: $0, className: self.className)):1;" }

@@ -66,6 +66,7 @@ extension String {
         }
 
         let components = str.components(separatedBy: "_")
+
         let name: [String] = components.map { (component: String) -> String in
             return component.capitalized
         }

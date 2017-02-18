@@ -46,12 +46,17 @@ public struct EnumValue<ValueType> {
     let defaultValue: ValueType
     let description: String
 
-    init(object: JSONObject) throws {
+    init(defaultValue: ValueType, description: String) {
+        self.defaultValue = defaultValue
+        self.description = description
+    }
+
+    init(withObject object: JSONObject) {
         if let defaultVal = object["default"] as? ValueType, let descriptionVal = object["description"] as? String {
             defaultValue = defaultVal
-            description = descriptionVal
+            description = descriptionVal.snakeCaseToCamelCase()
         } else {
-            throw JSONParseError()
+           fatalError("Invalid schema specification for enum: \(object)")
         }
     }
 }
@@ -64,8 +69,6 @@ public indirect enum EnumType {
 public typealias LazySchemaReference = () -> Schema?
 
 typealias Property = (Parameter, Schema)
-
-struct JSONParseError: Error {}
 
 extension Dictionary {
     init(elements: [(Key, Value)]) {
@@ -182,11 +185,12 @@ extension Schema {
             switch propType {
             case JSONType.String:
                 if let enumValues = propertyInfo["enum"] as? [JSONObject], let defaultValue = propertyInfo["default"] as? String {
-                    let enumVals = try? enumValues.map(EnumValue<String>.init)
-                    let defaultVal = enumVals?.first(where: { $0.defaultValue == defaultValue })
-                    return enumVals
-                        .flatMap { v in defaultVal.map { ($0, v) } }
-                        .map { defaultVal, enumVals in
+                    let enumVals = enumValues.map { EnumValue<String>(withObject: $0) }
+                    let defaultVal = enumVals.first(where: { $0.defaultValue == defaultValue })
+                    let maybeEnumVals: [EnumValue<String>]? = .some(enumVals)
+                    return maybeEnumVals
+                        .flatMap { (vs: [EnumValue<String>]) in defaultVal.map { ($0, vs) } }
+                        .map { (defaultVal, enumVals) in
                             Schema.Enum(EnumType.String(enumVals, defaultValue: defaultVal))
                         }
                 } else {
@@ -197,7 +201,7 @@ extension Schema {
                         .flatMap { propertyForType(propertyInfo: $0, source: source)})
             case JSONType.Integer:
                 if let enumValues = propertyInfo["enum"] as? [JSONObject] {
-                    return try? Schema.Enum(EnumType.Integer(enumValues.map(EnumValue<Int>.init)))
+                    return Schema.Enum(EnumType.Integer(enumValues.map { EnumValue<Int>(withObject: $0) }))
                 } else {
                     return .Integer
                 }

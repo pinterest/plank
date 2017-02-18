@@ -11,6 +11,7 @@
 		812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */; };
 		812A69D41E53D35F006A510E /* ObjectiveCBuilderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */; };
 		812A69D61E53D44D006A510E /* ObjectiveCNSCodingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */; };
+		8152228D1E57766E00A4B873 /* ObjectiveCADTExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8152228C1E57766E00A4B873 /* ObjectiveCADTExtension.swift */; };
 		815A011A1E54D2BA00017AFB /* ObjectiveCInitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A01191E54D2BA00017AFB /* ObjectiveCInitTests.swift */; };
 		815A011C1E55100E00017AFB /* MockSchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A011B1E55100E00017AFB /* MockSchemaLoader.swift */; };
 		OBJ_33 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileGenerator.swift */; };
@@ -50,6 +51,7 @@
 		812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInitExtension.swift; sourceTree = "<group>"; };
 		812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCBuilderExtension.swift; sourceTree = "<group>"; };
 		812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCNSCodingExtension.swift; sourceTree = "<group>"; };
+		8152228C1E57766E00A4B873 /* ObjectiveCADTExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCADTExtension.swift; sourceTree = "<group>"; };
 		815A01191E54D2BA00017AFB /* ObjectiveCInitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInitTests.swift; sourceTree = "<group>"; };
 		815A011B1E55100E00017AFB /* MockSchemaLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockSchemaLoader.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ObjCRootsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCRootsRenderer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -171,6 +173,7 @@
 				OBJ_13 /* Schema.swift */,
 				OBJ_14 /* SchemaLoader.swift */,
 				OBJ_15 /* StringExtensions.swift */,
+				8152228C1E57766E00A4B873 /* ObjectiveCADTExtension.swift */,
 			);
 			name = Core;
 			path = Sources/Core;
@@ -289,6 +292,7 @@
 				OBJ_39 /* StringExtensions.swift in Sources */,
 				812A69D01E53D2A1006A510E /* ObjectiveCEqualityExtension.swift in Sources */,
 				812A69D61E53D44D006A510E /* ObjectiveCNSCodingExtension.swift in Sources */,
+				8152228D1E57766E00A4B873 /* ObjectiveCADTExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

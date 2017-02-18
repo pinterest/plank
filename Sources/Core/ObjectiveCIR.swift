@@ -53,6 +53,9 @@ extension Sequence {
 typealias Argument = String
 typealias Parameter = String
 
+typealias TypeName = String
+typealias SimpleProperty = (Parameter, TypeName, Schema, ObjCMutabilityType)
+
 func dirtyPropertyOption(propertyName aPropertyName: String, className: String) -> String {
     let propertyName = aPropertyName.snakeCaseToPropertyName()
     let capitalizedFirstLetter = String(propertyName[propertyName.startIndex]).uppercased()
@@ -257,10 +260,6 @@ public struct ObjCIR {
         }
     }
 
-    typealias TypeName = String
-
-    typealias SimpleProperty = (Parameter, TypeName, Schema, ObjCMutabilityType)
-
     enum Root {
         case Struct(name: String, fields: [String])
         case Imports(classNames: Set<String>, myName: String, parentName: String?)
@@ -312,9 +311,9 @@ public struct ObjCIR {
                 return [ObjCIR.enumStmt(name) {
                     switch values {
                     case .Integer(let options):
-                        return options.map { "\(name + $0.description.snakeCaseToCamelCase()) = \($0.defaultValue)" }
+                        return options.map { "\(name + $0.description) = \($0.defaultValue)" }
                     case .String(let options, _):
-                        return options.map { "\(name + $0.description.snakeCaseToCamelCase()) /* \($0.defaultValue) */" }
+                        return options.map { "\(name + $0.description) /* \($0.defaultValue) */" }
                     }
                 }]
             }
