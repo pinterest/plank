@@ -285,8 +285,7 @@ struct ObjCRootsRenderer {
 
         let protocols: [String : [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
-            "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }],
-            "PIModelProtocol": []
+            "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }]
         ]
 
         func resolveClassName(_ schema: Schema?) -> String? {
