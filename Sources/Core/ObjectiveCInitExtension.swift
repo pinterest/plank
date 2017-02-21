@@ -35,6 +35,10 @@ extension ObjCRootsRenderer {
         }
     }
 
+    func renderPostInitNotification(type: String) -> String {
+      return "[[NSNotificationCenter defaultCenter] postNotificationName:kPINModelDidInitializeNotification object:self userInfo:@{ kPINModelInitTypeKey : @(\(type)) }];"
+    }
+
     func renderInitWithBuilderWithInitType() -> ObjCIR.Method {
         return ObjCIR.method("- (instancetype)initWithBuilder:(\(builderClassName) *)builder initType:(PIModelInitType)initType") {
             [
@@ -46,7 +50,7 @@ extension ObjCRootsRenderer {
                     }.joined(separator: "\n"),
                 "_\(self.dirtyPropertiesIVarName) = builder.\(self.dirtyPropertiesIVarName);",
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
-                    ["[self PIModelDidInitialize:initType];"]
+                    [renderPostInitNotification(type: "initType")]
                 },
                 "return self;"
             ]
@@ -177,7 +181,7 @@ extension ObjCRootsRenderer {
                         )
                 )),
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
-                    ["[self PIModelDidInitialize:PIModelInitTypeDefault];"]
+                    [renderPostInitNotification(type: "PIModelInitTypeDefault")]
                 },
                 "return self;"
             ]
