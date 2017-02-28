@@ -174,11 +174,13 @@ struct ObjCIR {
             switch self {
             case .Case(let condition, let body):
                 return [ "case \(condition):",
-                    -->body
+                    -->body,
+                    -->[ObjCIR.stmt("break")]
                 ].joined(separator: "\n")
             case .Default(let body):
                 return [ "default:",
-                    -->body
+                    -->body,
+                    -->[ObjCIR.stmt("break")]
                 ].joined(separator: "\n")
             }
         }
