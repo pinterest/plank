@@ -42,13 +42,16 @@ struct ObjCADTRootRenderer {
         }
     }
 
-    func renderInternalTypeEnum() -> ObjCIR.Root {
+    var internalTypeEnumName: String {
+        return self.className + "InternalType"
+    }
 
+    func renderInternalTypeEnum() -> ObjCIR.Root {
         let enumOptions: [EnumValue<Int>] = self.dataTypes.enumerated().map { (idx, schema) in
             let name = objectName(schema)
             return EnumValue<Int>(defaultValue: idx, description: "\(name)")
         }
-        return ObjCIR.Root.Enum(name: self.className + "InternalType",
+        return ObjCIR.Root.Enum(name: self.internalTypeEnumName,
                                 values: EnumType.Integer(enumOptions))
     }
 
@@ -69,15 +72,20 @@ struct ObjCADTRootRenderer {
     }
 
     func renderClass(name: String) -> [ObjCIR.Root] {
-        let props: [SimpleProperty] = self.dataTypes.enumerated().map { (idx, schema) in
-            ("value\(idx)", schema)
-        }.map {  param, schema in (param, objcClassFromSchema(param, schema), schema, .ReadOnly) }
+
+        let props: [SimpleProperty] = self.dataTypes.enumerated()
+            .map { idx, schema in ("value\(idx)", schema) }
+            .map {  param, schema in (param, objcClassFromSchema(param, schema), schema, .ReadWrite) }
 
         return [self.renderInternalTypeEnum()] + [
+            ObjCIR.Root.Category(className: self.className,
+                                 categoryName: nil,
+                                 methods: [],
+                                 properties: props),
             ObjCIR.Root.Class(name: name,
                              extends: nil,
                              methods: self.renderClassInitializers().map { (.Public, $0)},
-                             properties: props,
+                             properties:[],
                              protocols:["NSCopying": [], "NSSecureCoding": []])
         ]
     }
