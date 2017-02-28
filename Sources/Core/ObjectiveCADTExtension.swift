@@ -8,6 +8,20 @@
 
 import Foundation
 
+extension ObjCRootsRenderer {
+    func adtClassName(forProperty property: String) -> String {
+        return self.className + property.snakeCaseToCamelCase()
+    }
+
+    func adtRootsForSchema(property: String, schemas: [Schema]) -> [ObjCIR.Root] {
+        return ObjCADTRootRenderer(
+            params: self.params,
+            className: self.adtClassName(forProperty: property),
+            dataTypes: schemas
+            ).renderClass(name: self.adtClassName(forProperty: property))
+    }
+}
+
 struct ObjCADTRootRenderer {
     let params: GenerationParameters
     let className: String
@@ -49,7 +63,8 @@ struct ObjCADTRootRenderer {
     func renderInternalTypeEnum() -> ObjCIR.Root {
         let enumOptions: [EnumValue<Int>] = self.dataTypes.enumerated().map { (idx, schema) in
             let name = objectName(schema)
-            return EnumValue<Int>(defaultValue: idx, description: "\(name)")
+            // Offset enum indexes by 1 to avoid matching the
+            return EnumValue<Int>(defaultValue: idx + 1, description: "\(name)")
         }
         return ObjCIR.Root.Enum(name: self.internalTypeEnumName,
                                 values: EnumType.Integer(enumOptions))
@@ -71,36 +86,52 @@ struct ObjCADTRootRenderer {
         }
     }
 
-    func renderClass(name: String) -> [ObjCIR.Root] {
+    func renderMatchFunction() -> ObjCIR.Method {
+        let signatureComponents  = self.dataTypes.enumerated().map { (index, schema) -> String in
+            let name = objectName(schema)
+            let arg = String(name.characters.prefix(1)).lowercased() + String(name.characters.dropFirst())
+            if index == 0 {
+                return "match\(name):(PINMODEL_NOESCAPE void (^)(\(self.objcClassFromSchema(name, schema)) \(arg)))\(arg)MatchHandler"
+            } else {
+                return "\(arg):(PINMODEL_NOESCAPE void (^)(\(self.objcClassFromSchema(name, schema)) \(arg)))\(arg)MatchHandler"
+            }
+        }
 
-        let props: [SimpleProperty] = self.dataTypes.enumerated()
+        return ObjCIR.method("- (void)\(signatureComponents.joined(separator: " "))") {[
+            ObjCIR.switchStmt("self.internalType") {
+                self.dataTypes.enumerated().map { (index, schema) -> ObjCIR.SwitchCase in
+                    let name = objectName(schema)
+                    let arg = String(name.characters.prefix(1)).lowercased() + String(name.characters.dropFirst())
+                    return ObjCIR.caseStmt(self.internalTypeEnumName + objectName(schema)) {[
+                        ObjCIR.ifStmt("\(arg)MatchHandler != NULL") {[
+                            ObjCIR.stmt("\(arg)MatchHandler(self.value\(index))")
+                        ]}
+                    ]}
+                }
+            }
+        ]}
+    }
+
+    func renderClass(name: String) -> [ObjCIR.Root] {
+        let internalTypeEnum = self.renderInternalTypeEnum()
+        let internalTypeProp: SimpleProperty = ("internal_type", objcClassFromSchema("internal_type", .Enum(.Integer([]))), .Enum(.Integer([])), .ReadWrite)
+
+        let props: [SimpleProperty] = [internalTypeProp] + self.dataTypes.enumerated()
             .map { idx, schema in ("value\(idx)", schema) }
             .map {  param, schema in (param, objcClassFromSchema(param, schema), schema, .ReadWrite) }
 
-        return [self.renderInternalTypeEnum()] + [
+        return [
+            internalTypeEnum,
             ObjCIR.Root.Category(className: self.className,
                                  categoryName: nil,
                                  methods: [],
                                  properties: props),
             ObjCIR.Root.Class(name: name,
                              extends: nil,
-                             methods: self.renderClassInitializers().map { (.Public, $0)},
+                             methods: self.renderClassInitializers().map { (.Public, $0)} +
+                               [(.Public, self.renderMatchFunction())],
                              properties:[],
                              protocols:["NSCopying": [], "NSSecureCoding": []])
         ]
-    }
-}
-
-extension ObjCRootsRenderer {
-    func adtClassName(forProperty property: String) -> String {
-        return self.className + property.snakeCaseToCamelCase()
-    }
-
-    func adtRootsForSchema(property: String, schemas: [Schema]) -> [ObjCIR.Root] {
-        return ObjCADTRootRenderer(
-            params: self.params,
-            className: self.adtClassName(forProperty: property),
-            dataTypes: schemas
-        ).renderClass(name: self.adtClassName(forProperty: property))
     }
 }

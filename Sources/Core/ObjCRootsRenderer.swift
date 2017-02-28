@@ -322,14 +322,25 @@ public struct ObjCRootsRenderer {
             switch schema {
             case .OneOf(types: let possibleTypes):
                 return adtRootsForSchema(property: param, schemas: possibleTypes)
-            // TODO: Handle collections that have oneOf values
+            case .Array(itemType: .some(let itemType)):
+                switch itemType {
+                case .OneOf(types: let possibleTypes):
+                    return adtRootsForSchema(property: param, schemas: possibleTypes)
+                default: return []
+                }
+            case .Map(valueType: .some(let additionalProperties)):
+                switch additionalProperties {
+                case .OneOf(types: let possibleTypes):
+                    return adtRootsForSchema(property: param, schemas: possibleTypes)
+                default: return []
+                }
             default: return []
             }
         }
 
         return [
             ObjCIR.Root.Imports(classNames: self.renderReferencedClasses(), myName: self.className, parentName: parentName)
-        ] + enumRoots + adtRoots + [
+        ] + adtRoots + enumRoots + [
             ObjCIR.Root.Struct(name: self.dirtyPropertyOptionName,
                                fields: rootSchema.properties.keys
                                 .map { "unsigned int \(dirtyPropertyOption(propertyName: $0, className: self.className)):1;" }
