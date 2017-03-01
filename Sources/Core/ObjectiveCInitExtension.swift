@@ -10,6 +10,12 @@ import Foundation
 
 let dateValueTransformerKey = "kPINModelDateValueTransformerKey"
 
+extension ObjCFileRenderer {
+    func renderPostInitNotification(type: String) -> String {
+        return "[[NSNotificationCenter defaultCenter] postNotificationName:kPINModelDidInitializeNotification object:self userInfo:@{ kPINModelInitTypeKey : @(\(type)) }];"
+    }
+}
+
 extension ObjCRootsRenderer {
 
     func renderModelObjectWithDictionary() -> ObjCIR.Method {
@@ -33,10 +39,6 @@ extension ObjCRootsRenderer {
                 "return [self initWithBuilder:builder initType:PIModelInitTypeDefault];"
             ]
         }
-    }
-
-    func renderPostInitNotification(type: String) -> String {
-      return "[[NSNotificationCenter defaultCenter] postNotificationName:kPINModelDidInitializeNotification object:self userInfo:@{ kPINModelInitTypeKey : @(\(type)) }];"
     }
 
     func renderInitWithBuilderWithInitType() -> ObjCIR.Method {

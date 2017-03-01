@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ObjCRootsRenderer {
+extension ObjCFileRenderer {
 
     func renderSupportsSecureCoding() -> ObjCIR.Method {
         return ObjCIR.method("+ (BOOL)supportsSecureCoding") { ["return YES;"] }

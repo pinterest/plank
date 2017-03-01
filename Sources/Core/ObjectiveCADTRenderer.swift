@@ -1,5 +1,5 @@
 //
-//  ObjectiveCADTExtension.swift
+//  ObjectiveCADTRenderer.swift
 //  plank
 //
 //  Created by Rahul Malik on 2/17/17.
@@ -9,27 +9,42 @@
 import Foundation
 
 extension ObjCRootsRenderer {
-    func adtClassName(forProperty property: String) -> String {
-        return self.className + property.snakeCaseToCamelCase()
-    }
-
     func adtRootsForSchema(property: String, schemas: [Schema]) -> [ObjCIR.Root] {
-        return ObjCADTRootRenderer(
-            params: self.params,
-            className: self.adtClassName(forProperty: property),
-            dataTypes: schemas
-            ).renderClass(name: self.adtClassName(forProperty: property))
+        let adtName = "\(self.rootSchema.name)_\(property)"
+
+        let enumOptions: [EnumValue<Int>] = schemas.enumerated().map { (idx, schema) in
+            let name = ObjCADTRootRenderer.objectName(schema)
+            // Offset enum indexes by 1 to avoid matching the
+            return EnumValue<Int>(defaultValue: idx + 1, description: "\(name)")
+        }
+
+        let internalTypeProp: (String, Schema) = ("internal_type", .Enum(.Integer(enumOptions)))
+
+        let props  = [internalTypeProp] + schemas.enumerated().map { index, schema in
+            ("value\(index)", schema)
+        }
+
+        let properties = props.reduce([String: Schema](), { (d: [String: Schema], t: (String, Schema)) -> [String: Schema] in
+            var mutableDict = d
+            mutableDict[t.0] = t.1
+            return mutableDict
+        })
+
+        let root = SchemaObjectRoot(name: adtName,
+                                    properties: properties,
+                                    extends: nil,
+                                    algebraicTypeIdentifier: nil)
+        return ObjCADTRootRenderer.init(rootSchema: root,
+                                        params: self.params,
+                                        dataTypes: schemas).renderRoots()
     }
 }
 
-struct ObjCADTRootRenderer {
-    let params: GenerationParameters
-    let className: String
-    let dataTypes: [Schema]
+struct ObjCADTRootRenderer: ObjCFileRenderer {
+    var rootSchema: SchemaObjectRoot
 
-    var objcClassFromSchema: (String, Schema) -> String {
-        return objcClassFromSchemaFn(self.className, self.params)
-    }
+    let params: GenerationParameters
+    let dataTypes: [Schema]
 
     public static func objectName(_ aSchema: Schema) -> String {
         switch aSchema {
@@ -108,9 +123,17 @@ struct ObjCADTRootRenderer {
         ]}
     }
 
+    func renderRoots() -> [ObjCIR.Root] {
+        return renderClass(name: self.className)
+    }
     func renderClass(name: String) -> [ObjCIR.Root] {
         let internalTypeEnum = self.renderInternalTypeEnum()
         let internalTypeProp: SimpleProperty = ("internal_type", objcClassFromSchema("internal_type", .Enum(.Integer([]))), .Enum(.Integer([])), .ReadWrite)
+
+        let protocols: [String : [ObjCIR.Method]] = [
+            "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
+            "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }]
+        ]
 
         let props: [SimpleProperty] = [internalTypeProp] + self.dataTypes.enumerated()
             .map { idx, schema in ("value\(idx)", schema) }
@@ -127,9 +150,15 @@ struct ObjCADTRootRenderer {
                              extends: nil,
                              methods:
                                self.renderClassInitializers().map { (.Public, $0) } +
-                               [(.Public, self.renderMatchFunction())],
-                             properties:[],
-                             protocols:[/*"NSCopying": [], "NSSecureCoding": []*/:]),
+                               [
+                                (.Public, self.renderMatchFunction()),
+                                (.Private, self.renderDebugDescription()),
+                                (.Private, self.renderIsEqual()),
+                                (.Public, self.renderIsEqualToClass()),
+                                (.Private, self.renderHash())
+                                ],
+                             properties: [],
+                             protocols: protocols),
             ObjCIR.Root.Macro("NS_ASSUME_NONNULL_END")
         ]
     }
