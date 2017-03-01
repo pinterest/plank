@@ -31,7 +31,7 @@ struct ObjCADTRootRenderer {
         return objcClassFromSchemaFn(self.className, self.params)
     }
 
-    private func objectName(_ aSchema: Schema) -> String {
+    public static func objectName(_ aSchema: Schema) -> String {
         switch aSchema {
         case .Object(let objectRoot):
             // Intentionally drop prefix
@@ -52,7 +52,7 @@ struct ObjCADTRootRenderer {
         case .String(.some(_)), .String(.none): return "String"
         case .Enum(.String(_)): return "StringEnum" // TODO: Allow custom names
         case .OneOf(types:_):
-            fatalError("Nested oneOf types are unsupported at this time. Please file an issue if you require this.")
+            fatalError("Nested oneOf types are unsupported at this time. Please file an issue if you require this. \(aSchema)")
         }
     }
 
@@ -62,7 +62,7 @@ struct ObjCADTRootRenderer {
 
     func renderInternalTypeEnum() -> ObjCIR.Root {
         let enumOptions: [EnumValue<Int>] = self.dataTypes.enumerated().map { (idx, schema) in
-            let name = objectName(schema)
+            let name = ObjCADTRootRenderer.objectName(schema)
             // Offset enum indexes by 1 to avoid matching the
             return EnumValue<Int>(defaultValue: idx + 1, description: "\(name)")
         }
@@ -72,7 +72,7 @@ struct ObjCADTRootRenderer {
 
     func renderClassInitializers() -> [ObjCIR.Method] {
         return self.dataTypes.enumerated().map { (index, schema) in
-            let name = objectName(schema)
+            let name = ObjCADTRootRenderer.objectName(schema)
             let arg = String(name.characters.prefix(1)).lowercased() + String(name.characters.dropFirst())
 
             return ObjCIR.method("+ (instancetype)objectWith\(name):(\(self.objcClassFromSchema(name, schema)))\(arg)") {
@@ -88,21 +88,17 @@ struct ObjCADTRootRenderer {
 
     func renderMatchFunction() -> ObjCIR.Method {
         let signatureComponents  = self.dataTypes.enumerated().map { (index, schema) -> String in
-            let name = objectName(schema)
+            let name = ObjCADTRootRenderer.objectName(schema)
             let arg = String(name.characters.prefix(1)).lowercased() + String(name.characters.dropFirst())
-            if index == 0 {
-                return "match\(name):(PINMODEL_NOESCAPE void (^)(\(self.objcClassFromSchema(name, schema)) \(arg)))\(arg)MatchHandler"
-            } else {
-                return "\(arg):(PINMODEL_NOESCAPE void (^)(\(self.objcClassFromSchema(name, schema)) \(arg)))\(arg)MatchHandler"
-            }
+            return "\(index == 0 ? "match" : "or")\(name):(nullable PINMODEL_NOESCAPE void (^)(\(self.objcClassFromSchema(name, schema)) \(arg)))\(arg)MatchHandler"
         }
 
         return ObjCIR.method("- (void)\(signatureComponents.joined(separator: " "))") {[
             ObjCIR.switchStmt("self.internalType") {
                 self.dataTypes.enumerated().map { (index, schema) -> ObjCIR.SwitchCase in
-                    let name = objectName(schema)
+                    let name = ObjCADTRootRenderer.objectName(schema)
                     let arg = String(name.characters.prefix(1)).lowercased() + String(name.characters.dropFirst())
-                    return ObjCIR.caseStmt(self.internalTypeEnumName + objectName(schema)) {[
+                    return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRootRenderer.objectName(schema)) {[
                         ObjCIR.ifStmt("\(arg)MatchHandler != NULL") {[
                             ObjCIR.stmt("\(arg)MatchHandler(self.value\(index))")
                         ]}
@@ -121,6 +117,7 @@ struct ObjCADTRootRenderer {
             .map {  param, schema in (param, objcClassFromSchema(param, schema), schema, .ReadWrite) }
 
         return [
+            ObjCIR.Root.Macro("NS_ASSUME_NONNULL_BEGIN"),
             internalTypeEnum,
             ObjCIR.Root.Category(className: self.className,
                                  categoryName: nil,
@@ -128,10 +125,12 @@ struct ObjCADTRootRenderer {
                                  properties: props),
             ObjCIR.Root.Class(name: name,
                              extends: nil,
-                             methods: self.renderClassInitializers().map { (.Public, $0)} +
+                             methods:
+                               self.renderClassInitializers().map { (.Public, $0) } +
                                [(.Public, self.renderMatchFunction())],
                              properties:[],
-                             protocols:["NSCopying": [], "NSSecureCoding": []])
+                             protocols:[/*"NSCopying": [], "NSSecureCoding": []*/:]),
+            ObjCIR.Root.Macro("NS_ASSUME_NONNULL_END")
         ]
     }
 }

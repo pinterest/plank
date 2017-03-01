@@ -53,29 +53,9 @@ func objcClassFromSchemaFn(_ className: String, _ params: GenerationParameters) 
             default:
                 fatalError("Bad reference found in schema for class: \(className)")
             }
-        case .OneOf(types: let schemaTypes):
-            // TODO replace this with ADT generated name
-            func inheritanceChain(schema: Schema?) -> [SchemaObjectRoot] {
-                switch schema {
-                case .some(.Object(let root)):
-                    return [root] + inheritanceChain(schema: root.extends.flatMap { $0() })
-                case .some(.Reference(with: let fn)):
-                    return inheritanceChain(schema: fn())
-                default:
-                    return []
-                }
-            }
-
-            let chains: [[SchemaObjectRoot]] = schemaTypes
-                .map(inheritanceChain)
-                .map { $0.reversed() }
-
-            let commonParent = chains[0].enumerated().filter { idx, val in
-                chains.filter { $0[idx] == val }.count == chains.count
-                }.last.map {$0.1}
-
-            let schemaRoot = commonParent ?? rootNSObject
-            return "__kindof \((schemaRoot == commonParent ? schemaRoot.className(with: params) : schemaRoot.name)) *"
+        case .OneOf(types:_):
+            // TODO: Unify logic that creates ADT name since this is currently duplicated
+            return "\(className)\(param.snakeCaseToCamelCase()) *"
         }
     }
     return objcClassFromSchema

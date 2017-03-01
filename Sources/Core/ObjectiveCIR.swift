@@ -114,7 +114,7 @@ extension Schema {
 
 extension EnumValue {
   func objcOptionName(param: String, className: String) -> String {
-    return enumTypeName(propertyName: param, className: className) + self.description.snakeCaseToCamelCase()
+    return enumTypeName(propertyName: param, className: className) + self.description
   }
 }
 
