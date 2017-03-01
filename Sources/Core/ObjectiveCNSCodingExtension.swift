@@ -71,7 +71,8 @@ extension ObjCFileRenderer {
                 } else {
                     return "[aDecoder decodeObjectOfClasses:\(refObjectClassesString) forKey:\(param.objcLiteral())];"
                 }
-                } }()
+                }
+            }()
         }
 
         return ObjCIR.method("- (instancetype)initWithCoder:(NSCoder *)aDecoder") {
