@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ObjCFileRenderer {
+extension ObjCRootsRenderer {
 
     // MARK: Builder methods
 
@@ -18,7 +18,7 @@ extension ObjCFileRenderer {
                 "NSParameterAssert(modelObject);",
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                 "if (!(self = [super initWithModel:modelObject])) { return self; }",
-                "struct \(self.dirtyPropertyOptionName) \(dirtyPropertiesIVarName) = modelObject.\(dirtyPropertiesIVarName);",
+                "struct \(self.dirtyPropertyOptionName) \(self.dirtyPropertiesIVarName) = modelObject.\(self.dirtyPropertiesIVarName);",
                 self.properties.map({ (param, _) -> String in
                     ObjCIR.ifStmt("\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
                         ["_\(param.snakeCaseToPropertyName()) = modelObject.\(param.snakeCaseToPropertyName());"]

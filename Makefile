@@ -13,7 +13,8 @@ lint:
 	./Utility/lint.sh
 
 build: lint
-	swift build
+	swift build -v -Xswiftc -static-stdlib
+
 
 build_test_index_linux:
 	swift Utility/GenerateTestCaseProvider.swift $(PWD)/Tests/CoreTests
@@ -22,7 +23,7 @@ test: build_test_index_linux build
 	swift test
 
 archive: lint
-	swift build -c release -Xswiftc -static-stdlib
+	swift build -v -c release -Xswiftc -static-stdlib
 
 archive_linux: clean
 	swift build -c release

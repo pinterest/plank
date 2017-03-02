@@ -2,12 +2,10 @@
 import XCTest
 
 #if os(Linux)
-
 // Generated Test Extension for ObjectiveCInitTests
 extension ObjectiveCInitTests {
    static var allTests = [
        ("testOneOfInit", testOneOfInit)
    ]
 }
-
 #endif

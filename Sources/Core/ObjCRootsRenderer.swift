@@ -19,6 +19,14 @@ public struct ObjCRootsRenderer: ObjCFileRenderer {
         self.params = params
     }
 
+    var dirtyPropertyOptionName: String {
+        return "\(self.className)DirtyProperties"
+    }
+
+    var dirtyPropertiesIVarName: String {
+        return "\(rootSchema.name.snakeCaseToPropertyName())DirtyProperties"
+    }
+
     // MARK: Model methods
 
     func renderClassName() -> ObjCIR.Method {

@@ -4,4 +4,5 @@ import XCTest
 
 var tests = [XCTestCaseEntry]()
    tests += [testCase(ObjectiveCInitTests.allTests)]
+
 XCTMain(tests)

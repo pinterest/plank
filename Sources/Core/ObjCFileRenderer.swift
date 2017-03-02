@@ -26,10 +26,6 @@ extension ObjCFileRenderer {
         return "\(self.className)Builder"
     }
 
-    var dirtyPropertyOptionName: String {
-        return "\(self.className)DirtyProperties"
-    }
-
     var parentDescriptor: Schema? {
         return self.rootSchema.extends.flatMap { $0() }
     }
@@ -38,42 +34,34 @@ extension ObjCFileRenderer {
         return self.rootSchema.properties.map { $0 }
     }
 
-    var dirtyPropertiesIVarName: String {
-        return "\(rootSchema.name.snakeCaseToPropertyName())DirtyProperties"
-    }
-
     var isBaseClass: Bool {
         return rootSchema.extends == nil
     }
 
-    func renderReferencedClasses() -> Set<String> {
-        // Referenced Classes
-        // The current class header
-        // Plank Runtime header
-        func referencedClassNames(schema: Schema) -> [String] {
-            switch schema {
-            case .Reference(with: let fn):
-                switch fn() {
-                case .some(.Object(let schemaRoot)):
-                    return [schemaRoot.className(with: self.params)]
-                default:
-                    fatalError("Bad reference found in schema for class: \(self.className)")
-                }
-            case .Object(let schemaRoot):
+    fileprivate func referencedClassNames(schema: Schema) -> [String] {
+        switch schema {
+        case .Reference(with: let fn):
+            switch fn() {
+            case .some(.Object(let schemaRoot)):
                 return [schemaRoot.className(with: self.params)]
-            case .Map(valueType: .some(let valueType)):
-                return referencedClassNames(schema: valueType)
-            case .Array(itemType: .some(let itemType)):
-                return referencedClassNames(schema: itemType)
-            case .OneOf(types: let itemTypes):
-                return itemTypes.flatMap(referencedClassNames)
             default:
-                return []
+                fatalError("Bad reference found in schema for class: \(self.className)")
             }
+        case .Object(let schemaRoot):
+            return [schemaRoot.className(with: self.params)]
+        case .Map(valueType: .some(let valueType)):
+            return referencedClassNames(schema: valueType)
+        case .Array(itemType: .some(let itemType)):
+            return referencedClassNames(schema: itemType)
+        case .OneOf(types: let itemTypes):
+            return itemTypes.flatMap(referencedClassNames)
+        default:
+            return []
         }
+    }
 
-        return Set(rootSchema.properties.values
-            .flatMap(referencedClassNames))
+    func renderReferencedClasses() -> Set<String> {
+        return Set(rootSchema.properties.values.flatMap(referencedClassNames))
     }
 
     func objcClassFromSchema(_ param: String, _ schema: Schema) -> String {

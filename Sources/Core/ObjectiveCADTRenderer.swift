@@ -85,6 +85,10 @@ struct ObjCADTRootRenderer: ObjCFileRenderer {
                                 values: EnumType.Integer(enumOptions))
     }
 
+    func renderInternalEnumTypeCase(name: String) -> String {
+        return self.className + "InternalType" + name
+    }
+
     func renderClassInitializers() -> [ObjCIR.Method] {
         return self.dataTypes.enumerated().map { (index, schema) in
             let name = ObjCADTRootRenderer.objectName(schema)
@@ -94,7 +98,7 @@ struct ObjCADTRootRenderer: ObjCFileRenderer {
                 [
                     "\(self.className) *obj = [[\(self.className) alloc] init];",
                     "obj.value\(index) = \(arg);",
-                    "obj.internalType = \(self.className + "InternalType" + name);",
+                    "obj.internalType = \(renderInternalEnumTypeCase(name: name));",
                     "return obj;"
                 ]
             }
@@ -152,7 +156,6 @@ struct ObjCADTRootRenderer: ObjCFileRenderer {
                                self.renderClassInitializers().map { (.Public, $0) } +
                                [
                                 (.Public, self.renderMatchFunction()),
-                                (.Private, self.renderDebugDescription()),
                                 (.Private, self.renderIsEqual()),
                                 (.Public, self.renderIsEqualToClass()),
                                 (.Private, self.renderHash())
