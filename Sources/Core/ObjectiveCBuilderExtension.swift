@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ObjCRootsRenderer {
+extension ObjCModelRenderer {
 
     // MARK: Builder methods
 

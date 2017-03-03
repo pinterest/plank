@@ -11,13 +11,13 @@
 		812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */; };
 		812A69D41E53D35F006A510E /* ObjectiveCBuilderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */; };
 		812A69D61E53D44D006A510E /* ObjectiveCNSCodingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */; };
-		8152228D1E57766E00A4B873 /* ObjectiveCADTRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8152228C1E57766E00A4B873 /* ObjectiveCADTRenderer.swift */; };
+		8152228D1E57766E00A4B873 /* ObjCADTRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8152228C1E57766E00A4B873 /* ObjCADTRenderer.swift */; };
 		815A011A1E54D2BA00017AFB /* ObjectiveCInitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A01191E54D2BA00017AFB /* ObjectiveCInitTests.swift */; };
 		815A011C1E55100E00017AFB /* MockSchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A011B1E55100E00017AFB /* MockSchemaLoader.swift */; };
 		8193AF2E1E66A7E600DEBD13 /* ObjectiveCDebugExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193AF2D1E66A7E600DEBD13 /* ObjectiveCDebugExtension.swift */; };
 		8193AF301E66A87300DEBD13 /* ObjCFileRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193AF2F1E66A87300DEBD13 /* ObjCFileRenderer.swift */; };
 		OBJ_33 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileGenerator.swift */; };
-		OBJ_34 /* ObjCRootsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ObjCRootsRenderer.swift */; };
+		OBJ_34 /* ObjCModelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ObjCModelRenderer.swift */; };
 		OBJ_35 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ObjectiveCFileGenerator.swift */; };
 		OBJ_36 /* ObjectiveCIR.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* ObjectiveCIR.swift */; };
 		OBJ_37 /* Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* Schema.swift */; };
@@ -53,12 +53,12 @@
 		812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInitExtension.swift; sourceTree = "<group>"; };
 		812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCBuilderExtension.swift; sourceTree = "<group>"; };
 		812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCNSCodingExtension.swift; sourceTree = "<group>"; };
-		8152228C1E57766E00A4B873 /* ObjectiveCADTRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCADTRenderer.swift; sourceTree = "<group>"; };
+		8152228C1E57766E00A4B873 /* ObjCADTRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCADTRenderer.swift; sourceTree = "<group>"; };
 		815A01191E54D2BA00017AFB /* ObjectiveCInitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInitTests.swift; sourceTree = "<group>"; };
 		815A011B1E55100E00017AFB /* MockSchemaLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockSchemaLoader.swift; sourceTree = "<group>"; };
 		8193AF2D1E66A7E600DEBD13 /* ObjectiveCDebugExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCDebugExtension.swift; sourceTree = "<group>"; };
 		8193AF2F1E66A87300DEBD13 /* ObjCFileRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCFileRenderer.swift; sourceTree = "<group>"; };
-		OBJ_10 /* ObjCRootsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCRootsRenderer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		OBJ_10 /* ObjCModelRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCModelRenderer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_11 /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_12 /* ObjectiveCIR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjectiveCIR.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_13 /* Schema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Schema.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -168,8 +168,8 @@
 			children = (
 				OBJ_9 /* FileGenerator.swift */,
 				8193AF2F1E66A87300DEBD13 /* ObjCFileRenderer.swift */,
-				OBJ_10 /* ObjCRootsRenderer.swift */,
-				8152228C1E57766E00A4B873 /* ObjectiveCADTRenderer.swift */,
+				OBJ_10 /* ObjCModelRenderer.swift */,
+				8152228C1E57766E00A4B873 /* ObjCADTRenderer.swift */,
 				812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */,
 				8193AF2D1E66A7E600DEBD13 /* ObjectiveCDebugExtension.swift */,
 				812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */,
@@ -289,7 +289,7 @@
 			files = (
 				OBJ_33 /* FileGenerator.swift in Sources */,
 				812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */,
-				OBJ_34 /* ObjCRootsRenderer.swift in Sources */,
+				OBJ_34 /* ObjCModelRenderer.swift in Sources */,
 				OBJ_35 /* ObjectiveCFileGenerator.swift in Sources */,
 				OBJ_36 /* ObjectiveCIR.swift in Sources */,
 				OBJ_37 /* Schema.swift in Sources */,
@@ -300,7 +300,7 @@
 				812A69D01E53D2A1006A510E /* ObjectiveCEqualityExtension.swift in Sources */,
 				812A69D61E53D44D006A510E /* ObjectiveCNSCodingExtension.swift in Sources */,
 				8193AF301E66A87300DEBD13 /* ObjCFileRenderer.swift in Sources */,
-				8152228D1E57766E00A4B873 /* ObjectiveCADTRenderer.swift in Sources */,
+				8152228D1E57766E00A4B873 /* ObjCADTRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

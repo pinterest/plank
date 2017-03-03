@@ -16,7 +16,7 @@ extension ObjCFileRenderer {
     }
 }
 
-extension ObjCRootsRenderer {
+extension ObjCModelRenderer {
 
     func renderModelObjectWithDictionary() -> ObjCIR.Method {
         return ObjCIR.method("+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary") {
@@ -141,7 +141,7 @@ extension ObjCRootsRenderer {
                             let propAssignmentPrefix = "\(propertyToAssign) = "
                             if assignmentLine.hasPrefix(propAssignmentPrefix) {
                                 let propertyInitStatement = assignmentLine.substring(from: propAssignmentPrefix.endIndex).trimmingCharacters(in: CharacterSet.init(charactersIn: " ;"))
-                                let adtInitStatement = propAssignmentPrefix + "[\(adtClassName) objectWith\(ObjCADTRootRenderer.objectName(schema)):\(propertyInitStatement)];"
+                                let adtInitStatement = propAssignmentPrefix + "[\(adtClassName) objectWith\(ObjCADTRenderer.objectName(schema)):\(propertyInitStatement)];"
                                 return lines.dropLast() + [adtInitStatement]
                             }
                         }

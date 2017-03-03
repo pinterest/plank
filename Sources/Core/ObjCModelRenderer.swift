@@ -1,5 +1,5 @@
 //
-//  ObjCRootsRenderer.swift
+//  ObjCModelRenderer.swift
 //  Plank
 //
 //  Created by Rahul Malik on 7/29/15.
@@ -10,7 +10,7 @@ import Foundation
 
 let rootNSObject = SchemaObjectRoot(name: "NSObject", properties: [:], extends: nil, algebraicTypeIdentifier: nil)
 
-public struct ObjCRootsRenderer: ObjCFileRenderer {
+public struct ObjCModelRenderer: ObjCFileRenderer {
     let rootSchema: SchemaObjectRoot
     let params: GenerationParameters
 

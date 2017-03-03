@@ -107,7 +107,6 @@ extension ObjCFileRenderer {
                 fatalError("Bad reference found in schema for class: \(className)")
             }
         case .OneOf(types:_):
-            // TODO: Unify logic that creates ADT name since this is currently duplicated
             return "\(className)\(param.snakeCaseToCamelCase()) *"
         }
     }

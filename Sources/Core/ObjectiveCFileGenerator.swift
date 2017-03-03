@@ -13,7 +13,7 @@ import Foundation
 struct ObjectiveCFileGenerator: FileGeneratorManager {
     static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> [FileGenerator] {
 
-        let rootsRenderer = ObjCRootsRenderer(rootSchema: descriptor, params: generatorParameters)
+        let rootsRenderer = ObjCModelRenderer(rootSchema: descriptor, params: generatorParameters)
 
         return [
             ObjCHeaderFile(roots: rootsRenderer.renderRoots(), className: rootsRenderer.className),

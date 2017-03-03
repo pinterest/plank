@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ObjCRootsRenderer {
+extension ObjCModelRenderer {
     func renderInitWithCoder() -> ObjCIR.Method {
         return ObjCIR.method("- (instancetype)initWithCoder:(NSCoder *)aDecoder") {
             [
@@ -40,7 +40,7 @@ extension ObjCRootsRenderer {
     }
 }
 
-extension ObjCADTRootRenderer {
+extension ObjCADTRenderer {
     func renderInitWithCoder() -> ObjCIR.Method {
         return ObjCIR.method("- (instancetype)initWithCoder:(NSCoder *)aDecoder") {
             [

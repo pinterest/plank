@@ -41,7 +41,7 @@ class ObjectiveCInitTests: XCTestCase {
                 algebraicTypeIdentifier: nil
             )
 
-            let renderer = ObjCRootsRenderer(rootSchema: schema, params: [:])
+            let renderer = ObjCModelRenderer(rootSchema: schema, params: [:])
             let output = renderer.renderInitWithModelDictionary()
             XCTAssert(output.render().count > 0)
         }

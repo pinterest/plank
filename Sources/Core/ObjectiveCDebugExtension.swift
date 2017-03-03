@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ObjCRootsRenderer {
+extension ObjCModelRenderer {
     func renderDebugDescription() -> ObjCIR.Method {
         let props = self.properties.map { (param, schema) -> String in
             ObjCIR.ifStmt("props.\(dirtyPropertyOption(propertyName: param, className: self.className))") {
@@ -29,10 +29,10 @@ extension ObjCRootsRenderer {
     }
 }
 
-extension ObjCADTRootRenderer {
+extension ObjCADTRenderer {
     func renderDebugDescription() -> ObjCIR.Method {
         let props = self.properties.map { (param, schema) -> String in
-            ObjCIR.ifStmt("self.internalType == \(self.renderInternalEnumTypeCase(name: ObjCADTRootRenderer.objectName(schema)))") {
+            ObjCIR.ifStmt("self.internalType == \(self.renderInternalEnumTypeCase(name: ObjCADTRenderer.objectName(schema)))") {
                 let ivarName = "_\(param.snakeCaseToPropertyName())"
                 return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, schema))]];"]
             }
