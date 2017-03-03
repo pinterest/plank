@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ObjCRootsRenderer {
+extension ObjCFileRenderer {
 
     // MARK: Hash Method - Inspired from Mike Ash article on Equality / Hashing
     // https://www.mikeash.com/pyblog/friday-qa-2010-06-18-implementing-equality-and-hashing.html

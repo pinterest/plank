@@ -53,6 +53,9 @@ extension Sequence {
 typealias Argument = String
 typealias Parameter = String
 
+typealias TypeName = String
+typealias SimpleProperty = (Parameter, TypeName, Schema, ObjCMutabilityType)
+
 func dirtyPropertyOption(propertyName aPropertyName: String, className: String) -> String {
     let propertyName = aPropertyName.snakeCaseToPropertyName()
     let capitalizedFirstLetter = String(propertyName[propertyName.startIndex]).uppercased()
@@ -111,7 +114,7 @@ extension Schema {
 
 extension EnumValue {
   func objcOptionName(param: String, className: String) -> String {
-    return enumTypeName(propertyName: param, className: className) + self.description.snakeCaseToCamelCase()
+    return enumTypeName(propertyName: param, className: className) + self.description
   }
 }
 
@@ -139,7 +142,7 @@ prefix func --> (body: () -> [String]) -> String {
   return -->body()
 }
 
-struct ObjCIR {
+public struct ObjCIR {
 
     static let ret = "return"
 
@@ -243,7 +246,7 @@ struct ObjCIR {
         ].joined(separator: "\n")
     }
 
-    struct Method {
+    public struct Method {
         let body: [String]
         let signature: String
 
@@ -256,10 +259,6 @@ struct ObjCIR {
             ]
         }
     }
-
-    typealias TypeName = String
-
-    typealias SimpleProperty = (Parameter, TypeName, Schema, ObjCMutabilityType)
 
     enum Root {
         case Struct(name: String, fields: [String])
@@ -312,9 +311,9 @@ struct ObjCIR {
                 return [ObjCIR.enumStmt(name) {
                     switch values {
                     case .Integer(let options):
-                        return options.map { "\(name + $0.description.snakeCaseToCamelCase()) = \($0.defaultValue)" }
+                        return options.map { "\(name + $0.description) = \($0.defaultValue)" }
                     case .String(let options, _):
-                        return options.map { "\(name + $0.description.snakeCaseToCamelCase()) /* \($0.defaultValue) */" }
+                        return options.map { "\(name + $0.description) /* \($0.defaultValue) */" }
                     }
                 }]
             }

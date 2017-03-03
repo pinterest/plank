@@ -12,7 +12,7 @@ import Foundation
 
 @testable import Core
 
-class PlankTests: XCTestCase {
+extension XCTestCase {
 
     // Performs a flexible string assertion by making sure the content of the rendered code strings are equal.
     // Flexible string comparison is done by making sure the number of white space tokens are equal between
