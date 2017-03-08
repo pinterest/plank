@@ -10,12 +10,14 @@ JSON Schema is a powerful tool for validating the structure of JSON data. In pra
 Here is a simple schema and overview of the fields listed.
 {% highlight json %}
     {
-        "id": "schemas/user.json",
+        "id": "user.json",
         "title": "user",
         "description" : "Schema definition of a User",
         "$schema": "http://json-schema.org/schema#",
         "type": "object",
-        "properties": { "id" : { "type": "string" },},
+        "properties": {
+            "id" : { "type": "string" }
+        },
         "required": []
     }
 {% endhighlight %}
@@ -26,18 +28,42 @@ Here is a simple schema and overview of the fields listed.
 | `title` (String)                   | Title is used to identify the name of the object. The convention we use is all lowercase with underscores (“_”) to separate words (i.e. “offer_summary”).                                                                                                                              |
 | `description` (String)             | Description is a helpful place to specify more detail about the current model object or property.                                                                                                                                                                                      |
 | `$schema` (String, URI formatted)  | This is a URI to the json-schema version this document is based on. This will be the default schema URI for now: "[http://json-schema.org/schema#](http://json-schema.org/schema#)"                                                                                                    |
-| `type` (String)                    | Specifies the type, currently this is always “object” when declared outside of the properties map. Valid types are “string”, “boolean”, “null”, “number”, “integer”, “array”, “object”.                                                                                                |
+| `type` (String)                    | Specifies the type, currently this is always “object” when declared outside of the properties map. Valid types are “string”, “boolean”, “number”, “integer”, “array”, “object”.                                                                                                |
 | `properties` (Map<string, object>) | Properties are where most of your editing will be focused. This area allows us to specify the property names (as the key) as well as their expected type.                                                                                                                              |
 | `required`                         | List of property names that are required to be present in the JSON response. This is currently unused but eventually could be utilized to provide tighter validation of schema responses.                                                                                              |
 
 
 ## Property fields
-Properties are where most of your editing will be focused. This area allows us to specify the fields that are available on this model. The properties declaration is a map from the property name to a simple schema that describes the property.
+Properties are where most of your editing will be focused. This area allows us to specify the fields that are available on this model. The properties declaration is a map from the property name to an object that describes the property.
 
-The keys follow the same naming conventions as title field (lowercase, underscore separated) and should map directly to the key that will be used in the JSON response. The value will be an object that can be one of the types specified earlier or a reference to another JSON-schema file (via JSON Pointer `$ref` ).
+The keys should follow the same naming conventions as title field (lowercase, underscore separated). The value will be an object that can be one of the types specified earlier or a reference to another JSON-schema file (via JSON Pointer `$ref` ).
 
 In addition, there is syntax for providing concrete subtypes such as dates, URIs, and emails as shown below. A full list can be seen under the JSON-Schema type-specific documentation [here](http://spacetelescope.github.io/understanding-json-schema/reference/type.html).
-### Type-specific examples
+
+
+### Types of Properties
+
+| Type                | Description |
+| :--- | :--- |
+| String                              | |
+| Boolean                             | |
+| Integer                             | |
+| Number                              | |
+| Date-time Property (String variant) | |
+| String Property                     | |
+| URI Property (String variant)       | |
+| JSON Pointer Property (`$ref`)        | |
+| Array Property                      | |
+| Array Property with Item types      | |
+| Object Property                     | |
+| Object Property with item types     | |
+| Algebraic Data Type (`oneOf`)       | |
+
+
+
+
+
+### Examples
 
 #### String Property
 {% highlight json %}
@@ -72,7 +98,7 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
 #### Integer
 {% highlight json %}
 {
-    "blocked_by_me" : { "type" : "boolean""board_count" : { "type" : "integer" } }
+    "blocked_by_me" : { "type" : "boolean"}
 }
 {% endhighlight %}
 
@@ -183,3 +209,99 @@ Here’s an example of how the pointers destination is resolved.
 4. `“some_property_name” : { "$ref": "person.json" }`
 5. When the pointers destination is resolved, it will be:
 6. http://foo.bar/schemas/person.json
+
+## WIP Plank schema definition
+
+{% highlight json %}
+{
+    "id": "http://json-schema.org/draft-04/schema#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "",
+    "definitions": {
+        "schemaArray": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#" }
+        },
+        "simpleTypes": {
+            "enum": [ "array", "boolean", "integer", "number", "object", "string" ]
+        },
+        "stringArray": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    },
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uri"
+        },
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+		"extends": {
+			"type": "object",
+            "additionalProperties": { "$ref": "#" },
+            "default": {}
+		},
+        "$schema": {
+            "type": "string",
+            "format": "uri"
+        },
+        "type": {
+            "anyOf": [
+                { "$ref": "#/definitions/simpleTypes" },
+                {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/simpleTypes" },
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
+            ]
+        },
+        "default": {},
+        "additionalItems": {
+            "anyOf": [
+                { "type": "boolean" },
+                { "$ref": "#" }
+            ],
+            "default": {}
+        },
+        "items": {
+            "anyOf": [
+                { "$ref": "#" },
+                { "$ref": "#/definitions/schemaArray" }
+            ],
+            "default": {}
+        },
+        "additionalProperties": {
+            "anyOf": [
+                { "type": "boolean" },
+                { "$ref": "#" }
+            ],
+            "default": {}
+        },
+        "properties": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#" },
+            "default": {}
+        },
+        "enum": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true
+        },
+        "required": { "$ref": "#/definitions/stringArray" },
+        "oneOf": { "$ref": "#/definitions/schemaArray" },
+    },
+    "default": {}
+}
+
+
+{% endhighlight %}

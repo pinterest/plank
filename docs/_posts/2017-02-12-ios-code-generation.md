@@ -28,6 +28,11 @@ The protocols currently supported are [NSCopying](https://developer.apple.com/li
 
 ## Generated Methods
 
+### JSON Parsing
+initWithModelDictionary
+- The keys follow the same naming conventions as title field (lowercase, underscore separated) and should map directly to the key that will be used in the JSON response. The value will be an object that can be one of the types specified earlier or a reference to another JSON-schema file (via JSON Pointer `$ref` ).
+
+
 
 ### Model Class
 
