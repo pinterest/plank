@@ -1,5 +1,13 @@
 <header class="site-header">
 	<div class="container">
+        <nav class="navbar navbar-light bg-faded">
+        {% for post in site.posts %}
+                <a class="navbar-brand" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        {% endfor %}
+                <a class="navbar-brand"
+                    href="https://github.com/pinterest/plank">GitHub</a>
+        </nav>
+
 		<div class="row">
 			<div class="col-sm-2">
 				<a href="/" title="{{ site.title }}">
