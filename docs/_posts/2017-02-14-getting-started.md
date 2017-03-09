@@ -39,6 +39,29 @@ Test that Plank installed correctly by running the version flag:
 $ plank --version
 {% endhighlight %}
 
+# Usage
+
+Generate a schema file (`user.json`) using Plank using the format `plank [options] file1 file2 file3 ...`
+{% highlight bash %}
+$ plank user.json
+{% endhighlight %}
+
+This will generate files (User.h, User.m) in the current directory
+Generate a schema file (`user.json`) using Plank.
+{% highlight bash %}
+$ ls
+User.h User.m
+{% endhighlight %}
+
+There are a couple of options that can be specified with your invocation of
+plank.
+
+| Option | Description |
+|---|---|
+| `--output_dir` | Specifies the directory where Plank will write generated files |
+| `--objc_class_prefix` | Specifies a prefix to append to the beginning of all classes (i.e. `PIN` for `PINUser`) |
+| `--help` | Displays usage documentation |
+
 ## Next Steps
 
 To get a taste on how to use Plank in your project, check out the [tutorial](https://pinterest.github.io/plank/2017/02/14/tutorial.html).

@@ -255,15 +255,7 @@ Here’s an example of how the pointers destination is resolved.
             "format": "uri"
         },
         "type": {
-            "anyOf": [
-                { "$ref": "#/definitions/simpleTypes" },
-                {
-                    "type": "array",
-                    "items": { "$ref": "#/definitions/simpleTypes" },
-                    "minItems": 1,
-                    "uniqueItems": true
-                }
-            ]
+            { "$ref": "#/definitions/simpleTypes" },
         },
         "default": {},
         "additionalItems": {
@@ -303,5 +295,5 @@ Here’s an example of how the pointers destination is resolved.
     "default": {}
 }
 
-
 {% endhighlight %}
+
