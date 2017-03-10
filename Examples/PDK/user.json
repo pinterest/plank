@@ -1,0 +1,23 @@
+{
+    "id": "user.json",
+    "title": "user",
+    "description" : "Schema definition of Pinterest User",
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+		"id" : { "type": "string" },
+		"username" : { "type": "string" },
+		"first_name" : { "type": "string" },
+		"last_name" : { "type": "string" },
+		"bio" : { "type": "string" },
+		"created_at" : {
+			"type": "string",
+			"format": "date-time"
+		},
+		"counts": {
+			"type": "object",
+			"additionalProperties": { "type": "integer" }
+		},
+		"image": { "$ref": "image.json" }
+	}
+}
