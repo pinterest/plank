@@ -1,10 +1,11 @@
----
+--
 layout: post
 title: "Objective-C Reference"
 ---
 
-## Model Class Overview
-JSON Schema to Objective-C type mapping
+### Model Class Overview
+
+#### JSON Schema to Objective-C type mapping
 
 | Schema Property Type                | Objective-C Type                                               |
 | :--- | :--- |
@@ -23,51 +24,315 @@ JSON Schema to Objective-C type mapping
 | Algebraic Data Type (`oneOf`)       | ADT Class (ModelType + Property name)                          |
 
 
-## Supported Protocols
-The protocols currently supported are [NSCopying](https://developer.apple.com/library/prerelease/mac/documentation/Cocoa/Reference/Foundation/Protocols/NSCopying_Protocol/index.html) and [NSSecureCoding](https://developer.apple.com/library/prerelease/ios/documentation/Foundation/Reference/NSSecureCoding_Protocol_Ref/index.html). NSCopying allows us to support copy operations which for immutable models will simply return **self**. NSSecureCoding allows the models to be serialized by NSCoder which can be a useful solution for data persistence.
+#### Generated Methods
+{% highlight objc %}
 
-## Generated Methods
+@interface User : NSObject<NSCopying, NSSecureCoding>
 
-### JSON Parsing
-initWithModelDictionary
-- The keys follow the same naming conventions as title field (lowercase, underscore separated) and should map directly to the key that will be used in the JSON response. The value will be an object that can be one of the types specified earlier or a reference to another JSON-schema file (via JSON Pointer `$ref` ).
++ (NSString *)className;
++ (NSString *)polymorphicTypeIdentifier;
+
+// Initialization (JSON Parsing)
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary;
+
+// Initialization (Builder)
+- (instancetype)initWithBuilder:(UserBuilder *)builder;
+
+// Mutation
+- (instancetype)copyWithBlock:(void (^)(UserBuilder *builder))block;
+- (instancetype)mergeWithModel:(User *)modelObject;
+
+// Equality
+- (BOOL)isEqualToUser:(User *)anObject;
+
+@end
 
 
+{% endhighlight %}
 
-### Model Class
+#### JSON Parsing
+{% highlight objc %}
+// Initialization
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary;
+{% endhighlight %}
 
-These methods can be found in any base model class. The first four are various ways to initialize an instance of a model and the last is the api that will be used for mutation.
+The above methods (`modelObjectWithDictionary:`, `initWithModelDictionary:`) are used to instantiate an object from a dictionary representation. The implementation will use your schema definition to understand how to read the dictionary. It does this by using the keys of the `properties` definition when referencing the dictionary argument passed to these methods.
+
+For example, if we had the schema below with the properties: `username`, `first_name`, `created_at`
+{% highlight json %}
+{
+    "properties": {
+	"username" : { "type": "string" },
+	"first_name" : { "type": "string" },
+	"created_at" : {
+		"type": "string",
+		"format": "date-time"
+	}
+}
+{% endhighlight %}
+
+Then this would be the corresponding implementation for `initWithModelDictionary`.
+{% highlight objc %}
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary
+{
+    if (!(self = [super init])) { return self; }
+    [modelDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *  key, id  obj, BOOL * stop){
+        if ([key isEqualToString:@"username"]) {
+            id value = valueOrNil(modelDictionary, @"username");
+            if (value != nil) {
+                self->_username = value;
+            }
+            self->_userDirtyProperties.UserDirtyPropertyUsername = 1;
+        }
+        if ([key isEqualToString:@"first_name"]) {
+            id value = valueOrNil(modelDictionary, @"first_name");
+            if (value != nil) {
+                self->_firstName = value;
+            }
+            self->_userDirtyProperties.UserDirtyPropertyFirstName = 1;
+        }
+        if ([key isEqualToString:@"created_at"]) {
+            id value = valueOrNil(modelDictionary, @"created_at");
+            if (value != nil) {
+                self->_createdAt = [[NSValueTransformer valueTransformerForName:kPINModelDateValueTransformerKey] transformedValue:value];
+            }
+            self->_userDirtyProperties.UserDirtyPropertyCreatedAt = 1;
+        }
+    }];
+    if ([self class] == [User class]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kPINModelDidInitializeNotification object:self userInfo:@{ kPINModelInitTypeKey : @(PIModelInitTypeDefault) }];
+    }
+    return self;
+}
+{% endhighlight %}
+
+A couple more things to note in the implementation:
+- **Date Parsing**: Due to the variance of possible date formats, `NSDate` or `DateTime` objects are created using an instance of `NSValueTransformer`. It is up to the host application to register an instance of `NSValueTransformer` for the key `kPINModelDateValueTransformerKey`.
+- **Tracking Set Properties** : Each model instance contains a bitmask that tracks whenever a specific property has been set. This allows the model object to differentiate between `nil` and unset values when performing tasks like printing debug descriptions or merging model instances.
+- **Initialization Notification** : Everytime a model is initialized, a notification with the name `kPINModelDidInitializeNotification` is fired with the newly created object. In addition the `userInfo` dictionary will contain additional information specifying how it was initialized. You should leverage this notification information to manage data-consistency in your application.
+
+#### Builder Initialization
 
 {% highlight objc %}
-+ (nullable instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
-- (nullable instancetype)initWithDictionary:(NSDictionary *)modelDictionary NS_DESIGNATED_INITIALIZER;
-- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
-- (nullable instancetype)initWithBuilder:(BuilderObjectType)builder NS_DESIGNATED_INITIALIZER;
-- (instancetype)copyWithBlock:(void (^)(BuilderObjectType builder))block;
+// Initialization (Builder)
+- (instancetype)initWithBuilder:(UserBuilder *)builder;
+{% endhighlight %}
+
+For each model there is also a builder class that is generated. The builder is a common [pattern](https://en.wikipedia.org/wiki/Builder_pattern) that we are using to create mutations of existing models. It achieves this by managing the copying of existing values and allowing the caller to specify mutations without altering the original model. The builder has a readwrite property for every property declared on the model class it creates. It can also be used to generate a model instance by itself as well.
+
+Once we have mutated our builder objects, we can create a new model object by using `initWithBuilder:`.
+
+{% highlight objc %}
+- (instancetype)initWithBuilder:(UserBuilder *)builder
+{
+    if (!(self = [super init])) { return self; }
+    _username = builder.username;
+    _firstName = builder.firstName;
+    _createdAt = builder.createdAt;
+    _userDirtyProperties = builder.userDirtyProperties;
+	// init notification
+    return self;
+}
+{% endhighlight %}
+
+
+#### Serialization
+{% highlight objc %}
++ (BOOL)supportsSecureCoding;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder;
+- (void)encodeWithCoder:(NSCoder *)aCoder;
+{% endhighlight %}
+
+Objects generated with plank support serialization through [NSSecureCoding](https://developer.apple.com/library/prerelease/ios/documentation/Foundation/Reference/NSSecureCoding_Protocol_Ref/index.html). This allows you to persist state by using `NSKeyedArchiver` and `NSKeyedUnarchiver`. Since the property types are declared in the schema, we can use `NSSecureCoding` over `NSCoding` since it requires decoding objects with their class type in addition to the key used to encode it. For example, to decode the object for `created_at` we need to specify that the value is an `NSDate`.
+
+{% highlight objc %}
++ (BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (!(self = [super init])) { return self; }
+    _firstName = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"first_name"];
+    _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
+    _username = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"username"];
+    _userDirtyProperties.UserDirtyPropertyFirstName = [aDecoder decodeIntForKey:@"first_name_dirty_property"] & 0x1;
+    _userDirtyProperties.UserDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
+    _userDirtyProperties.UserDirtyPropertyUsername = [aDecoder decodeIntForKey:@"username_dirty_property"] & 0x1;
+	// init notification
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.firstName forKey:@"first_name"];
+    [aCoder encodeObject:self.createdAt forKey:@"created_at"];
+    [aCoder encodeObject:self.username forKey:@"username"];
+    [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyFirstName forKey:@"first_name_dirty_property"];
+    [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyCreatedAt forKey:@"created_at_dirty_property"];
+    [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyUsername forKey:@"username_dirty_property"];
+}
+{% endhighlight %}
+
+#### NSCopying
+{% highlight objc %}
+- (id)copyWithZone:(NSZone *)zone
+{% endhighlight %}
+
+[NSCopying](https://developer.apple.com/library/prerelease/mac/documentation/Cocoa/Reference/Foundation/Protocols/NSCopying_Protocol/index.html) allows us to support copy operations which for immutable models can just return `self`.
+
+{% highlight objc %}
+- (id)copyWithZone:(NSZone *)zone
+{
+    return self;
+}
+{% endhighlight %}
+
+
+#### Equality & Hashing
+
+{% highlight objc %}
+- (BOOL)isEqual:(id)anObject;
+- (BOOL)isEqualToUser:(User *)anObject;
+- (NSUInteger)hash;
+{% endhighlight %}
+
+Immutable objects often need to be compared for equality. Since every mutation produces a new object, reference equality will not work so we need to rely on comparing the values of the objects themselves. Plank generates the `isEqual` and `isEqualToX:` methods where `X` is the name of your model object class. These perform a combination of reference and deep value comparisons to determine equality. In addition, the there will be an implementation of `hash` so that the objectscan be used as a key in a collection.
+
+{% highlight objc %}
+
+- (BOOL)isEqual:(id)anObject
+{
+    if (self == anObject) {
+        return YES;
+    }
+    if ([anObject isKindOfClass:[User class]] == NO) {
+        return NO;
+    }
+    return [self isEqualToUser:anObject];
+}
+
+- (BOOL)isEqualToUser:(User *)anObject
+{
+    return (
+        (anObject != nil) &&
+        (self == anObject) &&
+        (_firstName == anObject.firstName || [_firstName isEqualToString:anObject.firstName]) &&
+        (_createdAt == anObject.createdAt || [_createdAt isEqualToDate:anObject.createdAt]) &&
+        (_username == anObject.username || [_username isEqualToString:anObject.username]) &&
+    );
+}
+
+- (NSUInteger)hash
+{
+    NSUInteger subhashes[] = {
+        17,
+        [_firstName hash],
+        [_createdAt hash],
+        [_username hash],
+    };
+    return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
+}
+{% endhighlight %}
+
+
+#### Debugging Description
+{% highlight objc %}
+- (NSString *)debugDescription
+{% endhighlight %}
+
+When you're debugging, it's useful to be able to print out the value of your model. All generated classes will include an implementation for `debugDescription` which is the value that is logged when printing objects (`po objectName`) with LLDB. Without this implementation, printing an object with would just show the pointer address. The implementation will perform a shallow print of all properties that are currently set on the object.
+
+{% highlight objc %}
+- (NSString *)debugDescription
+{
+    NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:8];
+    [descriptionFields addObject:parentDebugDescription];
+    struct UserDirtyProperties props = _userDirtyProperties;
+    if (props.UserDirtyPropertyFirstName) {
+        [descriptionFields addObject:[@"_firstName = " stringByAppendingFormat:@"%@", _firstName]];
+    }
+    if (props.UserDirtyPropertyCreatedAt) {
+        [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
+    }
+    if (props.UserDirtyPropertyUsername) {
+        [descriptionFields addObject:[@"_username = " stringByAppendingFormat:@"%@", _username]];
+    }
+    return [NSString stringWithFormat:@"User = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
+}
+{% endhighlight %}
+
+#### Mutations
+
+{% highlight objc %}
+- (instancetype)copyWithBlock:(PINMODEL_NOESCAPE void (^)(UserBuilder *builder))block;
+- (instancetype)mergeWithModel:(User *)modelObject;
+{% endhighlight %}
+
+There are two main mutations available on every model class:
+
+The first is `copyWithBlock` which is a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) for mutation. This method allows you to pass a configuration block as an argument and that block will be passed a Builder object that you can safely mutate. The builder object will be used to create a new immutable model object with it's state at the end of the block.
+
+{% highlight objc %}
+- (instancetype)copyWithBlock:(PINMODEL_NOESCAPE void (^)(UserBuilder *builder))block
+{
+    UserBuilder *builder = [[UserBuilder alloc] initWithModel:self];
+    block(builder);
+    return [builder build];
+}
+{% endhighlight %}
+
+The second is `mergeWithModel:` which is used to merge the values of the two different models. The argument is a model object that is presumed to be the most up-to-date version so it's values will be preferred when determining how to merge the two objects. The implementation differentiates between `nil` and unset properties by referencing the "dirty" properties that are tracked during initialization. This method is useful if your application progressively loads more information throughout. The implementation defers most of the merging work to it's corresponding builder class (discussed below).
+
+{% highlight objc %}
+- (instancetype)mergeWithModel:(User *)modelObject
+{
+    UserBuilder *builder = [[UserBuilder alloc] initWithModel:self];
+    [builder mergeWithModel:modelObject];
+    return [[User alloc] initWithBuilder:builder initType:initType];
+}
 {% endhighlight %}
 
 ### Builder Class
 
-For each model there is also a builder class that is generated. The builder is a common [pattern](https://en.wikipedia.org/wiki/Builder_pattern) that we are using to create mutations of existing models. It achieves this by managing the copying of existing values and allowing the caller to specify mutations without altering the original model. The builder has a readwrite property for every property declared on the model class it creates. It can also be used to generate a model instance by itself as well.
-
-The first method is related to initialization and accepts an instance of the model class that is builds. The build method will take the current value of the properties defined on the builder and create a new model immutable instance.
-
 {% highlight objc %}
-- (nullable instancetype)initWithModel:(ObjectType)modelObject;
-- (ObjectType)build;
+@interface UserBuilder : NSObject
+@property (nullable, nonatomic, copy, readwrite) NSString * firstName;
+@property (nullable, nonatomic, strong, readwrite) NSDate * createdAt;
+@property (nullable, nonatomic, copy, readwrite) NSString * username;
+// Initialization
+- (instancetype)initWithModel:(User *)modelObject;
+// Mutation
+- (User *)build;
+- (void)mergeWithModel:(User *)modelObject;
+@end
 {% endhighlight %}
 
-## Objective-C specific generation notes
+The builder has a readwrite property for every property declared on the model class it creates. It can also be used to generate a model instance by itself as well.
 
-**NSValueTransformer Support**
+The `initWithModel:` method takes an instance of the model class that is builds.
+
+The `build` method will take the current value of the properties defined on the builder and create a new model immutable instance.
+
+The `mergeWithModel:` method takes a model object and overwrites it's current properties for any property set on that object.
+
+### Appendix -  Objective-C specific generation notes
+
+#### NSValueTransformer Support
 The use of custom transformer types is currently not available and not planned for the generator. The only exception to this rule is when handling date-time property types. Because date formats can vary, the project owner is responsible for providing a NSValueTransformer subclass that will parse the date format supplied by their API. This value transformer should be registered with
 NSValueTransformer with the key “kPlankDateValueTransformerKey”.
 
 
-
-**Immutability & Mutation**
+#### Immutability & Mutation
 The models are currently all immutable. Immutability allows us to have many benefits with regards to safe concurrency and correctness. Often there will be a small mutation necessary (incrementing the like count, etc.) that will have to be made and the generated builder classes will help you achieve that.
 There are two primary ways to mutate a model.
+
+#### Supported Protocols
+The protocols currently supported are [NSCopying](https://developer.apple.com/library/prerelease/mac/documentation/Cocoa/Reference/Foundation/Protocols/NSCopying_Protocol/index.html) and [NSSecureCoding](https://developer.apple.com/library/prerelease/ios/documentation/Foundation/Reference/NSSecureCoding_Protocol_Ref/index.html). NSCopying allows us to support copy operations which for immutable models will simply return **self**. NSSecureCoding allows the models to be serialized by NSCoder which can be a useful solution for data persistence.
 
 - Use the `copyWithBlock` method available on the model class (modern, preferred approach)
 {% highlight objc %}
@@ -85,4 +350,199 @@ PIPin *pin = [PIPin modelObjectWIthDictionary:someDictionary];
 PIPinBuilder *builder = [[PIPinBuilder alloc] initWithModel:pin];
 builder.descriptionText = @”Some new description text”;
 PIPin *newPin = [builder build];
+{% endhighlight %}
+
+
+{% highlight objc %}
+//
+//  User.m
+//  Autogenerated by plank
+//
+//  DO NOT EDIT - EDITS WILL BE OVERWRITTEN
+//  Copyright (c) 2017 Pinterest, Inc. All rights reserved.
+//  @generated
+//
+
+@implementation User
++ (NSString *)className
+{
+    return @"User";
+}
++ (NSString *)polymorphicTypeIdentifier
+{
+    return @"user";
+}
+- (NSString *)debugDescription
+{
+    NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:8];
+    [descriptionFields addObject:parentDebugDescription];
+    struct UserDirtyProperties props = _userDirtyProperties;
+    if (props.UserDirtyPropertyLastName) {
+        [descriptionFields addObject:[@"_lastName = " stringByAppendingFormat:@"%@", _lastName]];
+    }
+    if (props.UserDirtyPropertyIdentifier) {
+        [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", _identifier]];
+    }
+    if (props.UserDirtyPropertyFirstName) {
+        [descriptionFields addObject:[@"_firstName = " stringByAppendingFormat:@"%@", _firstName]];
+    }
+    if (props.UserDirtyPropertyImage) {
+        [descriptionFields addObject:[@"_image = " stringByAppendingFormat:@"%@", _image]];
+    }
+    if (props.UserDirtyPropertyCounts) {
+        [descriptionFields addObject:[@"_counts = " stringByAppendingFormat:@"%@", _counts]];
+    }
+    if (props.UserDirtyPropertyCreatedAt) {
+        [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
+    }
+    if (props.UserDirtyPropertyUsername) {
+        [descriptionFields addObject:[@"_username = " stringByAppendingFormat:@"%@", _username]];
+    }
+    if (props.UserDirtyPropertyBio) {
+        [descriptionFields addObject:[@"_bio = " stringByAppendingFormat:@"%@", _bio]];
+    }
+    return [NSString stringWithFormat:@"User = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
+}
+- (instancetype)copyWithBlock:(PINMODEL_NOESCAPE void (^)(UserBuilder *builder))block
+{
+    NSParameterAssert(block);
+    UserBuilder *builder = [[UserBuilder alloc] initWithModel:self];
+    block(builder);
+    return [builder build];
+}
+- (instancetype)mergeWithModel:(User *)modelObject
+{ return [self mergeWithModel:modelObject initType:PIModelInitTypeFromMerge];
+}
+- (instancetype)mergeWithModel:(User *)modelObject initType:(PIModelInitType)initType
+{
+    NSParameterAssert(modelObject);
+    UserBuilder *builder = [[UserBuilder alloc] initWithModel:self];
+    [builder mergeWithModel:modelObject];
+    return [[User alloc] initWithBuilder:builder initType:initType];
+}
+
+@implementation UserBuilder
+- (instancetype)initWithModel:(User *)modelObject
+{
+    NSParameterAssert(modelObject);
+    if (!(self = [super init])) {
+        return self;
+    }
+    struct UserDirtyProperties userDirtyProperties = modelObject.userDirtyProperties;
+    if (userDirtyProperties.UserDirtyPropertyLastName) {
+        _lastName = modelObject.lastName;
+    }
+    if (userDirtyProperties.UserDirtyPropertyIdentifier) {
+        _identifier = modelObject.identifier;
+    }
+    if (userDirtyProperties.UserDirtyPropertyFirstName) {
+        _firstName = modelObject.firstName;
+    }
+    if (userDirtyProperties.UserDirtyPropertyImage) {
+        _image = modelObject.image;
+    }
+    if (userDirtyProperties.UserDirtyPropertyCounts) {
+        _counts = modelObject.counts;
+    }
+    if (userDirtyProperties.UserDirtyPropertyCreatedAt) {
+        _createdAt = modelObject.createdAt;
+    }
+    if (userDirtyProperties.UserDirtyPropertyUsername) {
+        _username = modelObject.username;
+    }
+    if (userDirtyProperties.UserDirtyPropertyBio) {
+        _bio = modelObject.bio;
+    }
+    _userDirtyProperties = userDirtyProperties;
+    return self;
+}
+- (User *)build
+{
+    return [[User alloc] initWithBuilder:self];
+}
+- (void)mergeWithModel:(User *)modelObject
+{
+    NSParameterAssert(modelObject);
+    UserBuilder *builder = self;
+    if (modelObject.userDirtyProperties.UserDirtyPropertyLastName) {
+        builder.lastName = modelObject.lastName;
+    }
+    if (modelObject.userDirtyProperties.UserDirtyPropertyIdentifier) {
+        builder.identifier = modelObject.identifier;
+    }
+    if (modelObject.userDirtyProperties.UserDirtyPropertyFirstName) {
+        builder.firstName = modelObject.firstName;
+    }
+    if (modelObject.userDirtyProperties.UserDirtyPropertyImage) {
+        id value = modelObject.image;
+        if (value != nil) {
+            if (builder.image) {
+                builder.image = [builder.image mergeWithModel:value initType:PIModelInitTypeFromSubmerge];
+            }
+             else {
+                builder.image = value;
+            }
+        }
+         else {
+            builder.image = nil;
+        }
+    }
+    if (modelObject.userDirtyProperties.UserDirtyPropertyCounts) {
+        builder.counts = modelObject.counts;
+    }
+    if (modelObject.userDirtyProperties.UserDirtyPropertyCreatedAt) {
+        builder.createdAt = modelObject.createdAt;
+    }
+    if (modelObject.userDirtyProperties.UserDirtyPropertyUsername) {
+        builder.username = modelObject.username;
+    }
+    if (modelObject.userDirtyProperties.UserDirtyPropertyBio) {
+        builder.bio = modelObject.bio;
+    }
+}
+- (void)setLastName:(NSString *)lastName
+{
+    _lastName = lastName;
+    _userDirtyProperties.UserDirtyPropertyLastName = 1;
+}
+- (void)setIdentifier:(NSString *)identifier
+{
+    _identifier = identifier;
+    _userDirtyProperties.UserDirtyPropertyIdentifier = 1;
+}
+- (void)setFirstName:(NSString *)firstName
+{
+    _firstName = firstName;
+    _userDirtyProperties.UserDirtyPropertyFirstName = 1;
+}
+- (void)setImage:(Image *)image
+{
+    _image = image;
+    _userDirtyProperties.UserDirtyPropertyImage = 1;
+}
+- (void)setCounts:(NSDictionary<NSString *, NSNumber /* Integer */ *> *)counts
+{
+    _counts = counts;
+    _userDirtyProperties.UserDirtyPropertyCounts = 1;
+}
+- (void)setCreatedAt:(NSDate *)createdAt
+{
+    _createdAt = createdAt;
+    _userDirtyProperties.UserDirtyPropertyCreatedAt = 1;
+}
+- (void)setUsername:(NSString *)username
+{
+    _username = username;
+    _userDirtyProperties.UserDirtyPropertyUsername = 1;
+}
+- (void)setBio:(NSString *)bio
+{
+    _bio = bio;
+    _userDirtyProperties.UserDirtyPropertyBio = 1;
+}
+@end
+
+
+
 {% endhighlight %}

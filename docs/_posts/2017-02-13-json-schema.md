@@ -11,6 +11,7 @@ Here is a simple schema and overview of the fields listed.
 {% highlight json %}
     {
         "id": "user.json",
+        "extends": "base_model.json",
         "title": "user",
         "description" : "Schema definition of a User",
         "$schema": "http://json-schema.org/schema#",
@@ -25,6 +26,7 @@ Here is a simple schema and overview of the fields listed.
 | Field name | Description |
 | --- | --- |
 | `id` (String)                      | The id property identifies where this resource can be found. This can either be a relative or absolute path. In addition, schemas that are accessed remotely can be accessed by specifying the correct URI. This value will become more important when we discuss JSON Pointers below. |
+| `extends` (String)                      | The extends key is a JSON pointer (`$ref`)  that refers to a parent schema |
 | `title` (String)                   | Title is used to identify the name of the object. The convention we use is all lowercase with underscores (“_”) to separate words (i.e. “offer_summary”).                                                                                                                              |
 | `description` (String)             | Description is a helpful place to specify more detail about the current model object or property.                                                                                                                                                                                      |
 | `$schema` (String, URI formatted)  | This is a URI to the json-schema version this document is based on. This will be the default schema URI for now: "[http://json-schema.org/schema#](http://json-schema.org/schema#)"                                                                                                    |
