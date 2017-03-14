@@ -12,7 +12,7 @@ If you already have Plank installed, jump to the [tutorial](https://pinterest.gi
 The easiest way to install Plank is through [Homebrew](https://brew.sh/):
 
 {% highlight bash %}
-$ brew install plank
+$ brew install pinterest/tap/plank
 {% endhighlight %}
 
 ## Linux (via Docker)
