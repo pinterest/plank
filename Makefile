@@ -7,22 +7,22 @@
 all: clean build test archive
 
 clean:
-	swift build --clean
+	xcrun swift build --clean
 
 lint:
 	./Utility/lint.sh
 
 build: lint
-	swift build -v -Xswiftc -static-stdlib
+	xcrun swift build -v -Xswiftc -static-stdlib
+
+test: build_test_index_linux build
+	xcrun swift test
+
+archive:
+	xcrun swift build -v -c release -Xswiftc -static-stdlib
 
 build_test_index_linux:
 	swift Utility/GenerateTestCaseProvider.swift $(PWD)/Tests/CoreTests
-
-test: build_test_index_linux build
-	swift test
-
-archive:
-	swift build -v -c release -Xswiftc -static-stdlib
 
 archive_linux:
 	swift build -c release
