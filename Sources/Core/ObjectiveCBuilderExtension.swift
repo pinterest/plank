@@ -78,7 +78,7 @@ extension ObjCModelRenderer {
             [
                 "NSParameterAssert(modelObject);",
                 self.isBaseClass ? "" : "[super mergeWithModel:modelObject];",
-                "\(self.builderClassName) *builder = self;",
+                self.properties.count > 0 ? "\(self.builderClassName) *builder = self;" : "",
                 self.properties.map(formatParam).joined(separator: "\n")
                 ].filter { $0 != "" }
         }

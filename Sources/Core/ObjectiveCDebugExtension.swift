@@ -22,7 +22,7 @@ extension ObjCModelRenderer {
             "NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:\("\\n".objcLiteral())];",
             "NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:\(self.properties.count)];",
             "[descriptionFields addObject:parentDebugDescription];",
-            "struct \(self.dirtyPropertyOptionName) props = _\(self.dirtyPropertiesIVarName);",
+            self.properties.count > 0 ? "struct \(self.dirtyPropertyOptionName) props = _\(self.dirtyPropertiesIVarName);" : "",
             props,
             "return [NSString stringWithFormat:\(printFormat), debugDescriptionForFields(descriptionFields)];"
             ]}
