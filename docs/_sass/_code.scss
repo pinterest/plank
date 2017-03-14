@@ -1,0 +1,23 @@
+pre, code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  line-height: 17px;
+}
+
+pre {
+    padding: 10px;
+    overflow: scroll;
+    border-radius: 3px;
+}
+
+pre .kw { color: #268BD2; }
+pre .dt { color: #268BD2; }
+pre .dv, pre .bn, pre .fl { color: #D33682; }
+pre .ch { color: #DC322F; }
+pre .st { color: #2AA198; }
+pre .co { color: #93A1A1; }
+pre .ot { color: #A57800; }
+pre .al { color: #CB4B16; font-weight: bold; }
+pre .fu { color: #268BD2; }
+pre .re { }
+pre .er { color: #D30102; font-weight: bold; }

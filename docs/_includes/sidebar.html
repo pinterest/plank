@@ -1,10 +1,16 @@
-<nav class="doc-sidebar">
-	<div class="docs-section">
-		<h5>Getting Started</h5>
-		<ul>
-		{% for post in site.posts %}
-			<li><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
-		{% endfor %}
-		</ul>
-	</div>
-</nav>
+<div class="sidebar columns three">
+    <ul>
+    	{% for category in site.categories %}
+	        <li class="open">
+	        <span> {{ category[0] }} </span>
+            {% for posts in category %}
+                <ul>
+				{% for post in posts %}
+			        <li class="open"><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
+				{% endfor %}
+				</ul>
+		    {% endfor %}
+	        </li>
+        {% endfor %}
+    </ul>
+</div>

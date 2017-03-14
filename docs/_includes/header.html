@@ -1,19 +1,16 @@
-<header class="site-header">
-	<div class="container">
-        <nav class="navbar navbar-light bg-faded">
-        {% for post in site.posts %}
-                <a class="navbar-brand" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        {% endfor %}
-                <a class="navbar-brand"
-                    href="https://github.com/pinterest/plank">GitHub</a>
-        </nav>
-
-		<div class="row">
-			<div class="col-sm-2">
-				<a href="/" title="{{ site.title }}">
-					<img src="{{ "/assets/images/logo.png" | prepend: site.baseurl }}" />
-				</a>
-			</div>
-		</div>
-	</div>
-</header>
+<div class="header">
+    <div class="container">
+        <h1 class="logoWrapper">
+            <a href="{{ site.baseurl }}/">
+				<img src="{{ "/assets/images/logo.png" | prepend: site.baseurl }}" />
+            </a>
+        </h1>
+        <ul class="nav">
+        	{% for item in site.data.navigation.main %}
+        		<li>
+        			<a href="{{ item.url }}" title="{{ item.title }}" {% if item.new_window %}target="_blank"{% endif %}>{{ item.title }}</a>
+        		</li>
+        	{% endfor %}
+        </ul>
+    </div>
+</div>

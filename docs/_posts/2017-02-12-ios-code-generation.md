@@ -1,6 +1,7 @@
---
+---
 layout: post
 title: "Objective-C Reference"
+categories: Reference
 ---
 
 ### Model Class Overview

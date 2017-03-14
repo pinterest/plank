@@ -1,15 +1,20 @@
 ---
 layout: default
 ---
-<article class="doc">
+<div class="docsContainer container">
+    <div class="row">
+        {% include sidebar.html %}
 
-  <header class="doc-header">
-    <a href="https://github.com/pinterest/plank/blob/master/docs/{{ page.path }}" target="_blank" class="edit-link">Edit on GitHub</a>
-    <h1 class="page-header">{{ page.title | escape }}</h1>
-  </header>
+        <div class="content columns nine docsContent">
+    	    <a href="https://github.com/pinterest/plank/blob/master/docs/{{ page.path }}" target="_blank" class="edit-link">Edit on GitHub</a>
+		    <h1 class="page-header">{{ page.title | escape }}</h1>
 
-  <div class="post-content">
-    {{ content }}
-  </div>
+            {{ content }}
 
-</article>
+            <div class="nextSection">
+                <h4 class="next">Next</h4>
+                <a href="#">Recipe Rich Pins</a>
+            </div>
+        </div>
+    </div>
+</div>

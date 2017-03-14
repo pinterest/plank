@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "JSON Schema"
+categories: Reference
 ---
 
 JSON Schema is a powerful tool for validating the structure of JSON data. In practice, these schemas can be used to create validators, code generators and other useful tools to handle complex and/or tedious issues. There is a great online overview of JSON-Schema and its specifics here: [http://spacetelescope.github.io/understanding-json-schema/#](http://spacetelescope.github.io/understanding-json-schema/#). For the purposes of this document we will only be concerned with version 4 of JSON-Schema.
