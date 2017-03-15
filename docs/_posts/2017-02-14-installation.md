@@ -6,13 +6,14 @@ categories: ["Getting Started"]
 
 If you already have Plank installed, jump to the [tutorial](https://pinterest.github.io/plank/2017/02/14/tutorial.html).
 
-# Installation
 ## macOS
 
 The easiest way to install Plank is through [Homebrew](https://brew.sh/):
 
 {% highlight bash %}
+```shell
 $ brew install pinterest/tap/plank
+```
 {% endhighlight %}
 
 ## Linux (via Docker)
@@ -48,6 +49,7 @@ $ plank user.json
 {% endhighlight %}
 
 This will generate files (User.h, User.m) in the current directory
+
 Generate a schema file (`user.json`) using Plank.
 {% highlight bash %}
 $ ls
@@ -59,9 +61,9 @@ plank.
 
 | Option | Description |
 |---|---|
-| `--output_dir` | Specifies the directory where Plank will write generated files |
-| `--objc_class_prefix` | Specifies a prefix to append to the beginning of all classes (i.e. `PIN` for `PINUser`) |
-| `--help` | Displays usage documentation |
+| `output_dir` | Specifies the directory where Plank will write generated files |
+| `objc_class_prefix` | Specifies a prefix to append to the beginning of all classes (i.e. `PIN` for `PINUser`) |
+| `help` | Displays usage documentation |
 
 ## Next Steps
 
