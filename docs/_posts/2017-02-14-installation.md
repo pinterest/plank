@@ -33,7 +33,7 @@ $ make archive
 
 ## Testing Install
 
-Test that Plank installed correctly by running the version flag:
+Test that Plank installed correctly by running it with `--version`:
 
 {% highlight bash %}
 $ plank --version
