@@ -62,54 +62,43 @@ struct ObjCImplementationFile: FileGenerator {
     }
 }
 
-struct ObjCRuntimeHeaderFile: FileGenerator {
-    var fileName: String {
-        return "PlankModelRuntime.h"
-    }
+struct ObjCRuntimeFile {
+    static func renderRoots() -> [ObjCIR.Root] {
+        return [
+            ObjCIR.Root.Macro([
+                "#if __has_attribute(noescape)",
+                "   #define PINMODEL_NOESCAPE __attribute__((noescape))",
+                "#else",
+                "   #define PINMODEL_NOESCAPE",
+                "#endif"
+                ].joined(separator: "\n")),
 
-    func renderFile() -> String {
-        let roots: [ObjCIR.Root] = [
-            ObjCIR.Root.Enum(
+            ObjCIR.Root.OptionSetEnum(
                 name: "PIModelInitType",
-                values: EnumType.String([
-                    EnumValue<String>(defaultValue: "1 << 0", description: "Default"),
-                    EnumValue<String>(defaultValue: "1 << 1", description: "Merge"),
-                    EnumValue<String>(defaultValue: "1 << 2", description: "Submerge")
-                    ], defaultValue:EnumValue<String>(defaultValue: "1 << 0", description: "Default")
-                )
+                values:[
+                    EnumValue<Int>(defaultValue: 0, description: "Default"),
+                    EnumValue<Int>(defaultValue: 1, description: "FromMerge"),
+                    EnumValue<Int>(defaultValue: 2, description: "FromSubmerge")
+                ]
             ),
-
-/*
-            static NSString *const kPINModelDateValueTransformerKey = @"kPINModelDateValueTransformerKey";
-
-        static NSString *const kPINModelDidInitializeNotification = @"kPINModelDidInitializeNotification";
-
-        static NSString *const kPINModelInitTypeKey = @"kPINModelInitTypeKey";
- */
-            ObjCIR.Root.Macro(
-                [
-                    "#if __has_attribute(noescape)",
-                    "   #define PINMODEL_NOESCAPE __attribute__((noescape))",
-                    "#else",
-                    "   #define PINMODEL_NOESCAPE",
-                    "#endif"
-                ].joined(separator: "\n")
-            ),
+            // TODO Add another root for constant variables instead of using Macro
+            ObjCIR.Root.Macro("static NSString *const kPINModelDateValueTransformerKey = @\"kPINModelDateValueTransformerKey\";"),
+            ObjCIR.Root.Macro("static NSString *const kPINModelDidInitializeNotification = @\"kPINModelDidInitializeNotification\";"),
+            ObjCIR.Root.Macro("static NSString *const kPINModelInitTypeKey = @\"kPINModelInitTypeKey\";"),
             ObjCIR.Root.Macro("NS_ASSUME_NONNULL_BEGIN"),
-
             ObjCIR.Root.Function(
-                ObjCIR.method("__unused static inline id _Nullable valueOrNil(NSDictionary *dict, NSString *key)") {[
+                ObjCIR.method("id _Nullable valueOrNil(NSDictionary *dict, NSString *key)") {[
                     "id value = dict[key];",
                     ObjCIR.ifStmt("value == nil || value == (id)kCFNull") {
                         ["return nil;"]
                     },
                     "return value;"
-                ]}
+                    ]}
             ),
             ObjCIR.Root.Function(
-                ObjCIR.method("__unused static inline NSString *debugDescriptionForFields(NSArray *descriptionFields)") {[
+                ObjCIR.method("NSString *debugDescriptionForFields(NSArray *descriptionFields)") {[
                     "NSMutableString *stringBuf = [NSMutableString string];",
-                    "NSString *newline = @\"\n\";",
+                    "NSString *newline = @\"\\n\";",
                     "NSString *format = @\"    %@\";",
                     ObjCIR.forStmt("id obj in descriptionFields") {[
                         ObjCIR.ifElseStmt("[obj isKindOfClass:[NSArray class]]") {[
@@ -118,20 +107,21 @@ struct ObjCRuntimeHeaderFile: FileGenerator {
                                 "[stringBuf appendFormat:format, element];",
                                 ObjCIR.ifStmt("element != [objArray lastObject]") {[
                                     "[stringBuf appendString:newline];"
+                                    ]}
                                 ]}
-                            ]}
-                        ]} {[
-                            "[stringBuf appendFormat:format, [obj description]];"
-                        ]},
+                            ]} {[
+                                "[stringBuf appendFormat:format, [obj description]];"
+                                ]},
                         ObjCIR.ifStmt("obj != [descriptionFields lastObject]") {
                             ["[stringBuf appendString:newline];"]
                         },
-                        "return [stringBuf copy];"
-                    ]}
+
+                    ]},
+                    "return [stringBuf copy];"
                 ]}
             ),
             ObjCIR.Root.Function(
-                ObjCIR.method("__unused static inline NSUInteger PINIntegerArrayHash(const NSUInteger *subhashes, NSUInteger count)") {
+                ObjCIR.method("NSUInteger PINIntegerArrayHash(const NSUInteger *subhashes, NSUInteger count)") {
                     [
                         "uint64_t result = subhashes[0];",
                         "for (uint64_t ii = 1; ii < count; ++ii) {",
@@ -150,10 +140,35 @@ struct ObjCRuntimeHeaderFile: FileGenerator {
                 }
             ),
             ObjCIR.Root.Macro("NS_ASSUME_NONNULL_END")
-
         ]
-        return self.renderCommentHeader() +
-                "#import <Foundation/Foundation.h>" +
-                roots.map { $0.renderHeader() }.reduce([], +).joined(separator: "\n")
+    }
+}
+
+struct ObjCRuntimeHeaderFile: FileGenerator {
+    var fileName: String {
+        return "PlankModelRuntime.h"
+    }
+
+    func renderFile() -> String {
+        let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
+        let outputs = roots.map { $0.renderHeader() }.reduce([], +)
+        return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", ""] + outputs)
+            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
+            .filter { $0 != "" }
+            .joined(separator: "\n\n")    }
+}
+
+struct ObjCRuntimeImplementationFile: FileGenerator {
+    var fileName: String {
+        return "PlankModelRuntime.m"
+    }
+
+    func renderFile() -> String {
+        let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
+        let outputs = roots.map { $0.renderImplementation() }.reduce([], +)
+        return ([self.renderCommentHeader(), outputs.joined(separator: "\n")])
+            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
+            .filter { $0 != "" }
+            .joined(separator: "\n\n")
     }
 }

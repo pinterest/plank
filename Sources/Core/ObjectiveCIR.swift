@@ -246,6 +246,14 @@ public struct ObjCIR {
         ].joined(separator: "\n")
     }
 
+    static func optionEnumStmt(_ enumName: String, body: () -> [String]) -> String {
+        return [
+            "typedef NS_OPTIONS(NSUInteger, \(enumName)) {",
+            -->[body().joined(separator: ",\n")],
+            "};"
+            ].joined(separator: "\n")
+    }
+
     public struct Method {
         let body: [String]
         let signature: String
@@ -275,6 +283,7 @@ public struct ObjCIR {
             protocols: [String:[ObjCIR.Method]]
         )
         case Enum(name: String, values: EnumType)
+        case OptionSetEnum(name: String, values: [EnumValue<Int>])
 
         func renderHeader() -> [String] {
             switch self {
@@ -316,6 +325,10 @@ public struct ObjCIR {
                         return options.map { "\(name + $0.description) /* \($0.defaultValue) */" }
                     }
                 }]
+            case .OptionSetEnum(let name, let values):
+                return [ObjCIR.optionEnumStmt(name) {
+                    values.map { "\(name + $0.description) = 1 << \($0.defaultValue)" }
+                }]
             }
         }
 
@@ -356,8 +369,9 @@ public struct ObjCIR {
                 return method.render()
             case .Enum(_, _):
                 return []
+            case .OptionSetEnum(_, _):
+                return []
             }
-
         }
     }
 }

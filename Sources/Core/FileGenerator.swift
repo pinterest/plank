@@ -69,6 +69,21 @@ func generateFile(_ schema: SchemaObjectRoot, outputDirectory: URL, generationPa
     }
 }
 
+func generateFileRuntime(outputDirectory: URL) {
+    let files: [FileGenerator] = [ObjCRuntimeHeaderFile(), ObjCRuntimeImplementationFile()]
+    for var file in files {
+        let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
+        do {
+            try fileContents.write(
+                to: URL(string: file.fileName, relativeTo: outputDirectory)!,
+                atomically: true,
+                encoding: String.Encoding.utf8)
+        } catch {
+            assert(false)
+        }
+    }
+}
+
 public func loadSchemasForUrls(urls: Set<URL>) {
     _ = urls.flatMap { FileSchemaLoader.sharedInstance.loadSchema($0)}
 }
@@ -92,4 +107,5 @@ public func generateFilesWithInitialUrl(urls: Set<URL>, outputDirectory: URL, ge
             }
         })
     } while (processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count)
+    generateFileRuntime(outputDirectory: outputDirectory)
 }
