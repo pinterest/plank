@@ -42,7 +42,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     }
 
     func renderCopyWithBlock() -> ObjCIR.Method {
-        return ObjCIR.method("- (instancetype)copyWithBlock:(PINMODEL_NOESCAPE void (^)(\(self.builderClassName) *builder))block") {
+        return ObjCIR.method("- (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(\(self.builderClassName) *builder))block") {
             [
                 "NSParameterAssert(block);",
                 "\(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
@@ -54,12 +54,12 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
 
     func renderMergeWithModel() -> ObjCIR.Method {
         return ObjCIR.method("- (instancetype)mergeWithModel:(\(self.className) *)modelObject") {
-            ["return [self mergeWithModel:modelObject initType:PIModelInitTypeFromMerge];"]
+            ["return [self mergeWithModel:modelObject initType:PlankModelInitTypeFromMerge];"]
         }
     }
 
     func renderMergeWithModelWithInitType() -> ObjCIR.Method {
-        return ObjCIR.method("- (instancetype)mergeWithModel:(\(self.className) *)modelObject initType:(PIModelInitType)initType") {
+        return ObjCIR.method("- (instancetype)mergeWithModel:(\(self.className) *)modelObject initType:(PlankModelInitType)initType") {
             [
                 "NSParameterAssert(modelObject);",
                 "\(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",

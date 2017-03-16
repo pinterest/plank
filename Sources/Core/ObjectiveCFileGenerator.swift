@@ -67,14 +67,14 @@ struct ObjCRuntimeFile {
         return [
             ObjCIR.Root.Macro([
                 "#if __has_attribute(noescape)",
-                "   #define PINMODEL_NOESCAPE __attribute__((noescape))",
+                "   #define PLANK_NOESCAPE __attribute__((noescape))",
                 "#else",
-                "   #define PINMODEL_NOESCAPE",
+                "   #define PLANK_NOESCAPE",
                 "#endif"
                 ].joined(separator: "\n")),
 
             ObjCIR.Root.OptionSetEnum(
-                name: "PIModelInitType",
+                name: "PlankModelInitType",
                 values:[
                     EnumValue<Int>(defaultValue: 0, description: "Default"),
                     EnumValue<Int>(defaultValue: 1, description: "FromMerge"),
@@ -82,10 +82,10 @@ struct ObjCRuntimeFile {
                 ]
             ),
             // TODO Add another root for constant variables instead of using Macro
-            ObjCIR.Root.Macro("static NSString *const kPINModelDateValueTransformerKey = @\"kPINModelDateValueTransformerKey\";"),
-            ObjCIR.Root.Macro("static NSString *const kPINModelDidInitializeNotification = @\"kPINModelDidInitializeNotification\";"),
-            ObjCIR.Root.Macro("static NSString *const kPINModelInitTypeKey = @\"kPINModelInitTypeKey\";"),
             ObjCIR.Root.Macro("NS_ASSUME_NONNULL_BEGIN"),
+            ObjCIR.Root.Macro("static NSString *const kPlankDateValueTransformerKey = @\"kPlankDateValueTransformerKey\";"),
+            ObjCIR.Root.Macro("static NSString *const kPlankDidInitializeNotification = @\"kPlankDidInitializeNotification\";"),
+            ObjCIR.Root.Macro("static NSString *const kPlankInitTypeKey = @\"kPlankInitTypeKey\";"),
             ObjCIR.Root.Function(
                 ObjCIR.method("id _Nullable valueOrNil(NSDictionary *dict, NSString *key)") {[
                     "id value = dict[key];",
@@ -114,8 +114,7 @@ struct ObjCRuntimeFile {
                                 ]},
                         ObjCIR.ifStmt("obj != [descriptionFields lastObject]") {
                             ["[stringBuf appendString:newline];"]
-                        },
-
+                        }
                     ]},
                     "return [stringBuf copy];"
                 ]}
@@ -166,7 +165,7 @@ struct ObjCRuntimeImplementationFile: FileGenerator {
     func renderFile() -> String {
         let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
         let outputs = roots.map { $0.renderImplementation() }.reduce([], +)
-        return ([self.renderCommentHeader(), outputs.joined(separator: "\n")])
+        return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", "", "#import \"\(ObjCRuntimeHeaderFile().fileName)\"", outputs.joined(separator: "\n")])
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }
             .joined(separator: "\n\n")

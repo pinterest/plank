@@ -8,11 +8,11 @@
 
 import Foundation
 
-let dateValueTransformerKey = "kPINModelDateValueTransformerKey"
+let dateValueTransformerKey = "kPlankDateValueTransformerKey"
 
 extension ObjCFileRenderer {
     func renderPostInitNotification(type: String) -> String {
-        return "[[NSNotificationCenter defaultCenter] postNotificationName:kPINModelDidInitializeNotification object:self userInfo:@{ kPINModelInitTypeKey : @(\(type)) }];"
+        return "[[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(\(type)) }];"
     }
 }
 
@@ -36,13 +36,13 @@ extension ObjCModelRenderer {
         return ObjCIR.method("- (instancetype)initWithBuilder:(\(builderClassName) *)builder") {
             [
                 "NSParameterAssert(builder);",
-                "return [self initWithBuilder:builder initType:PIModelInitTypeDefault];"
+                "return [self initWithBuilder:builder initType:PlankModelInitTypeDefault];"
             ]
         }
     }
 
     func renderInitWithBuilderWithInitType() -> ObjCIR.Method {
-        return ObjCIR.method("- (instancetype)initWithBuilder:(\(builderClassName) *)builder initType:(PIModelInitType)initType") {
+        return ObjCIR.method("- (instancetype)initWithBuilder:(\(builderClassName) *)builder initType:(PlankModelInitType)initType") {
             [
                 "NSParameterAssert(builder);",
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
@@ -244,7 +244,7 @@ extension ObjCModelRenderer {
                         )
                 )),
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
-                    [renderPostInitNotification(type: "PIModelInitTypeDefault")]
+                    [renderPostInitNotification(type: "PlankModelInitTypeDefault")]
                 },
                 "return self;"
             ]

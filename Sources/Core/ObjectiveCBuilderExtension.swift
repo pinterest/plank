@@ -51,7 +51,7 @@ extension ObjCModelRenderer {
                             "id value = modelObject.\(param.snakeCaseToPropertyName());",
                             ObjCIR.ifElseStmt("value != nil") {[
                                 ObjCIR.ifElseStmt("builder.\(param.snakeCaseToPropertyName())") {[
-                                    "builder.\(param.snakeCaseToPropertyName()) = [builder.\(param.snakeCaseToPropertyName()) mergeWithModel:value initType:PIModelInitTypeFromSubmerge];"
+                                    "builder.\(param.snakeCaseToPropertyName()) = [builder.\(param.snakeCaseToPropertyName()) mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];"
                                     ]} {[
                                         "builder.\(param.snakeCaseToPropertyName()) = value;"
                                         ]}

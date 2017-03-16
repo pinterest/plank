@@ -21,7 +21,7 @@ extension ObjCModelRenderer {
                     }.joined(separator: "\n"),
 
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
-                    [renderPostInitNotification(type: "PIModelInitTypeDefault")]
+                    [renderPostInitNotification(type: "PlankModelInitTypeDefault")]
                 },
                 "return self;"
             ]

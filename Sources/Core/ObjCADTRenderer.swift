@@ -106,7 +106,7 @@ struct ObjCADTRenderer: ObjCFileRenderer {
         let signatureComponents  = self.dataTypes.enumerated().map { (index, schema) -> String in
             let name = ObjCADTRenderer.objectName(schema)
             let arg = String(name.characters.prefix(1)).lowercased() + String(name.characters.dropFirst())
-            return "\(index == 0 ? "match" : "or")\(name):(nullable PINMODEL_NOESCAPE void (^)(\(self.objcClassFromSchema(name, schema)) \(arg)))\(arg)MatchHandler"
+            return "\(index == 0 ? "match" : "or")\(name):(nullable PLANK_NOESCAPE void (^)(\(self.objcClassFromSchema(name, schema)) \(arg)))\(arg)MatchHandler"
         }
 
         return ObjCIR.method("- (void)\(signatureComponents.joined(separator: " "))") {[
