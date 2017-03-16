@@ -38,8 +38,6 @@ extension FileGenerator {
         formatter.timeZone = TimeZone(identifier: "UTC")
         formatter.dateFormat = "MM-dd-yyyy 'at' HH:mm:ss"
 
-        let year: Int = Calendar.current.component(.year, from: date)
-
         var copy = self
 
         let header = [
