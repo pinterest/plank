@@ -4,7 +4,7 @@ title: "Installation"
 categories: getting-started 
 ---
 
-If you already have Plank installed, jump to the [tutorial](https://pinterest.github.io/plank/2017/02/14/tutorial.html).
+If you already have Plank installed, jump to the [tutorial](/plank/docs/getting-started/tutorial.html).
 
 ## macOS
 
@@ -59,4 +59,4 @@ plank.
 
 ## Next Steps
 
-To get a taste on how to use Plank in your project, check out the [tutorial](https://pinterest.github.io/plank/2017/02/14/tutorial.html).
+To get a taste on how to use Plank in your project, check out the [tutorial](/plank/docs/getting-started/tutorial.html).
