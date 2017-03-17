@@ -2,7 +2,7 @@
 
 # Plank
 
-Plank is a command-line tool for generating robust immutable Objective-C models from JSON Schemas.
+Plank is a command-line tool for generating robust immutable Objective-C models from JSON Schemas. It will save you time writing boilerplate and eliminate model errors as your application scales in complexity.
 
 #### Schema-defined
 Models are defined in JSON, a well-defined, extensible and language-independent specification.
@@ -17,8 +17,9 @@ Based on the type information specified in the schema definition, each class pro
 
 #### MacOS
 
-
-    $ brew install pinterest/tap/plank
+```
+$ brew install pinterest/tap/plank
+```
 
 #### Linux
 
