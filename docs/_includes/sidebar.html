@@ -4,7 +4,8 @@
 	        <li class="open">
 		        <span>{{ category.name }}</span>
 	            <ul>
-		            {% for post in site.categories[category.slug] %}
+                    {% assign sorted_posts = site.categories[category.slug] | sort "date"%}
+		            {% for post in sorted_posts %}
 				        <li class="open">
 				        	<a href="{{ post.url | prepend: site.baseurl }}" {% if page.url == post.url %}class="active"{% endif %}>{{ post.title }}</a>
 				        </li>
