@@ -1,3 +1,5 @@
+![Plank logo](https://cloud.githubusercontent.com/assets/8493/24054923/47c5d9ac-0afb-11e7-89eb-d37a58aed964.png)
+
 # Plank
 
 Plank is a command-line tool for generating Objective-C immutable models from JSON Schemas.
