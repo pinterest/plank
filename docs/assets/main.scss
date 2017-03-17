@@ -197,7 +197,7 @@ button {
         font-size: 6rem;
         line-height: 7.2rem;
         font-weight: 100;
-        margin: 8rem 0 6rem;
+        margin: 8rem 0 3rem;
         color: #fff;
         //background: linear-gradient(330deg, #468CB6 0%, #483580 100%);
         //-webkit-background-clip: text;
@@ -206,6 +206,11 @@ button {
         span {
             display: block;
         }
+    }
+
+    .description {
+        color: white;
+        font-size: 16px;
     }
 
     a.button {
