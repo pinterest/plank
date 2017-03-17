@@ -1,8 +1,8 @@
-# Base image from Swiftenv with Swift version 3.0.1
+# Base image from Swiftenv with Swift version 3.0.2
 
-FROM kylef/swiftenv
+FROM kylef/swiftenv:latest
 MAINTAINER Pinterest
-RUN swiftenv install 3.0.1
+RUN swiftenv install 3.0.2
 
 # Vim config so we have an editor available
 RUN apt-get update && \
@@ -16,5 +16,6 @@ RUN cd /usr/local/plank && swift build -c release
 ENV plank_HOME /usr/local/plank
 ENV PATH ${plank_HOME}/.build/release:${PATH}
 
-ENTRYPOINT ["plank"]
-CMD ["help"]
+# Uncomment to make `plank` the default action of `docker run [image_name]`
+#ENTRYPOINT ["plank"]
+#CMD ["help"]
