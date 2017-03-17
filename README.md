@@ -6,9 +6,14 @@ Plank is a JSON schema based immutable model generator for iOS we created to ach
 
 ## Features
 
-*Immutable* — Model classes will be generated with immutability as a requirement. Each class will have “Builder” class to handle mutation.
-*Type safe* — Based on the type information specified in the schema definition, each class will provide type validation and null reference checks to ensure model integrity.
-*Schema-defined* — Model types should be defined in a language-independent format that’s easy to extend and well-known.
+#### Immutable
+Model classes will be generated with immutability as a requirement. Each class will have “Builder” class to handle mutation.
+
+#### Type safe
+Based on the type information specified in the schema definition, each class will provide type validation and null reference checks to ensure model integrity.
+
+#### Schema-defined
+Model types should be defined in a language-independent format that’s easy to extend and well-known.
 
 ## Schemas
 
