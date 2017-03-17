@@ -1,0 +1,31 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+title: Plank by Pinterest
+description: > # this means to ignore newlines until "baseurl:"
+  Plank documentation site 
+
+baseurl: "/plank" # the subpath of your site, e.g. /blog
+url: "https://pinterest.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+
+permalink: /docs/:categories/:title.html
+
+favicon: "assets/images/pinterest-dev-logo.png"
+google_analytics:
+
+# Build settings
+markdown: kramdown
+
+# Markdown settings
+kramdown:
+  auto_ids: false
+  enable_coderay: false
+  entity_output: as_char
+  footnote_nr: 1
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  toc_levels: 1..6

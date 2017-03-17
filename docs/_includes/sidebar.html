@@ -1,0 +1,16 @@
+<div class="sidebar columns three">
+    <ul>
+    	{% for category in site.data.categories %}
+	        <li class="open">
+		        <span>{{ category.name }}</span>
+	            <ul>
+		            {% for post in site.categories[category.slug] %}
+				        <li class="open">
+				        	<a href="{{ post.url | prepend: site.baseurl }}" {% if page.url == post.url %}class="active"{% endif %}>{{ post.title }}</a>
+				        </li>
+				    {% endfor %}
+				</ul>
+	        </li>
+        {% endfor %}
+    </ul>
+</div>

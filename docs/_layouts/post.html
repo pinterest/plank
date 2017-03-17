@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<div class="docsContainer container">
+    <div class="row">
+        {% include sidebar.html %}
+
+        <div class="content columns nine docsContent">
+        	<div class="docsHeader row">
+	    	    <a href="https://github.com/pinterest/plank/blob/master/docs/{{ page.path }}" target="_blank" class="edit-link">Edit on GitHub</a>
+			    <h1 class="page-header">{{ page.title | escape }}</h1>
+		    </div>
+            {{ content }}
+        </div>
+    </div>
+</div>

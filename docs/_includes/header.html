@@ -1,0 +1,16 @@
+<div class="header">
+    <div class="container">
+        <h1 class="logoWrapper">
+            <a href="{{ site.baseurl }}/">
+				<img src="{{ "/assets/images/logo.png" | prepend: site.baseurl }}" />
+            </a>
+        </h1>
+        <ul class="nav">
+        	{% for item in site.data.navigation.main %}
+        		<li>
+        			<a href="{{ item.url }}" title="{{ item.title }}" {% if item.new_window %}target="_blank"{% endif %}>{{ item.title }}</a>
+        		</li>
+        	{% endfor %}
+        </ul>
+    </div>
+</div>
