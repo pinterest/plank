@@ -19,7 +19,7 @@ test: build_test_index_linux build
 	xcrun swift test
 
 archive:
-	xcrun swift build -v -c release -Xswiftc -static-stdlib
+	xcrun swift build -c release -Xswiftc -static-stdlib
 
 build_test_index_linux:
 	swift Utility/GenerateTestCaseProvider.swift $(PWD)/Tests/CoreTests
