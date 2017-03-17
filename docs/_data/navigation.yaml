@@ -2,7 +2,7 @@
 # pages in order as they should show up.
 main:
   - title: "Docs"
-    url: /plank/docs/getting-started/tutorial.html
+    url: /plank/docs/getting-started/installation.html
   - title: "GitHub"
     url: https://github.com/pinterest/plank
     new_window: true
