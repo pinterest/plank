@@ -2,16 +2,16 @@
 
 # Plank
 
-Plank is a command-line tool for generating Objective-C immutable models from JSON Schemas.
-
-#### Immutable
-Model classes will be generated with immutability as a requirement. Each class will have “Builder” class to handle mutation.
-
-#### Type safe
-Based on the type information specified in the schema definition, each class will provide type validation and null reference checks to ensure model integrity.
+Plank is a command-line tool for generating robust immutable Objective-C models from JSON Schemas.
 
 #### Schema-defined
-Model types should be defined in a language-independent format that’s easy to extend and well-known.
+Models are defined in JSON, a well-defined, extensible and language-independent specification.
+
+#### Immutable Classes
+Model classes are generated to be immutable. Each class provides a “Builder” class to handle mutation.
+
+#### Type safe
+Based on the type information specified in the schema definition, each class provides type validation and null reference checks to ensure model integrity.
 
 ## Installation
 
