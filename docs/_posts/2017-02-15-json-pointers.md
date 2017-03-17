@@ -4,8 +4,7 @@ title: "JSON Pointers"
 categories: json-reference
 ---
 
-Most of these property declarations should be straightforward to understand with the exception of JSON Pointer. This is a specific syntax that is used to reference the location of other JSON files.
-The key for a JSON pointer is “$ref” and the value is a path relative to the base location which was specified by the “id” key.
+A JSON Pointer is a specific property syntax used to reference the location of other JSON files. The property key for a JSON pointer is `$ref` and the value is a path relative to the base location which was specified by the `id` key.
 
 Here’s an example of how the pointers destination is resolved:
 
