@@ -13,21 +13,21 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
 
 ### Types of Properties
 
-| Type                | Description |
-| :--- | :--- |
-| String                              | |
-| Boolean                             | |
-| Integer                             | |
-| Number                              | |
-| Date-time Property (String variant) | |
-| String Property                     | |
-| URI Property (String variant)       | |
-| JSON Pointer Property (`$ref`)        | |
-| Array Property                      | |
-| Array Property with Item types      | |
-| Object Property                     | |
-| Object Property with item types     | |
-| Algebraic Data Type (`oneOf`)       | |
+| Type                |
+| :--- |
+| String                              |
+| Boolean                             |
+| Integer                             |
+| Number                              |
+| Date-time Property (String variant) |
+| String Property                     |
+| URI Property (String variant)       |
+| JSON Pointer Property (`$ref`)        |
+| Array Property                      |
+| Array Property with Item types      |
+| Object Property                     |
+| Object Property with item types     |
+| Algebraic Data Type (`oneOf`)       |
 
 ### Examples
 
