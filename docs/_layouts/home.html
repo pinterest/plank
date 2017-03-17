@@ -5,12 +5,15 @@ layout: default
 <div class="hero hero-homePage">
     <div class="container">
         <h1>
-            <span>Generate immutable Objective-C models from JSON schemas</span>
+            <span>Generate robust immutable Objective-C models from JSON schemas</span>
         </h1>
         <p>
-	        <div class="buttonWrapper" style="float: left">
-	                <a href="/plank/docs/getting-started/tutorial.html" class="button primary">Get started</a>
-	        </div>
+		<div class="buttonWrapper" style="float: left">
+			<a href="/plank/docs/getting-started/installation.html" class="button primary">Get started</a>
+		</div>
+	    <div class="buttonWrapper" style="float: left; margin-left: 25px">
+                    <a href="https://github.com/pinterest/plank/" class="button primary">View GitHub</a>
+            </div>
         </p>
     </div>
 </div>
@@ -21,21 +24,21 @@ layout: default
         <div class="container">
             <div class="row">
                 <div class="four columns">
-                    <h3><span>Immutable</span></h3>
+                    <h3><span>Schema-defined</span></h3>
                     <div>
-                        Model classes will be generated with Immutability as a requirement. Each class will have "Builder" classes that will aid in mutation.
+			Models are defined in JSON, a well-defined, extensible and language-independent specification.
                     </div>
                 </div>
                 <div class="four columns">
-                    <h3><span>Type Safe</span></h3>
+                    <h3><span>Immutable Classes</span></h3>
                     <div>
-                        Based on the type information specified in the schema definition, each class will provide type validation and null reference checks to ensure model integrity.
+			Model classes are generated to be immutable. Each class provides a “Builder” class to handle mutation.
                     </div>
                 </div>
                 <div class="four columns">
-                    <h3><span>Custom Validation</span></h3>
+                    <h3><span>Type safe</span></h3>
                     <div>
-                        Each property can specify a set of parameters that will be used for validation. Examples of these properties are defined in the json-schema v4 specification.
+			Based on the type information specified in the schema definition, each class provides type validation and null reference checks to ensure model integrity.
                     </div>
                 </div>
             </div>
