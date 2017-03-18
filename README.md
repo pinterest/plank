@@ -1,6 +1,7 @@
 ![Plank logo](https://cloud.githubusercontent.com/assets/8493/24054923/47c5d9ac-0afb-11e7-89eb-d37a58aed964.png)
 
 # Plank
+[![Build status](https://badge.buildkite.com/6892bd99e7a897d0839ef1f5cba103679c72146c99412dc95f.svg?branch=master)](https://buildkite.com/pinterest/plank)
 
 Plank is a command-line tool for generating robust immutable Objective-C models from JSON Schemas. It will save you time writing boilerplate and eliminate model errors as your application scales in complexity.
 
