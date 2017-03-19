@@ -15,6 +15,7 @@ let date = Date()
 
 public enum GenerationParameterType {
     case classPrefix
+    case printDeps
 }
 
 protocol FileGeneratorManager {
@@ -84,12 +85,19 @@ func generateFileRuntime(outputDirectory: URL) {
     }
 }
 
-public func loadSchemasForUrls(urls: Set<URL>) {
-    _ = urls.flatMap { FileSchemaLoader.sharedInstance.loadSchema($0)}
+public func loadSchemasForUrls(urls: Set<URL>) -> [Schema] {
+    return urls.map { FileSchemaLoader.sharedInstance.loadSchema($0) }
 }
 
 public func generateFilesWithInitialUrl(urls: Set<URL>, outputDirectory: URL, generationParameters: GenerationParameters) {
-    loadSchemasForUrls(urls: urls)
+    let initialSchemas = loadSchemasForUrls(urls: urls)
+    if let _ = generationParameters[GenerationParameterType.printDeps] {
+        let deps = initialSchemas.flatMap { s in s.deps() }
+        deps.forEach { dep in
+            print(dep.relativePath)
+        }
+        exit(0)
+    }
     var processedSchemas = Set<URL>([])
     repeat {
         let _ = FileSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: Schema) -> Void in

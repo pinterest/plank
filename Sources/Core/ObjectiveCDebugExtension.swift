@@ -69,8 +69,8 @@ extension ObjCFileRenderer {
             return propIVarName
         case .OneOf(types: _):
             return propIVarName
-        case .Reference(with: let fn):
-            switch fn() {
+        case .Reference(with: let ref):
+            switch ref.force() {
             case .some(.Object(let schemaRoot)):
                 return renderDebugStatement(param, .Object(schemaRoot))
             default:

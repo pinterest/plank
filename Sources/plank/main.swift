@@ -10,7 +10,7 @@ import Foundation
 
 func handleProcess(processInfo: ProcessInfo) {
     let arguments = processInfo.arguments.dropFirst() // Drop executable name
-    handleGenerateCommand(withArguments: arguments)
+    handleGenerateCommand(withArguments: Array(arguments))
 }
 
 handleProcess(processInfo: ProcessInfo.processInfo)

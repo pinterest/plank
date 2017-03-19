@@ -9,7 +9,7 @@
 import Foundation
 
 protocol SchemaLoader {
-    func loadSchema(_ schemaUrl: URL) -> Schema?
+    func loadSchema(_ schemaUrl: URL) -> Schema
 }
 
 class FileSchemaLoader: SchemaLoader {
@@ -21,7 +21,7 @@ class FileSchemaLoader: SchemaLoader {
         self.refs = [URL: Schema]()
     }
 
-    func loadSchema(_ schemaUrl: URL) -> Schema? {
+    func loadSchema(_ schemaUrl: URL) -> Schema {
         if let cachedValue = refs[schemaUrl] {
             return cachedValue
         }
@@ -50,6 +50,5 @@ class FileSchemaLoader: SchemaLoader {
         } else {
             fatalError("Error loading or parsing schema at URL: \(schemaUrl)")
         }
-        return nil
     }
 }

@@ -59,8 +59,8 @@ extension ObjCModelRenderer {
                                     "builder.\(param.snakeCaseToPropertyName()) = nil;"
                                     ]}
                         ]
-                    case .Reference(with: let fn):
-                        switch fn() {
+                    case .Reference(with: let ref):
+                        switch ref.force() {
                         case .some(.Object(let objSchema)):
                             return loop(.Object(objSchema))
                         default:

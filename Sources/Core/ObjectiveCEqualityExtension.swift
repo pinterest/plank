@@ -25,8 +25,8 @@ extension ObjCFileRenderer {
                 // Values 1231 for true and 1237 for false are adopted from the Java hashCode specification
                 // http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html#hashCode
                 return "(_\(param) ? 1231 : 1237)"
-            case .Reference(with: let fn):
-                switch fn() {
+            case .Reference(with: let ref):
+                switch ref.force() {
                 case .some(.Object(let schemaRoot)):
                     return schemaHashStatement(with: param, for: .Object(schemaRoot))
                 default:
@@ -71,8 +71,8 @@ extension ObjCFileRenderer {
                 return ObjCIR.msg("_\(param)", ("isEqualToString", "anObject.\(param)"))
             case .OneOf(types:_), .Object(_), .Array(_), .String(format: .some(.Uri)):
                 return ObjCIR.msg("_\(param)", ("isEqual", "anObject.\(param)"))
-            case .Reference(with: let fn):
-                switch fn() {
+            case .Reference(with: let ref):
+                switch ref.force() {
                 case .some(.Object(let schemaRoot)):
                     return schemaIsEqualStatement(with: param, for: .Object(schemaRoot))
                 default:

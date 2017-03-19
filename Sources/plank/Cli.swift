@@ -24,7 +24,17 @@ protocol HelpCommandOutput {
 enum FlagOptions: String {
     case outputDirectory = "output_dir"
     case objectiveCClassPrefix = "objc_class_prefix"
+    case printDeps = "print_deps"
     case help = "help"
+
+    func needsArgument() -> Bool {
+        switch self {
+        case .outputDirectory: return true
+        case .objectiveCClassPrefix: return true
+        case .printDeps: return false
+        case .help: return false
+        }
+    }
 }
 
 extension FlagOptions : HelpCommandOutput {
@@ -32,45 +42,51 @@ extension FlagOptions : HelpCommandOutput {
         return [
             "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names.",
             "    --\(FlagOptions.outputDirectory.rawValue) - The directory where generated code will be written.",
+            "    --\(FlagOptions.printDeps.rawValue) - Just print the path to the dependent schemas necessary to generate the schemas provided and exit.",
             "    --\(FlagOptions.help.rawValue) - Show this text and exit."
         ].joined(separator: "\n")
     }
 }
 
-func parseFlag(arguments: ArraySlice<String>) -> ([FlagOptions:String], ArraySlice<String>)? {
-    var remainingArgs = arguments
-    if remainingArgs.isEmpty == false {
-        let arg = remainingArgs.removeFirst()
-        var flagName: String
-        var flagValue: String
-        if arg.hasPrefix("--") {
-            if arg.contains("=") {
-                let flagComponents = arg.components(separatedBy: "=")
-                assert(flagComponents.count == 2, "Error: Invalid flag declaration")
-                flagName = flagComponents[0]
-                flagValue = flagComponents[1]
-            } else {
-                flagName = arg
-                if let nextArg = remainingArgs.popFirst() {
-                    flagValue = nextArg
-                } else {
-                    flagValue = ""
-                }
-            }
+func parseFlag(arguments: [String]) -> ([FlagOptions:String], [String])? {
 
-            if let flagType = FlagOptions(rawValue: flagName.trimmingCharacters(in: CharacterSet(charactersIn: "-"))) {
-                return ([flagType: flagValue], remainingArgs)
-            } else {
-                print("Error: Unexpected flag \(flagName) with value \(flagValue)")
-                handleHelpCommand()
-                exit(1)
-            }
-        }
+    guard let someFlag = (arguments.first.map {
+        $0.components(separatedBy: "=")[0]
+    }.flatMap { arg in
+        arg.hasPrefix("--") ? arg.trimmingCharacters(in: CharacterSet(charactersIn: "-")) : nil
+    }) else { return nil }
+
+    guard let nextFlag = FlagOptions(rawValue: someFlag) else {
+        print("Error: Unexpected flag \(someFlag)")
+        handleHelpCommand()
+        exit(1)
     }
-    return nil
+
+    if nextFlag.needsArgument() {
+        let arg = arguments[0]
+        if arg.contains("=") {
+            let flagComponents = arg.components(separatedBy: "=")
+            assert(flagComponents.count == 2, "Error: Invalid flag declaration: Too many = signs")
+            return (
+                [nextFlag: flagComponents[1]],
+                Array(arguments[1..<arguments.count])
+            )
+        } else {
+            assert(arguments.count >= 2, "Error: Invalid flag declaration: No value for \(nextFlag.rawValue)")
+            return (
+                [nextFlag: arguments[1]],
+                Array(arguments[2..<arguments.count])
+            )
+        }
+    } else {
+        return (
+            [nextFlag: ""],
+            Array(arguments[1..<arguments.count])
+        )
+    }
 }
 
-func parseFlags(fromArguments arguments: ArraySlice<String>) -> ([FlagOptions:String], ArraySlice<String>) {
+func parseFlags(fromArguments arguments: [String]) -> ([FlagOptions:String], [String]) {
     guard !arguments.isEmpty else { return ([:], arguments) }
 
     if let (flagDict, remainingArgs) = parseFlag(arguments: arguments) {
@@ -90,7 +106,7 @@ func parseFlags(fromArguments arguments: ArraySlice<String>) -> ([FlagOptions:St
     return ([:], arguments)
 }
 
-func handleGenerateCommand(withArguments arguments: ArraySlice<String>) {
+func handleGenerateCommand(withArguments arguments: [String]) {
 
     var generationParameters: GenerationParameters = [:]
     let (flags, args) = parseFlags(fromArguments: arguments)
@@ -107,6 +123,9 @@ func handleGenerateCommand(withArguments arguments: ArraySlice<String>) {
 
     if objc_class_prefix.characters.count > 0 {
         generationParameters[GenerationParameterType.classPrefix] = objc_class_prefix
+    }
+    if let _ = flags[.printDeps] {
+        generationParameters[GenerationParameterType.printDeps] = ""
     }
 
     guard !args.isEmpty else {

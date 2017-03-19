@@ -48,8 +48,8 @@ struct ObjCADTRenderer: ObjCFileRenderer {
         case .Object(let objectRoot):
             // Intentionally drop prefix
             return objectRoot.className(with: [:])
-        case .Reference(with: let refFunc):
-            return refFunc().map(objectName) ?? {
+        case .Reference(with: let ref):
+            return ref.force().map(objectName) ?? {
                 assert(false, "TODO: Forward optional across methods")
                 return ""
                 }()

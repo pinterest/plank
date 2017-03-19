@@ -92,8 +92,8 @@ extension ObjCFileRenderer {
             return Set(["NSNumber"])
         case .Object(let objSchemaRoot):
             return Set([objSchemaRoot.className(with: self.params)])
-        case .Reference(with: let fn):
-            switch fn() {
+        case .Reference(with: let ref):
+            switch ref.force() {
             case .some(.Object(let schemaRoot)):
                 return referencedObjectClasses(.Object(schemaRoot))
             default:
