@@ -92,7 +92,7 @@ public func loadSchemasForUrls(urls: Set<URL>) -> [Schema] {
 public func generateFilesWithInitialUrl(urls: Set<URL>, outputDirectory: URL, generationParameters: GenerationParameters) {
     let initialSchemas = loadSchemasForUrls(urls: urls)
     if let _ = generationParameters[GenerationParameterType.printDeps] {
-        let deps = initialSchemas.flatMap { s in s.deps() }
+        let deps = Set(initialSchemas.flatMap { s in s.deps() })
         deps.forEach { dep in
             print(dep.relativePath)
         }
