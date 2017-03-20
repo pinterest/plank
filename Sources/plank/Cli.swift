@@ -111,7 +111,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     var generationParameters: GenerationParameters = [:]
     let (flags, args) = parseFlags(fromArguments: arguments)
 
-    if let _ = flags[.help] {
+    if flags[.help] != nil {
         handleHelpCommand()
         return
     }
