@@ -13,10 +13,10 @@ import Foundation
 struct MockSchemaLoader: SchemaLoader {
     let schema: Schema
     let url: URL
-    func loadSchema(_ schemaUrl: URL) -> Schema? {
+    func loadSchema(_ schemaUrl: URL) -> Schema {
         if schemaUrl == url {
             return schema
         }
-        return nil
+        fatalError("Can't open schema at \(schemaUrl)")
     }
 }

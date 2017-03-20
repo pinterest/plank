@@ -119,8 +119,8 @@ extension ObjCModelRenderer {
                 return ["\(propertyToAssign) = [NSURL URLWithString:\(rawObjectName)];"]
             case .String(format: .some(.DateTime)):
                 return ["\(propertyToAssign) = [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] transformedValue:\(rawObjectName)];"]
-            case .Reference(with: let refFunc):
-                return refFunc().map {
+            case .Reference(with: let ref):
+                return ref.force().map {
                     renderPropertyInit(propertyToAssign, rawObjectName, schema: $0, firstName: firstName, counter: counter)
                     } ?? {
                         assert(false, "TODO: Forward optional across methods")
@@ -153,8 +153,8 @@ extension ObjCModelRenderer {
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSDictionary class]] && [\(rawObjectName)[\("type".objcLiteral())] isEqualToString:\(objectRoot.typeIdentifier.objcLiteral())]") {
                             transformToADTInit(["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"])
                         }
-                    case .Reference(with: let refFunc):
-                        return refFunc().map(loop) ?? {
+                    case .Reference(with: let ref):
+                        return ref.force().map(loop) ?? {
                             assert(false, "TODO: Forward optional across methods")
                             return ""
                             }()

@@ -66,7 +66,13 @@ public indirect enum EnumType {
     case String([EnumValue<String>], defaultValue: EnumValue<String>)
 }
 
-public typealias LazySchemaReference = () -> Schema?
+public struct URLSchemaReference: LazySchemaReference {
+    let url: URL
+    public let force: () -> Schema?
+}
+public protocol LazySchemaReference {
+    var force: () -> Schema? { get }
+}
 
 typealias Property = (Parameter, Schema)
 
@@ -96,7 +102,7 @@ func decodeRef(from source: URL, with ref: String) -> URL {
 public struct SchemaObjectRoot: Equatable {
     let name: String
     let properties: [String:Schema]
-    let extends: LazySchemaReference?
+    let extends: URLSchemaReference?
     let algebraicTypeIdentifier: String?
 
     var typeIdentifier: String {
@@ -110,7 +116,7 @@ public func == (lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
 
 extension SchemaObjectRoot : CustomDebugStringConvertible {
     public var debugDescription: String {
-        return (["\(name)\n extends from \(extends.map { $0()?.debugDescription })\n"] + properties.map { (k, v) in "\t\(k): \(v.debugDescription)\n" }).reduce("", +)
+        return (["\(name)\n extends from \(extends.map { $0.force()?.debugDescription })\n"] + properties.map { (k, v) in "\t\(k): \(v.debugDescription)\n" }).reduce("", +)
     }
 }
 
@@ -124,7 +130,7 @@ public indirect enum Schema {
     case String(format: StringFormatType?)
     case OneOf(types: [Schema]) // ADT
     case Enum(EnumType)
-    case Reference(with: LazySchemaReference)
+    case Reference(with: URLSchemaReference)
 }
 
 extension Schema : CustomDebugStringConvertible {
@@ -148,8 +154,8 @@ extension Schema : CustomDebugStringConvertible {
             return (["OneOf"] + types.map { v in "\t\(v.debugDescription)\n" }).reduce("", +)
         case .Enum(let enumType):
             return "Enum: \(enumType)"
-        case .Reference(with: _):
-            return "Reference"
+        case .Reference(with: let ref):
+            return "Reference to \(ref.url)"
         }
     }
 }
@@ -168,9 +174,31 @@ extension Schema {
     func extends() -> Schema? {
         switch self {
         case .Object(let rootObject):
-            return rootObject.extends.flatMap { $0() }
+            return rootObject.extends.flatMap { $0.force() }
         default:
             return nil
+        }
+    }
+
+    func deps() -> Set<URL> {
+        switch self {
+        case .Object(let rootObject):
+            let url: URL? = rootObject.extends?.url
+            return (url.map { Set([$0]) } ?? Set()).union(
+                    Set(
+                        rootObject.properties.values.flatMap { (s: Schema) -> Set<URL> in
+                            return s.deps()
+                    }))
+        case .Array(itemType: let itemType):
+            return itemType?.deps() ?? []
+        case .Map(valueType: let valueType):
+            return valueType?.deps() ?? []
+        case .Integer, .Float, .Boolean, .String, .Enum(_):
+            return []
+        case .OneOf(types: let types):
+            return types.map { t in t.deps() }.reduce([]) { $0.union($1) }
+        case .Reference(with: let ref):
+            return [ref.url]
         }
     }
 }
@@ -210,10 +238,11 @@ extension Schema {
             case JSONType.Boolean:
                 return .Boolean
             case JSONType.Pointer:
-                return (propertyInfo["$ref"] as? String).map { ref in
-                    .Reference(with: { () -> Schema? in
-                        loader.loadSchema(decodeRef(from: source, with: ref))
-                    })
+                return (propertyInfo["$ref"] as? String).map { refStr in
+                    let refUrl = decodeRef(from: source, with: refStr)
+                    return .Reference(with: URLSchemaReference(url: refUrl, force: { () -> Schema? in
+                        loader.loadSchema(refUrl)
+                    }))
                 }
             case JSONType.Object:
                 if let propMap = propertyInfo["properties"] as? JSONObject, let objectTitle = title {
@@ -227,9 +256,15 @@ extension Schema {
                     let lifted: [Property]? = optTuples.reduce([], { (build: [Property]?, tupleOption: Property?) -> [Property]? in
                         build.flatMap { (b: [Property]) -> [Property]? in tupleOption.map { b + [$0] } }
                     })
-                    let extends = (propertyInfo["extends"] as? JSONObject)
-                        .flatMap { ($0["$ref"] as? String).map { ref in {
-                            loader.loadSchema(decodeRef(from: source, with: ref)) } }
+                    let extendsDict: JSONObject? = propertyInfo["extends"] as? JSONObject
+                    let extends: URLSchemaReference? = extendsDict
+                        .flatMap { (obj: JSONObject) in
+                            let refStr = obj["$ref"] as? String
+                            return refStr.map { refStr in
+                            let refUrl = decodeRef(from: source, with: refStr)
+                            return URLSchemaReference(url: refUrl, force: {
+                            loader.loadSchema(refUrl) })
+                            }
                         }
                     return lifted.map { Schema.Object(SchemaObjectRoot(name: objectTitle,
                                                                        properties: Dictionary(elements: $0),

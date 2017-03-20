@@ -27,7 +27,7 @@ extension ObjCFileRenderer {
     }
 
     var parentDescriptor: Schema? {
-        return self.rootSchema.extends.flatMap { $0() }
+        return self.rootSchema.extends.flatMap { $0.force() }
     }
 
     var properties: [(Parameter, Schema)] {
@@ -40,8 +40,8 @@ extension ObjCFileRenderer {
 
     fileprivate func referencedClassNames(schema: Schema) -> [String] {
         switch schema {
-        case .Reference(with: let fn):
-            switch fn() {
+        case .Reference(with: let ref):
+            switch ref.force() {
             case .some(.Object(let schemaRoot)):
                 return [schemaRoot.className(with: self.params)]
             default:
@@ -99,8 +99,8 @@ extension ObjCFileRenderer {
             return enumTypeName(propertyName: param, className: className)
         case .Object(let objSchemaRoot):
             return "\(objSchemaRoot.className(with: params)) *"
-        case .Reference(with: let fn):
-            switch fn() {
+        case .Reference(with: let ref):
+            switch ref.force() {
             case .some(.Object(let schemaRoot)):
                 return objcClassFromSchema(param, .Object(schemaRoot))
             default:

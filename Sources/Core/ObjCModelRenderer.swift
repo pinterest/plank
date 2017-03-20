@@ -124,8 +124,8 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             switch schema {
             case .some(.Object(let root)):
                 return root.className(with: self.params)
-            case .some(.Reference(with: let fn)):
-                return resolveClassName(fn())
+            case .some(.Reference(with: let ref)):
+                return resolveClassName(ref.force())
             default:
                 return nil
             }
