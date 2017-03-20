@@ -9,14 +9,6 @@
 import Foundation
 import Core
 
-func beginFileGeneration(_ schemaPaths: Set<String>, outputDirectoryPath: String, generationParameters: GenerationParameters = [:]) {
-    let urls = schemaPaths.map { URL(fileURLWithPath: $0).standardizedFileURL }
-    let outputDirectory = URL(fileURLWithPath: outputDirectoryPath, isDirectory: true)
-    generateFilesWithInitialUrl(urls: Set(urls),
-                                outputDirectory: outputDirectory,
-                                generationParameters: generationParameters)
-}
-
 protocol HelpCommandOutput {
     static func printHelp() -> String
 }
@@ -124,9 +116,6 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     if objc_class_prefix.characters.count > 0 {
         generationParameters[GenerationParameterType.classPrefix] = objc_class_prefix
     }
-    if flags[.printDeps] != nil {
-        generationParameters[GenerationParameterType.printDeps] = ""
-    }
 
     guard !args.isEmpty else {
         print("Error: Missing or invalid URL to JSONSchema")
@@ -152,9 +141,15 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         outputDirectory = URL(string: FileManager.default.currentDirectoryPath)!
     }
 
-    beginFileGeneration(Set(args),
-                        outputDirectoryPath: outputDirectory.absoluteString,
-                        generationParameters: generationParameters)
+    let urls = args.map { URL(fileURLWithPath: $0).standardizedFileURL }
+
+    if flags[.printDeps] != nil {
+        generateDeps(urls: Set(urls))
+    } else {
+        generateFiles(urls: Set(urls),
+                      outputDirectory: URL(fileURLWithPath: outputDirectory.absoluteString, isDirectory: true),
+                      generationParameters: generationParameters)
+    }
 }
 
 func handleHelpCommand() {
