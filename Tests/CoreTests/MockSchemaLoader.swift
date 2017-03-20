@@ -17,6 +17,6 @@ struct MockSchemaLoader: SchemaLoader {
         if schemaUrl == url {
             return schema
         }
-        fatalError("Can't open schema")
+        fatalError("Can't open schema at \(schemaUrl)")
     }
 }
