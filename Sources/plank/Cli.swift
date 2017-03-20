@@ -124,7 +124,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     if objc_class_prefix.characters.count > 0 {
         generationParameters[GenerationParameterType.classPrefix] = objc_class_prefix
     }
-    if let _ = flags[.printDeps] {
+    if flags[.printDeps] != nil {
         generationParameters[GenerationParameterType.printDeps] = ""
     }
 
