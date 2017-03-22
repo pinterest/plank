@@ -55,7 +55,7 @@ plank.
 |---|---|
 | `output_dir` | Specifies the directory where Plank will write generated files |
 | `objc_class_prefix` | Specifies a prefix to append to the beginning of all classes (i.e. `PIN` for `PINUser`) |
-| `print_deps` | Displays schema dependencies for any schemas passed as arguments and then exits (i.e. for `pin.json` return `user.json`, `board.json`, and `image.json`) |
+| `print_deps` | Displays schema dependencies for any schemas passed as arguments and then exits (i.e. for `pin.json` return `user.json`, `board.json`, and `image.json` separated by colons) |
 | `no_recursive` | Only generates files passed in on the commandline (i.e. for `pin.json` only generate `Pin.m` and `Pin.h`) |
 | `only_runtime` | Only generates runtime files and exits |
 | `help` | Displays usage documentation |

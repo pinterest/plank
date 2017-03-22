@@ -86,15 +86,17 @@ public func generateFileRuntime(outputDirectory: URL) {
     }
 }
 
-public func loadSchemasForUrls(urls: Set<URL>) -> [Schema] {
-    return urls.map { FileSchemaLoader.sharedInstance.loadSchema($0) }
+public func loadSchemasForUrls(urls: Set<URL>) -> [(URL, Schema)] {
+    return urls.map { ($0, FileSchemaLoader.sharedInstance.loadSchema($0)) }
 }
 
 public func generateDeps(urls: Set<URL>) {
-    let initialSchemas = loadSchemasForUrls(urls: urls)
-    let deps = Set(initialSchemas.flatMap { s in s.deps() })
+    let urlSchemas = loadSchemasForUrls(urls: urls)
+    let deps = Set(urlSchemas.map { (url, schema) -> String in
+        ([url] + schema.deps()).map { $0.path }.joined(separator: ":")
+    })
     deps.forEach { dep in
-        print(dep.relativePath)
+        print(dep)
     }
 }
 
