@@ -40,7 +40,7 @@ extension FlagOptions : HelpCommandOutput {
             "    --\(FlagOptions.outputDirectory.rawValue) - The directory where generated code will be written.",
             "    --\(FlagOptions.printDeps.rawValue) - Just print the path to the dependent schemas necessary to generate the schemas provided and exit.",
             "    --\(FlagOptions.noRecursive.rawValue) - Don't generate files recursively. Only generate the one file I ask for.",
-            "    --\(FlagOptions.onlyRuntime.rawValue) - Only the plank generate runtime files and exit.",
+            "    --\(FlagOptions.onlyRuntime.rawValue) - Only generate runtime files and exit.",
             "    --\(FlagOptions.help.rawValue) - Show this text and exit."
         ].joined(separator: "\n")
     }
@@ -128,9 +128,9 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
             var d = dict
             if let v = tuple.1 {
-            d[tuple.0] = v
-        }
-        return d
+                d[tuple.0] = v
+            }
+            return d
     }
 
     guard !args.isEmpty || flags[.onlyRuntime] != nil else {
