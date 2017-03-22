@@ -15,6 +15,8 @@ let date = Date()
 
 public enum GenerationParameterType {
     case classPrefix
+    case recursive
+    case includeRuntime
 }
 
 protocol FileGeneratorManager {
@@ -69,7 +71,7 @@ func generateFile(_ schema: SchemaObjectRoot, outputDirectory: URL, generationPa
     }
 }
 
-func generateFileRuntime(outputDirectory: URL) {
+public func generateFileRuntime(outputDirectory: URL) {
     let files: [FileGenerator] = [ObjCRuntimeHeaderFile(), ObjCRuntimeImplementationFile()]
     for var file in files {
         let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
@@ -114,6 +116,10 @@ public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParame
                 assert(false, "Incorrect Schema for root") // TODO Better error message.
             }
         })
-    } while (processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count)
-    generateFileRuntime(outputDirectory: outputDirectory)
+    } while (
+        generationParameters[.recursive] != nil &&
+        processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count)
+    if generationParameters[.includeRuntime] != nil {
+        generateFileRuntime(outputDirectory: outputDirectory)
+    }
 }
