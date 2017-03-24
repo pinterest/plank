@@ -55,8 +55,8 @@ class FileSchemaLoader: SchemaLoader {
             self.refs[schemaUrl] = schema
         }
 
-        guard error == nil else {
-            fatalError("Error accessing schema at URL: \(schemaUrl)")
+        if let err = error {
+            fatalError("Error accessing schema at URL: \(err)")
         }
 
         guard let resultSchema = refs[schemaUrl] else {
