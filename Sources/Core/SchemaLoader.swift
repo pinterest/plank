@@ -27,28 +27,42 @@ class FileSchemaLoader: SchemaLoader {
         }
 
         // Load from local file
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: schemaUrl.path))  else {
+        var error: NSError? = nil
+        NSFileCoordinator().coordinate(readingItemAt: URL(fileURLWithPath: schemaUrl.path),
+                                       options: .forUploading,
+                                       error: &error) { (sandboxUrl: URL) in
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: sandboxUrl.path))  else {
+                fatalError("Error loading or parsing schema at URL: \(schemaUrl)")
+            }
+
+            guard let jsonResult = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) else {
+                fatalError("Invalid JSON. Unable to parse json at URL: \(schemaUrl)")
+            }
+
+            guard let jsonDict = jsonResult as? JSONObject else {
+                fatalError("Invalid Schema. Expected dictionary as the root object type for schema at URL: \(schemaUrl)")
+            }
+
+            let id = jsonDict["id"] as? String ?? ""
+            guard id.hasSuffix(schemaUrl.lastPathComponent) == true else {
+                fatalError("Invalid Schema: The value for the `id` (\(id) must end with the filename \(schemaUrl.lastPathComponent).")
+            }
+
+            guard let schema = FileSchemaLoader.sharedPropertyLoader(jsonDict, schemaUrl) else {
+                fatalError("Invalid Schema. Unable to parse schema at URL: \(schemaUrl)")
+            }
+
+            self.refs[schemaUrl] = schema
+        }
+
+        guard error == nil else {
+            fatalError("Error accessing schema at URL: \(schemaUrl)")
+        }
+
+        guard let resultSchema = refs[schemaUrl] else {
             fatalError("Error loading or parsing schema at URL: \(schemaUrl)")
         }
 
-        guard let jsonResult = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) else {
-            fatalError("Invalid JSON. Unable to parse json at URL: \(schemaUrl)")
-        }
-
-        guard let jsonDict = jsonResult as? JSONObject else {
-            fatalError("Invalid Schema. Expected dictionary as the root object type for schema at URL: \(schemaUrl)")
-        }
-
-        let id = jsonDict["id"] as? String ?? ""
-        guard id.hasSuffix(schemaUrl.lastPathComponent) == true else {
-            fatalError("Invalid Schema: The value for the `id` (\(id) must end with the filename \(schemaUrl.lastPathComponent).")
-        }
-
-        guard let schema = FileSchemaLoader.sharedPropertyLoader(jsonDict, schemaUrl) else {
-            fatalError("Invalid Schema. Unable to parse schema at URL: \(schemaUrl)")
-        }
-
-        refs[schemaUrl] = schema
-        return schema
+        return resultSchema
     }
 }
