@@ -55,6 +55,7 @@ class FileSchemaLoader: SchemaLoader {
             self.refs[schemaUrl] = schema
         }
 
+<<<<<<< HEAD
         guard error == nil else {
             fatalError("Error accessing schema at URL: \(schemaUrl)")
         }
@@ -63,6 +64,11 @@ class FileSchemaLoader: SchemaLoader {
             fatalError("Error loading or parsing schema at URL: \(schemaUrl)")
         }
 
+=======
+        guard let resultSchema = loadedSchema else {
+            fatalError("Error accessing schema at URL: \(schemaUrl)")
+        }
+>>>>>>> Fix lint errors
         return resultSchema
     }
 }
