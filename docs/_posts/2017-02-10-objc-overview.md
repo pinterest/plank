@@ -8,12 +8,11 @@ categories: objc-reference
 
 | Schema Property Type                | Objective-C Type                                               |
 | :--- | :--- |
-| String                              | `NSString`                                                       |
 | Boolean                             | `BOOL`                                                     |
 | Integer                             | `NSInteger`                                                      |
 | Number                              | `double`                                                         |
-| Date-time Property (String variant) | `NSDate`                                                         |
 | String Property                     | `NSString` |
+| Date-time Property (String variant) | `NSDate`                                                         |
 | URI Property (String variant)       | `NSURL`                                                          |
 | JSON Pointer Property (`$ref`)        | ModelType                                                      |
 | Array Property                      | `NSArray`                                                        |
