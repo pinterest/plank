@@ -1,6 +1,0 @@
-{
-  "phabricator.uri" : "https://phabricator.pinadmin.com/",
-  "repository.callsign": "PMD",
-  "load": [],
-  "project.name"	: "pinmodel"
-}
