@@ -1,5 +1,5 @@
 # This makefile exposes targets that unify building, testing and archiving of
-# PINModel
+# Plank
 
 
 .PHONY: all clean build test archive
