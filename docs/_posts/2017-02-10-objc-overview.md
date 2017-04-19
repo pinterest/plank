@@ -102,10 +102,49 @@ Then this would be the corresponding implementation for `initWithModelDictionary
 }
 </code></pre>
 
-A couple more things to note in the implementation:
-- **Date Parsing**: Due to the variance of possible date formats, `NSDate` or `DateTime` objects are created using an instance of `NSValueTransformer`. It is up to the host application to register an instance of `NSValueTransformer` for the key `kPlankDateValueTransformerKey`.
-- **Tracking Set Properties** : Each model instance contains a bitmask that tracks whenever a specific property has been set. This allows the model object to differentiate between `nil` and unset values when performing tasks like printing debug descriptions or merging model instances.
-- **Initialization Notification** : Everytime a model is initialized, a notification with the name `kPlankDidInitializeNotification` is fired with the newly created object. In addition the `userInfo` dictionary will contain additional information specifying how it was initialized. You should leverage this notification information to manage data-consistency in your application.
+##### Date Parsing
+
+Due to the variance of possible date formats, `NSDate` or `DateTime` objects are created using an instance of `NSValueTransformer`. It is up to the host application to register an instance of `NSValueTransformer` for the key `kPlankDateValueTransformerKey`.
+
+- Create your own subclass of NSValueTransformer (example: `MyDateValueTransformer`)
+```objc
+@interface MyDateValueTransformer : NSValueTransformer
+@end
+
+@implementation MyDateValueTransformer
+
++ (Class)transformedValueClass
+{
+    return [NSDate class];
+}
+
++ (BOOL)allowsReverseTransformation
+{
+    return NO; // Optional, plank does not use this
+}
+
+- (id)transformedValue:(id)value
+{
+    if ([value isKindOfClass:[NSString class]] && [value length] > 0) {
+      // ... Convert NSString -> NSDate
+      // ... Return the NSDate value
+    };
+    return nil;
+}
+@end
+```
+
+- Register the transformer early in your application lifecycle (likely in the app delegate)
+```objc
+[NSValueTransformer setValueTransformer:[MyDateValueTransformer new] forName:kPlankDateValueTransformerKey];
+```
+
+##### A couple more things to note in the implementation:
+######  Tracking Set Properties
+Each model instance contains a bitmask that tracks whenever a specific property has been set. This allows the model object to differentiate between `nil` and unset values when performing tasks like printing debug descriptions or merging model instances.
+###### Initialization Notification
+
+Everytime a model is initialized, a notification with the name `kPlankDidInitializeNotification` is fired with the newly created object. In addition the `userInfo` dictionary will contain additional information specifying how it was initialized. You should leverage this notification information to manage data-consistency in your application.
 
 #### Builder Initialization
 
@@ -152,7 +191,7 @@ Objects generated with plank support serialization through [NSSecureCoding](http
     _userDirtyProperties.UserDirtyPropertyFirstName = [aDecoder decodeIntForKey:@"first_name_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyUsername = [aDecoder decodeIntForKey:@"username_dirty_property"] & 0x1;
-	// init notification
+    // init notification
     return self;
 }
 
