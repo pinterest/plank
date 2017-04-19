@@ -90,22 +90,22 @@ Then this would be the corresponding implementation for `initWithModelDictionary
         if ([key isEqualToString:@"created_at"]) {
             id value = valueOrNil(modelDictionary, @"created_at");
             if (value != nil) {
-                self->_createdAt = [[NSValueTransformer valueTransformerForName:kPINModelDateValueTransformerKey] transformedValue:value];
+                self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
             }
             self->_userDirtyProperties.UserDirtyPropertyCreatedAt = 1;
         }
     }];
     if ([self class] == [User class]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kPINModelDidInitializeNotification object:self userInfo:@{ kPINModelInitTypeKey : @(PIModelInitTypeDefault) }];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
     }
     return self;
 }
 </code></pre>
 
 A couple more things to note in the implementation:
-- **Date Parsing**: Due to the variance of possible date formats, `NSDate` or `DateTime` objects are created using an instance of `NSValueTransformer`. It is up to the host application to register an instance of `NSValueTransformer` for the key `kPINModelDateValueTransformerKey`.
+- **Date Parsing**: Due to the variance of possible date formats, `NSDate` or `DateTime` objects are created using an instance of `NSValueTransformer`. It is up to the host application to register an instance of `NSValueTransformer` for the key `kPlankDateValueTransformerKey`.
 - **Tracking Set Properties** : Each model instance contains a bitmask that tracks whenever a specific property has been set. This allows the model object to differentiate between `nil` and unset values when performing tasks like printing debug descriptions or merging model instances.
-- **Initialization Notification** : Everytime a model is initialized, a notification with the name `kPINModelDidInitializeNotification` is fired with the newly created object. In addition the `userInfo` dictionary will contain additional information specifying how it was initialized. You should leverage this notification information to manage data-consistency in your application.
+- **Initialization Notification** : Everytime a model is initialized, a notification with the name `kPlankDidInitializeNotification` is fired with the newly created object. In addition the `userInfo` dictionary will contain additional information specifying how it was initialized. You should leverage this notification information to manage data-consistency in your application.
 
 #### Builder Initialization
 
@@ -251,7 +251,7 @@ When you're debugging, it's useful to be able to print out the value of your mod
 
 #### Mutations
 
-<pre><code class="objc">- (instancetype)copyWithBlock:(PINMODEL_NOESCAPE void (^)(UserBuilder *builder))block;
+<pre><code class="objc">- (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(UserBuilder *builder))block;
 - (instancetype)mergeWithModel:(User *)modelObject;
 </code></pre>
 
@@ -259,7 +259,7 @@ There are two main mutations available on every model class:
 
 The first is `copyWithBlock` which is a [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) for mutation. This method allows you to pass a configuration block as an argument and that block will be passed a Builder object that you can safely mutate. The builder object will be used to create a new immutable model object with it's state at the end of the block.
 
-<pre><code class="objc">- (instancetype)copyWithBlock:(PINMODEL_NOESCAPE void (^)(UserBuilder *builder))block
+<pre><code class="objc">- (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(UserBuilder *builder))block
 {
     UserBuilder *builder = [[UserBuilder alloc] initWithModel:self];
     block(builder);
@@ -282,7 +282,7 @@ The second is `mergeWithModel:` which is used to merge the values of the two dif
 <pre><code class="objc">// Create a model object
 PIPin *pin = [PIPin modelObjectWIthDictionary:someDictionary];
 PIPin *newPin = [pin copyWithBlock:^(PIPinBuilder *builder) {
-                builder.descriptionText = @”Some new description text”;
+    builder.descriptionText = @”Some new description text”;
 }];
 </code></pre>
 
