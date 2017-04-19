@@ -107,6 +107,7 @@ Then this would be the corresponding implementation for `initWithModelDictionary
 Due to the variance of possible date formats, `NSDate` or `DateTime` objects are created using an instance of `NSValueTransformer`. It is up to the host application to register an instance of `NSValueTransformer` for the key `kPlankDateValueTransformerKey`.
 
 - Create your own subclass of NSValueTransformer (example: `MyDateValueTransformer`)
+
 ```objc
 @interface MyDateValueTransformer : NSValueTransformer
 @end
@@ -135,6 +136,7 @@ Due to the variance of possible date formats, `NSDate` or `DateTime` objects are
 ```
 
 - Register the transformer early in your application lifecycle (likely in the app delegate)
+
 ```objc
 [NSValueTransformer setValueTransformer:[MyDateValueTransformer new] forName:kPlankDateValueTransformerKey];
 ```
