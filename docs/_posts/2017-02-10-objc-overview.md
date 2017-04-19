@@ -102,7 +102,7 @@ Then this would be the corresponding implementation for `initWithModelDictionary
 }
 </code></pre>
 
-##### Date Parsing
+#### Date Parsing
 
 Due to the variance of possible date formats, `NSDate` or `DateTime` objects are created using an instance of `NSValueTransformer`. It is up to the host application to register an instance of `NSValueTransformer` for the key `kPlankDateValueTransformerKey`.
 
@@ -141,10 +141,11 @@ Due to the variance of possible date formats, `NSDate` or `DateTime` objects are
 [NSValueTransformer setValueTransformer:[MyDateValueTransformer new] forName:kPlankDateValueTransformerKey];
 ```
 
-##### A couple more things to note in the implementation:
-######  Tracking Set Properties
+####  Tracking Set Properties
+
 Each model instance contains a bitmask that tracks whenever a specific property has been set. This allows the model object to differentiate between `nil` and unset values when performing tasks like printing debug descriptions or merging model instances.
-###### Initialization Notification
+
+#### Initialization Notification
 
 Everytime a model is initialized, a notification with the name `kPlankDidInitializeNotification` is fired with the newly created object. In addition the `userInfo` dictionary will contain additional information specifying how it was initialized. You should leverage this notification information to manage data-consistency in your application.
 
