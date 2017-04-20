@@ -21,6 +21,7 @@ public enum GenerationParameterType {
 
 public enum Languages: String {
     case objectiveC = "objc"
+    case flowtype = "flow"
 }
 
 public protocol FileGeneratorManager {
@@ -92,6 +93,8 @@ func generator(forLanguage language: Languages) -> FileGeneratorManager {
     switch language {
     case .objectiveC:
         return ObjectiveCFileGenerator()
+    case .flowtype:
+        return JSFileGenerator()
     }
 }
 

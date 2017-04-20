@@ -88,6 +88,10 @@ extension SchemaObjectRoot {
             return self.name.snakeCaseToCamelCase()
         }
     }
+
+    func typeName(with params: GenerationParameters) -> String {
+        return "\(self.className(with: params))Type"
+    }
 }
 
 extension Schema {
@@ -220,6 +224,14 @@ public struct ObjCIR {
         ].joined(separator: "\n")
     }
 
+    static func elseIfStmt(_ condition: String, _ body:() -> [String]) -> String {
+        return [
+            " else if (\(condition)) {",
+                -->body,
+            "}"
+        ].joined(separator: "\n")
+    }
+
     static func elseStmt(_ body: () -> [String]) -> String {
         return [
             " else {",
@@ -234,12 +246,13 @@ public struct ObjCIR {
             ObjCIR.elseStmt(elseBody)
         ].joined(separator: "\n") }
     }
+
     static func forStmt(_ condition: String, body: () -> [String]) -> String {
         return [
             "for (\(condition)) {",
               -->body,
             "}"
-            ].joined(separator: "\n")
+        ].joined(separator: "\n")
     }
 
     static func fileImportStmt(_ filename: String) -> String {
@@ -259,7 +272,7 @@ public struct ObjCIR {
             "typedef NS_OPTIONS(NSUInteger, \(enumName)) {",
             -->[body().joined(separator: ",\n")],
             "};"
-            ].joined(separator: "\n")
+        ].joined(separator: "\n")
     }
 
     public struct Method {
