@@ -170,17 +170,17 @@ public struct ObjCIR {
     }
 
     enum SwitchCase {
-        case caseStm(condition: String, body: () -> [String])
-        case defaultStm(body: () -> [String])
+        case caseStmt(condition: String, body: () -> [String])
+        case defaultStmt(body: () -> [String])
 
         func render() -> String {
             switch self {
-            case .caseStm(let condition, let body):
+            case .caseStmt(let condition, let body):
                 return [ "case \(condition):",
                     -->body,
                     -->[ObjCIR.stmt("break")]
                 ].joined(separator: "\n")
-            case .defaultStm(let body):
+            case .defaultStmt(let body):
                 return [ "default:",
                     -->body,
                     -->[ObjCIR.stmt("break")]
@@ -190,11 +190,11 @@ public struct ObjCIR {
     }
 
     static func caseStmt(_ condition: String, body: @escaping () -> [String]) -> SwitchCase {
-        return .caseStm(condition: condition, body: body)
+        return .caseStmt(condition: condition, body: body)
     }
 
     static func defaultCaseStmt(body: @escaping () -> [String]) -> SwitchCase {
-        return .defaultStm(body: body)
+        return .defaultStmt(body: body)
     }
 
     static func switchStmt(_ switchVariable: String, body: () -> [SwitchCase]) -> String {
