@@ -9,27 +9,27 @@
 import Foundation
 
 public enum ObjCMemoryAssignmentType: String {
-    case Copy = "copy"
-    case Strong = "strong"
-    case Weak = "weak"
-    case Assign = "assign"
+    case copy
+    case strong
+    case weak
+    case assign
 }
 
 public enum ObjCAtomicityType: String {
-    case Atomic = "atomic"
-    case NonAtomic = "nonatomic"
+    case atomic
+    case nonatomic
 }
 
 public enum ObjCMutabilityType: String {
-    case ReadOnly = "readonly"
-    case ReadWrite = "readwrite"
+    case readonly
+    case readwrite
 }
 
 public enum ObjCPrimitiveType: String {
-    case Float = "float"
-    case Double = "double"
-    case Integer = "NSInteger"
-    case Boolean = "BOOL"
+    case float
+    case double
+    case integer = "NSInteger"
+    case boolean = "BOOL"
 }
 
 extension String {
@@ -93,7 +93,7 @@ extension SchemaObjectRoot {
 extension Schema {
     var isObjCPrimitiveType: Bool {
         switch self {
-        case .Boolean, .Integer, .Enum(_), .Float:
+        case .boolean, .integer, .enumT(_), .float:
             return true
         default:
             return false
@@ -102,12 +102,12 @@ extension Schema {
 
     func memoryAssignmentType() -> ObjCMemoryAssignmentType {
         switch self {
-        case .String(format: .none):
-            return .Copy
-        case .Boolean, .Float, .Integer, .Enum(_):
-            return .Assign
+        case .string(format: .none):
+            return .copy
+        case .boolean, .float, .integer, .enumT(_):
+            return .assign
         default:
-            return .Strong
+            return .strong
         }
     }
 }
@@ -119,14 +119,14 @@ extension EnumValue {
 }
 
 enum MethodVisibility: Equatable {
-    case Public
-    case Private
+    case publicM
+    case privateM
 }
 
 func == (lhs: MethodVisibility, rhs: MethodVisibility) -> Bool {
     switch (lhs, rhs) {
-    case (.Public, .Public): return true
-    case (.Private, .Private): return true
+    case (.publicM, .publicM): return true
+    case (.privateM, .privateM): return true
     case (_, _): return false
     }
 }
@@ -170,17 +170,17 @@ public struct ObjCIR {
     }
 
     enum SwitchCase {
-        case Case(condition: String, body: () -> [String])
-        case Default(body: () -> [String])
+        case caseStm(condition: String, body: () -> [String])
+        case defaultStm(body: () -> [String])
 
         func render() -> String {
             switch self {
-            case .Case(let condition, let body):
+            case .caseStm(let condition, let body):
                 return [ "case \(condition):",
                     -->body,
                     -->[ObjCIR.stmt("break")]
                 ].joined(separator: "\n")
-            case .Default(let body):
+            case .defaultStm(let body):
                 return [ "default:",
                     -->body,
                     -->[ObjCIR.stmt("break")]
@@ -190,11 +190,11 @@ public struct ObjCIR {
     }
 
     static func caseStmt(_ condition: String, body: @escaping () -> [String]) -> SwitchCase {
-        return .Case(condition: condition, body: body)
+        return .caseStm(condition: condition, body: body)
     }
 
     static func defaultCaseStmt(body: @escaping () -> [String]) -> SwitchCase {
-        return .Default(body: body)
+        return .defaultStm(body: body)
     }
 
     static func switchStmt(_ switchVariable: String, body: () -> [SwitchCase]) -> String {
@@ -269,36 +269,36 @@ public struct ObjCIR {
     }
 
     enum Root {
-        case Struct(name: String, fields: [String])
-        case Imports(classNames: Set<String>, myName: String, parentName: String?)
-        case Category(className: String, categoryName: String?, methods: [ObjCIR.Method],
+        case structDecl(name: String, fields: [String])
+        case imports(classNames: Set<String>, myName: String, parentName: String?)
+        case category(className: String, categoryName: String?, methods: [ObjCIR.Method],
             properties: [SimpleProperty])
-        case Macro(String)
-        case Function(ObjCIR.Method)
-        case Class(
+        case macro(String)
+        case function(ObjCIR.Method)
+        case classDecl(
             name: String,
             extends: String?,
             methods: [(MethodVisibility, ObjCIR.Method)],
             properties: [SimpleProperty],
             protocols: [String:[ObjCIR.Method]]
         )
-        case Enum(name: String, values: EnumType)
-        case OptionSetEnum(name: String, values: [EnumValue<Int>])
+        case enumDecl(name: String, values: EnumType)
+        case optionSetEnum(name: String, values: [EnumValue<Int>])
 
         func renderHeader() -> [String] {
             switch self {
-            case .Struct(_, _):
+            case .structDecl(_, _):
                 // skip structs in header
                 return []
-            case .Macro(let macro):
+            case .macro(let macro):
                 return [macro]
-            case .Imports(let classNames, let myName, let parentName):
+            case .imports(let classNames, let myName, let parentName):
                 return [
                     "#import <Foundation/Foundation.h>",
                     parentName.map(ObjCIR.fileImportStmt) ?? "",
                     "#import \"\(ObjCRuntimeHeaderFile().fileName)\""
                     ].filter { $0 != "" }  + (["\(myName)Builder"] + classNames).sorted().map { "@class \($0);" }
-            case .Class(let className, let extends, let methods, let properties, let protocols):
+            case .classDecl(let className, let extends, let methods, let properties, let protocols):
                 let protocolList = protocols.keys.sorted().joined(separator: ", ")
                 let protocolDeclarations = protocols.count > 0 ? "<\(protocolList)>" : ""
                 let superClass = extends ?? "NSObject\(protocolDeclarations)"
@@ -307,25 +307,25 @@ public struct ObjCIR {
                     properties.map { (param, typeName, schema, access) in
                         "@property (\(schema.isObjCPrimitiveType ? "" : "nullable, ")nonatomic, \(schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
-                    methods.filter { visibility, _ in visibility == .Public }
+                    methods.filter { visibility, _ in visibility == .publicM }
                             .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                 ]
-            case .Category(className: _, categoryName: _, methods: _, properties: _):
+            case .category(className: _, categoryName: _, methods: _, properties: _):
                 // skip categories in header
                 return []
-            case .Function(let method):
+            case .function(let method):
                 return ["\(method.signature);"]
-            case .Enum(let name, let values):
+            case .enumDecl(let name, let values):
                 return [ObjCIR.enumStmt(name) {
                     switch values {
-                    case .Integer(let options):
+                    case .integer(let options):
                         return options.map { "\(name + $0.description) = \($0.defaultValue)" }
-                    case .String(let options, _):
+                    case .string(let options, _):
                         return options.map { "\(name + $0.description) /* \($0.defaultValue) */" }
                     }
                 }]
-            case .OptionSetEnum(let name, let values):
+            case .optionSetEnum(let name, let values):
                 return [ObjCIR.optionEnumStmt(name) {
                     values.map { "\(name + $0.description) = 1 << \($0.defaultValue)" }
                 }]
@@ -334,18 +334,18 @@ public struct ObjCIR {
 
         func renderImplementation() -> [String] {
             switch self {
-            case .Struct(name: let name, fields: let fields):
+            case .structDecl(name: let name, fields: let fields):
                 return [
                     "struct \(name) {",
                         fields.sorted().map { $0.indent() }.joined(separator: "\n"),
                     "};"
                 ]
-            case .Macro(_):
+            case .macro(_):
                 // skip macro in impl
                 return []
-            case .Imports(let classNames, let myName, _):
+            case .imports(let classNames, let myName, _):
                 return [classNames.union(Set([myName])).sorted().map(ObjCIR.fileImportStmt).joined(separator: "\n")]
-            case .Class(name: let className, extends: _, methods: let methods, properties: _, protocols: let protocols):
+            case .classDecl(name: let className, extends: _, methods: let methods, properties: _, protocols: let protocols):
                 return [
                     "@implementation \(className)",
                     methods.flatMap {$1.render()}.joined(separator: "\n"),
@@ -354,7 +354,7 @@ public struct ObjCIR {
                     }).joined(separator: "\n"),
                     "@end"
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
-            case .Category(className: let className, categoryName: let categoryName, methods: let methods, properties: let properties):
+            case .category(className: let className, categoryName: let categoryName, methods: let methods, properties: let properties):
                 // Only render anonymous categories in the implementation
                 guard categoryName == nil else { return [] }
                 return [
@@ -365,11 +365,11 @@ public struct ObjCIR {
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
-            case .Function(let method):
+            case .function(let method):
                 return method.render()
-            case .Enum(_, _):
+            case .enumDecl(_, _):
                 return []
-            case .OptionSetEnum(_, _):
+            case .optionSetEnum(_, _):
                 return []
             }
         }

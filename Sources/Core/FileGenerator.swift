@@ -104,13 +104,13 @@ public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParame
     _ = loadSchemasForUrls(urls: urls)
     var processedSchemas = Set<URL>([])
     repeat {
-        let _ = FileSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: Schema) -> Void in
+        _ = FileSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: Schema) -> Void in
             if processedSchemas.contains(url) {
                 return
             }
             processedSchemas.insert(url)
             switch schema {
-            case .Object(let rootObject):
+            case .object(let rootObject):
                 generateFile(rootObject,
                              outputDirectory: outputDirectory,
                              generationParameters: generationParameters)

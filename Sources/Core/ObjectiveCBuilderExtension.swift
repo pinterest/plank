@@ -46,7 +46,7 @@ extension ObjCModelRenderer {
             return ObjCIR.ifStmt("modelObject.\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
                 func loop(_ schema: Schema) -> [String] {
                     switch schema {
-                    case .Object(_):
+                    case .object(_):
                         return [
                             "id value = modelObject.\(param.snakeCaseToPropertyName());",
                             ObjCIR.ifElseStmt("value != nil") {[
@@ -59,10 +59,10 @@ extension ObjCModelRenderer {
                                     "builder.\(param.snakeCaseToPropertyName()) = nil;"
                                     ]}
                         ]
-                    case .Reference(with: let ref):
+                    case .reference(with: let ref):
                         switch ref.force() {
-                        case .some(.Object(let objSchema)):
-                            return loop(.Object(objSchema))
+                        case .some(.object(let objSchema)):
+                            return loop(.object(objSchema))
                         default:
                             fatalError("Error identifying reference for \(param) in \(schema)")
                         }

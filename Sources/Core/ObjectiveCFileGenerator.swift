@@ -65,7 +65,7 @@ struct ObjCImplementationFile: FileGenerator {
 struct ObjCRuntimeFile {
     static func renderRoots() -> [ObjCIR.Root] {
         return [
-            ObjCIR.Root.Macro([
+            ObjCIR.Root.macro([
                 "#if __has_attribute(noescape)",
                 "   #define PLANK_NOESCAPE __attribute__((noescape))",
                 "#else",
@@ -73,7 +73,7 @@ struct ObjCRuntimeFile {
                 "#endif"
                 ].joined(separator: "\n")),
 
-            ObjCIR.Root.OptionSetEnum(
+            ObjCIR.Root.optionSetEnum(
                 name: "PlankModelInitType",
                 values:[
                     EnumValue<Int>(defaultValue: 0, description: "Default"),
@@ -82,11 +82,11 @@ struct ObjCRuntimeFile {
                 ]
             ),
             // TODO Add another root for constant variables instead of using Macro
-            ObjCIR.Root.Macro("NS_ASSUME_NONNULL_BEGIN"),
-            ObjCIR.Root.Macro("static NSString *const kPlankDateValueTransformerKey = @\"kPlankDateValueTransformerKey\";"),
-            ObjCIR.Root.Macro("static NSString *const kPlankDidInitializeNotification = @\"kPlankDidInitializeNotification\";"),
-            ObjCIR.Root.Macro("static NSString *const kPlankInitTypeKey = @\"kPlankInitTypeKey\";"),
-            ObjCIR.Root.Function(
+            ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
+            ObjCIR.Root.macro("static NSString *const kPlankDateValueTransformerKey = @\"kPlankDateValueTransformerKey\";"),
+            ObjCIR.Root.macro("static NSString *const kPlankDidInitializeNotification = @\"kPlankDidInitializeNotification\";"),
+            ObjCIR.Root.macro("static NSString *const kPlankInitTypeKey = @\"kPlankInitTypeKey\";"),
+            ObjCIR.Root.function(
                 ObjCIR.method("id _Nullable valueOrNil(NSDictionary *dict, NSString *key)") {[
                     "id value = dict[key];",
                     ObjCIR.ifStmt("value == nil || value == (id)kCFNull") {
@@ -95,7 +95,7 @@ struct ObjCRuntimeFile {
                     "return value;"
                     ]}
             ),
-            ObjCIR.Root.Function(
+            ObjCIR.Root.function(
                 ObjCIR.method("NSString *debugDescriptionForFields(NSArray *descriptionFields)") {[
                     "NSMutableString *stringBuf = [NSMutableString string];",
                     "NSString *newline = @\"\\n\";",
@@ -119,7 +119,7 @@ struct ObjCRuntimeFile {
                     "return [stringBuf copy];"
                 ]}
             ),
-            ObjCIR.Root.Function(
+            ObjCIR.Root.function(
                 ObjCIR.method("NSUInteger PINIntegerArrayHash(const NSUInteger *subhashes, NSUInteger count)") {
                     [
                         "uint64_t result = subhashes[0];",
@@ -138,7 +138,7 @@ struct ObjCRuntimeFile {
                     ]
                 }
             ),
-            ObjCIR.Root.Macro("NS_ASSUME_NONNULL_END")
+            ObjCIR.Root.macro("NS_ASSUME_NONNULL_END")
         ]
     }
 }

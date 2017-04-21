@@ -70,52 +70,52 @@ extension ObjCFileRenderer {
 
     fileprivate func referencedObjectClasses(_ schema: Schema) -> Set<String> {
         switch schema {
-        case .Array(itemType: .none):
+        case .array(itemType: .none):
             return Set(["NSArray"])
-        case .Array(itemType: .some(let itemType)):
+        case .array(itemType: .some(let itemType)):
             return Set(["NSArray"]).union(referencedObjectClasses(itemType))
-        case .Map(valueType: .none):
+        case .map(valueType: .none):
             return Set(["NSDictionary"])
-        case .Map(valueType: .some(let valueType)):
+        case .map(valueType: .some(let valueType)):
             return Set(["NSDictionary"]).union(referencedObjectClasses(valueType))
-        case .String(format: .none),
-             .String(format: .some(.Email)),
-             .String(format: .some(.Hostname)),
-             .String(format: .some(.Ipv4)),
-             .String(format: .some(.Ipv6)):
+        case .string(format: .none),
+             .string(format: .some(.email)),
+             .string(format: .some(.hostname)),
+             .string(format: .some(.ipv4)),
+             .string(format: .some(.ipv6)):
             return Set(["NSString"])
-        case .String(format: .some(.DateTime)):
+        case .string(format: .some(.dateTime)):
             return Set(["NSDate"])
-        case .String(format: .some(.Uri)):
+        case .string(format: .some(.uri)):
             return Set(["NSURL"])
-        case .Integer, .Float, .Boolean, .Enum(_):
+        case .integer, .float, .boolean, .enumT(_):
             return Set(["NSNumber"])
-        case .Object(let objSchemaRoot):
+        case .object(let objSchemaRoot):
             return Set([objSchemaRoot.className(with: self.params)])
-        case .Reference(with: let ref):
+        case .reference(with: let ref):
             switch ref.force() {
-            case .some(.Object(let schemaRoot)):
-                return referencedObjectClasses(.Object(schemaRoot))
+            case .some(.object(let schemaRoot)):
+                return referencedObjectClasses(.object(schemaRoot))
             default:
                 fatalError("Bad reference found in schema for class: \(self.className)")
             }
-        case .OneOf(types: let schemaTypes):
-            return schemaTypes.map(referencedObjectClasses).reduce(Set(), { s1, s2 in s1.union(s2) })
+        case .oneOf(types: let schemaTypes):
+            return schemaTypes.map(referencedObjectClasses).reduce(Set(), { set1, set2 in set1.union(set2) })
         }
     }
 
     fileprivate func decodeStatement(_ param: String, _ schema: Schema) -> String {
         let propIVarName = "_\(param.snakeCaseToPropertyName())"
         return "\(propIVarName) = " + { switch schema {
-        case .Enum(_):
+        case .enumT(_):
             return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
-        case .Boolean:
+        case .boolean:
             return "[aDecoder decodeBoolForKey:\(param.objcLiteral())];"
-        case .Float:
+        case .float:
             return "[aDecoder decodeDoubleForKey:\(param.objcLiteral())];"
-        case .Integer:
+        case .integer:
             return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
-        case .String(_), .Map(_), .Array(_), .OneOf(_), .Reference(_), .Object(_):
+        case .string(_), .map(_), .array(_), .oneOf(_), .reference(_), .object(_):
             let refObjectClasses = referencedObjectClasses(schema).map { "[\($0) class]" }
             let refObjectClassesString = refObjectClasses.count == 1 ? refObjectClasses.joined(separator: ",") : "[NSSet setWithArray:\(refObjectClasses.objcLiteral())]"
             if refObjectClasses.count == 0 { fatalError("Can't determine class for decode for \(schema)") }
@@ -131,15 +131,15 @@ extension ObjCFileRenderer {
     func encodeStatement(_ param: String, _ schema: Schema) -> String {
         let propGetter = "self.\(param.snakeCaseToPropertyName())"
         switch schema {
-        case .Enum(_):
+        case .enumT(_):
             return "[aCoder encodeInteger:\(propGetter) forKey:\(param.objcLiteral())];"
-        case .Boolean:
+        case .boolean:
             return "[aCoder encodeBool:\(propGetter) forKey:\(param.objcLiteral())];"
-        case .Float:
+        case .float:
             return "[aCoder encodeDouble:\(propGetter) forKey:\(param.objcLiteral())];"
-        case .Integer:
+        case .integer:
             return "[aCoder encodeInteger:\(propGetter) forKey:\(param.objcLiteral())];"
-        case .String(_), .Map(_), .Array(_), .OneOf(_), .Reference(_), .Object(_):
+        case .string(_), .map(_), .array(_), .oneOf(_), .reference(_), .object(_):
             return "[aCoder encodeObject:\(propGetter) forKey:\(param.objcLiteral())];"
         }
     }

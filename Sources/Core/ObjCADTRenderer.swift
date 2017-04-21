@@ -18,12 +18,12 @@ extension ObjCModelRenderer {
             return EnumValue<Int>(defaultValue: idx + 1, description: "\(name)")
         }
 
-        let internalTypeProp: (String, Schema) = ("internal_type", .Enum(.Integer(enumOptions)))
+        let internalTypeProp: (String, Schema) = ("internal_type", .enumT(.integer(enumOptions)))
 
         let props  = [internalTypeProp] + schemas.enumerated().map { ("value\($0)", $1) }
-        let properties = props.reduce([String: Schema](), { (d: [String: Schema], t: (String, Schema)) -> [String: Schema] in
-            var mutableDict = d
-            mutableDict[t.0] = t.1
+        let properties = props.reduce([String: Schema](), { (acc: [String: Schema], type: (String, Schema)) -> [String: Schema] in
+            var mutableDict = acc
+            mutableDict[type.0] = type.1
             return mutableDict
         })
 
@@ -45,25 +45,25 @@ struct ObjCADTRenderer: ObjCFileRenderer {
 
     public static func objectName(_ aSchema: Schema) -> String {
         switch aSchema {
-        case .Object(let objectRoot):
+        case .object(let objectRoot):
             // Intentionally drop prefix
             return objectRoot.className(with: [:])
-        case .Reference(with: let ref):
+        case .reference(with: let ref):
             return ref.force().map(objectName) ?? {
                 assert(false, "TODO: Forward optional across methods")
                 return ""
                 }()
-        case .Float: return "Float"
-        case .Integer: return "Integer"
-        case .Enum(.Integer(_)): return "IntegerEnum"  // TODO: Allow custom names
-        case .Boolean: return "Boolean"
-        case .Array(itemType: _): return "Array"
-        case .Map(valueType: _): return "Dictionary"
-        case .String(.some(.Uri)): return "URL"
-        case .String(.some(.DateTime)): return "Date"
-        case .String(.some(_)), .String(.none): return "String"
-        case .Enum(.String(_)): return "StringEnum" // TODO: Allow custom names
-        case .OneOf(types:_):
+        case .float: return "Float"
+        case .integer: return "Integer"
+        case .enumT(.integer(_)): return "IntegerEnum"  // TODO: Allow custom names
+        case .boolean: return "Boolean"
+        case .array(itemType: _): return "Array"
+        case .map(valueType: _): return "Dictionary"
+        case .string(.some(.uri)): return "URL"
+        case .string(.some(.dateTime)): return "Date"
+        case .string(.some(_)), .string(.none): return "String"
+        case .enumT(.string(_)): return "StringEnum" // TODO: Allow custom names
+        case .oneOf(types:_):
             fatalError("Nested oneOf types are unsupported at this time. Please file an issue if you require this. \(aSchema)")
         }
     }
@@ -78,8 +78,8 @@ struct ObjCADTRenderer: ObjCFileRenderer {
             // Offset enum indexes by 1 to avoid matching the
             return EnumValue<Int>(defaultValue: idx + 1, description: "\(name)")
         }
-        return ObjCIR.Root.Enum(name: self.internalTypeEnumName,
-                                values: EnumType.Integer(enumOptions))
+        return ObjCIR.Root.enumDecl(name: self.internalTypeEnumName,
+                                    values: EnumType.integer(enumOptions))
     }
 
     func renderInternalEnumTypeCase(name: String) -> String {
@@ -129,7 +129,7 @@ struct ObjCADTRenderer: ObjCFileRenderer {
     }
     func renderClass(name: String) -> [ObjCIR.Root] {
         let internalTypeEnum = self.renderInternalTypeEnum()
-        let internalTypeProp: SimpleProperty = ("internal_type", objcClassFromSchema("internal_type", .Enum(.Integer([]))), .Enum(.Integer([])), .ReadWrite)
+        let internalTypeProp: SimpleProperty = ("internal_type", objcClassFromSchema("internal_type", .enumT(.integer([]))), .enumT(.integer([])), .readwrite)
 
         let protocols: [String : [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
@@ -138,28 +138,28 @@ struct ObjCADTRenderer: ObjCFileRenderer {
 
         let props: [SimpleProperty] = [internalTypeProp] + self.dataTypes.enumerated()
             .map { idx, schema in ("value\(idx)", schema) }
-            .map { param, schema in (param, objcClassFromSchema(param, schema), schema, .ReadWrite) }
+            .map { param, schema in (param, objcClassFromSchema(param, schema), schema, .readwrite) }
 
         return [
-            ObjCIR.Root.Macro("NS_ASSUME_NONNULL_BEGIN"),
+            ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
             internalTypeEnum,
-            ObjCIR.Root.Category(className: self.className,
+            ObjCIR.Root.category(className: self.className,
                                  categoryName: nil,
                                  methods: [],
                                  properties: props),
-            ObjCIR.Root.Class(name: name,
-                             extends: nil,
-                             methods:
-                               self.renderClassInitializers().map { (.Public, $0) } +
-                               [
-                                (.Public, self.renderMatchFunction()),
-                                (.Private, self.renderIsEqual()),
-                                (.Public, self.renderIsEqualToClass()),
-                                (.Private, self.renderHash())
-                                ],
-                             properties: [],
-                             protocols: protocols),
-            ObjCIR.Root.Macro("NS_ASSUME_NONNULL_END")
+            ObjCIR.Root.classDecl(name: name,
+                                 extends: nil,
+                                 methods:
+                                   self.renderClassInitializers().map { (.publicM, $0) } +
+                                   [
+                                    (.publicM, self.renderMatchFunction()),
+                                    (.privateM, self.renderIsEqual()),
+                                    (.publicM, self.renderIsEqualToClass()),
+                                    (.privateM, self.renderHash())
+                                    ],
+                                 properties: [],
+                                 protocols: protocols),
+            ObjCIR.Root.macro("NS_ASSUME_NONNULL_END")
         ]
     }
 }

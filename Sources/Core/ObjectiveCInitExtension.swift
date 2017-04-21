@@ -68,7 +68,7 @@ extension ObjCModelRenderer {
             counter: Int = 0
             ) -> [String] {
             switch schema {
-            case .Array(itemType: .some(let itemType)):
+            case .array(itemType: .some(let itemType)):
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
@@ -86,7 +86,7 @@ extension ObjCModelRenderer {
                         ]},
                     "\(propertyToAssign) = \(currentResult);"
                 ]
-            case .Map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType == false:
+            case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType == false:
                 let currentResult = "result\(counter)"
                 let currentItems = "items\(counter)"
                 let (currentKey, currentObj, currentStop) = ("key\(counter)", "obj\(counter)", "stop\(counter)")
@@ -109,30 +109,30 @@ extension ObjCModelRenderer {
                     ),
                     "\(propertyToAssign) = \(currentResult);"
                 ]
-            case .Float:
+            case .float:
                 return ["\(propertyToAssign) = [\(rawObjectName) doubleValue];"]
-            case .Integer:
+            case .integer:
                 return ["\(propertyToAssign) = [\(rawObjectName) integerValue];"]
-            case .Boolean:
+            case .boolean:
                 return ["\(propertyToAssign) = [\(rawObjectName) boolValue];"]
-            case .String(format: .some(.Uri)):
+            case .string(format: .some(.uri)):
                 return ["\(propertyToAssign) = [NSURL URLWithString:\(rawObjectName)];"]
-            case .String(format: .some(.DateTime)):
+            case .string(format: .some(.dateTime)):
                 return ["\(propertyToAssign) = [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] transformedValue:\(rawObjectName)];"]
-            case .Reference(with: let ref):
+            case .reference(with: let ref):
                 return ref.force().map {
                     renderPropertyInit(propertyToAssign, rawObjectName, schema: $0, firstName: firstName, counter: counter)
                     } ?? {
                         assert(false, "TODO: Forward optional across methods")
                         return []
                     }()
-            case .Enum(.Integer(let variants)):
-                return renderPropertyInit(propertyToAssign, rawObjectName, schema: .Integer, firstName: firstName, counter: counter)
-            case .Enum(.String(let variants)):
+            case .enumT(.integer(let variants)):
+                return renderPropertyInit(propertyToAssign, rawObjectName, schema: .integer, firstName: firstName, counter: counter)
+            case .enumT(.string(let variants)):
                 return ["\(propertyToAssign) = \(enumFromStringMethodName(propertyName: firstName, className: className))(value);"]
-            case .Object(let objectRoot):
+            case .object(let objectRoot):
                 return ["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"]
-            case .OneOf(types: let schemas):
+            case .oneOf(types: let schemas):
                 // TODO Update to create ADT objects
                 let adtClassName = self.objcClassFromSchema(firstName, schema).trimmingCharacters(in: CharacterSet(charactersIn: "*"))
                 func loop(schema: Schema) -> String {
@@ -149,25 +149,25 @@ extension ObjCModelRenderer {
                     }
 
                     switch schema {
-                    case .Object(let objectRoot):
+                    case .object(let objectRoot):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSDictionary class]] && [\(rawObjectName)[\("type".objcLiteral())] isEqualToString:\(objectRoot.typeIdentifier.objcLiteral())]") {
                             transformToADTInit(["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"])
                         }
-                    case .Reference(with: let ref):
+                    case .reference(with: let ref):
                         return ref.force().map(loop) ?? {
                             assert(false, "TODO: Forward optional across methods")
                             return ""
                             }()
-                    case .Float:
+                    case .float:
                         let encodingConditions = [
                             "strcmp([\(rawObjectName) objCType], @encode(float)) == 0",
                             "strcmp([\(rawObjectName) objCType], @encode(double)) == 0"
                         ]
 
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && (\(encodingConditions.joined(separator: " ||\n")))") {
-                            return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: .Float, firstName: firstName, counter: counter))
+                            return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: .float, firstName: firstName, counter: counter))
                         }
-                    case .Integer, .Enum(.Integer(_)):
+                    case .integer, .enumT(.integer(_)):
                         let encodingConditions = [
                             "strcmp([\(rawObjectName) objCType], @encode(int)) == 0",
                             "strcmp([\(rawObjectName) objCType], @encode(unsigned int)) == 0",
@@ -182,31 +182,31 @@ extension ObjCModelRenderer {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
 
-                    case .Boolean:
+                    case .boolean:
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && strcmp([\(rawObjectName) objCType], @encode(BOOL)) == 0") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
-                    case .Array(itemType: _):
+                    case .array(itemType: _):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSArray class]]") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
-                    case .Map(valueType: _):
+                    case .map(valueType: _):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSDictionary class]]") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
-                    case .String(.some(.Uri)):
+                    case .string(.some(.uri)):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]] && [NSURL URLWithString:\(rawObjectName)] != nil") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
-                    case .String(.some(.DateTime)):
+                    case .string(.some(.dateTime)):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]] && [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] transformedValue:\(rawObjectName)] != nil") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
-                    case .String(.some(_)), .String(.none), .Enum(.String(_)):
+                    case .string(.some(_)), .string(.none), .enumT(.string(_)):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]]") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
-                    case .OneOf(types:_):
+                    case .oneOf(types:_):
                         fatalError("Nested oneOf types are unsupported at this time. Please file an issue if you require this.")
                     }
                 }
