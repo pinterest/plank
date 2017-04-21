@@ -95,7 +95,7 @@ func parseFlags(fromArguments arguments: [String]) -> ([FlagOptions:String], [St
                 return (flagDict, extraArgs)
             }
             var mutableFlags = flagDict
-            _ = remainingFlags.map { k, v in mutableFlags.updateValue(v, forKey: k) }
+            _ = remainingFlags.map { key, value in mutableFlags.updateValue(value, forKey: key) }
             return (mutableFlags, extraArgs)
         } else {
             return (flagDict, remainingArgs)

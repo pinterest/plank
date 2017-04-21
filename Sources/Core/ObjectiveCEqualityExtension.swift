@@ -15,20 +15,20 @@ extension ObjCFileRenderer {
     func renderHash() -> ObjCIR.Method {
         func schemaHashStatement(with param: Parameter, for schema: Schema) -> String {
             switch schema {
-            case .Enum(_), .Integer:
+            case .enumT(_), .integer:
                 // - The value equality statement is sufficient for equality testing
                 // - All enum types are treated as Integers so we do not need to treat String Enumerations differently
                 return "(NSUInteger)_\(param)"
-            case .Float:
+            case .float:
                 return " [@(_\(param)) hash]"
-            case .Boolean:
+            case .boolean:
                 // Values 1231 for true and 1237 for false are adopted from the Java hashCode specification
                 // http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html#hashCode
                 return "(_\(param) ? 1231 : 1237)"
-            case .Reference(with: let ref):
+            case .reference(with: let ref):
                 switch ref.force() {
-                case .some(.Object(let schemaRoot)):
-                    return schemaHashStatement(with: param, for: .Object(schemaRoot))
+                case .some(.object(let schemaRoot)):
+                    return schemaHashStatement(with: param, for: .object(schemaRoot))
                 default:
                     fatalError("Bad reference found for schema parameter: \(param)")
                 }
@@ -55,26 +55,26 @@ extension ObjCFileRenderer {
     func renderIsEqualToClass() -> ObjCIR.Method {
         func schemaIsEqualStatement(with param: Parameter, for schema: Schema) -> String {
             switch schema {
-            case .Integer, .Float, .Enum(_), .Boolean:
+            case .integer, .float, .enumT(_), .boolean:
                 // - The value equality statement is sufficient for equality testing
                 // - All enum types are treated as Integers so we do not need to treat String Enumerations differently
                 return ""
-            case .Map(_):
+            case .map(_):
                 return ObjCIR.msg("_\(param)", ("isEqualToDictionary", "anObject.\(param)"))
-            case .String(format: .some(.DateTime)):
+            case .string(format: .some(.dateTime)):
                 return ObjCIR.msg("_\(param)", ("isEqualToDate", "anObject.\(param)"))
-            case .String(format: .none),
-                 .String(format: .some(.Email)),
-                 .String(format: .some(.Hostname)),
-                 .String(format: .some(.Ipv4)),
-                 .String(format: .some(.Ipv6)):
+            case .string(format: .none),
+                 .string(format: .some(.email)),
+                 .string(format: .some(.hostname)),
+                 .string(format: .some(.ipv4)),
+                 .string(format: .some(.ipv6)):
                 return ObjCIR.msg("_\(param)", ("isEqualToString", "anObject.\(param)"))
-            case .OneOf(types:_), .Object(_), .Array(_), .String(format: .some(.Uri)):
+            case .oneOf(types:_), .object(_), .array(_), .string(format: .some(.uri)):
                 return ObjCIR.msg("_\(param)", ("isEqual", "anObject.\(param)"))
-            case .Reference(with: let ref):
+            case .reference(with: let ref):
                 switch ref.force() {
-                case .some(.Object(let schemaRoot)):
-                    return schemaIsEqualStatement(with: param, for: .Object(schemaRoot))
+                case .some(.object(let schemaRoot)):
+                    return schemaIsEqualStatement(with: param, for: .object(schemaRoot))
                 default:
                     fatalError("Bad reference found for schema parameter: \(param)")
                 }

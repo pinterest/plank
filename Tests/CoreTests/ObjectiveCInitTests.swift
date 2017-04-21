@@ -30,7 +30,7 @@ class ObjectiveCInitTests: XCTestCase {
             ]
         ] as JSONObject
 
-        let schemaLoader = MockSchemaLoader(schema: .OneOf(types: [.Map(valueType: nil), .Float]), url: URL(string: "http://google.com/")!)
+        let schemaLoader = MockSchemaLoader(schema: .oneOf(types: [.map(valueType: nil), .float]), url: URL(string: "http://google.com/")!)
         let propSchemaFn = Schema.propertyFunctionForType(loader: schemaLoader)
 
         if let prop = propSchemaFn(properties, URL(string: "http://google.com/")!) {

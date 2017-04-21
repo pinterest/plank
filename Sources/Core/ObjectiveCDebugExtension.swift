@@ -53,26 +53,26 @@ extension ObjCFileRenderer {
     fileprivate func renderDebugStatement(_ param: String, _ schema: Schema) -> String {
         let propIVarName = "_\(param.snakeCaseToPropertyName())"
         switch schema {
-        case .Enum(.String(_)):
+        case .enumT(.string(_)):
             return enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))"
-        case .Boolean, .Float, .Integer:
+        case .boolean, .float, .integer:
             return "@(\(propIVarName))"
-        case .Enum(.Integer(_)):
+        case .enumT(.integer(_)):
             return "@(\(propIVarName))"
-        case .String(format: _):
+        case .string(format: _):
             return propIVarName
-        case .Array(itemType: _):
+        case .array(itemType: _):
             return propIVarName
-        case .Map(valueType: _):
+        case .map(valueType: _):
             return propIVarName
-        case .Object(_):
+        case .object(_):
             return propIVarName
-        case .OneOf(types: _):
+        case .oneOf(types: _):
             return propIVarName
-        case .Reference(with: let ref):
+        case .reference(with: let ref):
             switch ref.force() {
-            case .some(.Object(let schemaRoot)):
-                return renderDebugStatement(param, .Object(schemaRoot))
+            case .some(.object(let schemaRoot)):
+                return renderDebugStatement(param, .object(schemaRoot))
             default:
                 fatalError("Bad reference found in schema for class: \(self.className)")
             }

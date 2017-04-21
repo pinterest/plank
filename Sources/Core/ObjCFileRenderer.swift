@@ -40,20 +40,20 @@ extension ObjCFileRenderer {
 
     fileprivate func referencedClassNames(schema: Schema) -> [String] {
         switch schema {
-        case .Reference(with: let ref):
+        case .reference(with: let ref):
             switch ref.force() {
-            case .some(.Object(let schemaRoot)):
+            case .some(.object(let schemaRoot)):
                 return [schemaRoot.className(with: self.params)]
             default:
                 fatalError("Bad reference found in schema for class: \(self.className)")
             }
-        case .Object(let schemaRoot):
+        case .object(let schemaRoot):
             return [schemaRoot.className(with: self.params)]
-        case .Map(valueType: .some(let valueType)):
+        case .map(valueType: .some(let valueType)):
             return referencedClassNames(schema: valueType)
-        case .Array(itemType: .some(let itemType)):
+        case .array(itemType: .some(let itemType)):
             return referencedClassNames(schema: itemType)
-        case .OneOf(types: let itemTypes):
+        case .oneOf(types: let itemTypes):
             return itemTypes.flatMap(referencedClassNames)
         default:
             return []
@@ -66,47 +66,47 @@ extension ObjCFileRenderer {
 
     func objcClassFromSchema(_ param: String, _ schema: Schema) -> String {
         switch schema {
-        case .Array(itemType: .none):
+        case .array(itemType: .none):
             return "NSArray *"
-        case .Array(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
+        case .array(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
             // Objective-C primitive types are represented as NSNumber
             return "NSArray<NSNumber /* \(itemType.debugDescription) */ *> *"
-        case .Array(itemType: .some(let itemType)):
+        case .array(itemType: .some(let itemType)):
             return "NSArray<\(objcClassFromSchema(param, itemType))> *"
-        case .Map(valueType: .none):
+        case .map(valueType: .none):
             return "NSDictionary *"
-        case .Map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
+        case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
             return "NSDictionary<NSString *, NSNumber /* \(valueType.debugDescription) */ *> *"
-        case .Map(valueType: .some(let valueType)):
+        case .map(valueType: .some(let valueType)):
             return "NSDictionary<NSString *, \(objcClassFromSchema(param, valueType))> *"
-        case .String(format: .none),
-             .String(format: .some(.Email)),
-             .String(format: .some(.Hostname)),
-             .String(format: .some(.Ipv4)),
-             .String(format: .some(.Ipv6)):
+        case .string(format: .none),
+             .string(format: .some(.email)),
+             .string(format: .some(.hostname)),
+             .string(format: .some(.ipv4)),
+             .string(format: .some(.ipv6)):
             return "NSString *"
-        case .String(format: .some(.DateTime)):
+        case .string(format: .some(.dateTime)):
             return "NSDate *"
-        case .String(format: .some(.Uri)):
+        case .string(format: .some(.uri)):
             return "NSURL *"
-        case .Integer:
+        case .integer:
             return "NSInteger"
-        case .Float:
+        case .float:
             return "double"
-        case .Boolean:
+        case .boolean:
             return "BOOL"
-        case .Enum(_):
+        case .enumT(_):
             return enumTypeName(propertyName: param, className: className)
-        case .Object(let objSchemaRoot):
+        case .object(let objSchemaRoot):
             return "\(objSchemaRoot.className(with: params)) *"
-        case .Reference(with: let ref):
+        case .reference(with: let ref):
             switch ref.force() {
-            case .some(.Object(let schemaRoot)):
-                return objcClassFromSchema(param, .Object(schemaRoot))
+            case .some(.object(let schemaRoot)):
+                return objcClassFromSchema(param, .object(schemaRoot))
             default:
                 fatalError("Bad reference found in schema for class: \(className)")
             }
-        case .OneOf(types:_):
+        case .oneOf(types:_):
             return "\(className)\(param.snakeCaseToCamelCase()) *"
         }
     }
