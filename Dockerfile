@@ -2,7 +2,7 @@
 
 FROM kylef/swiftenv:latest
 MAINTAINER Pinterest
-RUN swiftenv install 3.0.2
+RUN swiftenv install 3.1
 
 # Vim config so we have an editor available
 RUN apt-get update && \
