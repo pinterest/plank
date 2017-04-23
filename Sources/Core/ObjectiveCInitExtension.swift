@@ -217,14 +217,14 @@ extension ObjCModelRenderer {
             }
         }
 
-        return ObjCIR.method("- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary") {
+        return ObjCIR.method("- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary") {
             return [
                 "NSParameterAssert(modelDictionary);",
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                 "if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }",
                 -->self.properties.map { (name, schema) in
                     ObjCIR.scope {[
-                        "id value = modelDictionary[\(name.objcLiteral())];",
+                        "__unsafe_unretained id value = modelDictionary[\(name.objcLiteral())]; // Collection will retain.",
                         ObjCIR.ifStmt("value != nil") {[
                             ObjCIR.ifStmt("value != [NSNull null]") {
                                 renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
