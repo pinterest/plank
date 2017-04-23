@@ -168,15 +168,15 @@ public struct ObjCIR {
             "}"
         ].joined(separator: "\n")
     }
-	
-	static func scope(body: () -> [String]) -> String {
-		return [
-			"{",
-			  -->body,
-			"}"
-		].joined(separator: "\n")
-	}
-
+    
+    static func scope(body: () -> [String]) -> String {
+        return [
+            "{",
+            -->body,
+            "}"
+        ].joined(separator: "\n")
+    }
+    
     enum SwitchCase {
         case caseStmt(condition: String, body: () -> [String])
         case defaultStmt(body: () -> [String])

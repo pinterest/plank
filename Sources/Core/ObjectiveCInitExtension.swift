@@ -223,16 +223,16 @@ extension ObjCModelRenderer {
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                 "if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }",
                 -->self.properties.map { (name, schema) in
-					ObjCIR.scope {[
-						"id value = modelDictionary[\(name.objcLiteral())];",
-						ObjCIR.ifStmt("value != nil") {[
-							ObjCIR.ifStmt("value != [NSNull null]") {
-								renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
-							},
-							"self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
-							]},
-						]}
-				},
+                    ObjCIR.scope {[
+                        "id value = modelDictionary[\(name.objcLiteral())];",
+                        ObjCIR.ifStmt("value != nil") {[
+                            ObjCIR.ifStmt("value != [NSNull null]") {
+                                renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
+                            },
+                            "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
+                            ]},
+                        ]}
+                },
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
                     [renderPostInitNotification(type: "PlankModelInitTypeDefault")]
                 },
