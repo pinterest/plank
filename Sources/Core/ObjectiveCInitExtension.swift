@@ -218,31 +218,21 @@ extension ObjCModelRenderer {
         }
 
         return ObjCIR.method("- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary") {
-            let x: [String] = self.properties.map { (name, schema) in
-                ObjCIR.ifStmt("[key isEqualToString:\(name.objcLiteral())]") {
-                    [
-                        "id value = valueOrNil(modelDictionary, \(name.objcLiteral()));",
-                        ObjCIR.ifStmt("value != nil") {
-                            renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
-                        },
-                        "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
-                    ]
-                }
-            }
-
             return [
                 "NSParameterAssert(modelDictionary);",
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                 "if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }",
-                ObjCIR.stmt(
-                    ObjCIR.msg("modelDictionary",
-                               ("enumerateKeysAndObjectsUsingBlock", ObjCIR.block(["NSString *  _Nonnull key",
-                                                                                   "id  _Nonnull obj",
-                                                                                   "__unused BOOL * _Nonnull stop"]) {
-                                                                                    x
-                                }
-                        )
-                )),
+                -->self.properties.map { (name, schema) in
+					ObjCIR.scope {[
+						"id value = modelDictionary[\(name.objcLiteral())];",
+						ObjCIR.ifStmt("value != nil") {[
+							ObjCIR.ifStmt("value != [NSNull null]") {
+								renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
+							},
+							"self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
+							]},
+						]}
+				},
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
                     [renderPostInitNotification(type: "PlankModelInitTypeDefault")]
                 },
