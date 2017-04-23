@@ -230,7 +230,7 @@ extension ObjCModelRenderer {
                                 renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
                             },
                             "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
-                            ]},
+                            ]}
                         ]}
                 },
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
