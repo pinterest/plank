@@ -76,7 +76,7 @@ extension ObjCModelRenderer {
                     "NSArray *items = \(rawObjectName);",
                     "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items.count];",
                     ObjCIR.forStmt("id \(currentObj) in items") { [
-                        ObjCIR.ifStmt("\(currentObj) != (id)kCFNull]") { [
+                        ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                             "id \(currentTmp) = nil;",
                             renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n"),
                             ObjCIR.ifStmt("\(currentTmp) != nil") {[
