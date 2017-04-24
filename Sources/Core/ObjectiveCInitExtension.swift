@@ -76,7 +76,7 @@ extension ObjCModelRenderer {
                     "NSArray *items = \(rawObjectName);",
                     "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items.count];",
                     ObjCIR.forStmt("id \(currentObj) in items") { [
-                        ObjCIR.ifStmt("[\(currentObj) isEqual:[NSNull null]] == NO") { [
+                        ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                             "id \(currentTmp) = nil;",
                             renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n"),
                             ObjCIR.ifStmt("\(currentTmp) != nil") {[
@@ -100,7 +100,7 @@ extension ObjCModelRenderer {
                                         "id  _Nonnull \(currentObj)",
                                         "__unused BOOL * _Nonnull \(currentStop)"]) {
                                             [
-                                                ObjCIR.ifStmt("\(currentObj) != nil && [\(currentObj) isEqual:[NSNull null]] == NO") {
+                                                ObjCIR.ifStmt("\(currentObj) != nil && \(currentObj) != (id)kCFNull") {
                                                     renderPropertyInit("\(currentResult)[\(currentKey)]", currentObj, schema: valueType, firstName: firstName, counter: counter + 1)
                                                 }
                                             ]
@@ -217,32 +217,22 @@ extension ObjCModelRenderer {
             }
         }
 
-        return ObjCIR.method("- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary") {
-            let x: [String] = self.properties.map { (name, schema) in
-                ObjCIR.ifStmt("[key isEqualToString:\(name.objcLiteral())]") {
-                    [
-                        "id value = valueOrNil(modelDictionary, \(name.objcLiteral()));",
-                        ObjCIR.ifStmt("value != nil") {
-                            renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
-                        },
-                        "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
-                    ]
-                }
-            }
-
+        return ObjCIR.method("- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary") {
             return [
                 "NSParameterAssert(modelDictionary);",
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                 "if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }",
-                ObjCIR.stmt(
-                    ObjCIR.msg("modelDictionary",
-                               ("enumerateKeysAndObjectsUsingBlock", ObjCIR.block(["NSString *  _Nonnull key",
-                                                                                   "id  _Nonnull obj",
-                                                                                   "__unused BOOL * _Nonnull stop"]) {
-                                                                                    x
-                                }
-                        )
-                )),
+                -->self.properties.map { (name, schema) in
+                    ObjCIR.scope {[
+                        "__unsafe_unretained id value = modelDictionary[\(name.objcLiteral())]; // Collection will retain.",
+                        ObjCIR.ifStmt("value != nil") {[
+                            ObjCIR.ifStmt("value != (id)kCFNull") {
+                                renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
+                            },
+                            "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
+                        ]}
+                    ]}
+                },
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
                     [renderPostInitNotification(type: "PlankModelInitTypeDefault")]
                 },

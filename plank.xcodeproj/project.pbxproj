@@ -153,6 +153,7 @@
 				OBJ_24 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
