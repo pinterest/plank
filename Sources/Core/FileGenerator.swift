@@ -19,11 +19,16 @@ public enum GenerationParameterType {
     case includeRuntime
 }
 
-protocol FileGeneratorManager {
-    static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> [FileGenerator]
+public enum Languages: String {
+    case objectiveC = "objc"
 }
 
-protocol FileGenerator {
+public protocol FileGeneratorManager {
+    static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> [FileGenerator]
+    static func runtimeFiles() -> [FileGenerator]
+}
+
+public protocol FileGenerator {
     func renderFile() -> String
     var fileName: String { mutating get }
 }
@@ -54,20 +59,43 @@ extension FileGenerator {
 
         return header.joined(separator: "\n")
     }
-
 }
 
-func generateFile(_ schema: SchemaObjectRoot, outputDirectory: URL, generationParameters: GenerationParameters) {
-    for var file in ObjectiveCFileGenerator.filesToGenerate(descriptor: schema, generatorParameters: generationParameters) {
-        let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
-        do {
-            try fileContents.write(
-                to: URL(string: file.fileName, relativeTo: outputDirectory)!,
-                atomically: true,
-                encoding: String.Encoding.utf8)
-        } catch {
-            assert(false)
+extension FileGeneratorManager {
+    func generateFile(_ schema: SchemaObjectRoot, outputDirectory: URL, generationParameters: GenerationParameters) {
+        for var file in Self.filesToGenerate(descriptor: schema, generatorParameters: generationParameters) {
+            let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
+            do {
+                try fileContents.write(
+                    to: URL(string: file.fileName, relativeTo: outputDirectory)!,
+                    atomically: true,
+                    encoding: String.Encoding.utf8)
+            } catch {
+                assert(false)
+            }
         }
+    }
+
+    public func generateFileRuntime(outputDirectory: URL) {
+        let files: [FileGenerator] = Self.runtimeFiles()
+        for var file in files {
+            let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
+            do {
+                try fileContents.write(
+                    to: URL(string: file.fileName, relativeTo: outputDirectory)!,
+                    atomically: true,
+                    encoding: String.Encoding.utf8)
+            } catch {
+                assert(false)
+            }
+        }
+    }
+}
+
+func generator(forLanguage language: Languages) -> FileGeneratorManager {
+    switch language {
+    case .objectiveC:
+        return ObjectiveCFileGenerator()
     }
 }
 
@@ -100,7 +128,8 @@ public func generateDeps(urls: Set<URL>) {
     }
 }
 
-public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParameters: GenerationParameters) {
+public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParameters: GenerationParameters, forLanguages languages: [Languages]) {
+    let fileGenerators: [FileGeneratorManager] = languages.map(generator)
     _ = loadSchemasForUrls(urls: urls)
     var processedSchemas = Set<URL>([])
     repeat {
@@ -111,17 +140,21 @@ public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParame
             processedSchemas.insert(url)
             switch schema {
             case .object(let rootObject):
-                generateFile(rootObject,
-                             outputDirectory: outputDirectory,
-                             generationParameters: generationParameters)
+                fileGenerators.forEach { generator in
+                    generator.generateFile(rootObject,
+                                           outputDirectory: outputDirectory,
+                                           generationParameters: generationParameters)
+                }
             default:
-                assert(false, "Incorrect Schema for root") // TODO Better error message.
+                assert(false, "Incorrect Schema for root.") // TODO Better error message.
             }
         })
     } while (
         generationParameters[.recursive] != nil &&
         processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count)
     if generationParameters[.includeRuntime] != nil {
-        generateFileRuntime(outputDirectory: outputDirectory)
+        fileGenerators.forEach {
+            $0.generateFileRuntime(outputDirectory: outputDirectory)
+        }
     }
 }
