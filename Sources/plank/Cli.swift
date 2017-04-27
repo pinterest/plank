@@ -19,6 +19,7 @@ enum FlagOptions: String {
     case printDeps = "print_deps"
     case noRecursive = "no_recursive"
     case onlyRuntime = "only_runtime"
+    case lang = "lang"
     case help = "help"
 
     func needsArgument() -> Bool {
@@ -28,6 +29,7 @@ enum FlagOptions: String {
         case .printDeps: return false
         case .noRecursive: return false
         case .onlyRuntime: return false
+        case .lang: return true
         case .help: return false
         }
     }
@@ -41,6 +43,7 @@ extension FlagOptions : HelpCommandOutput {
             "    --\(FlagOptions.printDeps.rawValue) - Just print the path to the dependent schemas necessary to generate the schemas provided and exit.",
             "    --\(FlagOptions.noRecursive.rawValue) - Don't generate files recursively. Only generate the one file I ask for.",
             "    --\(FlagOptions.onlyRuntime.rawValue) - Only generate runtime files and exit.",
+            "    --\(FlagOptions.lang.rawValue) - Comma separated list of target language(s) for generating code. Default: \"objc\"",
             "    --\(FlagOptions.help.rawValue) - Show this text and exit."
         ].joined(separator: "\n")
     }
@@ -165,9 +168,19 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     } else if flags[.onlyRuntime] != nil {
         generateFileRuntime(outputDirectory: outputDirectory)
     } else {
+        let languages: [Languages] = flags[.lang]?.trimmingCharacters(in: .whitespaces).components(separatedBy: ",").flatMap {
+            guard let lang = Languages.init(rawValue: $0) else {
+                fatalError("Invalid or unsupported language: \($0)")
+            }
+            return lang
+        } ?? [.objectiveC]
+        guard languages.count > 0 else {
+            fatalError("Unsupported value for lang: \"\(String(describing:flags[.lang]))\"")
+        }
         generateFiles(urls: Set(urls),
                       outputDirectory: outputDirectory,
-                      generationParameters: generationParameters)
+                      generationParameters: generationParameters,
+                      forLanguages: languages)
     }
 }
 

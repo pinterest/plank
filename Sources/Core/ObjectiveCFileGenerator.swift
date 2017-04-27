@@ -20,6 +20,10 @@ struct ObjectiveCFileGenerator: FileGeneratorManager {
             ObjCImplementationFile(roots: rootsRenderer.renderRoots(), className: rootsRenderer.className)
         ]
     }
+
+    static func runtimeFiles() -> [FileGenerator] {
+        return [ObjCRuntimeHeaderFile(), ObjCRuntimeImplementationFile()]
+    }
 }
 
 struct ObjCHeaderFile: FileGenerator {
