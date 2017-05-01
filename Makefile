@@ -4,7 +4,7 @@
 
 .PHONY: all clean build test archive
 
-all: clean build test archive
+all: clean build test integration_test archive
 
 clean:
 	xcrun swift build --clean
@@ -17,6 +17,9 @@ build: lint
 
 test: build_test_index_linux build
 	xcrun swift test
+
+integration_test: build
+	./Utility/integration-test.sh
 
 archive:
 	xcrun swift build -c release -Xswiftc -static-stdlib
