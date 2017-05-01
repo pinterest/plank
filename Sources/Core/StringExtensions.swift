@@ -8,6 +8,22 @@
 
 import Foundation
 
+extension String {
+    // Custom indentation support. Default to 4 for now
+    static var indentation = 4
+
+    func indent() -> String {
+        return String(repeating:" ", count:String.indentation) + self
+    }
+}
+
+extension String {
+    // Objective-C String Literal
+    func objcLiteral() -> String {
+        return "@\"\(self)\""
+    }
+}
+
 #if os(Linux)
     // className is not found in Linux implementation of NSObject https://bugs.swift.org/browse/SR-957
     extension NSString {

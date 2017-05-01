@@ -32,17 +32,6 @@ public enum ObjCPrimitiveType: String {
     case boolean = "BOOL"
 }
 
-extension String {
-    // Objective-C String Literal
-    func objcLiteral() -> String {
-        return "@\"\(self)\""
-    }
-
-    func indent() -> String {
-        return "    "  + self // Four space indentation for now. Might be configurable in the future.
-    }
-}
-
 extension Sequence {
     func objcLiteral() -> String {
         let inner = self.map { "\($0)" }.joined(separator: ", ")
