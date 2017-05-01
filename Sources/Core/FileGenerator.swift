@@ -33,10 +33,6 @@ public protocol FileGenerator {
     var fileName: String { mutating get }
 }
 
-protocol FilePrinter {
-    func print(statement: String)
-}
-
 extension FileGenerator {
 
     func renderCommentHeader() -> String {
