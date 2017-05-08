@@ -94,7 +94,7 @@ extension ObjCFileRenderer {
         return ObjCIR.method("- (BOOL)isEqualTo\(self.rootSchema.name.snakeCaseToCamelCase()):(\(self.className) *)anObject") {
             [
                 "return (",
-                -->[(["anObject != nil", "self == anObject"] + propReturnStmts)
+                -->[(["anObject != nil"] + propReturnStmts)
                     .map { "(\($0))" }.joined(separator: " &&\n")],
                 ");"
             ]
