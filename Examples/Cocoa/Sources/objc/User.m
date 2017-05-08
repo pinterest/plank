@@ -206,7 +206,6 @@ struct UserDirtyProperties {
 {
     return (
         (anObject != nil) &&
-        (self == anObject) &&
         (_lastName == anObject.lastName || [_lastName isEqualToString:anObject.lastName]) &&
         (_identifier == anObject.identifier || [_identifier isEqualToString:anObject.identifier]) &&
         (_firstName == anObject.firstName || [_firstName isEqualToString:anObject.firstName]) &&

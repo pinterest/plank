@@ -299,7 +299,6 @@ struct PinDirtyProperties {
 {
     return (
         (anObject != nil) &&
-        (self == anObject) &&
         (_note == anObject.note || [_note isEqualToString:anObject.note]) &&
         (_media == anObject.media || [_media isEqualToDictionary:anObject.media]) &&
         (_counts == anObject.counts || [_counts isEqualToDictionary:anObject.counts]) &&

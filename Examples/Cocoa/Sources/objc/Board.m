@@ -213,7 +213,6 @@ struct BoardDirtyProperties {
 {
     return (
         (anObject != nil) &&
-        (self == anObject) &&
         (_name == anObject.name || [_name isEqualToString:anObject.name]) &&
         (_identifier == anObject.identifier || [_identifier isEqualToString:anObject.identifier]) &&
         (_image == anObject.image || [_image isEqual:anObject.image]) &&

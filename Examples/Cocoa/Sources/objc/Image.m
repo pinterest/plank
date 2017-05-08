@@ -135,7 +135,6 @@ struct ImageDirtyProperties {
 {
     return (
         (anObject != nil) &&
-        (self == anObject) &&
         (_width == anObject.width) &&
         (_height == anObject.height) &&
         (_url == anObject.url || [_url isEqual:anObject.url])
