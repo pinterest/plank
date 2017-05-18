@@ -31,6 +31,13 @@ public protocol FileGeneratorManager {
 public protocol FileGenerator {
     func renderFile() -> String
     var fileName: String { mutating get }
+    var indentation: Int { get }
+}
+
+extension FileGenerator {
+    var indentation: Int {
+        return 4
+    }
 }
 
 extension FileGenerator {
@@ -60,6 +67,7 @@ extension FileGenerator {
 extension FileGeneratorManager {
     func generateFile(_ schema: SchemaObjectRoot, outputDirectory: URL, generationParameters: GenerationParameters) {
         for var file in Self.filesToGenerate(descriptor: schema, generatorParameters: generationParameters) {
+            String.indentation = file.indentation // Update indentation before rendering file
             let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
             do {
                 try fileContents.write(
