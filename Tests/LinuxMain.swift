@@ -4,5 +4,6 @@ import XCTest
 
 var tests = [XCTestCaseEntry]()
    tests += [testCase(ObjectiveCInitTests.allTests)]
+   tests += [testCase(PlankSpecs.allTests)]
 
 XCTMain(tests)
