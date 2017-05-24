@@ -96,9 +96,25 @@ extension ObjCFileRenderer {
                 ]}
 
         case .map(valueType: _):
-            return propIVarName
+            return ObjCIR.scope {[
+                ObjCIR.ifStmt("\(propIVarName) != nil") {[
+                    "[dict setObject: "+propIVarName + " forKey: @\"" + param + "\" ];"
+                    ]},
+                ObjCIR.elseStmt({[
+                    "[dict setObject: [NSNull null] forKey: @\"" + param + "\" ];"
+                    ]
+                })
+                ]}
         case .oneOf(types: _):
-            return propIVarName
+            return ObjCIR.scope {[
+                ObjCIR.ifStmt("\(propIVarName) != nil") {[
+                    "[dict setObject: "+propIVarName + " forKey: @\"" + param + "\" ];"
+                    ]},
+                ObjCIR.elseStmt({[
+                    "[dict setObject: [NSNull null] forKey: @\"" + param + "\" ];"
+                    ]
+                })
+                ]}
         case .reference(with: _):
             return ObjCIR.scope {[
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[
