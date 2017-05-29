@@ -7,23 +7,21 @@
 //
 
 import Foundation
+
 extension ObjCModelRenderer {
     func renderGenerateDictionary() -> ObjCIR.Method {
         let props = self.properties.map { (param, schema) -> String in
             ObjCIR.ifStmt("_"+"\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
-                return [renderAddObjectStatement(param, schema)]
+                [renderAddObjectStatement(param, schema)]
             }
             }.joined(separator: "\n")
-        
         return ObjCIR.method("- (NSDictionary *)dictionaryRepresentation") {[
             "NSMutableDictionary *dict = [[NSMutableDictionary alloc]initWithCapacity:\(self.properties.count)];",
             props,
             "return dict;"
             ]}
     }
-    
 }
-
 
 extension ObjCFileRenderer {
     fileprivate func renderAddObjectStatement(_ param: String, _ schema: Schema) -> String {
@@ -33,10 +31,10 @@ extension ObjCFileRenderer {
             return "[dict setObject: [NSNumber numberWithBool:"+propIVarName + "] forKey: @\"" + param + "\" ];"
 
         case .float:
-            return "[dict setObject: [NSNumber numberWithFloat:"+propIVarName + "] forKey: @\"" + param + "\" ];"
+            return "[dict setObject: [NSNumber numberWithDouble:"+propIVarName + "] forKey: @\"" + param + "\" ];"
         case .integer:
             return "[dict setObject: [NSNumber numberWithInteger:"+propIVarName + "] forKey: @\"" + param + "\" ];"
-        case .object(_):
+        case .object:
             return ObjCIR.scope {[
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[
                     "[dict setObject: "+propIVarName + " forKey: @\"" + param + "\" ];"
@@ -80,11 +78,35 @@ extension ObjCFileRenderer {
                     ]
                 })
                 ]}
-        case .enumT(.integer(_)):
+        case .enumT(.integer):
             return "[dict setObject: [NSNumber numberWithInteger:"+propIVarName + "] forKey: @\"" + param + "\" ];"
-        case .enumT(.string(_)):
+        case .enumT(.string):
             return "[dict setObject: "+enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))" + " forKey: @\"" + param + "\" ];"
-        case .array(itemType: _):            
+        case .array(_):
+            /*
+            let currentResult = "result\(counter)"
+            let currentTmp = "tmp\(counter)"
+            let currentObj = "obj\(counter)"
+            return [
+                "NSArray *items = \(rawObjectName);",
+                "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items.count];",
+                ObjCIR.forStmt("id \(currentObj) in items") { [
+                    ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
+                        "id \(currentTmp) = nil;",
+                        renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n"),
+                        ObjCIR.ifStmt("\(currentTmp) != nil") {[
+                            "[\(currentResult) addObject:\(currentTmp)];"
+                            
+                            ]}
+                        ]}
+                        ObjCIR.elseStmt({[
+                        "[dict setObject: [NSNull null] forKey: @\"" + param + "\" ];"
+                        ]
+                    })
+                    ]},
+                "\(propertyToAssign) = \(currentResult);"
+            ]*/
+        
             return ObjCIR.scope {[
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[
                     "[dict setObject: "+propIVarName + " forKey: @\"" + param + "\" ];"
@@ -94,7 +116,7 @@ extension ObjCFileRenderer {
                     ]
                 })
                 ]}
-
+        
         case .map(valueType: _):
             return ObjCIR.scope {[
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[
@@ -126,8 +148,5 @@ extension ObjCFileRenderer {
                 })
                 ]}
         }
-    
     }
-    
 }
-
