@@ -120,7 +120,14 @@ extension ObjCFileRenderer {
                     ]
                 })
                 ]}
-        case .reference(with: _):
+        case .reference(with: let ref):
+            return ref.force().map {
+                renderAddObjectStatement(param, $0)
+                } ?? {
+                    assert(false, "TODO: Forward optional across methods")
+                    return ""
+                }()
+            /*
             return ObjCIR.scope {[
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[
                     "[dict setObject: "+propIVarName + " forKey: @\"" + param + "\" ];"
@@ -130,6 +137,7 @@ extension ObjCFileRenderer {
                     ]
                 })
                 ]}
+ */
         }
     }
 }
