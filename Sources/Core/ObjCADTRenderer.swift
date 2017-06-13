@@ -103,13 +103,63 @@ struct ObjCADTRenderer: ObjCFileRenderer {
     }
 
     func renderDictionaryRepresentation() -> ObjCIR.Method {
-            return ObjCIR.method("- (NSDictionary*)dictionaryRepresentation") {
+            return ObjCIR.method("- (id)dictionaryRepresentation") {
                 [
                     ObjCIR.switchStmt("self.internalType") {
                         self.dataTypes.enumerated().map { (index, schema) -> ObjCIR.SwitchCase in
-                            return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                            switch(schema) {
+                            case .object:
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
                                     ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
+                                    ]}
+                            case .reference:
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
+                                    ]}
+                            case .float:
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return [NSNumber numberWithFloat:self.value\(index)]")
+                                    ]}
+                            case .integer:
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return [NSNumber numberWithInteger:self.value\(index)]")
+                                    ]}
+                            case .enumT(.integer):
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return [NSNumber numberWithInteger:self.value\(index)]")
+                                    ]}
+                            case .boolean:
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return [NSNumber numberWithBool:self.value\(index)]")
+                                    ]}
+                            case .array(itemType: _):
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
+                                    ]}
+                            case .map(valueType: _):
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) absoluteString] ]")
+                                    ]}
+                            case .string(.some(.uri)):
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return [self.value\(index) absoluteString]")
+                                    ]}
+                            case .string(.some(.dateTime)):
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] reverseTransformedValue:self.value\(index)]")
+                                    ]}
+                            case .string(.some), .string(.none):
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                ObjCIR.stmt("return self.value\(index)")
                                 ]}
+                            case .enumT(.string):
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
+                                    ObjCIR.stmt("return "+enumToStringMethodName(propertyName: self.internalTypeEnumName, className: self.className))
+                                    ]}
+                            case .oneOf(types:_):
+                                //error
+                                fatalError("Nested oneOf types are unsupported at this time. Please file an issue if you require this. \(schema)")
+                            }
                         }
                     }
                 ]
