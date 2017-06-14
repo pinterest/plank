@@ -93,7 +93,7 @@ extension SchemaObjectRoot {
 extension Schema {
     var isObjCPrimitiveType: Bool {
         switch self {
-        case .boolean, .integer, .enumT(_), .float:
+        case .boolean, .integer, .enumT, .float:
             return true
         default:
             return false
@@ -104,7 +104,7 @@ extension Schema {
         switch self {
         case .string(format: .none):
             return .copy
-        case .boolean, .float, .integer, .enumT(_):
+        case .boolean, .float, .integer, .enumT:
             return .assign
         default:
             return .strong
@@ -295,7 +295,7 @@ public struct ObjCIR {
 
         func renderHeader() -> [String] {
             switch self {
-            case .structDecl(_, _):
+            case .structDecl:
                 // skip structs in header
                 return []
             case .macro(let macro):
@@ -348,7 +348,7 @@ public struct ObjCIR {
                         fields.sorted().map { $0.indent() }.joined(separator: "\n"),
                     "};"
                 ]
-            case .macro(_):
+            case .macro:
                 // skip macro in impl
                 return []
             case .imports(let classNames, let myName, _):
@@ -375,9 +375,9 @@ public struct ObjCIR {
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .function(let method):
                 return method.render()
-            case .enumDecl(_, _):
+            case .enumDecl:
                 return []
-            case .optionSetEnum(_, _):
+            case .optionSetEnum:
                 return []
             }
         }

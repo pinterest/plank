@@ -193,7 +193,7 @@ extension Schema {
             return itemType?.deps() ?? []
         case .map(valueType: let valueType):
             return valueType?.deps() ?? []
-        case .integer, .float, .boolean, .string, .enumT(_):
+        case .integer, .float, .boolean, .string, .enumT:
             return []
         case .oneOf(types: let types):
             return types.map { type in type.deps() }.reduce([]) { $0.union($1) }

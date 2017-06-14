@@ -88,7 +88,7 @@ extension ObjCFileRenderer {
             return Set(["NSDate"])
         case .string(format: .some(.uri)):
             return Set(["NSURL"])
-        case .integer, .float, .boolean, .enumT(_):
+        case .integer, .float, .boolean, .enumT:
             return Set(["NSNumber"])
         case .object(let objSchemaRoot):
             return Set([objSchemaRoot.className(with: self.params)])
@@ -107,7 +107,7 @@ extension ObjCFileRenderer {
     fileprivate func decodeStatement(_ param: String, _ schema: Schema) -> String {
         let propIVarName = "_\(param.snakeCaseToPropertyName())"
         return "\(propIVarName) = " + { switch schema {
-        case .enumT(_):
+        case .enumT:
             return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
         case .boolean:
             return "[aDecoder decodeBoolForKey:\(param.objcLiteral())];"
@@ -115,7 +115,7 @@ extension ObjCFileRenderer {
             return "[aDecoder decodeDoubleForKey:\(param.objcLiteral())];"
         case .integer:
             return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
-        case .string(_), .map(_), .array(_), .oneOf(_), .reference(_), .object(_):
+        case .string, .map, .array, .oneOf, .reference, .object:
             let refObjectClasses = referencedObjectClasses(schema).map { "[\($0) class]" }
             let refObjectClassesString = refObjectClasses.count == 1 ? refObjectClasses.joined(separator: ",") : "[NSSet setWithArray:\(refObjectClasses.objcLiteral())]"
             if refObjectClasses.count == 0 { fatalError("Can't determine class for decode for \(schema)") }
@@ -131,7 +131,7 @@ extension ObjCFileRenderer {
     func encodeStatement(_ param: String, _ schema: Schema) -> String {
         let propGetter = "self.\(param.snakeCaseToPropertyName())"
         switch schema {
-        case .enumT(_):
+        case .enumT:
             return "[aCoder encodeInteger:\(propGetter) forKey:\(param.objcLiteral())];"
         case .boolean:
             return "[aCoder encodeBool:\(propGetter) forKey:\(param.objcLiteral())];"
@@ -139,7 +139,7 @@ extension ObjCFileRenderer {
             return "[aCoder encodeDouble:\(propGetter) forKey:\(param.objcLiteral())];"
         case .integer:
             return "[aCoder encodeInteger:\(propGetter) forKey:\(param.objcLiteral())];"
-        case .string(_), .map(_), .array(_), .oneOf(_), .reference(_), .object(_):
+        case .string, .map, .array, .oneOf, .reference, .object:
             return "[aCoder encodeObject:\(propGetter) forKey:\(param.objcLiteral())];"
         }
     }
