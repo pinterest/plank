@@ -39,7 +39,8 @@ extension String {
     }
 
     func indent() -> String {
-        return "    "  + self // Four space indentation for now. Might be configurable in the future.
+        // We indent with tabs and in a post process the tabs are changed to a specific number of spaces
+        return "\t"  + self
     }
 }
 

@@ -19,6 +19,7 @@ enum FlagOptions: String {
     case printDeps = "print_deps"
     case noRecursive = "no_recursive"
     case onlyRuntime = "only_runtime"
+    case indent = "indent"
     case lang = "lang"
     case help = "help"
 
@@ -26,6 +27,7 @@ enum FlagOptions: String {
         switch self {
         case .outputDirectory: return true
         case .objectiveCClassPrefix: return true
+        case .indent: return true
         case .printDeps: return false
         case .noRecursive: return false
         case .onlyRuntime: return false
@@ -43,6 +45,7 @@ extension FlagOptions : HelpCommandOutput {
             "    --\(FlagOptions.printDeps.rawValue) - Just print the path to the dependent schemas necessary to generate the schemas provided and exit.",
             "    --\(FlagOptions.noRecursive.rawValue) - Don't generate files recursively. Only generate the one file I ask for.",
             "    --\(FlagOptions.onlyRuntime.rawValue) - Only generate runtime files and exit.",
+            "    --\(FlagOptions.indent.rawValue) - Define a custom indentation.",
             "    --\(FlagOptions.lang.rawValue) - Comma separated list of target language(s) for generating code. Default: \"objc\"",
             "    --\(FlagOptions.help.rawValue) - Show this text and exit."
         ].joined(separator: "\n")
@@ -123,11 +126,13 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let recursive: String? = (flags[.noRecursive] == nil) ? .some("") : .none
     let classPrefix: String? = flags[.objectiveCClassPrefix]
     let includeRuntime: String? = flags[.onlyRuntime] != nil || flags[.noRecursive] == nil ? .some("") : .none
+    let indent: String? = flags[.indent]
 
     let generationParameters: GenerationParameters = [
         (.recursive, recursive),
         (.classPrefix, classPrefix),
-        (.includeRuntime, includeRuntime)
+        (.includeRuntime, includeRuntime),
+        (.indent, indent)
     ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
             var d = dict
             if let v = tuple.1 {
@@ -162,21 +167,23 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     outputDirectory = URL(fileURLWithPath: outputDirectory.absoluteString, isDirectory: true)
 
     let urls = args.map { URL(string: $0)! }
+    let languages: [Languages] = flags[.lang]?.trimmingCharacters(in: .whitespaces).components(separatedBy: ",").flatMap {
+        guard let lang = Languages.init(rawValue: $0) else {
+            fatalError("Invalid or unsupported language: \($0)")
+        }
+        return lang
+        } ?? [.objectiveC]
+    guard languages.count > 0 else {
+        fatalError("Unsupported value for lang: \"\(String(describing:flags[.lang]))\"")
+    }
 
     if flags[.printDeps] != nil {
         generateDeps(urls: Set(urls))
     } else if flags[.onlyRuntime] != nil {
-        generateFileRuntime(outputDirectory: outputDirectory)
+        generateRuntimeFiles(outputDirectory: outputDirectory,
+                             generationParameters: generationParameters,
+                             forLanguages: languages)
     } else {
-        let languages: [Languages] = flags[.lang]?.trimmingCharacters(in: .whitespaces).components(separatedBy: ",").flatMap {
-            guard let lang = Languages.init(rawValue: $0) else {
-                fatalError("Invalid or unsupported language: \($0)")
-            }
-            return lang
-        } ?? [.objectiveC]
-        guard languages.count > 0 else {
-            fatalError("Unsupported value for lang: \"\(String(describing:flags[.lang]))\"")
-        }
         generateFiles(urls: Set(urls),
                       outputDirectory: outputDirectory,
                       generationParameters: generationParameters,
