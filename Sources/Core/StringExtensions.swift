@@ -59,20 +59,20 @@ let objectiveCReservedWordReplacements = [
 ]
 
 extension String {
+    /// All components separated by _ will be capitalized including the first one
     func snakeCaseToCamelCase() -> String {
         var str: String = self
+
         if let replacementString = objectiveCReservedWordReplacements[self] as String? {
             str = replacementString
         }
 
         let components = str.components(separatedBy: "_")
-
-        let name: [String] = components.map { (component: String) -> String in
-            return component.capitalized
-        }
+        let name = components.map { return $0.uppercaseFirst }
         return name.joined(separator: "")
     }
 
+    /// All components separated by _ will be capitalized execpt the first
     func snakeCaseToPropertyName() -> String {
         var str: String = self
 
@@ -104,5 +104,10 @@ extension String {
     /// Get the last n characters of a string
     func suffixSubstring(_ length: Int) -> String {
         return self.substring(from: self.characters.index(self.endIndex, offsetBy: -length))
+    }
+
+    /// Uppercase the first character
+    var uppercaseFirst: String {
+       	return String(characters.prefix(1)).uppercased() + String(characters.dropFirst())
     }
 }
