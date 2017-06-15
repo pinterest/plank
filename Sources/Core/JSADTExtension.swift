@@ -37,7 +37,7 @@ extension JSModelRenderer {
         case .string(.some(.uri)): return "PlankURI"
         case .string(.some(.dateTime)): return "PlankDate"
         case .string(.some), .string(.none): return "string"
-        case .enumT(.string): return "" // TODO: JS: NOt supported yet
+        case .enumT(.string): return "" // TODO: JS: Not supported yet
         case .oneOf(types:_):
             fatalError("Nested oneOf types are unsupported at this time. Please file an issue if you require this. \(aSchema)")
         }
