@@ -90,12 +90,9 @@ func decodeRef(from source: URL, with ref: String) -> URL {
         // Local URL
         return URL(string:ref, relativeTo:source)!
     } else {
-        var baseUrl = source.deletingLastPathComponent()
-        if baseUrl.path == "." {
-            baseUrl = URL(fileURLWithPath: (baseUrl.path))
-        }
+        let baseUrl = source.deletingLastPathComponent()
         let lastPathComponentString = URL(string: ref)?.pathComponents.last
-        return URL(string:lastPathComponentString!, relativeTo:baseUrl)!
+        return baseUrl.appendingPathComponent(lastPathComponentString!)
     }
 }
 
