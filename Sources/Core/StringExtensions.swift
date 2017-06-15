@@ -108,6 +108,6 @@ extension String {
 
     /// Uppercase the first character
     var uppercaseFirst: String {
-       	return String(characters.prefix(1)).uppercased() + String(characters.dropFirst())
+        return String(characters.prefix(1)).uppercased() + String(characters.dropFirst())
     }
 }
