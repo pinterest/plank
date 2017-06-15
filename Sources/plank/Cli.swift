@@ -161,7 +161,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     }
     outputDirectory = URL(fileURLWithPath: outputDirectory.absoluteString, isDirectory: true)
 
-    let urls = args.map { URL(fileURLWithPath: $0).standardizedFileURL }
+    let urls = args.map { URL(string: $0)! }
 
     if flags[.printDeps] != nil {
         generateDeps(urls: Set(urls))
