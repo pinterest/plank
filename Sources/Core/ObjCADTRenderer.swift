@@ -55,14 +55,14 @@ struct ObjCADTRenderer: ObjCFileRenderer {
                 }()
         case .float: return "Float"
         case .integer: return "Integer"
-        case .enumT(.integer(_)): return "IntegerEnum"  // TODO: Allow custom names
+        case .enumT(.integer): return "IntegerEnum"  // TODO: Allow custom names
         case .boolean: return "Boolean"
         case .array(itemType: _): return "Array"
         case .map(valueType: _): return "Dictionary"
         case .string(.some(.uri)): return "URL"
         case .string(.some(.dateTime)): return "Date"
-        case .string(.some(_)), .string(.none): return "String"
-        case .enumT(.string(_)): return "StringEnum" // TODO: Allow custom names
+        case .string(.some), .string(.none): return "String"
+        case .enumT(.string): return "StringEnum" // TODO: Allow custom names
         case .oneOf(types:_):
             fatalError("Nested oneOf types are unsupported at this time. Please file an issue if you require this. \(aSchema)")
         }

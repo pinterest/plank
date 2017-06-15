@@ -46,7 +46,7 @@ extension ObjCModelRenderer {
             return ObjCIR.ifStmt("modelObject.\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
                 func loop(_ schema: Schema) -> [String] {
                     switch schema {
-                    case .object(_):
+                    case .object:
                         return [
                             "id value = modelObject.\(param.snakeCaseToPropertyName());",
                             ObjCIR.ifElseStmt("value != nil") {[

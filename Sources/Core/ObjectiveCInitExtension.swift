@@ -167,7 +167,7 @@ extension ObjCModelRenderer {
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSNumber class]] && (\(encodingConditions.joined(separator: " ||\n")))") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: .float, firstName: firstName, counter: counter))
                         }
-                    case .integer, .enumT(.integer(_)):
+                    case .integer, .enumT(.integer):
                         let encodingConditions = [
                             "strcmp([\(rawObjectName) objCType], @encode(int)) == 0",
                             "strcmp([\(rawObjectName) objCType], @encode(unsigned int)) == 0",
@@ -202,7 +202,7 @@ extension ObjCModelRenderer {
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]] && [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] transformedValue:\(rawObjectName)] != nil") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
-                    case .string(.some(_)), .string(.none), .enumT(.string(_)):
+                    case .string(.some), .string(.none), .enumT(.string):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]]") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }

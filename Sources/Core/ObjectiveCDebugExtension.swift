@@ -53,11 +53,11 @@ extension ObjCFileRenderer {
     fileprivate func renderDebugStatement(_ param: String, _ schema: Schema) -> String {
         let propIVarName = "_\(param.snakeCaseToPropertyName())"
         switch schema {
-        case .enumT(.string(_)):
+        case .enumT(.string):
             return enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))"
         case .boolean, .float, .integer:
             return "@(\(propIVarName))"
-        case .enumT(.integer(_)):
+        case .enumT(.integer):
             return "@(\(propIVarName))"
         case .string(format: _):
             return propIVarName
@@ -65,7 +65,7 @@ extension ObjCFileRenderer {
             return propIVarName
         case .map(valueType: _):
             return propIVarName
-        case .object(_):
+        case .object:
             return propIVarName
         case .oneOf(types: _):
             return propIVarName
