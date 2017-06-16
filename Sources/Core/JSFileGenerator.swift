@@ -31,6 +31,10 @@ struct JSModelFile: FileGenerator {
         return "\(className)Type.js"
     }
 
+    var indent: Int {
+        return 2
+    }
+
     func renderFile() -> String {
         return (
             [self.renderCommentHeader()] +

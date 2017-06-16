@@ -13,20 +13,20 @@ import type { ImageType } from './ImageType.js';
 import type { UserType } from './UserType.js';
 
 export type PinType = $Shape<{|
-    +note: ?string,
-    +media: ?{ +[string]: string },
-    +counts: ?{ +[string]: number } /* Integer */,
-    +description: ?string,
-    +creator: ?{ +[string]: UserType },
-    +attribution: ?{ +[string]: string },
-    +board: ?BoardType,
-    +color: ?string,
-    +link: ?PlankURI,
-    +id: ?string,
-    +image: ?ImageType,
-    +created_at: ?PlankDate,
-    +url: ?PlankURI,
+  +note: ?string,
+  +media: ?{ +[string]: string },
+  +counts: ?{ +[string]: number } /* Integer */,
+  +description: ?string,
+  +creator: ?{ +[string]: UserType },
+  +attribution: ?{ +[string]: string },
+  +board: ?BoardType,
+  +color: ?string,
+  +link: ?PlankURI,
+  +id: ?string,
+  +image: ?ImageType,
+  +created_at: ?PlankDate,
+  +url: ?PlankURI,
 |}> & {
-    id: string
+  id: string
 };
 
