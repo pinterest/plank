@@ -36,11 +36,25 @@ public protocol FileGenerator {
     var indent: Int { get }
 }
 
-extension Dictionary where Key == GenerationParameterType, Value == String {
+// Currently not usable until upgrading the Swift Toolchain on CI
+//extension Dictionary where Key == GenerationParameterType, Value == String {
+//    func indent(file: FileGenerator) -> Int {
+//        // Check if the GenerationParameters have an indentation set on it else just use the file indent
+//        if let indentFlag = self[.indent], let indent = Int(indentFlag) {
+//            return indent
+//        }
+//        return file.indent
+//    }
+//}
+
+// Workaround until we can use the version from above
+extension Dictionary where Value: ExpressibleByStringLiteral {
+    // Check if the GenerationParameters have an indentation set on it else just use the file indent
     func indent(file: FileGenerator) -> Int {
-        // Check if the GenerationParameters have an indentation set on it else just use the file indent
-        if let indentFlag = self[.indent], let indent = Int(indentFlag) {
-            return indent
+        if let this = self as? [GenerationParameterType : String] {
+            if let indentFlag = this[.indent], let indent = Int(indentFlag) {
+                return indent
+            }
         }
         return file.indent
     }
