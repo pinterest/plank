@@ -12,8 +12,15 @@ import XCTest
 
 class StringExtensionsTests: XCTestCase {
 
-    func testUppercaseFirstCharacter() {
+    func testUppercaseFirst() {
         XCTAssert("plank".uppercaseFirst == "Plank")
+        XCTAssert("Plank".uppercaseFirst == "Plank")
+        XCTAssert("plAnK".uppercaseFirst == "PlAnK")
+    }
+
+    func testLowercaseFirst() {
+        XCTAssert("Plank".lowercaseFirst == "plank")
+        XCTAssert("PlAnK".lowercaseFirst == "plAnK")
     }
 
     func testSuffixSubstring() {
@@ -22,14 +29,20 @@ class StringExtensionsTests: XCTestCase {
 
     func testSnakeCaseToCamelCase() {
         XCTAssert("created_at".snakeCaseToCamelCase() == "CreatedAt")
+        XCTAssert("created_aT".snakeCaseToCamelCase() == "CreatedAT")
         XCTAssert("CreatedAt".snakeCaseToCamelCase() == "CreatedAt")
     }
 
     func testSnakeCaseToPropertyName() {
         XCTAssert("created_at".snakeCaseToPropertyName() == "createdAt")
+        XCTAssert("CreatedAt".snakeCaseToPropertyName() == "createdAt")
+        XCTAssert("created_At".snakeCaseToPropertyName() == "createdAt")
+        XCTAssert("CreatedAt".snakeCaseToPropertyName() == "createdAt")
+        XCTAssert("CreaTedAt".snakeCaseToPropertyName() == "creaTedAt")
+        XCTAssert("Created_At".snakeCaseToPropertyName() == "createdAt")
+        XCTAssert("Test_url".snakeCaseToPropertyName() == "testURL")
+        XCTAssert("url_test".snakeCaseToPropertyName() == "urlTest")
 
-        // (@maicki): This test would currently fail as the result is "CreatedAt". 
-        // XCTAssert("CreatedAt".snakeCaseToPropertyName() == "createdAt")
     }
 
     func testSnakeCaseToCapitalizedPropertyName() {

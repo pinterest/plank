@@ -87,8 +87,13 @@ extension String {
             // Hack: Force URL's to be uppercase
             if idx != 0 && component == "url" {
                 name += component.uppercased()
+                continue
+            }
+
+            if idx != 0 {
+                name +=	component.uppercaseFirst
             } else {
-                name += idx != 0 ? component.capitalized: component
+                name += component.lowercaseFirst
             }
         }
 
@@ -109,5 +114,9 @@ extension String {
     /// Uppercase the first character
     var uppercaseFirst: String {
         return String(characters.prefix(1)).uppercased() + String(characters.dropFirst())
+    }
+
+    var lowercaseFirst: String {
+        return String(characters.prefix(1)).lowercased() + String(characters.dropFirst())
     }
 }
