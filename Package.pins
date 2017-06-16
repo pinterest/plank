@@ -1,0 +1,12 @@
+{
+  "autoPin": true,
+  "pins": [
+    {
+      "package": "SwiftCheck",
+      "reason": null,
+      "repositoryURL": "https://github.com/typelift/SwiftCheck.git",
+      "version": "0.8.0"
+    }
+  ],
+  "version": 1
+}

@@ -16,7 +16,7 @@ build: lint
 	xcrun swift build -v -Xswiftc -static-stdlib
 
 test: build_test_index_linux build
-	xcrun swift test
+	SWIFTPM_TEST_Plank=YES xcrun swift test
 
 integration_test: build
 	./Utility/integration-test.sh

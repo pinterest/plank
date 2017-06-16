@@ -8,4 +8,10 @@ extension ObjectiveCInitTests {
        ("testOneOfInit", testOneOfInit)
    ]
 }
+// Generated Test Extension for PlankSpecs
+extension PlankSpecs {
+   static var allTests = [
+       ("testSwiftCheckWorks", testSwiftCheckWorks)
+   ]
+}
 #endif
