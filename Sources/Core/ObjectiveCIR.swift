@@ -117,9 +117,13 @@ extension Schema {
 }
 
 extension EnumValue {
-  func objcOptionName(param: String, className: String) -> String {
-    return enumTypeName(propertyName: param, className: className) + self.description
-  }
+    var camelCaseDescription: String {
+        return description.snakeCaseToCamelCase()
+    }
+
+    func objcOptionName(param: String, className: String) -> String {
+        return enumTypeName(propertyName: param, className: className) + self.camelCaseDescription
+    }
 }
 
 enum MethodVisibility: Equatable {
@@ -133,17 +137,6 @@ func == (lhs: MethodVisibility, rhs: MethodVisibility) -> Bool {
     case (.privateM, .privateM): return true
     case (_, _): return false
     }
-}
-
-prefix operator -->
-
-prefix func --> (strs: [String]) -> String {
-  return strs.flatMap { $0.components(separatedBy: "\n").map {$0.indent() } }
-    .joined(separator: "\n")
-}
-
-prefix func --> (body: () -> [String]) -> String {
-  return -->body()
 }
 
 public struct ObjCIR {
@@ -341,14 +334,14 @@ public struct ObjCIR {
                 return [ObjCIR.enumStmt(name) {
                     switch values {
                     case .integer(let options):
-                        return options.map { "\(name + $0.description) = \($0.defaultValue)" }
+                        return options.map { "\(name + $0.camelCaseDescription) = \($0.defaultValue)" }
                     case .string(let options, _):
-                        return options.map { "\(name + $0.description) /* \($0.defaultValue) */" }
+                        return options.map { "\(name + $0.camelCaseDescription) /* \($0.defaultValue) */" }
                     }
                 }]
             case .optionSetEnum(let name, let values):
                 return [ObjCIR.optionEnumStmt(name) {
-                    values.map { "\(name + $0.description) = 1 << \($0.defaultValue)" }
+                    values.map { "\(name + $0.camelCaseDescription) = 1 << \($0.defaultValue)" }
                 }]
             }
         }

@@ -54,7 +54,7 @@ public struct EnumValue<ValueType> {
     init(withObject object: JSONObject) {
         if let defaultVal = object["default"] as? ValueType, let descriptionVal = object["description"] as? String {
             defaultValue = defaultVal
-            description = descriptionVal.snakeCaseToCamelCase()
+            description = descriptionVal
         } else {
            fatalError("Invalid schema specification for enum: \(object)")
         }

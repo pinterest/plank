@@ -13,6 +13,7 @@
 		6948DB321EB6AB2C00EA902D /* JSFileRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6948DB311EB6AB2C00EA902D /* JSFileRenderer.swift */; };
 		6948DB341EB6C41700EA902D /* JSADTExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6948DB331EB6C41700EA902D /* JSADTExtension.swift */; };
 		696C6E811EA928030039B52F /* JSFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696C6E801EA928030039B52F /* JSFileGenerator.swift */; };
+		691F9DFF1EF41CD10002CE40 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691F9DFE1EF41CD10002CE40 /* StringExtensionsTests.swift */; };
 		812A69D01E53D2A1006A510E /* ObjectiveCEqualityExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */; };
 		812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */; };
 		812A69D41E53D35F006A510E /* ObjectiveCBuilderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */; };
@@ -61,6 +62,7 @@
 		6948DB311EB6AB2C00EA902D /* JSFileRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSFileRenderer.swift; sourceTree = "<group>"; };
 		6948DB331EB6C41700EA902D /* JSADTExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSADTExtension.swift; sourceTree = "<group>"; };
 		696C6E801EA928030039B52F /* JSFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSFileGenerator.swift; sourceTree = "<group>"; };
+		691F9DFE1EF41CD10002CE40 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
 		812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCEqualityExtension.swift; sourceTree = "<group>"; };
 		812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInitExtension.swift; sourceTree = "<group>"; };
 		812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCBuilderExtension.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				OBJ_22 /* PlankTestExtension.swift */,
 				815A01191E54D2BA00017AFB /* ObjectiveCInitTests.swift */,
 				815A011B1E55100E00017AFB /* MockSchemaLoader.swift */,
+				691F9DFE1EF41CD10002CE40 /* StringExtensionsTests.swift */,
 			);
 			name = CoreTests;
 			path = Tests/CoreTests;
@@ -345,6 +348,7 @@
 				OBJ_56 /* LinuxTestIndex.swift in Sources */,
 				OBJ_57 /* PlankTestExtension.swift in Sources */,
 				815A011A1E54D2BA00017AFB /* ObjectiveCInitTests.swift in Sources */,
+				691F9DFF1EF41CD10002CE40 /* StringExtensionsTests.swift in Sources */,
 				815A011C1E55100E00017AFB /* MockSchemaLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

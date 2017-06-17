@@ -52,6 +52,17 @@ extension NSObject {
     }
 }
 
+prefix operator -->
+
+prefix func --> (strs: [String]) -> String {
+    return strs.flatMap { $0.components(separatedBy: "\n").map {$0.indent() } }
+        .joined(separator: "\n")
+}
+
+prefix func --> (body: () -> [String]) -> String {
+    return -->body()
+}
+
 let objectiveCReservedWordReplacements = [
     "description": "description_text",
     "id": "identifier"
@@ -59,20 +70,20 @@ let objectiveCReservedWordReplacements = [
 ]
 
 extension String {
+    /// All components separated by _ will be capitalized including the first one
     func snakeCaseToCamelCase() -> String {
         var str: String = self
+
         if let replacementString = objectiveCReservedWordReplacements[self] as String? {
             str = replacementString
         }
 
         let components = str.components(separatedBy: "_")
-
-        let name: [String] = components.map { (component: String) -> String in
-            return component.capitalized
-        }
+        let name = components.map { return $0.uppercaseFirst }
         return name.joined(separator: "")
     }
 
+    /// All components separated by _ will be capitalized execpt the first
     func snakeCaseToPropertyName() -> String {
         var str: String = self
 
@@ -87,8 +98,13 @@ extension String {
             // Hack: Force URL's to be uppercase
             if idx != 0 && component == "url" {
                 name += component.uppercased()
+                continue
+            }
+
+            if idx != 0 {
+                name +=	component.uppercaseFirst
             } else {
-                name += idx != 0 ? component.capitalized: component
+                name += component.lowercaseFirst
             }
         }
 
@@ -104,5 +120,14 @@ extension String {
     /// Get the last n characters of a string
     func suffixSubstring(_ length: Int) -> String {
         return self.substring(from: self.characters.index(self.endIndex, offsetBy: -length))
+    }
+
+    /// Uppercase the first character
+    var uppercaseFirst: String {
+        return String(characters.prefix(1)).uppercased() + String(characters.dropFirst())
+    }
+
+    var lowercaseFirst: String {
+        return String(characters.prefix(1)).lowercased() + String(characters.dropFirst())
     }
 }

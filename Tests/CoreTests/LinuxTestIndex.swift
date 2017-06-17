@@ -8,4 +8,15 @@ extension ObjectiveCInitTests {
        ("testOneOfInit", testOneOfInit)
    ]
 }
+// Generated Test Extension for StringExtensionsTests
+extension StringExtensionsTests {
+   static var allTests = [
+       ("testUppercaseFirst", testUppercaseFirst),
+       ("testLowercaseFirst", testLowercaseFirst),
+       ("testSuffixSubstring", testSuffixSubstring),
+       ("testSnakeCaseToCamelCase", testSnakeCaseToCamelCase),
+       ("testSnakeCaseToPropertyName", testSnakeCaseToPropertyName),
+       ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName)
+   ]
+}
 #endif
