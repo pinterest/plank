@@ -40,10 +40,8 @@ public protocol FileGenerator {
 //extension Dictionary where Key == GenerationParameterType, Value == String {
 //    func indent(file: FileGenerator) -> Int {
 //        // Check if the GenerationParameters have an indentation set on it else just use the file indent
-//        if let indentFlag = self[.indent], let indent = Int(indentFlag) {
-//            return indent
-//        }
-//        return file.indent
+//        let indent: Int? = self[.indent].flatMap { Int($0) }
+//        return indent ?? file.indent
 //    }
 //}
 
@@ -51,12 +49,10 @@ public protocol FileGenerator {
 extension Dictionary where Value: ExpressibleByStringLiteral {
     // Check if the GenerationParameters have an indentation set on it else just use the file indent
     func indent(file: FileGenerator) -> Int {
-        if let this = self as? [GenerationParameterType : String] {
-            if let indentFlag = this[.indent], let indent = Int(indentFlag) {
-                return indent
-            }
-        }
-        return file.indent
+        let key: Key? = GenerationParameterType.indent as? Key
+        let indentFlag: String? = key.flatMap { self[$0] as? String }
+        let indent: Int? = indentFlag.flatMap { Int($0) }
+        return indent ?? file.indent
     }
 }
 
