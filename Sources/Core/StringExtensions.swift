@@ -52,6 +52,17 @@ extension NSObject {
     }
 }
 
+prefix operator -->
+
+prefix func --> (strs: [String]) -> String {
+    return strs.flatMap { $0.components(separatedBy: "\n").map {$0.indent() } }
+        .joined(separator: "\n")
+}
+
+prefix func --> (body: () -> [String]) -> String {
+    return -->body()
+}
+
 let objectiveCReservedWordReplacements = [
     "description": "description_text",
     "id": "identifier"

@@ -139,17 +139,6 @@ func == (lhs: MethodVisibility, rhs: MethodVisibility) -> Bool {
     }
 }
 
-prefix operator -->
-
-prefix func --> (strs: [String]) -> String {
-  return strs.flatMap { $0.components(separatedBy: "\n").map {$0.indent() } }
-    .joined(separator: "\n")
-}
-
-prefix func --> (body: () -> [String]) -> String {
-  return -->body()
-}
-
 public struct ObjCIR {
 
     static let ret = "return"
