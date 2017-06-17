@@ -18,6 +18,10 @@ struct JSRuntimeFile: FileGenerator {
         return "runtime.flow.js"
     }
 
+    var indent: Int {
+        return 2
+    }
+
     func renderContent() -> String {
         return [
             "export type $Object<V> = { +[key: string]: V }",

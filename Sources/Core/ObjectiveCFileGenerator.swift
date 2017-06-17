@@ -26,12 +26,22 @@ struct ObjectiveCFileGenerator: FileGeneratorManager {
     }
 }
 
+fileprivate extension FileGenerator {
+    var objcDefaultIndent: Int {
+        return 4
+    }
+}
+
 struct ObjCHeaderFile: FileGenerator {
     let roots: [ObjCIR.Root]
     let className: String
 
     var fileName: String {
         return "\(className).h"
+    }
+
+    var indent: Int {
+        return objcDefaultIndent
     }
 
     func renderFile() -> String {
@@ -52,6 +62,10 @@ struct ObjCImplementationFile: FileGenerator {
 
     var fileName: String {
         return "\(className).m"
+    }
+
+    var indent: Int {
+        return objcDefaultIndent
     }
 
     func renderFile() -> String {
@@ -152,6 +166,10 @@ struct ObjCRuntimeHeaderFile: FileGenerator {
         return "PlankModelRuntime.h"
     }
 
+    var indent: Int {
+        return objcDefaultIndent
+    }
+
     func renderFile() -> String {
         let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
         let outputs = roots.map { $0.renderHeader() }.reduce([], +)
@@ -164,6 +182,10 @@ struct ObjCRuntimeHeaderFile: FileGenerator {
 struct ObjCRuntimeImplementationFile: FileGenerator {
     var fileName: String {
         return "PlankModelRuntime.m"
+    }
+
+    var indent: Int {
+        return objcDefaultIndent
     }
 
     func renderFile() -> String {

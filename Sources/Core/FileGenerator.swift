@@ -17,6 +17,7 @@ public enum GenerationParameterType {
     case classPrefix
     case recursive
     case includeRuntime
+    case indent
 }
 
 public enum Languages: String {
@@ -32,6 +33,27 @@ public protocol FileGeneratorManager {
 public protocol FileGenerator {
     func renderFile() -> String
     var fileName: String { mutating get }
+    var indent: Int { get }
+}
+
+// Currently not usable until upgrading the Swift Toolchain on CI
+//extension Dictionary where Key == GenerationParameterType, Value == String {
+//    func indent(file: FileGenerator) -> Int {
+//        // Check if the GenerationParameters have an indentation set on it else just use the file indent
+//        let indent: Int? = self[.indent].flatMap { Int($0) }
+//        return indent ?? file.indent
+//    }
+//}
+
+// Workaround until we can use the version from above
+extension Dictionary where Value: ExpressibleByStringLiteral {
+    // Check if the GenerationParameters have an indentation set on it else just use the file indent
+    func indent(file: FileGenerator) -> Int {
+        let key: Key? = GenerationParameterType.indent as? Key
+        let indentFlag: String? = key.flatMap { self[$0] as? String }
+        let indent: Int? = indentFlag.flatMap { Int($0) }
+        return indent ?? file.indent
+    }
 }
 
 extension FileGenerator {
@@ -60,31 +82,14 @@ extension FileGenerator {
 
 extension FileGeneratorManager {
     func generateFile(_ schema: SchemaObjectRoot, outputDirectory: URL, generationParameters: GenerationParameters) {
-        for var file in Self.filesToGenerate(descriptor: schema, generatorParameters: generationParameters) {
-            let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
-            do {
-                try fileContents.write(
-                    to: URL(string: file.fileName, relativeTo: outputDirectory)!,
-                    atomically: true,
-                    encoding: String.Encoding.utf8)
-            } catch {
-                assert(false)
-            }
+        Self.filesToGenerate(descriptor: schema, generatorParameters: generationParameters).forEach {
+            writeFile(file: $0, outputDirectory: outputDirectory, generationParameters: generationParameters)
         }
     }
 
-    public func generateFileRuntime(outputDirectory: URL) {
-        let files: [FileGenerator] = Self.runtimeFiles()
-        for var file in files {
-            let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
-            do {
-                try fileContents.write(
-                    to: URL(string: file.fileName, relativeTo: outputDirectory)!,
-                    atomically: true,
-                    encoding: String.Encoding.utf8)
-            } catch {
-                assert(false)
-            }
+    public func generateFileRuntime(outputDirectory: URL, generationParameters: GenerationParameters) {
+        Self.runtimeFiles().forEach {
+            writeFile(file: $0, outputDirectory: outputDirectory, generationParameters: generationParameters)
         }
     }
 }
@@ -98,18 +103,27 @@ func generator(forLanguage language: Languages) -> FileGeneratorManager {
     }
 }
 
-public func generateFileRuntime(outputDirectory: URL) {
-    let files: [FileGenerator] = [ObjCRuntimeHeaderFile(), ObjCRuntimeImplementationFile()]
-    for var file in files {
-        let fileContents = file.renderFile() + "\n" // Ensure there is exactly one new line a the end of the file
-        do {
-            try fileContents.write(
-                to: URL(string: file.fileName, relativeTo: outputDirectory)!,
-                atomically: true,
-                encoding: String.Encoding.utf8)
-        } catch {
-            assert(false)
-        }
+public func generateRuntimeFiles(outputDirectory: URL, generationParameters: GenerationParameters, forLanguages languages: [Languages]) {
+    let fileGenerators: [FileGeneratorManager] = languages.map(generator)
+    fileGenerators.forEach {
+        $0.generateFileRuntime(outputDirectory: outputDirectory, generationParameters:generationParameters)
+    }
+}
+
+public func writeFile(file: FileGenerator, outputDirectory: URL, generationParameters: GenerationParameters) {
+    var file = file
+    let indent = generationParameters.indent(file: file)
+    let indentSpaces = String(repeating: " ", count: indent)
+    let fileContents = file.renderFile()
+                           .replacingOccurrences(of: "\t", with: indentSpaces)
+                           .appending("\n") // Ensure there is exactly one new line a the end of the file
+    do {
+        try fileContents.write(
+            to: URL(string: file.fileName, relativeTo: outputDirectory)!,
+            atomically: true,
+            encoding: String.Encoding.utf8)
+    } catch {
+        assert(false)
     }
 }
 
@@ -153,7 +167,7 @@ public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParame
         processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count)
     if generationParameters[.includeRuntime] != nil {
         fileGenerators.forEach {
-            $0.generateFileRuntime(outputDirectory: outputDirectory)
+            $0.generateFileRuntime(outputDirectory: outputDirectory, generationParameters: generationParameters)
         }
     }
 }
