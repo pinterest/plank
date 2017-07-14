@@ -29,7 +29,7 @@ extension JSFileRenderer {
         return self.rootSchema.extends.flatMap { $0.force() }
     }
 
-    var properties: [(Parameter, Schema)] {
+    var properties: [(Parameter, SchemaObjectProperty)] {
         return self.rootSchema.properties.map { $0 }
     }
 
@@ -60,7 +60,7 @@ extension JSFileRenderer {
     }
 
     func renderReferencedClasses() -> Set<String> {
-        return Set(rootSchema.properties.values.flatMap(referencedClassNames))
+        return Set(rootSchema.properties.values.map { $0.schema }.flatMap(referencedClassNames))
     }
 
     func flowTypeName(_ param: String, _ schema: Schema) -> String {

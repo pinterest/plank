@@ -31,8 +31,8 @@ public struct JSModelRenderer: JSFileRenderer {
         }
 
         let parentName = resolveClassName(self.parentDescriptor)
-        let props: [SimpleProperty] = properties.map { param, schema in
-            return (param, flowTypeName(param, schema), schema, .readonly)
+        let props: [SimpleProperty] = properties.map { param, prop in
+            return (param, flowTypeName(param, prop.schema), prop, .readonly)
         }
 
         return [JSIR.Root.imports(classNames: self.renderReferencedClasses(), myName: self.className, parentName: parentName)] +
@@ -46,8 +46,8 @@ public struct JSModelRenderer: JSFileRenderer {
     }
 
     func renderEnumRoots() -> [JSIR.Root] {
-        return self.properties.flatMap { (param, schema) -> [JSIR.Root] in
-            switch schema {
+        return self.properties.flatMap { (param, prop) -> [JSIR.Root] in
+            switch prop.schema {
             case .enumT(let enumValues):
                 return [JSIR.Root.enumDecl(name: JSModelRenderer.enumTypeName(className: self.className, propertyName:param), values: enumValues)]
             default: return []

@@ -11,9 +11,9 @@ import type { PlankDate, PlankURI } from './runtime.flow.js';
 
 
 export type ImageType = $Shape<{|
-  +height: ?number,
+  +height: number,
   +url: ?PlankURI,
-  +width: ?number,
+  +width: number,
 |}> & {
   id: string
 };

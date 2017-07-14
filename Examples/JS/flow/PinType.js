@@ -17,14 +17,14 @@ export type PinType = $Shape<{|
   +media: ?{ +[string]: string },
   +counts: ?{ +[string]: number } /* Integer */,
   +description: ?string,
-  +creator: ?{ +[string]: UserType },
+  +creator: { +[string]: UserType },
   +attribution: ?{ +[string]: string },
   +board: ?BoardType,
   +color: ?string,
   +link: ?PlankURI,
-  +id: ?string,
+  +id: string,
   +image: ?ImageType,
-  +created_at: ?PlankDate,
+  +created_at: PlankDate,
   +url: ?PlankURI,
 |}> & {
   id: string

@@ -55,9 +55,12 @@ typealias Argument = String
 typealias Parameter = String
 
 typealias TypeName = String
-typealias SimpleProperty = (Parameter, TypeName, Schema, ObjCMutabilityType)
+typealias SimpleProperty = (Parameter, TypeName, SchemaObjectProperty, ObjCMutabilityType)
 
 func dirtyPropertyOption(propertyName aPropertyName: String, className: String) -> String {
+    guard className.characters.count > 0 && aPropertyName.characters.count > 0 else {
+        fatalError("Invalid class name or property name passed to dirtyPropertyOption(propertyName:className)")
+    }
     let propertyName = aPropertyName.snakeCaseToPropertyName()
     let capitalizedFirstLetter = String(propertyName[propertyName.startIndex]).uppercased()
     let capitalizedPropertyName = capitalizedFirstLetter + String(propertyName.characters.dropFirst())
@@ -236,7 +239,7 @@ public struct ObjCIR {
 
     static func ifElseStmt(_ condition: String, body: @escaping () -> [String]) -> (() -> [String]) -> String {
         return { elseBody in [
-            ObjCIR.ifStmt(condition, body: body),
+            ObjCIR.ifStmt(condition, body: body) +
             ObjCIR.elseStmt(elseBody)
         ].joined(separator: "\n") }
     }
@@ -317,10 +320,15 @@ public struct ObjCIR {
                 let protocolList = protocols.keys.sorted().joined(separator: ", ")
                 let protocolDeclarations = protocols.count > 0 ? "<\(protocolList)>" : ""
                 let superClass = extends ?? "NSObject\(protocolDeclarations)"
+
+                let nullability = { (prop: SchemaObjectProperty) in
+                    prop.nullability.map { "\($0), " } ?? ""
+                }
+
                 return [
                     "@interface \(className) : \(superClass)",
-                    properties.map { (param, typeName, schema, access) in
-                        "@property (\(schema.isObjCPrimitiveType ? "" : "nullable, ")nonatomic, \(schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
+                    properties.map { (param, typeName, propSchema, access) in
+                        "@property (\(nullability(propSchema))nonatomic, \(propSchema.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
                     methods.filter { visibility, _ in visibility == .publicM }
                             .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
@@ -374,8 +382,8 @@ public struct ObjCIR {
                 guard categoryName == nil else { return [] }
                 return [
                     "@interface \(className) ()",
-                    properties.map { (param, typeName, schema, access) in
-                        "@property (nonatomic, \(schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
+                    properties.map { (param, typeName, prop, access) in
+                        "@property (nonatomic, \(prop.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"

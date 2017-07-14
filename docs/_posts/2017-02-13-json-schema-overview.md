@@ -19,7 +19,7 @@ Here is a simple schema and overview of the fields listed.
     "properties": {
         "id" : { "type": "string" }
     },
-    "required": []
+    "required": ["id"]
 }
 </code></pre>
 
@@ -32,4 +32,4 @@ Here is a simple schema and overview of the fields listed.
 | `$schema` (String, URI formatted)  | This is a URI to the json-schema version this document is based on. This will be the default schema URI for now: "[http://json-schema.org/schema#](http://json-schema.org/schema#)"                                                                                                    |
 | `type` (String)                    | Specifies the type, currently this is always “object” when declared outside of the properties map. Valid types are “string”, “boolean”, “number”, “integer”, “array”, “object”.                                                                                                |
 | `properties` (Map<string, object>) | Properties are where most of your editing will be focused. This area allows us to specify the property names (as the key) as well as their expected type.                                                                                                                              |
-| `required`                         | List of property names that are required to be present in the JSON response. This is currently unused but eventually could be utilized to provide tighter validation of schema responses.                                                                                              |
+| `required` (List<string>)                         | List of property names that are required to be present in the JSON response. This will be used to to specify nullability of items in `properties`.                                                                                              |

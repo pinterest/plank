@@ -30,7 +30,7 @@ extension ObjCFileRenderer {
         return self.rootSchema.extends.flatMap { $0.force() }
     }
 
-    var properties: [(Parameter, Schema)] {
+    var properties: [(Parameter, SchemaObjectProperty)] {
         return self.rootSchema.properties.map { $0 }
     }
 
@@ -61,7 +61,7 @@ extension ObjCFileRenderer {
     }
 
     func renderReferencedClasses() -> Set<String> {
-        return Set(rootSchema.properties.values.flatMap(referencedClassNames))
+        return Set(rootSchema.properties.values.map { $0.schema }.flatMap(referencedClassNames))
     }
 
     func objcClassFromSchema(_ param: String, _ schema: Schema) -> String {

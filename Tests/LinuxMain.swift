@@ -4,6 +4,7 @@ import XCTest
 
 var tests = [XCTestCaseEntry]()
    tests += [testCase(ObjectiveCInitTests.allTests)]
+   tests += [testCase(ObjectiveCIRTests.allTests)]
    tests += [testCase(StringExtensionsTests.allTests)]
 
 XCTMain(tests)

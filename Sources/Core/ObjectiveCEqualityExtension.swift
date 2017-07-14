@@ -38,9 +38,9 @@ extension ObjCFileRenderer {
         }
 
         let rootHashStatement = self.isBaseClass ? ["17"] : ["[super hash]"]
-        let propReturnStatements = rootHashStatement + self.properties.map { param, schema -> String in
+        let propReturnStatements = rootHashStatement + self.properties.map { param, prop -> String in
             let formattedParam = param.snakeCaseToPropertyName()
-            return schemaHashStatement(with: formattedParam, for: schema)
+            return schemaHashStatement(with: formattedParam, for: prop.schema)
         }
 
         return ObjCIR.method("- (NSUInteger)hash") {[
@@ -82,12 +82,12 @@ extension ObjCFileRenderer {
         }
 
         // Performance optimization - compare primitives before resorting to more expensive `isEqual` calls
-        let sortedProps = self.properties.sorted { $0.0.1.isObjCPrimitiveType }
+        let sortedProps = self.properties.sorted { $0.0.1.schema.isObjCPrimitiveType }
 
-        let propReturnStmts = sortedProps.map { param, schema -> String in
+        let propReturnStmts = sortedProps.map { param, prop -> String in
             let formattedParam = param.snakeCaseToPropertyName()
             let pointerEqStmt = "_\(formattedParam) == anObject.\(formattedParam)"
-            let deepEqStmt = schemaIsEqualStatement(with: formattedParam, for: schema)
+            let deepEqStmt = schemaIsEqualStatement(with: formattedParam, for: prop.schema)
             return [pointerEqStmt, deepEqStmt].filter { $0 != "" }.joined(separator: " || ")
         }
 

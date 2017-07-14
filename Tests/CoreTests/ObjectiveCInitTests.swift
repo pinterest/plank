@@ -34,9 +34,10 @@ class ObjectiveCInitTests: XCTestCase {
         let propSchemaFn = Schema.propertyFunctionForType(loader: schemaLoader)
 
         if let prop = propSchemaFn(properties, URL(string: "http://google.com/")!) {
+
             let schema = SchemaObjectRoot(
                 name: "request",
-                properties: ["response_data": prop],
+                properties: ["response_data": SchemaObjectProperty(schema: prop, nullability: .nullable)],
                 extends: nil,
                 algebraicTypeIdentifier: nil
             )
