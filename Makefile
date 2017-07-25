@@ -7,7 +7,7 @@
 all: clean build test integration_test archive
 
 clean:
-	xcrun swift build --clean
+	xcrun swift package clean
 
 lint:
 	./Utility/lint.sh
