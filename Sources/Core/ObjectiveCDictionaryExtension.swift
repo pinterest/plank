@@ -28,54 +28,50 @@ extension ObjCFileRenderer {
     fileprivate func renderAddObjectStatement(_ param: String, _ schema: Schema, _ dictionary: String, counter: Int = 0) -> String {
         var propIVarName = "_\(param.snakeCaseToPropertyName())"
         switch schema {
+        // TODO: After nullability PR landed we should revisit this and don't check for nil if
+        //       the ivar is nonnull in all of this cases
         case .boolean, .float, .integer:
             return "[\(dictionary) setObject:@(\(propIVarName)) forKey: @\"\(param)\" ];"
         case .object:
-            return ObjCIR.scope {[
-                // TODO: After nullability PR landed we should revisit this and don't have to check for nil if
-                //       the ivar is nonnull
+            return [
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[
                     "[\(dictionary) setObject:[\(propIVarName) dictionaryRepresentation] forKey:@\"\(param)\"];"
                 ]},
                 ObjCIR.elseStmt({[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]
-            })
-        ]}
+                ]})
+            ].joined(separator: "\n")
         case .string(format: .none),
              .string(format: .some(.email)),
              .string(format: .some(.hostname)),
              .string(format: .some(.ipv4)),
              .string(format: .some(.ipv6)):
-            return ObjCIR.scope {[
+            return [
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[
                     "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
-                    ]},
+                ]},
                 ObjCIR.elseStmt({[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                    ]
-                })
-                ]}
+                ]})
+            ].joined(separator: "\n")
         case .string(format: .some(.uri)):
-            return ObjCIR.scope {[
+            return [
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[
                     "[\(dictionary) setObject:[\(propIVarName) absoluteString] forKey:@\"\(param)\"];"
-                    ]},
+                ]},
                 ObjCIR.elseStmt({[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                    ]
-                })
-            ]}
+                ]})
+            ].joined(separator: "\n")
         case .string(format: .some(.dateTime)):
-            return ObjCIR.scope {[
+            return [
                 ObjCIR.ifStmt("\(propIVarName) != nil && [NSValueTransformer allowsReverseTransformation]") {[
                     "[\(dictionary) setObject:[[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] reverseTransformedValue:\(propIVarName)] forKey:@\"\(param)\"];"
-                    ]},
+                ]},
                 ObjCIR.elseStmt({[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                    ]
-                })
-            ]}
+                ]})
+            ].joined(separator: "\n")
         case .enumT(.integer):
             return "[\(dictionary) setObject:@(\(propIVarName)) forKey:@\"\(param)\"];"
         case .enumT(.string):
@@ -89,7 +85,7 @@ extension ObjCFileRenderer {
                     let currentResult = "result\(arrayCounter)"
                     let parentResult = "result\(arrayCounter-1)"
                     let currentObj = "obj\(arrayCounter)"
-                    return ObjCIR.scope {[
+                    return [
                         "NSArray *items\(arrayCounter) = \(processObject);",
                         "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items\(arrayCounter).count];",
                         ObjCIR.forStmt("id \(currentObj) in items\(arrayCounter)") { [
@@ -98,7 +94,7 @@ extension ObjCFileRenderer {
                                 ]}
                             ]},
                         "[\(parentResult) addObject:\(currentResult)];"
-                    ]}
+                    ].joined(separator: "\n")
                 case .map(valueType: let type):
                     return self.renderAddObjectStatement(processObject, type!, processObject)
                 case .integer, .float, .boolean:
@@ -112,15 +108,14 @@ extension ObjCFileRenderer {
                 case .string(format: .some(.uri)):
                     return "[\(destArray) addObject:[\(processObject) absoluteString] ];"
                 case .string(format: .some(.dateTime)):
-                    return ObjCIR.scope {[
+                    return [
                         ObjCIR.ifStmt("\(propIVarName) != nil && [NSValueTransformer allowsReverseTransformation]") {[
                             "[\(destArray) addObject: [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] reverseTransformedValue:\(propIVarName)]];"
-                            ]},
+                        ]},
                         ObjCIR.elseStmt({[
                             "[\(destArray) addObject:[NSNull null]];"
-                            ]
-                        })
-                    ]}
+                        ]})
+                    ].joined(separator: "\n")
                 case .enumT(.integer):
                     return "[\(destArray) addObject:@(\(processObject))];"
                 case .enumT(.string):
@@ -132,7 +127,7 @@ extension ObjCFileRenderer {
             }
             let currentResult = "result\(counter)"
             let currentObj = "obj\(counter)"
-                return ObjCIR.scope {[
+                return [
                     "NSArray *items\(counter) = \(propIVarName);",
                     "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items\(counter).count];",
                     ObjCIR.forStmt("id \(currentObj) in items\(counter)") { [
@@ -141,20 +136,20 @@ extension ObjCFileRenderer {
                         ]}
                     ]},
                     "[\(dictionary) setObject:\(currentResult) forKey:@\"\(param)\"];"
-                ]}
+                ].joined(separator: "\n")
         case .map(valueType: let type):
             switch type.unsafelyUnwrapped {
             case .map, .object, .array:
-                return ObjCIR.scope {[
+                return [
                     ObjCIR.ifStmt("\(propIVarName) != nil") {[
                         renderAddObjectStatement(param, type!, dictionary)
                     ]},
                     ObjCIR.elseStmt({
                         ["[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"]
                     })
-                ]}
+                ].joined(separator: "\n")
             case .reference(with: _):
-                return ObjCIR.scope {[
+                return [
                     "NSMutableDictionary *items\(counter) = [NSMutableDictionary new];",
                     ObjCIR.forStmt("id key in \(propIVarName)") { [
                         ObjCIR.ifStmt("[\(propIVarName) objectForKey:key] != (id)kCFNull") { [
@@ -162,19 +157,19 @@ extension ObjCFileRenderer {
                         ]}
                     ]},
                     "[\(dictionary) setObject:items\(counter) forKey: @\"\(propIVarName)\" ];"
-                ]}
+                ].joined(separator: "\n")
             default:
-                return ObjCIR.scope {[
+                return [
                     ObjCIR.ifStmt("\(propIVarName) != nil") {
                         ["[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"]
                     },
                     ObjCIR.elseStmt({
                         ["[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"]
                     })
-                ]}
+                ].joined(separator: "\n")
             }
         case .oneOf(types: let avTypes):
-            return ObjCIR.scope {[
+            return [
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[
                     ObjCIR.switchStmt("\(propIVarName).internalType") {
                         avTypes.enumerated().map { (_, schema) -> ObjCIR.SwitchCase in
@@ -187,7 +182,7 @@ extension ObjCFileRenderer {
                 ObjCIR.elseStmt({
                     ["[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"]
                 })
-            ]}
+            ].joined(separator: "\n")
         case .reference(with: let ref):
             return ref.force().map {
                 renderAddObjectStatement(param, $0, dictionary)
