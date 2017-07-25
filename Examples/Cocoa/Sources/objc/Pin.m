@@ -504,11 +504,11 @@ struct PinDirtyProperties {
             if (builder.board) {
                 builder.board = [builder.board mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];
             }
-             else {
+            else {
                 builder.board = value;
             }
         }
-         else {
+        else {
             builder.board = nil;
         }
     }
@@ -527,11 +527,11 @@ struct PinDirtyProperties {
             if (builder.image) {
                 builder.image = [builder.image mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];
             }
-             else {
+            else {
                 builder.image = value;
             }
         }
-         else {
+        else {
             builder.image = nil;
         }
     }
