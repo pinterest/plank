@@ -71,7 +71,7 @@ extension ObjCFileRenderer {
                 ]}
         case .string(format: .some(.dateTime)):
             return ObjCIR.scope {[
-                ObjCIR.ifStmt("\(propIVarName) != nil [NSValueTransformer allowsReverseTransformation]") {[
+                ObjCIR.ifStmt("\(propIVarName) != nil && [NSValueTransformer allowsReverseTransformation]") {[
                     "[\(dictionary) setObject: [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] reverseTransformedValue:\(propIVarName)]  forKey: @\"" + param + "\" ];"
                     ]},
                 ObjCIR.elseStmt({[
@@ -150,15 +150,38 @@ extension ObjCFileRenderer {
                         "[\(dictionary) setObject:\(currentResult) forKey: @\"" + param + "\" ];"
                     ]}
         case .map(valueType: let type):
-            return ObjCIR.scope {[
-                ObjCIR.ifStmt("\(propIVarName) != nil") {[
-                            renderAddObjectStatement(param, type!, dictionary)
-                            ]},
-                ObjCIR.elseStmt({[
-                    "[\(dictionary) setObject: [NSNull null] forKey: @\"" + param + "\" ];"
-                    ]
-                })
-                ]}
+            switch type.unsafelyUnwrapped {
+            case .map, .object, .array:
+                        return ObjCIR.scope {[
+                            ObjCIR.ifStmt("\(propIVarName) != nil") {[
+                                renderAddObjectStatement(param, type!, dictionary)
+                                ]},
+                            ObjCIR.elseStmt({[
+                                "[\(dictionary) setObject: [NSNull null] forKey: @\"" + param + "\" ];"
+                                ]
+                            })
+                            ]}
+            case .reference(with: _):
+                return ObjCIR.scope {[
+                    "NSMutableDictionary *items\(counter) = [NSMutableDictionary new];",
+                    ObjCIR.forStmt("id key in \(propIVarName)") { [
+                        ObjCIR.ifStmt("[\(propIVarName) objectForKey:key] != (id)kCFNull") { [
+                                "[items\(counter) setObject:[[\(propIVarName) objectForKey:key] dictionaryRepresentation] forKey:key];"
+                            ]}
+                        ]},
+                    "[\(dictionary) setObject: items\(counter) forKey: @\"" + propIVarName + "\" ];"
+                    ]}
+            default:
+                return ObjCIR.scope {[
+                    ObjCIR.ifStmt("\(propIVarName) != nil") {[
+                        "[\(dictionary) setObject: \(propIVarName) forKey: @\"" + param + "\" ];"
+                        ]},
+                    ObjCIR.elseStmt({[
+                        "[\(dictionary) setObject: [NSNull null] forKey: @\"" + param + "\" ];"
+                        ]
+                    })
+                    ]}
+            }
         case .oneOf(types: let avTypes):
             return ObjCIR.scope {[
                 ObjCIR.ifStmt("\(propIVarName) != nil") {[

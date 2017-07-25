@@ -95,7 +95,7 @@ extension ObjCFileRenderer {
             return "double"
         case .boolean:
             return "BOOL"
-        case .enumT(_):
+        case .enumT:
             return enumTypeName(propertyName: param, className: className)
         case .object(let objSchemaRoot):
             return "\(objSchemaRoot.className(with: params)) *"

@@ -15,7 +15,7 @@ extension ObjCFileRenderer {
     func renderHash() -> ObjCIR.Method {
         func schemaHashStatement(with param: Parameter, for schema: Schema) -> String {
             switch schema {
-            case .enumT(_), .integer:
+            case .enumT, .integer:
                 // - The value equality statement is sufficient for equality testing
                 // - All enum types are treated as Integers so we do not need to treat String Enumerations differently
                 return "(NSUInteger)_\(param)"
@@ -55,11 +55,11 @@ extension ObjCFileRenderer {
     func renderIsEqualToClass() -> ObjCIR.Method {
         func schemaIsEqualStatement(with param: Parameter, for schema: Schema) -> String {
             switch schema {
-            case .integer, .float, .enumT(_), .boolean:
+            case .integer, .float, .enumT, .boolean:
                 // - The value equality statement is sufficient for equality testing
                 // - All enum types are treated as Integers so we do not need to treat String Enumerations differently
                 return ""
-            case .map(_):
+            case .map:
                 return ObjCIR.msg("_\(param)", ("isEqualToDictionary", "anObject.\(param)"))
             case .string(format: .some(.dateTime)):
                 return ObjCIR.msg("_\(param)", ("isEqualToDate", "anObject.\(param)"))
@@ -69,7 +69,7 @@ extension ObjCFileRenderer {
                  .string(format: .some(.ipv4)),
                  .string(format: .some(.ipv6)):
                 return ObjCIR.msg("_\(param)", ("isEqualToString", "anObject.\(param)"))
-            case .oneOf(types:_), .object(_), .array(_), .string(format: .some(.uri)):
+            case .oneOf(types:_), .object, .array, .string(format: .some(.uri)):
                 return ObjCIR.msg("_\(param)", ("isEqual", "anObject.\(param)"))
             case .reference(with: let ref):
                 switch ref.force() {

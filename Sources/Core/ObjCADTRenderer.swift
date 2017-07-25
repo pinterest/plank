@@ -107,7 +107,7 @@ struct ObjCADTRenderer: ObjCFileRenderer {
                 [
                     ObjCIR.switchStmt("self.internalType") {
                         self.dataTypes.enumerated().map { (index, schema) -> ObjCIR.SwitchCase in
-                            switch(schema) {
+                            switch schema {
                             case .object:
                                 return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schema)) {[
                                     ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
