@@ -220,7 +220,7 @@ public struct ObjCIR {
 
     static func elseIfStmt(_ condition: String, _ body:() -> [String]) -> String {
         return [
-            " else if (\(condition)) {",
+            "else if (\(condition)) {",
                 -->body,
             "}"
         ].joined(separator: "\n")
@@ -228,7 +228,7 @@ public struct ObjCIR {
 
     static func elseStmt(_ body: () -> [String]) -> String {
         return [
-            " else {",
+            "else {",
                 -->body,
             "}"
         ].joined(separator: "\n")

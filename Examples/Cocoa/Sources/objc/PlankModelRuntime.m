@@ -33,7 +33,7 @@ NSString *debugDescriptionForFields(NSArray *descriptionFields)
                 }
             }
         }
-         else {
+        else {
             [stringBuf appendFormat:format, [obj description]];
         }
         if (obj != [descriptionFields lastObject]) {
