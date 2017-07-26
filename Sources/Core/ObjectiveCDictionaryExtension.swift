@@ -135,6 +135,7 @@ extension ObjCFileRenderer {
                     return "[\(destArray) addObject: "+enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))];"
                 default:
                     assert(false, "Array of oneOf is not possible")
+                    return ""
                 }
             }
             let currentResult = "result\(counter)"
