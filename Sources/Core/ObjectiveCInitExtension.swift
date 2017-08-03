@@ -213,7 +213,12 @@ extension ObjCModelRenderer {
 
                 return schemas.map(loop)
             default:
-                return ["\(propertyToAssign) = \(rawObjectName);"]
+                switch schema.memoryAssignmentType() {
+                case .copy:
+                    return ["\(propertyToAssign) = [\(rawObjectName) copy];"]
+                default:
+                    return ["\(propertyToAssign) = \(rawObjectName);"]
+                }
             }
         }
 

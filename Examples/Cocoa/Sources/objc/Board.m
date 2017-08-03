@@ -55,7 +55,7 @@ struct BoardDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"name"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_name = value;
+                    self->_name = [value copy];
                 }
                 self->_boardDirtyProperties.BoardDirtyPropertyName = 1;
             }
@@ -64,7 +64,7 @@ struct BoardDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"id"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_identifier = value;
+                    self->_identifier = [value copy];
                 }
                 self->_boardDirtyProperties.BoardDirtyPropertyIdentifier = 1;
             }
@@ -100,7 +100,7 @@ struct BoardDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"description"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_descriptionText = value;
+                    self->_descriptionText = [value copy];
                 }
                 self->_boardDirtyProperties.BoardDirtyPropertyDescriptionText = 1;
             }
@@ -113,7 +113,7 @@ struct BoardDirtyProperties {
                     NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
                     [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
                         if (obj0 != nil && obj0 != (id)kCFNull) {
-                            result0[key0] = obj0;
+                            result0[key0] = [obj0 copy];
                         }
                     }];
                     self->_creator = result0;

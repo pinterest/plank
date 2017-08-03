@@ -55,7 +55,7 @@ struct UserDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"last_name"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_lastName = value;
+                    self->_lastName = [value copy];
                 }
                 self->_userDirtyProperties.UserDirtyPropertyLastName = 1;
             }
@@ -64,7 +64,7 @@ struct UserDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"id"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_identifier = value;
+                    self->_identifier = [value copy];
                 }
                 self->_userDirtyProperties.UserDirtyPropertyIdentifier = 1;
             }
@@ -73,7 +73,7 @@ struct UserDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"first_name"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_firstName = value;
+                    self->_firstName = [value copy];
                 }
                 self->_userDirtyProperties.UserDirtyPropertyFirstName = 1;
             }
@@ -109,7 +109,7 @@ struct UserDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"username"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_username = value;
+                    self->_username = [value copy];
                 }
                 self->_userDirtyProperties.UserDirtyPropertyUsername = 1;
             }
@@ -118,7 +118,7 @@ struct UserDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"bio"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_bio = value;
+                    self->_bio = [value copy];
                 }
                 self->_userDirtyProperties.UserDirtyPropertyBio = 1;
             }
