@@ -197,7 +197,9 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     (.publicM, self.renderIsEqualToClass()),
                     (.privateM, self.renderHash()),
                     (.publicM, self.renderMergeWithModel()),
-                    (.publicM, self.renderMergeWithModelWithInitType())
+                    (.publicM, self.renderMergeWithModelWithInitType()),
+                    (.publicM, self.renderGenerateDictionary())
+
                 ],
                 properties: properties.map { param, schema in (param, objcClassFromSchema(param, schema), schema, .readonly) },
                 protocols: protocols
