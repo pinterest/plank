@@ -62,7 +62,7 @@ struct PinDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"note"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_note = value;
+                    self->_note = [value copy];
                 }
                 self->_pinDirtyProperties.PinDirtyPropertyNote = 1;
             }
@@ -75,7 +75,7 @@ struct PinDirtyProperties {
                     NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
                     [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
                         if (obj0 != nil && obj0 != (id)kCFNull) {
-                            result0[key0] = obj0;
+                            result0[key0] = [obj0 copy];
                         }
                     }];
                     self->_media = result0;
@@ -96,7 +96,7 @@ struct PinDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"description"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_descriptionText = value;
+                    self->_descriptionText = [value copy];
                 }
                 self->_pinDirtyProperties.PinDirtyPropertyDescriptionText = 1;
             }
@@ -125,7 +125,7 @@ struct PinDirtyProperties {
                     NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
                     [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
                         if (obj0 != nil && obj0 != (id)kCFNull) {
-                            result0[key0] = obj0;
+                            result0[key0] = [obj0 copy];
                         }
                     }];
                     self->_attribution = result0;
@@ -146,7 +146,7 @@ struct PinDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"color"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_color = value;
+                    self->_color = [value copy];
                 }
                 self->_pinDirtyProperties.PinDirtyPropertyColor = 1;
             }
@@ -164,7 +164,7 @@ struct PinDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"id"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_identifier = value;
+                    self->_identifier = [value copy];
                 }
                 self->_pinDirtyProperties.PinDirtyPropertyIdentifier = 1;
             }
