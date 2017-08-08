@@ -21,4 +21,5 @@ mv Examples/Cocoa/Sources/objc/*.h Examples/Cocoa/Sources/objc/include
 # Build the ObjC library
 pushd Examples/Cocoa
 swift build
+swift test
 popd
