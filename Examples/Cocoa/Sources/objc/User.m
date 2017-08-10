@@ -242,6 +242,75 @@ struct UserDirtyProperties {
     [builder mergeWithModel:modelObject];
     return [[User alloc] initWithBuilder:builder initType:initType];
 }
+- (NSDictionary *)dictionaryRepresentation
+{
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:8];
+    if (_userDirtyProperties.UserDirtyPropertyLastName) {
+        if (_lastName != nil) {
+            [dict setObject:_lastName forKey:@"last_name"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"last_name"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyIdentifier) {
+        if (_identifier != nil) {
+            [dict setObject:_identifier forKey:@"id"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"id"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyFirstName) {
+        if (_firstName != nil) {
+            [dict setObject:_firstName forKey:@"first_name"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"first_name"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyImage) {
+        if (_image != nil) {
+            [dict setObject:[_image dictionaryRepresentation] forKey:@"image"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"image"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyCounts) {
+        if (_counts != nil) {
+            [dict setObject:_counts forKey:@"counts"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"counts"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyCreatedAt) {
+        if (_createdAt != nil && [NSValueTransformer allowsReverseTransformation]) {
+            [dict setObject:[[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] reverseTransformedValue:_createdAt] forKey:@"created_at"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"created_at"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyUsername) {
+        if (_username != nil) {
+            [dict setObject:_username forKey:@"username"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"username"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyBio) {
+        if (_bio != nil) {
+            [dict setObject:_bio forKey:@"bio"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"bio"];
+        }
+    }
+    return dict;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {

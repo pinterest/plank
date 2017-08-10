@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		691F9DFF1EF41CD10002CE40 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691F9DFE1EF41CD10002CE40 /* StringExtensionsTests.swift */; };
 		692EA6121EAFF3A9000D9A19 /* JSRuntimeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692EA6111EAFF3A9000D9A19 /* JSRuntimeFile.swift */; };
 		6948DB2C1EB6A98C00EA902D /* JSIR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6948DB2B1EB6A98C00EA902D /* JSIR.swift */; };
 		6948DB301EB6AA5900EA902D /* JSModelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6948DB2F1EB6AA5900EA902D /* JSModelRenderer.swift */; };
 		6948DB321EB6AB2C00EA902D /* JSFileRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6948DB311EB6AB2C00EA902D /* JSFileRenderer.swift */; };
 		6948DB341EB6C41700EA902D /* JSADTExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6948DB331EB6C41700EA902D /* JSADTExtension.swift */; };
 		696C6E811EA928030039B52F /* JSFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696C6E801EA928030039B52F /* JSFileGenerator.swift */; };
-		691F9DFF1EF41CD10002CE40 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 691F9DFE1EF41CD10002CE40 /* StringExtensionsTests.swift */; };
 		812A69D01E53D2A1006A510E /* ObjectiveCEqualityExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */; };
 		812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */; };
 		812A69D41E53D35F006A510E /* ObjectiveCBuilderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */; };
@@ -23,6 +23,7 @@
 		815A011C1E55100E00017AFB /* MockSchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A011B1E55100E00017AFB /* MockSchemaLoader.swift */; };
 		8193AF2E1E66A7E600DEBD13 /* ObjectiveCDebugExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193AF2D1E66A7E600DEBD13 /* ObjectiveCDebugExtension.swift */; };
 		8193AF301E66A87300DEBD13 /* ObjCFileRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193AF2F1E66A87300DEBD13 /* ObjCFileRenderer.swift */; };
+		EE11EB4E1ECDEF1400DD6A00 /* ObjectiveCDictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE11EB4D1ECDEF1400DD6A00 /* ObjectiveCDictionaryExtension.swift */; };
 		OBJ_33 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileGenerator.swift */; };
 		OBJ_34 /* ObjCModelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ObjCModelRenderer.swift */; };
 		OBJ_35 /* ObjectiveCFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* ObjectiveCFileGenerator.swift */; };
@@ -56,13 +57,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		691F9DFE1EF41CD10002CE40 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
 		692EA6111EAFF3A9000D9A19 /* JSRuntimeFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSRuntimeFile.swift; sourceTree = "<group>"; };
 		6948DB2B1EB6A98C00EA902D /* JSIR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSIR.swift; sourceTree = "<group>"; };
 		6948DB2F1EB6AA5900EA902D /* JSModelRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSModelRenderer.swift; sourceTree = "<group>"; };
 		6948DB311EB6AB2C00EA902D /* JSFileRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSFileRenderer.swift; sourceTree = "<group>"; };
 		6948DB331EB6C41700EA902D /* JSADTExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSADTExtension.swift; sourceTree = "<group>"; };
 		696C6E801EA928030039B52F /* JSFileGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSFileGenerator.swift; sourceTree = "<group>"; };
-		691F9DFE1EF41CD10002CE40 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
 		812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCEqualityExtension.swift; sourceTree = "<group>"; };
 		812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInitExtension.swift; sourceTree = "<group>"; };
 		812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCBuilderExtension.swift; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		815A011B1E55100E00017AFB /* MockSchemaLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockSchemaLoader.swift; sourceTree = "<group>"; };
 		8193AF2D1E66A7E600DEBD13 /* ObjectiveCDebugExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCDebugExtension.swift; sourceTree = "<group>"; };
 		8193AF2F1E66A87300DEBD13 /* ObjCFileRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCFileRenderer.swift; sourceTree = "<group>"; };
+		EE11EB4D1ECDEF1400DD6A00 /* ObjectiveCDictionaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCDictionaryExtension.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ObjCModelRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCModelRenderer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_11 /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_12 /* ObjectiveCIR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjectiveCIR.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -194,6 +196,7 @@
 				OBJ_10 /* ObjCModelRenderer.swift */,
 				812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */,
 				8193AF2D1E66A7E600DEBD13 /* ObjectiveCDebugExtension.swift */,
+				EE11EB4D1ECDEF1400DD6A00 /* ObjectiveCDictionaryExtension.swift */,
 				812A69CF1E53D2A1006A510E /* ObjectiveCEqualityExtension.swift */,
 				OBJ_11 /* ObjectiveCFileGenerator.swift */,
 				812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */,
@@ -311,6 +314,7 @@
 			files = (
 				OBJ_33 /* FileGenerator.swift in Sources */,
 				812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */,
+				EE11EB4E1ECDEF1400DD6A00 /* ObjectiveCDictionaryExtension.swift in Sources */,
 				OBJ_34 /* ObjCModelRenderer.swift in Sources */,
 				692EA6121EAFF3A9000D9A19 /* JSRuntimeFile.swift in Sources */,
 				OBJ_35 /* ObjectiveCFileGenerator.swift in Sources */,

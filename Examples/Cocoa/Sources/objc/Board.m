@@ -249,6 +249,75 @@ struct BoardDirtyProperties {
     [builder mergeWithModel:modelObject];
     return [[Board alloc] initWithBuilder:builder initType:initType];
 }
+- (NSDictionary *)dictionaryRepresentation
+{
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:8];
+    if (_boardDirtyProperties.BoardDirtyPropertyName) {
+        if (_name != nil) {
+            [dict setObject:_name forKey:@"name"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"name"];
+        }
+    }
+    if (_boardDirtyProperties.BoardDirtyPropertyIdentifier) {
+        if (_identifier != nil) {
+            [dict setObject:_identifier forKey:@"id"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"id"];
+        }
+    }
+    if (_boardDirtyProperties.BoardDirtyPropertyImage) {
+        if (_image != nil) {
+            [dict setObject:[_image dictionaryRepresentation] forKey:@"image"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"image"];
+        }
+    }
+    if (_boardDirtyProperties.BoardDirtyPropertyCounts) {
+        if (_counts != nil) {
+            [dict setObject:_counts forKey:@"counts"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"counts"];
+        }
+    }
+    if (_boardDirtyProperties.BoardDirtyPropertyCreatedAt) {
+        if (_createdAt != nil && [NSValueTransformer allowsReverseTransformation]) {
+            [dict setObject:[[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] reverseTransformedValue:_createdAt] forKey:@"created_at"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"created_at"];
+        }
+    }
+    if (_boardDirtyProperties.BoardDirtyPropertyDescriptionText) {
+        if (_descriptionText != nil) {
+            [dict setObject:_descriptionText forKey:@"description"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"description"];
+        }
+    }
+    if (_boardDirtyProperties.BoardDirtyPropertyCreator) {
+        if (_creator != nil) {
+            [dict setObject:_creator forKey:@"creator"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"creator"];
+        }
+    }
+    if (_boardDirtyProperties.BoardDirtyPropertyUrl) {
+        if (_url != nil) {
+            [dict setObject:[_url absoluteString] forKey:@"url"];
+        }
+         else {
+            [dict setObject:[NSNull null] forKey:@"url"];
+        }
+    }
+    return dict;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {
