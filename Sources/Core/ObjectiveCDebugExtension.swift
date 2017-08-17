@@ -10,10 +10,10 @@ import Foundation
 
 extension ObjCModelRenderer {
     func renderDebugDescription() -> ObjCIR.Method {
-        let props = self.properties.map { (param, schema) -> String in
+        let props = self.properties.map { (param, prop) -> String in
             ObjCIR.ifStmt("props.\(dirtyPropertyOption(propertyName: param, className: self.className))") {
                 let ivarName = "_\(param.snakeCaseToPropertyName())"
-                return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, schema))]];"]
+                return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, prop.schema))]];"]
             }
             }.joined(separator: "\n")
 
@@ -31,10 +31,10 @@ extension ObjCModelRenderer {
 
 extension ObjCADTRenderer {
     func renderDebugDescription() -> ObjCIR.Method {
-        let props = self.properties.map { (param, schema) -> String in
-            ObjCIR.ifStmt("self.internalType == \(self.renderInternalEnumTypeCase(name: ObjCADTRenderer.objectName(schema)))") {
+        let props = self.properties.map { (param, prop) -> String in
+            ObjCIR.ifStmt("self.internalType == \(self.renderInternalEnumTypeCase(name: ObjCADTRenderer.objectName(prop.schema)))") {
                 let ivarName = "_\(param.snakeCaseToPropertyName())"
-                return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, schema))]];"]
+                return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, prop.schema))]];"]
             }
         }.joined(separator: "\n")
 

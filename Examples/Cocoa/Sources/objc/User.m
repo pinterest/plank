@@ -425,12 +425,10 @@ struct UserDirtyProperties {
         if (value != nil) {
             if (builder.image) {
                 builder.image = [builder.image mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];
-            }
-             else {
+            } else {
                 builder.image = value;
             }
-        }
-         else {
+        } else {
             builder.image = nil;
         }
     }

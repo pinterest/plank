@@ -8,6 +8,27 @@ extension ObjectiveCInitTests {
        ("testOneOfInit", testOneOfInit)
    ]
 }
+// Generated Test Extension for ObjectiveCIRTests
+extension ObjectiveCIRTests {
+   static var allTests = [
+       ("testDirtyPropertyOption", testDirtyPropertyOption),
+       ("testDirtyPropertyOptionMultiWord", testDirtyPropertyOptionMultiWord),
+       ("testDirtyPropertyOptionThrowsForEmptyProp", testDirtyPropertyOptionThrowsForEmptyProp),
+       ("testDirtyPropertyOptionThrowsForEmptyClass", testDirtyPropertyOptionThrowsForEmptyClass),
+       ("testEnumTypeName", testEnumTypeName),
+       ("testEnumToStringName", testEnumToStringName),
+       ("testEnumFromStringName", testEnumFromStringName),
+       ("testStatementSyntax", testStatementSyntax),
+       ("testMsgSyntax", testMsgSyntax),
+       ("testBlockSyntax", testBlockSyntax),
+       ("testScopeSyntax", testScopeSyntax),
+       ("testNestedScopeSyntax", testNestedScopeSyntax),
+       ("testIfStmt", testIfStmt),
+       ("testElseIfStmt", testElseIfStmt),
+       ("testElseStmt", testElseStmt),
+       ("testIfElseStmt", testIfElseStmt)
+   ]
+}
 // Generated Test Extension for StringExtensionsTests
 extension StringExtensionsTests {
    static var allTests = [

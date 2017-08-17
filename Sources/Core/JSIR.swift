@@ -139,12 +139,17 @@ public struct JSIR {
                     classNames.filter { $0 != "\(myName)Type" }.sorted().map { JSIR.fileImportStmt($0, $0) }.joined(separator: "\n")
                 ]
             case .typeDecl(name: let className, extends: _, properties: let properties):
+                let nullability = { (prop: SchemaObjectProperty) -> String in
+                    switch prop.nullability {
+                    case .some(.nullable): return "?"
+                    case .some(.nonnull), .none: return ""
+                    }
+                }
                 return [
                     // Create flow type for class
                     JSIR.type(className, shape: { () -> [String] in
-                        // TOOD: JS: We add the optional key (?) for now we should find a better way to express that
-                        properties.map { (param, typeName, _, _) in
-                            "+\(param): ?\(typeName),"
+                        properties.map { (param, typeName, prop, _) in
+                            return "+\(param): \(nullability(prop))\(typeName),"
                         }
                     }, body: {() -> [String] in [
                         // TODO: JS: For now we have the id as hard property in every type

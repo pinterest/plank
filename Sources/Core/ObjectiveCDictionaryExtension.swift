@@ -11,9 +11,9 @@ import Foundation
 extension ObjCModelRenderer {
     func renderGenerateDictionary() -> ObjCIR.Method {
         let dictionary = "dict"
-        let props = self.properties.map { (param, schema) -> String in
+        let props = self.properties.map { (param, schemaObj) -> String in
             ObjCIR.ifStmt("_"+"\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
-                [renderAddObjectStatement(param, schema, dictionary)]
+                [renderAddObjectStatement(param, schemaObj.schema, dictionary)]
             }
         }.joined(separator: "\n")
         return ObjCIR.method("- (NSDictionary *)dictionaryRepresentation") {[

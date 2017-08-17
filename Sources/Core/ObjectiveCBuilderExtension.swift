@@ -31,8 +31,8 @@ extension ObjCModelRenderer {
     }
 
     func renderBuilderPropertySetters() -> [ObjCIR.Method] {
-        return self.properties.map({ (param, schema) -> ObjCIR.Method in
-            ObjCIR.method("- (void)set\(param.snakeCaseToCapitalizedPropertyName()):(\(objcClassFromSchema(param, schema)))\(param.snakeCaseToPropertyName())") {
+        return self.properties.map({ (param, prop) -> ObjCIR.Method in
+            ObjCIR.method("- (void)set\(param.snakeCaseToCapitalizedPropertyName()):(\(objcClassFromSchema(param, prop.schema)))\(param.snakeCaseToPropertyName())") {
                 [
                     "_\(param.snakeCaseToPropertyName()) = \(param.snakeCaseToPropertyName());",
                     "_\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = 1;"
@@ -79,7 +79,7 @@ extension ObjCModelRenderer {
                 "NSParameterAssert(modelObject);",
                 self.isBaseClass ? "" : "[super mergeWithModel:modelObject];",
                 self.properties.count > 0 ? "\(self.builderClassName) *builder = self;" : "",
-                self.properties.map(formatParam).joined(separator: "\n")
+                self.properties.map { ($0.0, $0.1.schema) }.map(formatParam).joined(separator: "\n")
                 ].filter { $0 != "" }
         }
     }

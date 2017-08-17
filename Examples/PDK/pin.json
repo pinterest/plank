@@ -40,5 +40,5 @@
 		"description" : { "type": "string" },
 		"image": { "$ref": "image.json" }
 	},
-    "required": []
+    "required": ["id", "created_at", "creator"]
 }

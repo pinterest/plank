@@ -21,6 +21,27 @@ categories: objc-reference
 | Object Property with item types     | `NSDictionary<NSString *, ModelType *>`                          |
 | Algebraic Data Type (`oneOf`)       | ADT Class (ModelType + Property name)                          |
 
+#### Nullability
+- Property names that are specified in the `required` list will be generated as
+`nonnull`.
+- Property names that are *not* specified as `required` will be generated as `nullable`
+
+We can define `username` as a `required` field in our schema.
+<pre><code class="json">{
+    "title": "user",
+    "type": "object",
+    "properties": {
+        "username" : { "type": "string" }
+    },
+    "required": ["username"]
+}
+</code></pre>
+
+And the corresponding Objective-C code for the `username` property would be:
+
+<pre><code class="objc"> @property (nonnull, nonatomic, copy, readonly) NSString * username; </code></pre>
+
+> Note: Property names that are specified in the schema are ignored for primitive types. This may become an assertion in the future enforce valid schema definitions.
 
 #### Generated Methods
 <pre><code class="objc">@interface User : NSObject<NSCopying, NSSecureCoding>

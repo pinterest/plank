@@ -18,6 +18,7 @@
 		812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */; };
 		812A69D41E53D35F006A510E /* ObjectiveCBuilderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */; };
 		812A69D61E53D44D006A510E /* ObjectiveCNSCodingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */; };
+		815009AE1F257E6D00635E87 /* ObjectiveCIRTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815009AD1F257E6D00635E87 /* ObjectiveCIRTests.swift */; };
 		8152228D1E57766E00A4B873 /* ObjCADTRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8152228C1E57766E00A4B873 /* ObjCADTRenderer.swift */; };
 		815A011A1E54D2BA00017AFB /* ObjectiveCInitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A01191E54D2BA00017AFB /* ObjectiveCInitTests.swift */; };
 		815A011C1E55100E00017AFB /* MockSchemaLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815A011B1E55100E00017AFB /* MockSchemaLoader.swift */; };
@@ -68,6 +69,7 @@
 		812A69D11E53D30F006A510E /* ObjectiveCInitExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInitExtension.swift; sourceTree = "<group>"; };
 		812A69D31E53D35F006A510E /* ObjectiveCBuilderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCBuilderExtension.swift; sourceTree = "<group>"; };
 		812A69D51E53D44D006A510E /* ObjectiveCNSCodingExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCNSCodingExtension.swift; sourceTree = "<group>"; };
+		815009AD1F257E6D00635E87 /* ObjectiveCIRTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCIRTests.swift; sourceTree = "<group>"; };
 		8152228C1E57766E00A4B873 /* ObjCADTRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjCADTRenderer.swift; sourceTree = "<group>"; };
 		815A01191E54D2BA00017AFB /* ObjectiveCInitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCInitTests.swift; sourceTree = "<group>"; };
 		815A011B1E55100E00017AFB /* MockSchemaLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockSchemaLoader.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				815A01191E54D2BA00017AFB /* ObjectiveCInitTests.swift */,
 				815A011B1E55100E00017AFB /* MockSchemaLoader.swift */,
 				691F9DFE1EF41CD10002CE40 /* StringExtensionsTests.swift */,
+				815009AD1F257E6D00635E87 /* ObjectiveCIRTests.swift */,
 			);
 			name = CoreTests;
 			path = Tests/CoreTests;
@@ -349,6 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				815009AE1F257E6D00635E87 /* ObjectiveCIRTests.swift in Sources */,
 				OBJ_56 /* LinuxTestIndex.swift in Sources */,
 				OBJ_57 /* PlankTestExtension.swift in Sources */,
 				815A011A1E54D2BA00017AFB /* ObjectiveCInitTests.swift in Sources */,

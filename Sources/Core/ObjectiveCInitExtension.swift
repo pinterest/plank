@@ -227,12 +227,12 @@ extension ObjCModelRenderer {
                 "NSParameterAssert(modelDictionary);",
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                 "if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }",
-                -->self.properties.map { (name, schema) in
+                -->self.properties.map { (name, prop) in
                     ObjCIR.scope {[
                         "__unsafe_unretained id value = modelDictionary[\(name.objcLiteral())]; // Collection will retain.",
                         ObjCIR.ifStmt("value != nil") {[
                             ObjCIR.ifStmt("value != (id)kCFNull") {
-                                renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: schema, firstName: name)
+                                renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: prop.schema, firstName: name)
                             },
                             "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;"
                         ]}

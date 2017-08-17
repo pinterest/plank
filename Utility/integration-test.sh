@@ -8,6 +8,7 @@ JSON_FILES=`ls -d Examples/PDK/*.json`
 
 # Generate flow types for models
 .build/debug/plank --lang flow  --output_dir=Examples/JS/flow/ $JSON_FILES
+
 # Verify flow types
 if [ -x "$(command -v flow)" ]; then
   pushd Examples/JS/flow

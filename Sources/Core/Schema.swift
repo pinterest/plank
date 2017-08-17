@@ -74,8 +74,6 @@ public protocol LazySchemaReference {
     var force: () -> Schema? { get }
 }
 
-typealias Property = (Parameter, Schema)
-
 extension Dictionary {
     init(elements: [(Key, Value)]) {
         self.init()
@@ -96,9 +94,22 @@ func decodeRef(from source: URL, with ref: String) -> URL {
     }
 }
 
+public enum Nullability: String {
+    case nullable
+    case nonnull
+}
+
+// Ask @bkase about whether this makes more sense to wrap schemas to express nullability
+// or if it would be better to have a protocol (i.e. NullabilityProperty) that we would pattern
+// match on to detect nullable constraints.
+public struct SchemaObjectProperty {
+    let schema: Schema
+    let nullability: Nullability? // Nullability does not apply for primitive types
+}
+
 public struct SchemaObjectRoot: Equatable {
     let name: String
-    let properties: [String:Schema]
+    let properties: [String:SchemaObjectProperty]
     let extends: URLSchemaReference?
     let algebraicTypeIdentifier: String?
 
@@ -113,7 +124,7 @@ public func == (lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
 
 extension SchemaObjectRoot : CustomDebugStringConvertible {
     public var debugDescription: String {
-        return (["\(name)\n extends from \(String(describing: extends.map { $0.force()?.debugDescription }))\n"] + properties.map { (key, value) in "\t\(key): \(value.debugDescription)\n" }).reduce("", +)
+        return (["\(name)\n extends from \(String(describing: extends.map { $0.force()?.debugDescription }))\n"] + properties.map { (key, value) in "\t\(key): \(value.schema.debugDescription)\n" }).reduce("", +)
     }
 }
 
@@ -129,6 +140,8 @@ public indirect enum Schema {
     case enumT(EnumType)
     case reference(with: URLSchemaReference)
 }
+
+typealias Property = (Parameter, SchemaObjectProperty)
 
 extension Schema : CustomDebugStringConvertible {
     public var debugDescription: String {
@@ -183,8 +196,8 @@ extension Schema {
             let url: URL? = rootObject.extends?.url
             return (url.map { Set([$0]) } ?? Set()).union(
                     Set(
-                        rootObject.properties.values.flatMap { (schema: Schema) -> Set<URL> in
-                            return schema.deps()
+                        rootObject.properties.values.flatMap { (prop: SchemaObjectProperty) -> Set<URL> in
+                            return prop.schema.deps()
                     }))
         case .array(itemType: let itemType):
             return itemType?.deps() ?? []
@@ -242,6 +255,7 @@ extension Schema {
                     }))
                 }
             case JSONType.object:
+                let requiredProps = Set(propertyInfo["required"] as? [String] ?? [])
                 if let propMap = propertyInfo["properties"] as? JSONObject, let objectTitle = title {
                     // Class
                     let optTuples: [Property?] = propMap.map { (key, value) -> (String, Schema?) in
@@ -249,7 +263,10 @@ extension Schema {
                                 propertyForType(propertyInfo: $0, source: source)
                         }
                         return (key, schemaOpt)
-                        }.map { (name, optSchema) in optSchema.map { (name, $0) } }
+                        }.map { (name, optSchema) in optSchema.map {
+                            (name, SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : requiredProps.contains(name) ? .nonnull : .nullable))
+                            }
+                    }
                     let lifted: [Property]? = optTuples.reduce([], { (build: [Property]?, tupleOption: Property?) -> [Property]? in
                         build.flatMap { (bld: [Property]) -> [Property]? in tupleOption.map { bld + [$0] } }
                     })

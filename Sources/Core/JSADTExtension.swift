@@ -44,8 +44,8 @@ extension JSModelRenderer {
     }
 
     func renderAdtTypeRoots() -> [JSIR.Root] {
-        return self.properties.flatMap { (param, schema) -> [JSIR.Root] in
-            switch schema {
+        return self.properties.flatMap { (param, prop) -> [JSIR.Root] in
+            switch prop.schema {
             case .oneOf(types: let possibleTypes):
                 return [renderAdtTypeRoot(property: param, schemas: possibleTypes)]
             case .array(itemType: .some(let itemType)):

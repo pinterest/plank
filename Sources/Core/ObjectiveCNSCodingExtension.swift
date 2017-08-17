@@ -14,8 +14,9 @@ extension ObjCModelRenderer {
             [
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                 "if (!(self = [super initWithCoder:aDecoder])) { return self; }",
-                self.properties.map(decodeStatement).joined(separator: "\n"),
-
+                self.properties.map { ($0.0, $0.1.schema) }
+                               .map(decodeStatement)
+                               .joined(separator: "\n"),
                 self.properties.map { (param, _) -> String in
                     "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = [aDecoder decodeIntForKey:\((param + "_dirty_property").objcLiteral())] & 0x1;"
                     }.joined(separator: "\n"),
@@ -32,7 +33,7 @@ extension ObjCModelRenderer {
         return ObjCIR.method("- (void)encodeWithCoder:(NSCoder *)aCoder") {
             [
                 self.isBaseClass ? "" : "[super encodeWithCoder:aCoder];",
-                self.properties.map(encodeStatement).joined(separator: "\n"),
+                self.properties.map { ($0.0, $0.1.schema) }.map(encodeStatement).joined(separator: "\n"),
                 self.properties.map { (param, _) -> String in
                     "[aCoder encodeInt:_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) forKey:\((param + "_dirty_property").objcLiteral())];"}.joined(separator: "\n")
                 ].filter { $0 != "" }
@@ -46,7 +47,7 @@ extension ObjCADTRenderer {
             [
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                 "if (!(self = [super initWithCoder:aDecoder])) { return self; }",
-                self.properties.map(decodeStatement).joined(separator: "\n"),
+                self.properties.map { ($0.0, $0.1.schema) }.map(decodeStatement).joined(separator: "\n"),
                 "return self;"
             ]
         }
@@ -56,7 +57,7 @@ extension ObjCADTRenderer {
         return ObjCIR.method("- (void)encodeWithCoder:(NSCoder *)aCoder") {
             [
                 self.isBaseClass ? "" : "[super encodeWithCoder:aCoder];",
-                self.properties.map(encodeStatement).joined(separator: "\n")
+                self.properties.map { ($0.0, $0.1.schema) }.map(encodeStatement).joined(separator: "\n")
             ].filter { $0 != "" }
         }
     }
