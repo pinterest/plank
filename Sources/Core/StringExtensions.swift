@@ -41,17 +41,6 @@ import Foundation
     }
 #endif
 
-extension NSObject {
-    // prefix with "pin_" since protocol extensions cannot override parent implementations
-    class func pin_className() -> String {
-        #if os(Linux)
-            return "NSObject"
-        #else
-            return NSObject.className()
-        #endif
-    }
-}
-
 prefix operator -->
 
 prefix func --> (strs: [String]) -> String {
