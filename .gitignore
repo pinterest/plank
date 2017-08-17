@@ -36,3 +36,8 @@ Packages
 docs/.jekyll-metadata
 docs/.sass-cache
 docs/_site
+
+# Bazel
+.bazel/
+bazel-out/
+bazel-out
