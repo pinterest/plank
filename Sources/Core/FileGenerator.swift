@@ -79,7 +79,7 @@ extension FileGenerator {
 
         return header.joined(separator: "\n")
     }
-    
+
     /// Renders a whitespace cleaned, concatenated series of lines for final file rendering output
     func render(lines: [String], lineSeparator separator: String = "\n\n") -> String {
         return lines

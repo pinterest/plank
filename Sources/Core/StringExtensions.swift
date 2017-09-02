@@ -119,8 +119,7 @@ extension String {
     var lowercaseFirst: String {
         return String(characters.prefix(1)).lowercased() + String(characters.dropFirst())
     }
-    
-    
+
     func indent() -> String {
         // We indent with tabs and in a post process the tabs are changed to a specific number of spaces
         return "\t"  + self

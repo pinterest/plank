@@ -10,7 +10,7 @@ import Foundation
 protocol SwiftFileRenderer {
     var rootSchema: SchemaObjectRoot { get }
     var params: GenerationParameters { get }
-    
+
     func renderRoots() -> [SwiftIR.Root]
 }
 
@@ -18,11 +18,11 @@ extension SwiftFileRenderer {
     var className: String {
         return rootSchema.className(with: params)
     }
-    
+
     var properties: [(Parameter, SchemaObjectProperty)] {
         return rootSchema.properties.map { $0 }
     }
-    
+
     func swiftType(schema: Schema, param: String) -> String {
         switch schema {
         case .array(itemType: .none):

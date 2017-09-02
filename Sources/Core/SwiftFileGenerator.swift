@@ -27,7 +27,7 @@ fileprivate extension FileGenerator {
         return 4
     }
 }
-    
+
 struct SwiftFile: FileGenerator {
     let roots: [SwiftIR.Root]
     let className: String
@@ -35,28 +35,27 @@ struct SwiftFile: FileGenerator {
     var fileName: String {
         return "\(className).swift"
     }
-    
+
     var indent: Int {
         return swiftDefaultIndent
     }
-    
+
     func renderFile() -> String {
         return render(lines: [ renderCommentHeader() ] +
             roots.flatMap { $0.render().joined(separator: "\n") }
         )
     }
-
 }
 
 struct SwiftRuntimeFile: FileGenerator {
     var fileName: String {
-        return "PlankModelRuntime.swift"
+        return "PlankRuntime.swift"
     }
-    
+
     var indent: Int {
         return swiftDefaultIndent
     }
-    
+
     func renderFile() -> String {
         let outputs: [String] = []
         return render(lines: [

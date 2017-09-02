@@ -8,18 +8,18 @@
 import Foundation
 
 public struct SwiftIR {
-    
+
     enum PropertyType: String {
         case variable = "var"
         case constant = "let"
     }
-    
+
     enum AccessControl: String {
         case publicDecl = "public"
         case privateDecl = "private"
         case fileprivateDecl = "fileprivate"
     }
-    
+
     typealias TypeAnnotation = String
     typealias PropertyName = String
     typealias Property = (AccessControl, PropertyType, String, TypeAnnotation)
@@ -36,7 +36,7 @@ public struct SwiftIR {
             type: String,
             protocols: [String]
         )
-        
+
         func render() -> [String] {
             switch self {
             case let .importDecl(name: name):
@@ -59,5 +59,16 @@ public struct SwiftIR {
             }
         }
     }
+}
 
+extension SwiftIR.PropertyType: CustomStringConvertible {
+    var description: String {
+        return rawValue
+    }
+}
+
+extension SwiftIR.AccessControl: CustomStringConvertible {
+    var description: String {
+        return rawValue
+    }
 }

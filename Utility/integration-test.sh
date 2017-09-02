@@ -4,10 +4,13 @@
 JSON_FILES=`ls -d Examples/PDK/*.json`
 
 # Generate Objective-C models
-.build/debug/plank  --output_dir=Examples/Cocoa/Sources/objc/ $JSON_FILES
+.build/debug/plank  --output_dir=Examples/Cocoa/Objc/Sources/objc $JSON_FILES
 
 # Generate flow types for models
 .build/debug/plank --lang flow  --output_dir=Examples/JS/flow/ $JSON_FILES
+
+# Generate Swift models
+.build/debug/plank --lang swift  --output_dir=Examples/Cocoa/swift/Sources/swift $JSON_FILES
 
 # Verify flow types
 if [ -x "$(command -v flow)" ]; then
@@ -17,10 +20,16 @@ if [ -x "$(command -v flow)" ]; then
 fi
 
 # Move headers in the right place for the Swift PM
-mv Examples/Cocoa/Sources/objc/*.h Examples/Cocoa/Sources/objc/include
+mv Examples/Cocoa/Objc/Sources/objc/*.h Examples/Cocoa/Objc/Sources/objc/include
 
-# Build the ObjC library
-pushd Examples/Cocoa
+# Build the Obj-c library
+pushd Examples/Cocoa/Objc
 swift build
 swift test
+popd
+
+# Build the Swift library
+pushd Examples/Cocoa/Swift
+swift build
+#swift test
 popd
