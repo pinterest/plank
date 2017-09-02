@@ -36,13 +36,10 @@ struct JSModelFile: FileGenerator {
     }
 
     func renderFile() -> String {
-        return (
+        return render(lines: (
             [self.renderCommentHeader()] +
             self.roots.map { $0.renderImplementation().joined(separator: "\n") }
-        )
-        .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
-        .filter { $0 != "" }
-        .joined(separator: "\n\n")
+        ))
     }
 }
 

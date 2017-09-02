@@ -37,11 +37,6 @@ extension String {
     func objcLiteral() -> String {
         return "@\"\(self)\""
     }
-
-    func indent() -> String {
-        // We indent with tabs and in a post process the tabs are changed to a specific number of spaces
-        return "\t"  + self
-    }
 }
 
 extension Sequence {

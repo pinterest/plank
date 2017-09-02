@@ -23,6 +23,7 @@ public enum GenerationParameterType {
 public enum Languages: String {
     case objectiveC = "objc"
     case flowtype = "flow"
+    case swift = "swift"
 }
 
 public protocol FileGeneratorManager {
@@ -78,6 +79,14 @@ extension FileGenerator {
 
         return header.joined(separator: "\n")
     }
+    
+    /// Renders a whitespace cleaned, concatenated series of lines for final file rendering output
+    func render(lines: [String], lineSeparator separator: String = "\n\n") -> String {
+        return lines
+            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
+            .filter { $0 != "" }
+            .joined(separator: separator)
+    }
 }
 
 extension FileGeneratorManager {
@@ -100,6 +109,8 @@ func generator(forLanguage language: Languages) -> FileGeneratorManager {
         return ObjectiveCFileGenerator()
     case .flowtype:
         return JSFileGenerator()
+    case .swift:
+        return SwiftFileGenerator()
     }
 }
 

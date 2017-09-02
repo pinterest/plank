@@ -45,14 +45,10 @@ struct ObjCHeaderFile: FileGenerator {
     }
 
     func renderFile() -> String {
-        let output = (
-                [self.renderCommentHeader()] +
-                self.roots.flatMap { $0.renderHeader().joined(separator: "\n") }
-            )
-            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
-            .filter { $0 != "" }
-            .joined(separator: "\n\n")
-        return output
+        return render(lines: (
+            [self.renderCommentHeader()] +
+            self.roots.flatMap { $0.renderHeader().joined(separator: "\n") }
+        ))
     }
 }
 
@@ -69,14 +65,10 @@ struct ObjCImplementationFile: FileGenerator {
     }
 
     func renderFile() -> String {
-        let output = (
-                [self.renderCommentHeader()] +
-                self.roots.map { $0.renderImplementation().joined(separator: "\n") }
-            )
-            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
-            .filter { $0 != "" }
-            .joined(separator: "\n\n")
-        return output
+        return render(lines: (
+            [self.renderCommentHeader()] +
+            self.roots.map { $0.renderImplementation().joined(separator: "\n") }
+        ))
     }
 }
 
@@ -173,10 +165,8 @@ struct ObjCRuntimeHeaderFile: FileGenerator {
     func renderFile() -> String {
         let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
         let outputs = roots.map { $0.renderHeader() }.reduce([], +)
-        return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", ""] + outputs)
-            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
-            .filter { $0 != "" }
-            .joined(separator: "\n\n")    }
+        return render(lines: ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", ""] + outputs))
+    }
 }
 
 struct ObjCRuntimeImplementationFile: FileGenerator {
@@ -191,9 +181,13 @@ struct ObjCRuntimeImplementationFile: FileGenerator {
     func renderFile() -> String {
         let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
         let outputs = roots.map { $0.renderImplementation() }.reduce([], +)
-        return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", "", "#import \"\(ObjCRuntimeHeaderFile().fileName)\"", outputs.joined(separator: "\n")])
-            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
-            .filter { $0 != "" }
-            .joined(separator: "\n\n")
+        return render(lines: [
+            self.renderCommentHeader(),
+            "",
+            "#import <Foundation/Foundation.h>",
+            "",
+            "#import \"\(ObjCRuntimeHeaderFile().fileName)\"",
+            outputs.joined(separator: "\n")
+        ])
     }
 }
