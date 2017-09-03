@@ -19,14 +19,14 @@ if [ -x "$(command -v flow)" ]; then
   popd
 fi
 
-## Move headers in the right place for the Swift PM
-#mv Examples/Cocoa/Objc/Sources/objc/*.h Examples/Cocoa/Objc/Sources/objc/include
-#
-## Build the Obj-c library
-#pushd Examples/Cocoa/Objc
-#swift build
-#swift test
-#popd
+# Move headers in the right place for the Swift PM
+mv Examples/Cocoa/Objc/Sources/objc/*.h Examples/Cocoa/Objc/Sources/objc/include
+
+# Build the Obj-c library
+pushd Examples/Cocoa/Objc
+swift build
+swift test
+popd
 
 # Build the Swift library
 pushd Examples/Cocoa/Swift
