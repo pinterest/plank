@@ -28,6 +28,10 @@
 		A300067A1F5B457800216593 /* SwiftFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30006781F5B457700216593 /* SwiftFileGenerator.swift */; };
 		A300067C1F5B488800216593 /* SwiftFileRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A300067B1F5B488800216593 /* SwiftFileRenderer.swift */; };
 		A30006811F5B498100216593 /* SwiftIR.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30006801F5B498100216593 /* SwiftIR.swift */; };
+		A30006841F5C5C5700216593 /* KotlinFileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30006831F5C5C5700216593 /* KotlinFileGenerator.swift */; };
+		A30006861F5C5C6900216593 /* KotlinFileRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30006851F5C5C6900216593 /* KotlinFileRenderer.swift */; };
+		A30006881F5C5C7700216593 /* KotlinModelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30006871F5C5C7700216593 /* KotlinModelRenderer.swift */; };
+		A300068A1F5C5C8100216593 /* KotlinIR.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30006891F5C5C8100216593 /* KotlinIR.swift */; };
 		EE11EB4E1ECDEF1400DD6A00 /* ObjectiveCDictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE11EB4D1ECDEF1400DD6A00 /* ObjectiveCDictionaryExtension.swift */; };
 		OBJ_33 /* FileGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* FileGenerator.swift */; };
 		OBJ_34 /* ObjCModelRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* ObjCModelRenderer.swift */; };
@@ -83,6 +87,10 @@
 		A30006781F5B457700216593 /* SwiftFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftFileGenerator.swift; sourceTree = "<group>"; };
 		A300067B1F5B488800216593 /* SwiftFileRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftFileRenderer.swift; sourceTree = "<group>"; };
 		A30006801F5B498100216593 /* SwiftIR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftIR.swift; sourceTree = "<group>"; };
+		A30006831F5C5C5700216593 /* KotlinFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KotlinFileGenerator.swift; sourceTree = "<group>"; };
+		A30006851F5C5C6900216593 /* KotlinFileRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KotlinFileRenderer.swift; sourceTree = "<group>"; };
+		A30006871F5C5C7700216593 /* KotlinModelRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KotlinModelRenderer.swift; sourceTree = "<group>"; };
+		A30006891F5C5C8100216593 /* KotlinIR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KotlinIR.swift; sourceTree = "<group>"; };
 		EE11EB4D1ECDEF1400DD6A00 /* ObjectiveCDictionaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectiveCDictionaryExtension.swift; sourceTree = "<group>"; };
 		OBJ_10 /* ObjCModelRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjCModelRenderer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		OBJ_11 /* ObjectiveCFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ObjectiveCFileGenerator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -171,6 +179,17 @@
 			name = "Objective-C";
 			sourceTree = "<group>";
 		};
+		A30006821F5C5C4100216593 /* Kotlin */ = {
+			isa = PBXGroup;
+			children = (
+				A30006831F5C5C5700216593 /* KotlinFileGenerator.swift */,
+				A30006851F5C5C6900216593 /* KotlinFileRenderer.swift */,
+				A30006871F5C5C7700216593 /* KotlinModelRenderer.swift */,
+				A30006891F5C5C8100216593 /* KotlinIR.swift */,
+			);
+			name = Kotlin;
+			sourceTree = "<group>";
+		};
 		OBJ_16 /* plank */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +256,7 @@
 		OBJ_8 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				A30006821F5C5C4100216593 /* Kotlin */,
 				A300067D1F5B48F800216593 /* Swift */,
 				A300067E1F5B490A00216593 /* Javascript */,
 				A300067F1F5B491E00216593 /* Objective-C */,
@@ -353,6 +373,7 @@
 			files = (
 				OBJ_33 /* FileGenerator.swift in Sources */,
 				812A69D21E53D30F006A510E /* ObjectiveCInitExtension.swift in Sources */,
+				A30006841F5C5C5700216593 /* KotlinFileGenerator.swift in Sources */,
 				EE11EB4E1ECDEF1400DD6A00 /* ObjectiveCDictionaryExtension.swift in Sources */,
 				OBJ_34 /* ObjCModelRenderer.swift in Sources */,
 				692EA6121EAFF3A9000D9A19 /* JSRuntimeFile.swift in Sources */,
@@ -361,6 +382,7 @@
 				A30006811F5B498100216593 /* SwiftIR.swift in Sources */,
 				696C6E811EA928030039B52F /* JSFileGenerator.swift in Sources */,
 				OBJ_36 /* ObjectiveCIR.swift in Sources */,
+				A300068A1F5C5C8100216593 /* KotlinIR.swift in Sources */,
 				OBJ_37 /* Schema.swift in Sources */,
 				812A69D41E53D35F006A510E /* ObjectiveCBuilderExtension.swift in Sources */,
 				A300067A1F5B457800216593 /* SwiftFileGenerator.swift in Sources */,
@@ -371,7 +393,9 @@
 				OBJ_39 /* StringExtensions.swift in Sources */,
 				6948DB2C1EB6A98C00EA902D /* JSIR.swift in Sources */,
 				A30006791F5B457800216593 /* SwiftModelRenderer.swift in Sources */,
+				A30006881F5C5C7700216593 /* KotlinModelRenderer.swift in Sources */,
 				812A69D01E53D2A1006A510E /* ObjectiveCEqualityExtension.swift in Sources */,
+				A30006861F5C5C6900216593 /* KotlinFileRenderer.swift in Sources */,
 				812A69D61E53D44D006A510E /* ObjectiveCNSCodingExtension.swift in Sources */,
 				6948DB321EB6AB2C00EA902D /* JSFileRenderer.swift in Sources */,
 				8193AF301E66A87300DEBD13 /* ObjCFileRenderer.swift in Sources */,

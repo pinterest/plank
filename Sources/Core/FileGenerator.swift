@@ -24,6 +24,7 @@ public enum Languages: String {
     case objectiveC = "objc"
     case flowtype = "flow"
     case swift = "swift"
+    case kotlin = "kotlin"
 }
 
 public protocol FileGeneratorManager {
