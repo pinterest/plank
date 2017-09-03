@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Board {
+public struct Board: Codable {
     public var name: String
     public var identifier: String
     public var image: Image
@@ -17,4 +17,15 @@ public struct Board {
     public var descriptionText: String
     public var creator: [String: String]
     public var url: URL
+
+    public enum CodingKeys: String, CodingKey {
+        case name = "name"
+        case identifier = "id"
+        case image = "image"
+        case counts = "counts"
+        case createdAt = "created_at"
+        case descriptionText = "description"
+        case creator = "creator"
+        case url = "url"
+    }
 }

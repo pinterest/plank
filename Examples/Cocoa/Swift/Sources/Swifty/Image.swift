@@ -8,8 +8,14 @@
 
 import Foundation
 
-public struct Image {
+public struct Image: Codable {
     public var height: Int
     public var url: URL
     public var width: Int
+
+    public enum CodingKeys: String, CodingKey {
+        case height = "height"
+        case url = "url"
+        case width = "width"
+    }
 }

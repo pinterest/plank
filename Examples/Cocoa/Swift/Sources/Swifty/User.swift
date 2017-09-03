@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct User {
+public struct User: Codable {
     public var lastName: String
     public var identifier: String
     public var firstName: String
@@ -17,4 +17,15 @@ public struct User {
     public var createdAt: Date
     public var username: String
     public var bio: String
+
+    public enum CodingKeys: String, CodingKey {
+        case lastName = "last_name"
+        case identifier = "id"
+        case firstName = "first_name"
+        case image = "image"
+        case counts = "counts"
+        case createdAt = "created_at"
+        case username = "username"
+        case bio = "bio"
+    }
 }

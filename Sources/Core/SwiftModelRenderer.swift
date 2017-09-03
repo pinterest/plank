@@ -22,10 +22,23 @@ struct SwiftModelRenderer: SwiftFileRenderer {
             SwiftIR.Root.structDecl(
                 access: .publicDecl,
                 name: className,
+                protocols: ["Codable"],
                 properties: properties.map { dict in
                     let (param, prop) = dict
                     return (.publicDecl, .variable, param, swiftType(schema: prop.schema, param: param))
-                }
+                },
+                body: [
+                    SwiftIR.Root.enumDecl(
+                        access: .publicDecl,
+                        name: "CodingKeys",
+                        type: "String",
+                        protocols: ["CodingKey"],
+                        cases: properties.map { dict in
+                            let (param, _) = dict
+                            return (name: param, value: "\"\(param)\"")
+                        }
+                    )
+                ]
             )
         ]
     }

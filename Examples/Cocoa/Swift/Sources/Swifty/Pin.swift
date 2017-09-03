@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Pin {
+public struct Pin: Codable {
     public var note: String
     public var media: [String: String]
     public var counts: [String: Int] /* Integer */
@@ -22,4 +22,20 @@ public struct Pin {
     public var image: Image
     public var createdAt: Date
     public var url: URL
+
+    public enum CodingKeys: String, CodingKey {
+        case note = "note"
+        case media = "media"
+        case counts = "counts"
+        case descriptionText = "description"
+        case creator = "creator"
+        case attribution = "attribution"
+        case board = "board"
+        case color = "color"
+        case link = "link"
+        case identifier = "id"
+        case image = "image"
+        case createdAt = "created_at"
+        case url = "url"
+    }
 }
