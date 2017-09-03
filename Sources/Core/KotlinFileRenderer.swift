@@ -31,13 +31,13 @@ extension KotlinFileRenderer {
             // Primitive types are represented as NSNumber
             return "IntArray /* \(itemType.debugDescription) */"
         case .array(itemType: .some(let itemType)):
-            return "Array<\(swiftType(schema: itemType, param: param))>"
+            return "Array<\(kotlinType(schema: itemType, param: param))>"
         case .map(valueType: .none):
             return "HashMap<String, Any>"
         case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
             return "HashMap<String, Int> /* \(valueType.debugDescription) */"
         case .map(valueType: .some(let valueType)):
-            return "HashMap<String, \(swiftType(schema: valueType, param: param))>"
+            return "HashMap<String, \(kotlinType(schema: valueType, param: param))>"
         case .string(format: .none),
              .string(format: .some(.email)),
              .string(format: .some(.hostname)),

@@ -112,6 +112,8 @@ func generator(forLanguage language: Languages) -> FileGeneratorManager {
         return JSFileGenerator()
     case .swift:
         return SwiftFileGenerator()
+    case .kotlin:
+        return KotlinFileGenerator()
     }
 }
 
