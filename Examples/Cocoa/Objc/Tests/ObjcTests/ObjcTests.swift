@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import objc
+@testable import Objc
 
 // Helper for comparing model dictionaries
 public func ==(lhs: [AnyHashable: Any], rhs: [AnyHashable: Any] ) -> Bool {
@@ -8,7 +8,7 @@ public func ==(lhs: [AnyHashable: Any], rhs: [AnyHashable: Any] ) -> Bool {
 }
 
 class ObjcTests: XCTestCase {
-    
+
     func testBasicObjectInitialization() {
         let imageModelDictionary: [AnyHashable: Any] = [
             "height": 12,

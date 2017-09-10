@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import swifty
+@testable import Swifty
 
 // Helper for comparing model dictionaries
 public func ==(lhs: [AnyHashable: Any], rhs: [AnyHashable: Any] ) -> Bool {
@@ -18,7 +18,7 @@ class SwiftyTests: XCTestCase {
 
         let encoder = JSONEncoder()
         let data = try! encoder.encode(imageModelDictionary)
-        
+
         let decoder = JSONDecoder()
         let image = try! decoder.decode(Image.self, from: data)
         XCTAssert(imageModelDictionary["height"] as! Int == image.height, "Image height should be the same")
