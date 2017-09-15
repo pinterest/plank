@@ -52,10 +52,69 @@ prefix func --> (body: () -> [String]) -> String {
     return -->body()
 }
 
+// Most of these are derived from https://www.binpress.com/tutorial/objective-c-reserved-keywords/43
+// other language conflicts should be ideally added here.
+// TODO: Find a way to separate this by language since the reserved keywords will differ.
 let objectiveCReservedWordReplacements = [
     "description": "description_text",
-    "id": "identifier"
-  // TODO: Fill out more objc keywords with replacements.
+    "id": "identifier",
+    "bool": "bool_property",
+    "class": "class_property",
+    "imp": "imp_property",
+    "no": "no_property",
+    "null": "null_property",
+    "protocol": "protocol_property",
+    "sel": "sel_property",
+    "yes": "yes_property",
+    "_bool": "bool_property",
+    "_complex": "complex_property",
+    "_imaginery": "imaginery_property",
+    "atomic": "atomic_property",
+    "auto": "auto_property",
+    "break": "break_property",
+    "bycopy": "bycopy_property",
+    "byref": "byref_property",
+    "case": "case_property",
+    "char": "char_property",
+    "const": "const_property",
+    "continue": "continue_property",
+    "default": "default_property",
+    "do": "do_property",
+    "double": "double_property",
+    "else": "else_property",
+    "enum": "enum_property",
+    "extern": "extern_property",
+    "float": "float_property",
+    "for": "for_property",
+    "goto": "goto_property",
+    "if": "if_property",
+    "in": "in_property",
+    "inline": "inline_property",
+    "inout": "inout_property",
+    "int": "int_property",
+    "long": "long_property",
+    "nil": "nil_property",
+    "nonatomic": "nonatomic_property",
+    "oneway": "oneway_property",
+    "out": "out_property",
+    "register": "register_property",
+    "restrict": "restrict_property",
+    "retain": "retain_property",
+    "return": "return_property",
+    "self": "self_property",
+    "short": "short_property",
+    "signed": "signed_property",
+    "sizeof": "sizeof_property",
+    "static": "static_property",
+    "struct": "struct_property",
+    "super": "super_property",
+    "switch": "switch_property",
+    "typedef": "typedef_property",
+    "union": "union_property",
+    "unsigned": "unsigned_property",
+    "void": "void_property",
+    "volatile": "volatile_property",
+    "while": "while_property"
 ]
 
 extension String {
@@ -63,7 +122,7 @@ extension String {
     func snakeCaseToCamelCase() -> String {
         var str: String = self
 
-        if let replacementString = objectiveCReservedWordReplacements[self] as String? {
+        if let replacementString = objectiveCReservedWordReplacements[self.lowercased()] as String? {
             str = replacementString
         }
 
@@ -76,7 +135,7 @@ extension String {
     func snakeCaseToPropertyName() -> String {
         var str: String = self
 
-        if let replacementString = objectiveCReservedWordReplacements[self] as String? {
+        if let replacementString = objectiveCReservedWordReplacements[self.lowercased()] as String? {
             str = replacementString
         }
 
