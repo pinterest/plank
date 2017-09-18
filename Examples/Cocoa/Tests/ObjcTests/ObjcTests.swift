@@ -1,14 +1,15 @@
+import Foundation
 import XCTest
 
-@testable import objc
+@testable import Objc
 
 // Helper for comparing model dictionaries
 public func ==(lhs: [AnyHashable: Any], rhs: [AnyHashable: Any] ) -> Bool {
     return NSDictionary(dictionary: lhs).isEqual(to: rhs)
 }
 
-class ObjcTests: XCTestCase {
-    
+class ObjcTestSuite: XCTestCase {
+
     func testBasicObjectInitialization() {
         let imageModelDictionary: [AnyHashable: Any] = [
             "height": 12,

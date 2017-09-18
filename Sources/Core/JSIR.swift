@@ -136,7 +136,10 @@ public struct JSIR {
                 return [
                     JSRuntimeFile.runtimeImports(),
                     // TODO: JS: We should find a better way to remove a cyclic import as filtering it here
-                    classNames.filter { $0 != "\(myName)Type" }.sorted().map { JSIR.fileImportStmt($0, $0) }.joined(separator: "\n")
+                    (classNames.filter { $0 != "\(myName)Type" } as [String])
+                               .sorted()
+                               .map { JSIR.fileImportStmt($0, $0) }
+                               .joined(separator: "\n")
                 ]
             case .typeDecl(name: let className, extends: _, properties: let properties):
                 let nullability = { (prop: SchemaObjectProperty) -> String in

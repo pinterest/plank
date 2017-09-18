@@ -57,65 +57,85 @@ prefix func --> (body: () -> [String]) -> String {
 // TODO: Find a way to separate this by language since the reserved keywords will differ.
 let objectiveCReservedWordReplacements = [
     "description": "description_text",
-    "id": "identifier",
-    "bool": "bool_property",
-    "class": "class_property",
-    "imp": "imp_property",
-    "no": "no_property",
-    "null": "null_property",
-    "protocol": "protocol_property",
-    "sel": "sel_property",
-    "yes": "yes_property",
-    "_bool": "bool_property",
-    "_complex": "complex_property",
-    "_imaginery": "imaginery_property",
-    "atomic": "atomic_property",
-    "auto": "auto_property",
-    "break": "break_property",
-    "bycopy": "bycopy_property",
-    "byref": "byref_property",
-    "case": "case_property",
-    "char": "char_property",
-    "const": "const_property",
-    "continue": "continue_property",
-    "default": "default_property",
-    "do": "do_property",
-    "double": "double_property",
-    "else": "else_property",
-    "enum": "enum_property",
-    "extern": "extern_property",
-    "float": "float_property",
-    "for": "for_property",
-    "goto": "goto_property",
-    "if": "if_property",
-    "in": "in_property",
-    "inline": "inline_property",
-    "inout": "inout_property",
-    "int": "int_property",
-    "long": "long_property",
-    "nil": "nil_property",
-    "nonatomic": "nonatomic_property",
-    "oneway": "oneway_property",
-    "out": "out_property",
-    "register": "register_property",
-    "restrict": "restrict_property",
-    "retain": "retain_property",
-    "return": "return_property",
-    "self": "self_property",
-    "short": "short_property",
-    "signed": "signed_property",
-    "sizeof": "sizeof_property",
-    "static": "static_property",
-    "struct": "struct_property",
-    "super": "super_property",
-    "switch": "switch_property",
-    "typedef": "typedef_property",
-    "union": "union_property",
-    "unsigned": "unsigned_property",
-    "void": "void_property",
-    "volatile": "volatile_property",
-    "while": "while_property"
+    "id": "identifier"
 ]
+
+let objectiveCReservedWords = Set<String>([
+    "@catch()",
+    "@class",
+    "@dynamic",
+    "@end",
+    "@finally",
+    "@implementation",
+    "@interface",
+    "@private",
+    "@property",
+    "@protected",
+    "@protocol",
+    "@public",
+    "@selector",
+    "@synthesize",
+    "@throw",
+    "@try",
+    "BOOL",
+    "Class",
+    "IMP",
+    "NO",
+    "NULL",
+    "Protocol",
+    "SEL",
+    "YES",
+    "_Bool",
+    "_Complex",
+    "_Imaginery",
+    "atomic",
+    "auto",
+    "break",
+    "bycopy",
+    "byref",
+    "case",
+    "char",
+    "const",
+    "continue",
+    "default",
+    "do",
+    "double",
+    "else",
+    "enum",
+    "extern",
+    "float",
+    "for",
+    "goto",
+    "id",
+    "if",
+    "in",
+    "inline",
+    "inout",
+    "int",
+    "long",
+    "nil",
+    "nonatomic",
+    "oneway",
+    "out",
+    "register",
+    "restrict",
+    "retain",
+    "return",
+    "self",
+    "short",
+    "signed",
+    "sizeof",
+    "static",
+    "struct",
+    "super",
+    "switch",
+    "typedef",
+    "union",
+    "unsigned",
+    "void",
+    "volatile",
+    "while"
+])
 
 extension String {
     /// All components separated by _ will be capitalized including the first one
@@ -128,7 +148,11 @@ extension String {
 
         let components = str.components(separatedBy: "_")
         let name = components.map { return $0.uppercaseFirst }
-        return name.joined(separator: "")
+        let formattedName = name.joined(separator: "")
+        if objectiveCReservedWords.contains(formattedName) {
+            return "\(formattedName)Property"
+        }
+        return formattedName
     }
 
     /// All components separated by _ will be capitalized execpt the first
@@ -156,6 +180,10 @@ extension String {
             }
         }
 
+        if objectiveCReservedWords.contains(name) {
+            return "\(name)Property"
+        }
+
         return name
     }
 
@@ -167,7 +195,8 @@ extension String {
 
     /// Get the last n characters of a string
     func suffixSubstring(_ length: Int) -> String {
-        return self.substring(from: self.characters.index(self.endIndex, offsetBy: -length))
+        let index = self.characters.index(self.endIndex, offsetBy: -length)
+        return String(self[index...])
     }
 
     /// Uppercase the first character

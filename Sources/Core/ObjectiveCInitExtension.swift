@@ -140,7 +140,8 @@ extension ObjCModelRenderer {
                         if let assignmentLine = lines.last {
                             let propAssignmentPrefix = "\(propertyToAssign) = "
                             if assignmentLine.hasPrefix(propAssignmentPrefix) {
-                                let propertyInitStatement = assignmentLine.substring(from: propAssignmentPrefix.endIndex).trimmingCharacters(in: CharacterSet.init(charactersIn: " ;"))
+                                let startIndex = propAssignmentPrefix.endIndex
+                                let propertyInitStatement = assignmentLine[startIndex...].trimmingCharacters(in: CharacterSet(charactersIn: " ;"))
                                 let adtInitStatement = propAssignmentPrefix + "[\(adtClassName) objectWith\(ObjCADTRenderer.objectName(schema)):\(propertyInitStatement)];"
                                 return lines.dropLast() + [adtInitStatement]
                             }
