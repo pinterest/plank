@@ -1,8 +1,7 @@
 # Base image from Swiftenv with Swift version 3.0.2
 
-FROM kylef/swiftenv:latest
+FROM swiftdocker/swift
 MAINTAINER Pinterest
-RUN swiftenv install 3.1
 
 # Vim config so we have an editor available
 RUN apt-get update && \

@@ -5,14 +5,14 @@ swift_library(
     name = "PlankCore",
     srcs = glob(["Sources/Core/*.swift"]),
     module_name = "Core",
-    swift_version = 3,
+    swift_version = 4,
     copts = ["-whole-module-optimization"]
 )
 
 swift_library(
     name = "PlankLib",
     srcs = glob(["Sources/plank/*.swift"]),
-    swift_version = 3,
+    swift_version = 4,
     copts = ["-whole-module-optimization"],
     deps = [":PlankCore"]
 )
