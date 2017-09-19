@@ -37,7 +37,8 @@ extension StringExtensionsTests {
        ("testSuffixSubstring", testSuffixSubstring),
        ("testSnakeCaseToCamelCase", testSnakeCaseToCamelCase),
        ("testSnakeCaseToPropertyName", testSnakeCaseToPropertyName),
-       ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName)
+       ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName),
+       ("testReservedKeywordSubstitution", testReservedKeywordSubstitution)
    ]
 }
 #endif
