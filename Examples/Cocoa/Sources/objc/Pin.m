@@ -55,6 +55,9 @@ struct PinDirtyProperties {
 - (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary
 {
     NSParameterAssert(modelDictionary);
+    if (!modelDictionary) {
+        return self;
+    }
     if (!(self = [super init])) {
         return self;
     }
