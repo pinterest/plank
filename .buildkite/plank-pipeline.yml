@@ -11,7 +11,7 @@ steps:
       queue: pinboard
   - wait: ~
   - name: "Build :iphone: :airplane:"
-    command: "swift build -v -Xswiftc -static-stdlib"
+    command: "swift build"
     timeout_in_minutes: 30
     agents:
       queue: pinboard
@@ -29,7 +29,7 @@ steps:
         run: app
         config: docker-compose.yml
   - name: "Integration Test :iphone: :airplane:"
-    command: "./Utility/integration-test.sh"
+    command: "swift build && ./Utility/integration-test.sh"
     timeout_in_minutes: 30
     agents:
       queue: pinboard
