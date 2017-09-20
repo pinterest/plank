@@ -1,0 +1,39 @@
+steps:
+  - name: ":docker: Build base image with sources"
+    plugins:
+      docker-compose#v1.5.0:
+        build: app
+        image-repository: buildkite-registry.pinadmin.com/registry
+        volumes:
+          - ".:/app/mnt/buildkite-builds/volumes"
+        config: docker-compose.yml
+    agents:
+      queue: pinboard
+  - wait: ~
+  - name: "Build :iphone: :airplane:"
+    command: "swift build -v -Xswiftc -static-stdlib"
+    timeout_in_minutes: 30
+    agents:
+      queue: pinboard
+    plugins:
+      docker-compose#v1.5.0:
+        run: app
+        config: docker-compose.yml
+  - name: "Test :iphone: :airplane:"
+    command: "swift test"
+    timeout_in_minutes: 30
+    agents:
+      queue: pinboard
+    plugins:
+      docker-compose#v1.5.0:
+        run: app
+        config: docker-compose.yml
+  - name: "Integration Test :iphone: :airplane:"
+    command: "./Utility/integration-test.sh"
+    timeout_in_minutes: 30
+    agents:
+      queue: pinboard
+    plugins:
+      docker-compose#v1.5.0:
+        run: app
+        config: docker-compose.yml

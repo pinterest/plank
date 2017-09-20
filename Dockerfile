@@ -11,9 +11,7 @@ RUN apt-get update && \
 ENV plank_HOME /usr/local/plank
 ENV PATH ${plank_HOME}/.build/release:${PATH}
 
-# Install plank
+# Copy plank sources
 COPY . /plank
-RUN cd /plank && swift build -c release
-
 WORKDIR /plank
 
