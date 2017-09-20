@@ -9,18 +9,20 @@ JSON_FILES=`ls -d Examples/PDK/*.json`
 # Generate flow types for models
 .build/debug/plank --lang flow  --output_dir=Examples/JS/flow/ $JSON_FILES
 
+ROOT_DIR="${PWD}"
+
 # Verify flow types
 if [ -x "$(command -v flow)" ]; then
-  pushd Examples/JS/flow
+  cd Examples/JS/flow
   flow
-  popd
+  cd "${ROOT_DIR}"
 fi
 
 # Move headers in the right place for the Swift PM
 mv Examples/Cocoa/Sources/objc/*.h Examples/Cocoa/Sources/objc/include
 
 # Build the ObjC library
-pushd Examples/Cocoa
+cd Examples/Cocoa
 swift build
 swift test
-popd
+cd "${ROOT_DIR}"
