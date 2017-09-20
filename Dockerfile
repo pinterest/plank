@@ -12,9 +12,8 @@ ENV plank_HOME /usr/local/plank
 ENV PATH ${plank_HOME}/.build/release:${PATH}
 
 # Install plank
-COPY . /usr/local/plank
-RUN cd /usr/local/plank && swift build -c release
+COPY . /plank
+RUN cd /plank && swift build -c release
 
-# Uncomment to make `plank` the default action of `docker run [image_name]`
-#ENTRYPOINT ["plank"]
-#CMD ["help"]
+WORKDIR /plank
+
