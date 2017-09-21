@@ -346,7 +346,7 @@ struct PinDirtyProperties {
         (_counts == anObject.counts || [_counts isEqualToDictionary:anObject.counts]) &&
         (_descriptionText == anObject.descriptionText || [_descriptionText isEqualToString:anObject.descriptionText]) &&
         (_creator == anObject.creator || [_creator isEqualToDictionary:anObject.creator]) &&
-        (_tags == anObject.tags || [_tags isEqual:anObject.tags]) &&
+        (_tags == anObject.tags || [_tags isEqualToArray:anObject.tags]) &&
         (_attribution == anObject.attribution || [_attribution isEqualToDictionary:anObject.attribution]) &&
         (_board == anObject.board || [_board isEqual:anObject.board]) &&
         (_visualSearchAttrs == anObject.visualSearchAttrs || [_visualSearchAttrs isEqualToDictionary:anObject.visualSearchAttrs]) &&
