@@ -397,32 +397,28 @@ struct PinDirtyProperties {
     if (_pinDirtyProperties.PinDirtyPropertyNote) {
         if (_note != nil) {
             [dict setObject:_note forKey:@"note"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"note"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyMedia) {
         if (_media != nil) {
             [dict setObject:_media forKey:@"media"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"media"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyCounts) {
         if (_counts != nil) {
             [dict setObject:_counts forKey:@"counts"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"counts"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyDescriptionText) {
         if (_descriptionText != nil) {
             [dict setObject:_descriptionText forKey:@"description"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"description"];
         }
     }
@@ -448,72 +444,63 @@ struct PinDirtyProperties {
     if (_pinDirtyProperties.PinDirtyPropertyAttribution) {
         if (_attribution != nil) {
             [dict setObject:_attribution forKey:@"attribution"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"attribution"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyBoard) {
         if (_board != nil) {
             [dict setObject:[_board dictionaryRepresentation] forKey:@"board"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"board"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs) {
         if (_visualSearchAttrs != nil) {
             [dict setObject:_visualSearchAttrs forKey:@"visual_search_attrs"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"visual_search_attrs"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyColor) {
         if (_color != nil) {
             [dict setObject:_color forKey:@"color"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"color"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyLink) {
         if (_link != nil) {
             [dict setObject:[_link absoluteString] forKey:@"link"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"link"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyIdentifier) {
         if (_identifier != nil) {
             [dict setObject:_identifier forKey:@"id"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"id"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyImage) {
         if (_image != nil) {
             [dict setObject:[_image dictionaryRepresentation] forKey:@"image"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"image"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyCreatedAt) {
         if (_createdAt != nil && [NSValueTransformer allowsReverseTransformation]) {
             [dict setObject:[[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] reverseTransformedValue:_createdAt] forKey:@"created_at"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"created_at"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyUrl) {
         if (_url != nil) {
             [dict setObject:[_url absoluteString] forKey:@"url"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"url"];
         }
     }

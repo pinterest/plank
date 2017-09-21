@@ -173,8 +173,7 @@ struct ImageDirtyProperties {
     if (_imageDirtyProperties.ImageDirtyPropertyUrl) {
         if (_url != nil) {
             [dict setObject:[_url absoluteString] forKey:@"url"];
-        }
-         else {
+        } else {
             [dict setObject:[NSNull null] forKey:@"url"];
         }
     }
