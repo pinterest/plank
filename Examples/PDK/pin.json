@@ -38,7 +38,14 @@
 			"additionalProperties": { "type": "string" }
 		},
 		"description" : { "type": "string" },
-		"image": { "$ref": "image.json" }
+		"image": { "$ref": "image.json" },
+		"tags": {
+            "type": "array",
+            "items": { "type": "object" }
+        },
+        "visual_search_attrs": {
+            "type": "object"
+        }
 	},
     "required": ["id", "created_at", "creator"]
 }

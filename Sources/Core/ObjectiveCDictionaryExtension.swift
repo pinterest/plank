@@ -90,13 +90,15 @@ extension ObjCFileRenderer {
                         "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items\(arrayCounter).count];",
                         ObjCIR.forStmt("id \(currentObj) in items\(arrayCounter)") { [
                             ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
-                                ObjCIR.stmt(createArray(destArray: currentResult, processObject: currentObj, arraySchema: type!, arrayCounter: arrayCounter+1))
+                                createArray(destArray: currentResult, processObject: currentObj, arraySchema: type!, arrayCounter: arrayCounter+1)
                                 ]}
                             ]},
                         "[\(parentResult) addObject:\(currentResult)];"
                     ].joined(separator: "\n")
-                case .map(valueType: let type):
-                    return self.renderAddObjectStatement(processObject, type!, processObject)
+                case .map(valueType: .none):
+                    return "[\(destArray) addObject:\(processObject)];"
+                case .map(valueType: .some(let valueType)):
+                    return self.renderAddObjectStatement(processObject, valueType, processObject)
                 case .integer, .float, .boolean:
                     return "[\(destArray) addObject:@(\(processObject))] ];"
                 case .string(format: .none),
@@ -132,17 +134,26 @@ extension ObjCFileRenderer {
                     "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items\(counter).count];",
                     ObjCIR.forStmt("id \(currentObj) in items\(counter)") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
-                            ObjCIR.stmt(createArray(destArray: currentResult, processObject: currentObj, arraySchema: itemType, arrayCounter: counter+1))
+                            createArray(destArray: currentResult, processObject: currentObj, arraySchema: itemType, arrayCounter: counter+1)
                         ]}
                     ]},
                     "[\(dictionary) setObject:\(currentResult) forKey:@\"\(param)\"];"
                 ].joined(separator: "\n")
-        case .map(valueType: let type):
-            switch type.unsafelyUnwrapped {
+        case .map(valueType: .none):
+            return [
+                ObjCIR.ifStmt("\(propIVarName) != nil") {[
+                    "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
+                ]},
+                ObjCIR.elseStmt({[
+                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
+                ]})
+            ].joined(separator: "\n")
+        case .map(valueType: .some(let valueType)):
+            switch valueType {
             case .map, .object, .array:
                 return [
                     ObjCIR.ifStmt("\(propIVarName) != nil") {[
-                        renderAddObjectStatement(param, type!, dictionary)
+                        renderAddObjectStatement(param, valueType, dictionary)
                     ]},
                     ObjCIR.elseStmt({
                         ["[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"]
