@@ -59,6 +59,8 @@ extension ObjCFileRenderer {
                 // - The value equality statement is sufficient for equality testing
                 // - All enum types are treated as Integers so we do not need to treat String Enumerations differently
                 return ""
+            case .array:
+                return ObjCIR.msg("_\(param)", ("isEqualToArray", "anObject.\(param)"))
             case .map:
                 return ObjCIR.msg("_\(param)", ("isEqualToDictionary", "anObject.\(param)"))
             case .string(format: .some(.dateTime)):
@@ -69,7 +71,7 @@ extension ObjCFileRenderer {
                  .string(format: .some(.ipv4)),
                  .string(format: .some(.ipv6)):
                 return ObjCIR.msg("_\(param)", ("isEqualToString", "anObject.\(param)"))
-            case .oneOf(types:_), .object, .array, .string(format: .some(.uri)):
+            case .oneOf(types:_), .object, .string(format: .some(.uri)):
                 return ObjCIR.msg("_\(param)", ("isEqual", "anObject.\(param)"))
             case .reference(with: let ref):
                 switch ref.force() {
