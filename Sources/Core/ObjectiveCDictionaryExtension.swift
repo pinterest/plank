@@ -17,7 +17,9 @@ extension ObjCModelRenderer {
             }
         }.joined(separator: "\n")
         return ObjCIR.method("- (NSDictionary *)dictionaryRepresentation") {[
-            "NSMutableDictionary *\(dictionary) = [[NSMutableDictionary alloc] initWithCapacity:\(self.properties.count)];",
+            "NSMutableDictionary *\(dictionary) = " +
+                (self.isBaseClass ? "[[NSMutableDictionary alloc] initWithCapacity:\(self.properties.count)];" :
+                    "[[super dictionaryRepresentation] mutableCopy];"),
             props,
             "return \(dictionary);"
         ]}

@@ -205,7 +205,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     (.privateM, self.renderHash()),
                     (.publicM, self.renderMergeWithModel()),
                     (.publicM, self.renderMergeWithModelWithInitType()),
-                    (.publicM, self.renderGenerateDictionary())
+                    (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary())
 
                 ],
                 properties: properties.map { param, prop in (param, objcClassFromSchema(param, prop.schema), prop, .readonly) },
