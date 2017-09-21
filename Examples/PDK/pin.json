@@ -1,10 +1,10 @@
 {
-    "id": "pin.json",
-    "title": "pin",
-    "description" : "Schema definition of Pinterest Pin",
-    "$schema": "http://json-schema.org/schema#",
-    "type": "object",
-    "properties": {
+	"id": "pin.json",
+	"title": "pin",
+	"description" : "Schema definition of Pinterest Pin",
+	"$schema": "http://json-schema.org/schema#",
+	"type": "object",
+	"properties": {
 		"id" : { "type": "string" },
 		"link" : {
 			"type": "string",
@@ -40,12 +40,12 @@
 		"description" : { "type": "string" },
 		"image": { "$ref": "image.json" },
 		"tags": {
-            "type": "array",
-            "items": { "type": "object" }
-        },
-        "visual_search_attrs": {
-            "type": "object"
-        }
+			"type": "array",
+			"items": { "type": "object" }
+		},
+		"visual_search_attrs": {
+			"type": "object"
+		}
 	},
-    "required": ["id", "created_at", "creator"]
+	"required": ["id", "created_at", "creator"]
 }
