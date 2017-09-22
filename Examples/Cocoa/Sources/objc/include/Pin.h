@@ -21,8 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readonly) NSString * descriptionText;
 @property (nonnull, nonatomic, strong, readonly) NSDictionary<NSString *, User *> * creator;
+@property (nullable, nonatomic, strong, readonly) NSArray<NSDictionary *> * tags;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * attribution;
 @property (nullable, nonatomic, strong, readonly) Board * board;
+@property (nullable, nonatomic, strong, readonly) NSDictionary * visualSearchAttrs;
 @property (nullable, nonatomic, copy, readonly) NSString * color;
 @property (nullable, nonatomic, strong, readonly) NSURL * link;
 @property (nonnull, nonatomic, copy, readonly) NSString * identifier;
@@ -48,8 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readwrite) NSString * descriptionText;
 @property (nonnull, nonatomic, strong, readwrite) NSDictionary<NSString *, User *> * creator;
+@property (nullable, nonatomic, strong, readwrite) NSArray<NSDictionary *> * tags;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * attribution;
 @property (nullable, nonatomic, strong, readwrite) Board * board;
+@property (nullable, nonatomic, strong, readwrite) NSDictionary * visualSearchAttrs;
 @property (nullable, nonatomic, copy, readwrite) NSString * color;
 @property (nullable, nonatomic, strong, readwrite) NSURL * link;
 @property (nonnull, nonatomic, copy, readwrite) NSString * identifier;
