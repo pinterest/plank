@@ -491,8 +491,9 @@ struct PinDirtyProperties {
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyCreatedAt) {
-        if (_createdAt != nil && [NSValueTransformer allowsReverseTransformation]) {
-            [dict setObject:[[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] reverseTransformedValue:_createdAt] forKey:@"created_at"];
+        NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
+        if (_createdAt != nil && [[valueTransformer class] allowsReverseTransformation]) {
+            [dict setObject:[valueTransformer reverseTransformedValue:_createdAt] forKey:@"created_at"];
         } else {
             [dict setObject:[NSNull null] forKey:@"created_at"];
         }

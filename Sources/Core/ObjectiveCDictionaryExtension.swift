@@ -60,12 +60,14 @@ extension ObjCFileRenderer {
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
                 ]}
         case .string(format: .some(.dateTime)):
-            return
-                ObjCIR.ifElseStmt("\(propIVarName) != nil && [NSValueTransformer allowsReverseTransformation]") {[
-                    "[\(dictionary) setObject:[[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] reverseTransformedValue:\(propIVarName)] forKey:@\"\(param)\"];"
+            return [
+                "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
+                ObjCIR.ifElseStmt("\(propIVarName) != nil && [[valueTransformer class] allowsReverseTransformation]") {[
+                    "[\(dictionary) setObject:[valueTransformer reverseTransformedValue:\(propIVarName)] forKey:@\"\(param)\"];"
                 ]} {[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
                 ]}
+            ].joined(separator: "\n")
         case .enumT(.integer):
             return "[\(dictionary) setObject:@(\(propIVarName)) forKey:@\"\(param)\"];"
         case .enumT(.string):
@@ -104,12 +106,14 @@ extension ObjCFileRenderer {
                 case .string(format: .some(.uri)):
                     return "[\(destArray) addObject:[\(processObject) absoluteString] ];"
                 case .string(format: .some(.dateTime)):
-                    return
-                        ObjCIR.ifElseStmt("\(propIVarName) != nil && [NSValueTransformer allowsReverseTransformation]") {[
-                            "[\(destArray) addObject: [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] reverseTransformedValue:\(propIVarName)]];"
+                    return [
+                        "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
+                        ObjCIR.ifElseStmt("\(propIVarName) != nil && [[valueTransformer class] allowsReverseTransformation]") {[
+                            "[\(destArray) addObject:[valueTransformer reverseTransformedValue:\(propIVarName)]];"
                         ]} {[
                             "[\(destArray) addObject:[NSNull null]];"
                         ]}
+                    ].joined(separator: "\n")
                 case .enumT(.integer):
                     return "[\(destArray) addObject:@(\(processObject))];"
                 case .enumT(.string):
