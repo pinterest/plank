@@ -49,4 +49,8 @@ class StringExtensionsTests: XCTestCase {
         XCTAssert("created_at".snakeCaseToCapitalizedPropertyName() == "CreatedAt")
         XCTAssert("CreatedAt".snakeCaseToCapitalizedPropertyName() == "CreatedAt")
     }
+
+    func testReservedKeywordSubstitution() {
+        XCTAssert("nil".snakeCaseToCapitalizedPropertyName() == "NilProperty")
+    }
 }

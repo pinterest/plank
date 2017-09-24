@@ -52,31 +52,114 @@ prefix func --> (body: () -> [String]) -> String {
     return -->body()
 }
 
+// Most of these are derived from https://www.binpress.com/tutorial/objective-c-reserved-keywords/43
+// other language conflicts should be ideally added here.
+// TODO: Find a way to separate this by language since the reserved keywords will differ.
 let objectiveCReservedWordReplacements = [
     "description": "description_text",
     "id": "identifier"
-  // TODO: Fill out more objc keywords with replacements.
 ]
+
+let objectiveCReservedWords = Set<String>([
+    "@catch()",
+    "@class",
+    "@dynamic",
+    "@end",
+    "@finally",
+    "@implementation",
+    "@interface",
+    "@private",
+    "@property",
+    "@protected",
+    "@protocol",
+    "@public",
+    "@selector",
+    "@synthesize",
+    "@throw",
+    "@try",
+    "BOOL",
+    "Class",
+    "IMP",
+    "NO",
+    "NULL",
+    "Protocol",
+    "SEL",
+    "YES",
+    "_Bool",
+    "_Complex",
+    "_Imaginery",
+    "atomic",
+    "auto",
+    "break",
+    "bycopy",
+    "byref",
+    "case",
+    "char",
+    "const",
+    "continue",
+    "default",
+    "do",
+    "double",
+    "else",
+    "enum",
+    "extern",
+    "float",
+    "for",
+    "goto",
+    "id",
+    "if",
+    "in",
+    "inline",
+    "inout",
+    "int",
+    "long",
+    "nil",
+    "nonatomic",
+    "oneway",
+    "out",
+    "register",
+    "restrict",
+    "retain",
+    "return",
+    "self",
+    "short",
+    "signed",
+    "sizeof",
+    "static",
+    "struct",
+    "super",
+    "switch",
+    "typedef",
+    "union",
+    "unsigned",
+    "void",
+    "volatile",
+    "while"
+])
 
 extension String {
     /// All components separated by _ will be capitalized including the first one
     func snakeCaseToCamelCase() -> String {
         var str: String = self
 
-        if let replacementString = objectiveCReservedWordReplacements[self] as String? {
+        if let replacementString = objectiveCReservedWordReplacements[self.lowercased()] as String? {
             str = replacementString
         }
 
         let components = str.components(separatedBy: "_")
         let name = components.map { return $0.uppercaseFirst }
-        return name.joined(separator: "")
+        let formattedName = name.joined(separator: "")
+        if objectiveCReservedWords.contains(formattedName) {
+            return "\(formattedName)Property"
+        }
+        return formattedName
     }
 
     /// All components separated by _ will be capitalized execpt the first
     func snakeCaseToPropertyName() -> String {
         var str: String = self
 
-        if let replacementString = objectiveCReservedWordReplacements[self] as String? {
+        if let replacementString = objectiveCReservedWordReplacements[self.lowercased()] as String? {
             str = replacementString
         }
 
@@ -97,6 +180,10 @@ extension String {
             }
         }
 
+        if objectiveCReservedWords.contains(name) {
+            return "\(name)Property"
+        }
+
         return name
     }
 
@@ -108,7 +195,8 @@ extension String {
 
     /// Get the last n characters of a string
     func suffixSubstring(_ length: Int) -> String {
-        return self.substring(from: self.characters.index(self.endIndex, offsetBy: -length))
+        let index = self.characters.index(self.endIndex, offsetBy: -length)
+        return String(self[index...])
     }
 
     /// Uppercase the first character

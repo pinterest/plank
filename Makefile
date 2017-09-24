@@ -4,7 +4,7 @@
 
 .PHONY: all clean build test archive
 
-all: clean build test integration_test archive
+all: upload_pipeline clean build test integration_test archive
 
 clean:
 	xcrun swift package clean
@@ -23,6 +23,9 @@ integration_test: build
 
 archive:
 	xcrun swift build -c release -Xswiftc -static-stdlib
+
+upload_pipeline:
+	.buildkite/upload_pipeline.sh
 
 build_test_index_linux:
 	swift Utility/GenerateTestCaseProvider.swift $(PWD)/Tests/CoreTests

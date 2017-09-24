@@ -20,15 +20,6 @@ class ObjectiveCIRTests: XCTestCase {
         let optionName = dirtyPropertyOption(propertyName: "some_prop", className: "class")
         XCTAssertEqual(optionName, "classDirtyPropertySomeProp")
     }
-    // Figure out how to test fatalErrors or convert dirtyPropertyOption() to return a Result<String, Err> type
-//    func testDirtyPropertyOptionThrowsForEmptyProp() {
-//        XCTAssertThrowsError(dirtyPropertyOption(propertyName: "", className: "class"))
-//    }
-//
-//    func testDirtyPropertyOptionThrowsForEmptyClass() {
-//
-//        XCTAssertThrowsError(dirtyPropertyOption(propertyName: "", className: "class"))
-//    }
 
     func testEnumTypeName() {
         XCTAssertEqual(enumTypeName(propertyName: "some_prop", className: "class"), "classSomePropType")

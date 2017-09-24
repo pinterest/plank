@@ -1,0 +1,21 @@
+version: '2.1'
+services:
+  app:
+    shm_size: 2g
+    build: .
+    tmpfs: /tmp
+    volumes:
+      - ./:/plank
+    environment:
+      BUILDKITE_BRANCH:
+      BUILDKITE_BUILD_URL:
+      BUILDKITE_COMMIT:
+      BUILDKITE_MESSAGE:
+      BUILDKITE_PIPELINE_SLUG:
+      BUILDKITE_AGENT_ACCESS_TOKEN:
+      BUILDKITE_JOB_ID:
+      BUILDKITE_BUILD_ID:
+      BUILDKITE_BUILD_NUMBER:
+      BUILDKITE_PARALLEL_JOB_COUNT:
+      BUILDKITE_PARALLEL_JOB:
+    network_mode: "host"

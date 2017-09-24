@@ -13,8 +13,6 @@ extension ObjectiveCIRTests {
    static var allTests = [
        ("testDirtyPropertyOption", testDirtyPropertyOption),
        ("testDirtyPropertyOptionMultiWord", testDirtyPropertyOptionMultiWord),
-       ("testDirtyPropertyOptionThrowsForEmptyProp", testDirtyPropertyOptionThrowsForEmptyProp),
-       ("testDirtyPropertyOptionThrowsForEmptyClass", testDirtyPropertyOptionThrowsForEmptyClass),
        ("testEnumTypeName", testEnumTypeName),
        ("testEnumToStringName", testEnumToStringName),
        ("testEnumFromStringName", testEnumFromStringName),
@@ -37,7 +35,8 @@ extension StringExtensionsTests {
        ("testSuffixSubstring", testSuffixSubstring),
        ("testSnakeCaseToCamelCase", testSnakeCaseToCamelCase),
        ("testSnakeCaseToPropertyName", testSnakeCaseToPropertyName),
-       ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName)
+       ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName),
+       ("testReservedKeywordSubstitution", testReservedKeywordSubstitution)
    ]
 }
 #endif
