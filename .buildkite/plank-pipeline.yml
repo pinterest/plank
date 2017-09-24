@@ -8,13 +8,13 @@ steps:
           - ".:/app/mnt/buildkite-builds/volumes"
         config: docker-compose.yml
     agents:
-      queue: pinboard
+      queue: pinboard-ios
   - wait: ~
   - name: "Build :iphone: :airplane:"
     command: "swift build"
     timeout_in_minutes: 30
     agents:
-      queue: pinboard
+      queue: pinboard-ios
     plugins:
       docker-compose#v1.5.0:
         run: app
@@ -23,16 +23,7 @@ steps:
     command: "swift test"
     timeout_in_minutes: 30
     agents:
-      queue: pinboard
-    plugins:
-      docker-compose#v1.5.0:
-        run: app
-        config: docker-compose.yml
-  - name: "Integration Test :iphone: :airplane:"
-    command: "swift build && ./Utility/integration-test.sh"
-    timeout_in_minutes: 30
-    agents:
-      queue: pinboard
+      queue: pinboard-ios
     plugins:
       docker-compose#v1.5.0:
         run: app
