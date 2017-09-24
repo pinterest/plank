@@ -12,6 +12,8 @@ import type { BoardType } from './BoardType.js';
 import type { ImageType } from './ImageType.js';
 import type { UserType } from './UserType.js';
 
+export type PinAttributionObjectsType = BoardType | UserType;
+
 export type PinType = $Shape<{|
   +note: ?string,
   +media: ?{ +[string]: string },
@@ -27,6 +29,7 @@ export type PinType = $Shape<{|
   +id: string,
   +image: ?ImageType,
   +created_at: PlankDate,
+  +attribution_objects: ?Array<PinAttributionObjectsType>,
   +url: ?PlankURI,
 |}> & {
   id: string

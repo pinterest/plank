@@ -75,7 +75,7 @@ extension ObjCFileRenderer {
         case .array(itemType: let itemType?):
             func createArray(destArray: String, processObject: String, arraySchema: Schema, arrayCounter: Int = 0) -> String {
                 switch arraySchema {
-                case .reference, .object:
+                case .reference, .object, .oneOf(types: _):
                     return "[\(destArray) addObject:[\(processObject) dictionaryRepresentation]];"
                 case .array(itemType: let type):
                     let currentResult = "result\(arrayCounter)"
