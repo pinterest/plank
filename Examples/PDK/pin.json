@@ -45,6 +45,16 @@
 		},
 		"visual_search_attrs": {
 			"type": "object"
+		},
+		"attribution_objects": {
+            "type": "array",
+            "items": {
+                "oneOf": [{
+                    "$ref": "board.json"
+                }, {
+                    "$ref": "user.json"
+                }]
+            }
 		}
 	},
 	"required": ["id", "created_at", "creator"]

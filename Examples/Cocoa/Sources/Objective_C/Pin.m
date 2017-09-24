@@ -11,8 +11,113 @@
 #import "Pin.h"
 #import "User.h"
 
+@interface PinAttributionObjects ()
+@property (nonatomic, assign, readwrite) PinAttributionObjectsInternalType internalType;
+@property (nonatomic, strong, readwrite) Board * value0;
+@property (nonatomic, strong, readwrite) User * value1;
+@end
+
+@implementation PinAttributionObjects
++ (instancetype)objectWithBoard:(Board *)board
+{
+    PinAttributionObjects *obj = [[PinAttributionObjects alloc] init];
+    obj.value0 = board;
+    obj.internalType = PinAttributionObjectsInternalTypeBoard;
+    return obj;
+}
++ (instancetype)objectWithUser:(User *)user
+{
+    PinAttributionObjects *obj = [[PinAttributionObjects alloc] init];
+    obj.value1 = user;
+    obj.internalType = PinAttributionObjectsInternalTypeUser;
+    return obj;
+}
+- (void)matchBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler
+{
+    switch (self.internalType) {
+    case PinAttributionObjectsInternalTypeBoard:
+        if (boardMatchHandler != NULL) {
+            boardMatchHandler(self.value0);
+        }
+        break;
+    case PinAttributionObjectsInternalTypeUser:
+        if (userMatchHandler != NULL) {
+            userMatchHandler(self.value1);
+        }
+        break;
+    }
+}
+- (BOOL)isEqual:(id)anObject
+{
+    if (self == anObject) {
+        return YES;
+    }
+    if ([anObject isKindOfClass:[PinAttributionObjects class]] == NO) {
+        return NO;
+    }
+    return [self isEqualToPinAttributionObjects:anObject];
+}
+- (BOOL)isEqualToPinAttributionObjects:(PinAttributionObjects *)anObject
+{
+    return (
+        (anObject != nil) &&
+        (_internalType == anObject.internalType) &&
+        (_value0 == anObject.value0 || [_value0 isEqual:anObject.value0]) &&
+        (_value1 == anObject.value1 || [_value1 isEqual:anObject.value1])
+    );
+}
+- (NSUInteger)hash
+{
+    NSUInteger subhashes[] = {
+        17,
+        [_value0 hash],
+        (NSUInteger)_internalType,
+        [_value1 hash]
+    };
+    return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
+}
+- (id)dictionaryRepresentation
+{
+    switch (self.internalType) {
+    case PinAttributionObjectsInternalTypeBoard:
+        return [[NSDictionary alloc]initWithDictionary:[self.value0 dictionaryRepresentation]];
+        break;
+    case PinAttributionObjectsInternalTypeUser:
+        return [[NSDictionary alloc]initWithDictionary:[self.value1 dictionaryRepresentation]];
+        break;
+    }
+}
+#pragma mark - NSCopying
+- (id)copyWithZone:(NSZone *)zone
+{
+    return self;
+}
+#pragma mark - NSSecureCoding
++ (BOOL)supportsSecureCoding
+{
+    return YES;
+}
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (!(self = [super init])) {
+        return self;
+    }
+    _value0 = [aDecoder decodeObjectOfClass:[Board class] forKey:@"value0"];
+    _internalType = [aDecoder decodeIntegerForKey:@"internal_type"];
+    _value1 = [aDecoder decodeObjectOfClass:[User class] forKey:@"value1"];
+    return self;
+}
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.value0 forKey:@"value0"];
+    [aCoder encodeInteger:self.internalType forKey:@"internal_type"];
+    [aCoder encodeObject:self.value1 forKey:@"value1"];
+}
+@end
+
 struct PinDirtyProperties {
     unsigned int PinDirtyPropertyAttribution:1;
+    unsigned int PinDirtyPropertyAttributionObjects:1;
     unsigned int PinDirtyPropertyBoard:1;
     unsigned int PinDirtyPropertyColor:1;
     unsigned int PinDirtyPropertyCounts:1;
@@ -222,6 +327,31 @@ struct PinDirtyProperties {
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"attribution_objects"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    NSArray *items = value;
+                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                    for (id obj0 in items) {
+                        if (obj0 != (id)kCFNull) {
+                            id tmp0 = nil;
+                            if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"board"]) {
+                                tmp0 = [PinAttributionObjects  objectWithBoard:[Board modelObjectWithDictionary:obj0]];
+                            }
+                            if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"user"]) {
+                                tmp0 = [PinAttributionObjects  objectWithUser:[User modelObjectWithDictionary:obj0]];
+                            }
+                            if (tmp0 != nil) {
+                                [result0 addObject:tmp0];
+                            }
+                        }
+                    }
+                    self->_attributionObjects = result0;
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyAttributionObjects = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"url"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -260,6 +390,7 @@ struct PinDirtyProperties {
     _identifier = builder.identifier;
     _image = builder.image;
     _createdAt = builder.createdAt;
+    _attributionObjects = builder.attributionObjects;
     _url = builder.url;
     _pinDirtyProperties = builder.pinDirtyProperties;
     if ([self class] == [Pin class]) {
@@ -270,7 +401,7 @@ struct PinDirtyProperties {
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
-    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:15];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:16];
     [descriptionFields addObject:parentDebugDescription];
     struct PinDirtyProperties props = _pinDirtyProperties;
     if (props.PinDirtyPropertyNote) {
@@ -315,6 +446,9 @@ struct PinDirtyProperties {
     if (props.PinDirtyPropertyCreatedAt) {
         [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
     }
+    if (props.PinDirtyPropertyAttributionObjects) {
+        [descriptionFields addObject:[@"_attributionObjects = " stringByAppendingFormat:@"%@", _attributionObjects]];
+    }
     if (props.PinDirtyPropertyUrl) {
         [descriptionFields addObject:[@"_url = " stringByAppendingFormat:@"%@", _url]];
     }
@@ -355,6 +489,7 @@ struct PinDirtyProperties {
         (_identifier == anObject.identifier || [_identifier isEqualToString:anObject.identifier]) &&
         (_image == anObject.image || [_image isEqual:anObject.image]) &&
         (_createdAt == anObject.createdAt || [_createdAt isEqualToDate:anObject.createdAt]) &&
+        (_attributionObjects == anObject.attributionObjects || [_attributionObjects isEqualToArray:anObject.attributionObjects]) &&
         (_url == anObject.url || [_url isEqual:anObject.url])
     );
 }
@@ -376,6 +511,7 @@ struct PinDirtyProperties {
         [_identifier hash],
         [_image hash],
         [_createdAt hash],
+        [_attributionObjects hash],
         [_url hash]
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
@@ -393,7 +529,7 @@ struct PinDirtyProperties {
 }
 - (NSDictionary *)dictionaryRepresentation
 {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:15];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:16];
     if (_pinDirtyProperties.PinDirtyPropertyNote) {
         if (_note != nil) {
             [dict setObject:_note forKey:@"note"];
@@ -498,6 +634,16 @@ struct PinDirtyProperties {
             [dict setObject:[NSNull null] forKey:@"created_at"];
         }
     }
+    if (_pinDirtyProperties.PinDirtyPropertyAttributionObjects) {
+        NSArray *items0 = _attributionObjects;
+        NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
+        for (id obj0 in items0) {
+            if (obj0 != (id)kCFNull) {
+                [result0 addObject:[obj0 dictionaryRepresentation]];
+            }
+        }
+        [dict setObject:result0 forKey:@"attribution_objects"];
+    }
     if (_pinDirtyProperties.PinDirtyPropertyUrl) {
         if (_url != nil) {
             [dict setObject:[_url absoluteString] forKey:@"url"];
@@ -536,6 +682,7 @@ struct PinDirtyProperties {
     _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
     _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
+    _attributionObjects = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [User class], [NSArray class]]] forKey:@"attribution_objects"];
     _url = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"url"];
     _pinDirtyProperties.PinDirtyPropertyNote = [aDecoder decodeIntForKey:@"note_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyMedia = [aDecoder decodeIntForKey:@"media_dirty_property"] & 0x1;
@@ -551,6 +698,7 @@ struct PinDirtyProperties {
     _pinDirtyProperties.PinDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@"id_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyImage = [aDecoder decodeIntForKey:@"image_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyAttributionObjects = [aDecoder decodeIntForKey:@"attribution_objects_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyUrl = [aDecoder decodeIntForKey:@"url_dirty_property"] & 0x1;
     if ([self class] == [Pin class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
@@ -573,6 +721,7 @@ struct PinDirtyProperties {
     [aCoder encodeObject:self.identifier forKey:@"id"];
     [aCoder encodeObject:self.image forKey:@"image"];
     [aCoder encodeObject:self.createdAt forKey:@"created_at"];
+    [aCoder encodeObject:self.attributionObjects forKey:@"attribution_objects"];
     [aCoder encodeObject:self.url forKey:@"url"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyNote forKey:@"note_dirty_property"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyMedia forKey:@"media_dirty_property"];
@@ -588,6 +737,7 @@ struct PinDirtyProperties {
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyIdentifier forKey:@"id_dirty_property"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyImage forKey:@"image_dirty_property"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyCreatedAt forKey:@"created_at_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyAttributionObjects forKey:@"attribution_objects_dirty_property"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyUrl forKey:@"url_dirty_property"];
 }
 @end
@@ -641,6 +791,9 @@ struct PinDirtyProperties {
     }
     if (pinDirtyProperties.PinDirtyPropertyCreatedAt) {
         _createdAt = modelObject.createdAt;
+    }
+    if (pinDirtyProperties.PinDirtyPropertyAttributionObjects) {
+        _attributionObjects = modelObject.attributionObjects;
     }
     if (pinDirtyProperties.PinDirtyPropertyUrl) {
         _url = modelObject.url;
@@ -716,6 +869,9 @@ struct PinDirtyProperties {
     if (modelObject.pinDirtyProperties.PinDirtyPropertyCreatedAt) {
         builder.createdAt = modelObject.createdAt;
     }
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyAttributionObjects) {
+        builder.attributionObjects = modelObject.attributionObjects;
+    }
     if (modelObject.pinDirtyProperties.PinDirtyPropertyUrl) {
         builder.url = modelObject.url;
     }
@@ -789,6 +945,11 @@ struct PinDirtyProperties {
 {
     _createdAt = createdAt;
     _pinDirtyProperties.PinDirtyPropertyCreatedAt = 1;
+}
+- (void)setAttributionObjects:(NSArray<PinAttributionObjects *> *)attributionObjects
+{
+    _attributionObjects = attributionObjects;
+    _pinDirtyProperties.PinDirtyPropertyAttributionObjects = 1;
 }
 - (void)setUrl:(NSURL *)url
 {

@@ -15,6 +15,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, PinAttributionObjectsInternalType) {
+    PinAttributionObjectsInternalTypeBoard = 1,
+    PinAttributionObjectsInternalTypeUser = 2
+};
+
+@interface PinAttributionObjects : NSObject<NSCopying, NSSecureCoding>
+
++ (instancetype)objectWithBoard:(Board *)board;
++ (instancetype)objectWithUser:(User *)user;
+- (void)matchBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler;
+- (BOOL)isEqualToPinAttributionObjects:(PinAttributionObjects *)anObject;
+- (id)dictionaryRepresentation;
+@end
+
+NS_ASSUME_NONNULL_END
+
+NS_ASSUME_NONNULL_BEGIN
+
 @interface Pin : NSObject<NSCopying, NSSecureCoding>
 @property (nullable, nonatomic, copy, readonly) NSString * note;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * media;
@@ -30,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonnull, nonatomic, copy, readonly) NSString * identifier;
 @property (nullable, nonatomic, strong, readonly) Image * image;
 @property (nonnull, nonatomic, strong, readonly) NSDate * createdAt;
+@property (nullable, nonatomic, strong, readonly) NSArray<PinAttributionObjects *> * attributionObjects;
 @property (nullable, nonatomic, strong, readonly) NSURL * url;
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
@@ -59,6 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonnull, nonatomic, copy, readwrite) NSString * identifier;
 @property (nullable, nonatomic, strong, readwrite) Image * image;
 @property (nonnull, nonatomic, strong, readwrite) NSDate * createdAt;
+@property (nullable, nonatomic, strong, readwrite) NSArray<PinAttributionObjects *> * attributionObjects;
 @property (nullable, nonatomic, strong, readwrite) NSURL * url;
 - (instancetype)initWithModel:(Pin *)modelObject;
 - (Pin *)build;
