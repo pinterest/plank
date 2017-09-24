@@ -1,10 +1,12 @@
 #!/bin/sh
 
+set -euo pipefail
+
 # Generate Objective-C files
 JSON_FILES=`ls -d Examples/PDK/*.json`
 
 # Generate Objective-C models
-.build/debug/plank  --output_dir=Examples/Cocoa/Sources/objc/ $JSON_FILES
+.build/debug/plank  --output_dir=Examples/Cocoa/Sources/Objective_C/ $JSON_FILES
 
 # Generate flow types for models
 .build/debug/plank --lang flow  --output_dir=Examples/JS/flow/ $JSON_FILES
@@ -19,10 +21,11 @@ if [ -x "$(command -v flow)" ]; then
 fi
 
 # Move headers in the right place for the Swift PM
-mv Examples/Cocoa/Sources/objc/*.h Examples/Cocoa/Sources/objc/include
+mv Examples/Cocoa/Sources/Objective_C/*.h Examples/Cocoa/Sources/Objective_C/include
 
 # Build the ObjC library
 cd Examples/Cocoa
-swift build
-swift test
+xcrun swift package clean
+xcrun swift build
+xcrun swift test
 cd "${ROOT_DIR}"

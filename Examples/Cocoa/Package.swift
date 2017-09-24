@@ -1,6 +1,6 @@
 import PackageDescription
 
 let package = Package(
-    name: "Objc"
+    name: "Objective_C"
 )
 

@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import Objc
+@testable import Objective_C
 
 // Helper for comparing model dictionaries
 public func ==(lhs: [AnyHashable: Any], rhs: [AnyHashable: Any] ) -> Bool {
