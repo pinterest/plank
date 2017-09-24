@@ -12,6 +12,5 @@ ENV plank_HOME /usr/local/plank
 ENV PATH ${plank_HOME}/.build/release:${PATH}
 
 # Copy plank sources
-COPY . /plank
 WORKDIR /plank
 
