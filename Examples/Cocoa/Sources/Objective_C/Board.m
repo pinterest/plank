@@ -422,14 +422,10 @@ struct BoardDirtyProperties {
     }
     if (modelObject.boardDirtyProperties.BoardDirtyPropertyImage) {
         id value = modelObject.image;
-        if (value != nil) {
-            if (builder.image) {
-                builder.image = [builder.image mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];
-            } else {
-                builder.image = value;
-            }
+        if (builder.image) {
+            builder.image = [builder.image mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];
         } else {
-            builder.image = nil;
+            builder.image = value;
         }
     }
     if (modelObject.boardDirtyProperties.BoardDirtyPropertyCounts) {

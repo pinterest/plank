@@ -26,5 +26,5 @@
 		},
 		"image": { "$ref": "image.json" }
 	},
-    "required": []
+    "required": ["image"]
 }

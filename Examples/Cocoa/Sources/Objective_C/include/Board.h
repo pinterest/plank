@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Board : NSObject<NSCopying, NSSecureCoding>
 @property (nullable, nonatomic, copy, readonly) NSString * name;
 @property (nullable, nonatomic, copy, readonly) NSString * identifier;
-@property (nullable, nonatomic, strong, readonly) Image * image;
+@property (nonnull, nonatomic, strong, readonly) Image * image;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, strong, readonly) NSDate * createdAt;
 @property (nullable, nonatomic, copy, readonly) NSString * descriptionText;
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BoardBuilder : NSObject
 @property (nullable, nonatomic, copy, readwrite) NSString * name;
 @property (nullable, nonatomic, copy, readwrite) NSString * identifier;
-@property (nullable, nonatomic, strong, readwrite) Image * image;
+@property (nonnull, nonatomic, strong, readwrite) Image * image;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, strong, readwrite) NSDate * createdAt;
 @property (nullable, nonatomic, copy, readwrite) NSString * descriptionText;
