@@ -42,27 +42,28 @@ extension ObjCModelRenderer {
     }
 
     func renderBuilderMergeWithModel() -> ObjCIR.Method {
-        func formatParam(_ param: String, _ schema: Schema) -> String {
+        func formatParam(_ param: String, _ schema: Schema, _ nullability: Nullability?) -> String {
             return ObjCIR.ifStmt("modelObject.\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
-                func loop(_ schema: Schema) -> [String] {
+                func loop(_ schema: Schema, _ nullability: Nullability?) -> [String] {
                     switch schema {
                     case .object:
+                        var stmt = ObjCIR.ifElseStmt("builder.\(param.snakeCaseToPropertyName())") {[
+                                "builder.\(param.snakeCaseToPropertyName()) = [builder.\(param.snakeCaseToPropertyName()) mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];"
+                            ]} {[
+                                "builder.\(param.snakeCaseToPropertyName()) = value;"
+                            ]}
+                        switch nullability {
+                        case .some(.nullable): stmt = ObjCIR.ifElseStmt("value != nil") {[ stmt ]} {[ "builder.\(param.snakeCaseToPropertyName()) = nil;" ]}
+                        case .some(.nonnull), .none: break
+                        }
                         return [
                             "id value = modelObject.\(param.snakeCaseToPropertyName());",
-                            ObjCIR.ifElseStmt("value != nil") {[
-                                ObjCIR.ifElseStmt("builder.\(param.snakeCaseToPropertyName())") {[
-                                    "builder.\(param.snakeCaseToPropertyName()) = [builder.\(param.snakeCaseToPropertyName()) mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];"
-                                    ]} {[
-                                        "builder.\(param.snakeCaseToPropertyName()) = value;"
-                                        ]}
-                                ]} {[
-                                    "builder.\(param.snakeCaseToPropertyName()) = nil;"
-                                    ]}
+                            stmt
                         ]
                     case .reference(with: let ref):
                         switch ref.force() {
                         case .some(.object(let objSchema)):
-                            return loop(.object(objSchema))
+                            return loop(.object(objSchema), nullability)
                         default:
                             fatalError("Error identifying reference for \(param) in \(schema)")
                         }
@@ -70,7 +71,7 @@ extension ObjCModelRenderer {
                         return ["builder.\(param.snakeCaseToPropertyName()) = modelObject.\(param.snakeCaseToPropertyName());"]
                     }
                 }
-                return loop(schema)
+                return loop(schema, nullability)
             }
         }
 
@@ -79,7 +80,7 @@ extension ObjCModelRenderer {
                 "NSParameterAssert(modelObject);",
                 self.isBaseClass ? "" : "[super mergeWithModel:modelObject];",
                 self.properties.count > 0 ? "\(self.builderClassName) *builder = self;" : "",
-                self.properties.map { ($0.0, $0.1.schema) }.map(formatParam).joined(separator: "\n")
+                self.properties.map { ($0.0, $0.1.schema, $0.1.nullability) }.map(formatParam).joined(separator: "\n")
                 ].filter { $0 != "" }
         }
     }
