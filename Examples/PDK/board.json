@@ -20,6 +20,11 @@
 			"type": "string",
 			"format": "date-time"
 		},
+		"contributors": {
+			"type": "array",
+			"unique": "true",
+			"items": { "$ref": "user.json" }
+		},
 		"counts": {
 			"type": "object",
 			"additionalProperties": { "type": "integer" }

@@ -191,6 +191,10 @@ extension ObjCModelRenderer {
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSArray class]]") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
+                    case .set(itemType: _):
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSSet class]]") {
+                            return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
+                        }
                     case .map(valueType: _):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSDictionary class]]") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))

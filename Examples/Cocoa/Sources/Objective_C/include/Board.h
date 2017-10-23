@@ -10,6 +10,7 @@
 #import "PlankModelRuntime.h"
 @class BoardBuilder;
 @class Image;
+@class User;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonnull, nonatomic, strong, readonly) Image * image;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, strong, readonly) NSDate * createdAt;
+@property (nullable, nonatomic, strong, readonly) NSSet<User *> * contributors;
 @property (nullable, nonatomic, copy, readonly) NSString * descriptionText;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * creator;
 @property (nullable, nonatomic, strong, readonly) NSURL * url;
@@ -41,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonnull, nonatomic, strong, readwrite) Image * image;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, strong, readwrite) NSDate * createdAt;
+@property (nullable, nonatomic, strong, readwrite) NSSet<User *> * contributors;
 @property (nullable, nonatomic, copy, readwrite) NSString * descriptionText;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * creator;
 @property (nullable, nonatomic, strong, readwrite) NSURL * url;

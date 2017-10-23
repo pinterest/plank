@@ -75,6 +75,10 @@ extension ObjCFileRenderer {
             return Set(["NSArray"])
         case .array(itemType: .some(let itemType)):
             return Set(["NSArray"]).union(referencedObjectClasses(itemType))
+        case .set(itemType: .none):
+            return Set(["NSSet"])
+        case .set(itemType: .some(let itemType)):
+            return Set(["NSSet"]).union(referencedObjectClasses(itemType))
         case .map(valueType: .none):
             return Set(["NSDictionary"])
         case .map(valueType: .some(let valueType)):
@@ -116,7 +120,7 @@ extension ObjCFileRenderer {
             return "[aDecoder decodeDoubleForKey:\(param.objcLiteral())];"
         case .integer:
             return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
-        case .string, .map, .array, .oneOf, .reference, .object:
+        case .string, .map, .array, .set, .oneOf, .reference, .object:
             let refObjectClasses = referencedObjectClasses(schema).map { "[\($0) class]" }
             let refObjectClassesString = refObjectClasses.count == 1 ? refObjectClasses.joined(separator: ",") : "[NSSet setWithArray:\(refObjectClasses.objcLiteral())]"
             if refObjectClasses.count == 0 { fatalError("Can't determine class for decode for \(schema)") }
@@ -140,7 +144,7 @@ extension ObjCFileRenderer {
             return "[aCoder encodeDouble:\(propGetter) forKey:\(param.objcLiteral())];"
         case .integer:
             return "[aCoder encodeInteger:\(propGetter) forKey:\(param.objcLiteral())];"
-        case .string, .map, .array, .oneOf, .reference, .object:
+        case .string, .map, .array, .set, .oneOf, .reference, .object:
             return "[aCoder encodeObject:\(propGetter) forKey:\(param.objcLiteral())];"
         }
     }

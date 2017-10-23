@@ -9,13 +9,15 @@
 
 import type { PlankDate, PlankURI } from './runtime.flow.js';
 import type { ImageType } from './ImageType.js';
+import type { UserType } from './UserType.js';
 
 export type BoardType = $Shape<{|
   +name: ?string,
   +id: ?string,
-  +image: ?ImageType,
+  +image: ImageType,
   +counts: ?{ +[string]: number } /* Integer */,
   +created_at: ?PlankDate,
+  +contributors: ?Set<UserType>,
   +description: ?string,
   +creator: ?{ +[string]: string },
   +url: ?PlankURI,

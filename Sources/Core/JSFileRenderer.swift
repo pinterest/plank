@@ -50,7 +50,7 @@ extension JSFileRenderer {
             return [schemaRoot.className(with: self.params)]
         case .map(valueType: .some(let valueType)):
             return referencedClassNames(schema: valueType)
-        case .array(itemType: .some(let itemType)):
+        case .array(itemType: .some(let itemType)), .set(itemType: .some(let itemType)):
             return referencedClassNames(schema: itemType)
         case .oneOf(types: let itemTypes):
             return itemTypes.flatMap(referencedClassNames)
@@ -72,6 +72,12 @@ extension JSFileRenderer {
             return "Array<number /* \(itemType.debugDescription) */>"
         case .array(itemType: .some(let itemType)):
             return "Array<\(flowTypeName(param, itemType))>"
+        case .set(itemType: .none):
+            return "Set<*>"
+        case .set(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
+            return "Set<number /* \(itemType.debugDescription)> */>"
+        case .set(itemType: .some(let itemType)):
+            return "Set<\(flowTypeName(param, itemType))>"
         case .map(valueType: .none):
             return "{}"
         case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
