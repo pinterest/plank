@@ -26,6 +26,38 @@ extension ObjCModelRenderer {
     }
 }
 
+private enum CollectionClass {
+    case array
+    case set
+
+    func name() -> String {
+        switch self {
+        case .array:
+            return "NSArray"
+        case .set:
+            return "NSSet"
+        }
+    }
+
+    func mutableName() -> String {
+        switch self {
+        case .array:
+            return "NSMutableArray"
+        case .set:
+            return "NSMutableSet"
+        }
+    }
+
+    func initializer() -> String {
+        switch self {
+        case .array:
+            return "arrayWithCapacity:"
+        case .set:
+            return "setWithCapacity:"
+        }
+    }
+}
+
 extension ObjCFileRenderer {
     fileprivate func renderAddObjectStatement(_ param: String, _ schema: Schema, _ dictionary: String, counter: Int = 0) -> String {
         var propIVarName = "_\(param.snakeCaseToPropertyName())"
@@ -73,18 +105,12 @@ extension ObjCFileRenderer {
         case .enumT(.string):
             return "[\(dictionary) setObject:"+enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))" + " forKey:@\"\(param)\"];"
         case .array(itemType: let itemType?), .set(itemType: let itemType?):
-            func collectionSetup(schema: Schema) -> (String, String, String) {
-                let collectionName, mutableCollectionName, initializerName: String
+            func collectionClass(schema: Schema) -> CollectionClass {
                 if case .array = schema {
-                    collectionName = "NSArray"
-                    mutableCollectionName = "NSMutableArray"
-                    initializerName = "arrayWithCapacity"
+                    return .array
                 } else {
-                    collectionName = "NSSet"
-                    mutableCollectionName = "NSMutableSet"
-                    initializerName = "setWithCapacity"
+                    return .set
                 }
-                return (collectionName, mutableCollectionName, initializerName)
             }
             func createCollection(destCollection: String, processObject: String, collectionSchema: Schema, collectionCounter: Int = 0) -> String {
                 switch collectionSchema {
@@ -94,10 +120,10 @@ extension ObjCFileRenderer {
                     let currentResult = "result\(collectionCounter)"
                     let parentResult = "result\(collectionCounter-1)"
                     let currentObj = "obj\(collectionCounter)"
-                    let (collectionName, mutableCollectionName, initializerName) = collectionSetup(schema: collectionSchema)
+                    let collection = collectionClass(schema: collectionSchema)
                     return [
-                        "\(collectionName) *items\(collectionCounter) = \(processObject);",
-                        "\(mutableCollectionName) *\(currentResult) = [\(mutableCollectionName) \(initializerName):items\(collectionCounter).count];",
+                        "\(collection.name()) *items\(collectionCounter) = \(processObject);",
+                        "\(collection.mutableName()) *\(currentResult) = [\(collection.mutableName()) \(collection.initializer())items\(collectionCounter).count];",
                         ObjCIR.forStmt("id \(currentObj) in items\(collectionCounter)") { [
                             ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                                 createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: type!, collectionCounter: collectionCounter+1)
@@ -136,10 +162,10 @@ extension ObjCFileRenderer {
             }
             let currentResult = "result\(counter)"
             let currentObj = "obj\(counter)"
-            let (collectionName, mutableCollectionName, initializerName) = collectionSetup(schema: schema)
+            let collection = collectionClass(schema: schema)
                 return [
-                    "\(collectionName) *items\(counter) = \(propIVarName);",
-                    "\(mutableCollectionName) *\(currentResult) = [\(mutableCollectionName) \(initializerName):items\(counter).count];",
+                    "\(collection.name()) *items\(counter) = \(propIVarName);",
+                    "\(collection.mutableName()) *\(currentResult) = [\(collection.mutableName()) \(collection.initializer())items\(counter).count];",
                     ObjCIR.forStmt("id \(currentObj) in items\(counter)") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                             createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: itemType, collectionCounter: counter+1)
