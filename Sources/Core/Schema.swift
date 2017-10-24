@@ -242,7 +242,7 @@ extension Schema {
                     return .set(itemType: (propertyInfo["items"] as? JSONObject)
                         .flatMap { propertyForType(propertyInfo: $0, source: source)})
                 }
-                
+
                 return .array(itemType: (propertyInfo["items"] as? JSONObject)
                         .flatMap { propertyForType(propertyInfo: $0, source: source)})
             case JSONType.integer:
