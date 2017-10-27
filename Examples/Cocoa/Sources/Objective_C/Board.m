@@ -105,7 +105,18 @@ struct BoardDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"contributors"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_contributors = value;
+                    NSSet *items = value;
+                    NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
+                    for (id obj0 in items) {
+                        if (obj0 != (id)kCFNull) {
+                            id tmp0 = nil;
+                            tmp0 = [User modelObjectWithDictionary:obj0];
+                            if (tmp0 != nil) {
+                                [result0 addObject:tmp0];
+                            }
+                        }
+                    }
+                    self->_contributors = result0;
                 }
                 self->_boardDirtyProperties.BoardDirtyPropertyContributors = 1;
             }
