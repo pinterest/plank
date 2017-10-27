@@ -105,7 +105,7 @@ struct BoardDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"contributors"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    NSSet *items = value;
+                    NSArray *items = value;
                     NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
                     for (id obj0 in items) {
                         if (obj0 != (id)kCFNull) {

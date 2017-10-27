@@ -91,7 +91,7 @@ extension ObjCModelRenderer {
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
                 return [
-                    "NSSet *items = \(rawObjectName);",
+                    "NSArray *items = \(rawObjectName);",
                     "NSMutableSet *\(currentResult) = [NSMutableSet setWithCapacity:items.count];",
                     ObjCIR.forStmt("id \(currentObj) in items") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
