@@ -72,13 +72,14 @@ extension ObjCModelRenderer {
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
+                let propertyInit = itemType.isObjCPrimitiveType ? "\(propertyToAssign) = \(rawObjectName);" : renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
                 return [
                     "NSArray *items = \(rawObjectName);",
                     "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items.count];",
                     ObjCIR.forStmt("id \(currentObj) in items") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                             "id \(currentTmp) = nil;",
-                            renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n"),
+                            propertyInit,
                             ObjCIR.ifStmt("\(currentTmp) != nil") {[
                                 "[\(currentResult) addObject:\(currentTmp)];"
                                 ]}
@@ -90,13 +91,14 @@ extension ObjCModelRenderer {
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
+                let propertyInit = itemType.isObjCPrimitiveType ? "\(propertyToAssign) = \(rawObjectName);" : renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
                 return [
                     "NSArray *items = \(rawObjectName);",
                     "NSMutableSet *\(currentResult) = [NSMutableSet setWithCapacity:items.count];",
                     ObjCIR.forStmt("id \(currentObj) in items") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                             "id \(currentTmp) = nil;",
-                            renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n"),
+                            propertyInit,
                             ObjCIR.ifStmt("\(currentTmp) != nil") {[
                                 "[\(currentResult) addObject:\(currentTmp)];"
                                 ]}

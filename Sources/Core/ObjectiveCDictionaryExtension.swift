@@ -136,7 +136,7 @@ extension ObjCFileRenderer {
                 case .map(valueType: .some(let valueType)):
                     return self.renderAddObjectStatement(processObject, valueType, processObject)
                 case .integer, .float, .boolean:
-                    return "[\(destCollection) addObject:@(\(processObject))] ];"
+                    return "[\(destCollection) addObject:\(processObject)];"
                 case .string(format: .none),
                      .string(format: .some(.email)),
                      .string(format: .some(.hostname)),
