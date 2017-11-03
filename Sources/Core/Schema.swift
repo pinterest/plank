@@ -131,6 +131,7 @@ extension SchemaObjectRoot : CustomDebugStringConvertible {
 public indirect enum Schema {
     case object(SchemaObjectRoot)
     case array(itemType: Schema?)
+    case set(itemType: Schema?)
     case map(valueType: Schema?) // TODO: Should we have an option to specify the key type? (probably yes)
     case integer
     case float
@@ -148,6 +149,8 @@ extension Schema : CustomDebugStringConvertible {
         switch self {
         case .array(itemType: let itemType):
             return "Array: \(itemType.debugDescription)"
+        case .set(itemType: let itemType):
+            return "Set: \(itemType.debugDescription)"
         case .object(let root):
             return "Object: \(root.debugDescription)"
         case .map(valueType: let valueType):
@@ -199,7 +202,7 @@ extension Schema {
                         rootObject.properties.values.flatMap { (prop: SchemaObjectProperty) -> Set<URL> in
                             return prop.schema.deps()
                     }))
-        case .array(itemType: let itemType):
+        case .array(itemType: let itemType), .set(itemType: let itemType):
             return itemType?.deps() ?? []
         case .map(valueType: let valueType):
             return valueType?.deps() ?? []
@@ -235,6 +238,11 @@ extension Schema {
                     return Schema.string(format: (propertyInfo["format"] as? String).flatMap(StringFormatType.init))
                 }
             case JSONType.array:
+                if let unique = propertyInfo["unique"] as? String, unique == "true" {
+                    return .set(itemType: (propertyInfo["items"] as? JSONObject)
+                        .flatMap { propertyForType(propertyInfo: $0, source: source)})
+                }
+
                 return .array(itemType: (propertyInfo["items"] as? JSONObject)
                         .flatMap { propertyForType(propertyInfo: $0, source: source)})
             case JSONType.integer:

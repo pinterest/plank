@@ -29,6 +29,7 @@ extension JSModelRenderer {
         case .enumT(.integer): return ""  // TODO: Not supported at the moment
         case .boolean: return "boolean"
         case .array(itemType: _): return "Array<*>"
+        case .set(itemType: _): return "Set<*>"
         case .map(valueType: .none): return "{}"
         case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
             return "{ +[string]: number } /* \(valueType.debugDescription) */"

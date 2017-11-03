@@ -61,6 +61,8 @@ extension ObjCFileRenderer {
                 return ""
             case .array:
                 return ObjCIR.msg("_\(param)", ("isEqualToArray", "anObject.\(param)"))
+            case .set:
+                return ObjCIR.msg("_\(param)", ("isEqualToSet", "anObject.\(param)"))
             case .map:
                 return ObjCIR.msg("_\(param)", ("isEqualToDictionary", "anObject.\(param)"))
             case .string(format: .some(.dateTime)):

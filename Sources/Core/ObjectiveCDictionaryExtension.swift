@@ -26,6 +26,38 @@ extension ObjCModelRenderer {
     }
 }
 
+private enum CollectionClass {
+    case array
+    case set
+
+    func name() -> String {
+        switch self {
+        case .array:
+            return "NSArray"
+        case .set:
+            return "NSSet"
+        }
+    }
+
+    func mutableName() -> String {
+        switch self {
+        case .array:
+            return "NSMutableArray"
+        case .set:
+            return "NSMutableSet"
+        }
+    }
+
+    func initializer() -> String {
+        switch self {
+        case .array:
+            return "arrayWithCapacity:"
+        case .set:
+            return "setWithCapacity:"
+        }
+    }
+}
+
 extension ObjCFileRenderer {
     fileprivate func renderAddObjectStatement(_ param: String, _ schema: Schema, _ dictionary: String, counter: Int = 0) -> String {
         var propIVarName = "_\(param.snakeCaseToPropertyName())"
@@ -72,62 +104,71 @@ extension ObjCFileRenderer {
             return "[\(dictionary) setObject:@(\(propIVarName)) forKey:@\"\(param)\"];"
         case .enumT(.string):
             return "[\(dictionary) setObject:"+enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))" + " forKey:@\"\(param)\"];"
-        case .array(itemType: let itemType?):
-            func createArray(destArray: String, processObject: String, arraySchema: Schema, arrayCounter: Int = 0) -> String {
-                switch arraySchema {
+        case .array(itemType: let itemType?), .set(itemType: let itemType?):
+            func collectionClass(schema: Schema) -> CollectionClass {
+                if case .array = schema {
+                    return .array
+                } else {
+                    return .set
+                }
+            }
+            func createCollection(destCollection: String, processObject: String, collectionSchema: Schema, collectionCounter: Int = 0) -> String {
+                switch collectionSchema {
                 case .reference, .object, .oneOf(types: _):
-                    return "[\(destArray) addObject:[\(processObject) dictionaryRepresentation]];"
-                case .array(itemType: let type):
-                    let currentResult = "result\(arrayCounter)"
-                    let parentResult = "result\(arrayCounter-1)"
-                    let currentObj = "obj\(arrayCounter)"
+                    return "[\(destCollection) addObject:[\(processObject) dictionaryRepresentation]];"
+                case .array(itemType: let type), .set(itemType: let type):
+                    let currentResult = "result\(collectionCounter)"
+                    let parentResult = "result\(collectionCounter-1)"
+                    let currentObj = "obj\(collectionCounter)"
+                    let collection = collectionClass(schema: collectionSchema)
                     return [
-                        "NSArray *items\(arrayCounter) = \(processObject);",
-                        "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items\(arrayCounter).count];",
-                        ObjCIR.forStmt("id \(currentObj) in items\(arrayCounter)") { [
+                        "\(collection.name()) *items\(collectionCounter) = \(processObject);",
+                        "\(collection.mutableName()) *\(currentResult) = [\(collection.mutableName()) \(collection.initializer())items\(collectionCounter).count];",
+                        ObjCIR.forStmt("id \(currentObj) in items\(collectionCounter)") { [
                             ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
-                                createArray(destArray: currentResult, processObject: currentObj, arraySchema: type!, arrayCounter: arrayCounter+1)
+                                createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: type!, collectionCounter: collectionCounter+1)
                                 ]}
                             ]},
                         "[\(parentResult) addObject:\(currentResult)];"
                     ].joined(separator: "\n")
                 case .map(valueType: .none):
-                    return "[\(destArray) addObject:\(processObject)];"
+                    return "[\(destCollection) addObject:\(processObject)];"
                 case .map(valueType: .some(let valueType)):
                     return self.renderAddObjectStatement(processObject, valueType, processObject)
                 case .integer, .float, .boolean:
-                    return "[\(destArray) addObject:@(\(processObject))] ];"
+                    return "[\(destCollection) addObject:\(processObject)];"
                 case .string(format: .none),
                      .string(format: .some(.email)),
                      .string(format: .some(.hostname)),
                      .string(format: .some(.ipv4)),
                      .string(format: .some(.ipv6)):
-                    return "[\(destArray) addObject:\(processObject) ];"
+                    return "[\(destCollection) addObject:\(processObject) ];"
                 case .string(format: .some(.uri)):
-                    return "[\(destArray) addObject:[\(processObject) absoluteString] ];"
+                    return "[\(destCollection) addObject:[\(processObject) absoluteString] ];"
                 case .string(format: .some(.dateTime)):
                     return [
                         "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
                         ObjCIR.ifElseStmt("\(propIVarName) != nil && [[valueTransformer class] allowsReverseTransformation]") {[
-                            "[\(destArray) addObject:[valueTransformer reverseTransformedValue:\(propIVarName)]];"
+                            "[\(destCollection) addObject:[valueTransformer reverseTransformedValue:\(propIVarName)]];"
                         ]} {[
-                            "[\(destArray) addObject:[NSNull null]];"
+                            "[\(destCollection) addObject:[NSNull null]];"
                         ]}
                     ].joined(separator: "\n")
                 case .enumT(.integer):
-                    return "[\(destArray) addObject:@(\(processObject))];"
+                    return "[\(destCollection) addObject:@(\(processObject))];"
                 case .enumT(.string):
-                    return "[\(destArray) addObject:"+enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))];"
+                    return "[\(destCollection) addObject:"+enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))];"
                 }
             }
             let currentResult = "result\(counter)"
             let currentObj = "obj\(counter)"
+            let collection = collectionClass(schema: schema)
                 return [
-                    "NSArray *items\(counter) = \(propIVarName);",
-                    "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items\(counter).count];",
+                    "\(collection.name()) *items\(counter) = \(propIVarName);",
+                    "\(collection.mutableName()) *\(currentResult) = [\(collection.mutableName()) \(collection.initializer())items\(counter).count];",
                     ObjCIR.forStmt("id \(currentObj) in items\(counter)") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
-                            createArray(destArray: currentResult, processObject: currentObj, arraySchema: itemType, arrayCounter: counter+1)
+                            createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: itemType, collectionCounter: counter+1)
                         ]}
                     ]},
                     "[\(dictionary) setObject:\(currentResult) forKey:@\"\(param)\"];"

@@ -60,6 +60,7 @@ struct ObjCADTRenderer: ObjCFileRenderer {
         case .enumT(.integer): return "IntegerEnum"  // TODO: Allow custom names
         case .boolean: return "Boolean"
         case .array(itemType: _): return "Array"
+        case .set(itemType: _): return "Set"
         case .map(valueType: _): return "Dictionary"
         case .string(.some(.uri)): return "URL"
         case .string(.some(.dateTime)): return "Date"
@@ -135,6 +136,10 @@ struct ObjCADTRenderer: ObjCFileRenderer {
                                     ObjCIR.stmt("return [NSNumber numberWithBool:self.value\(index)]")
                                     ]}
                             case .array(itemType: _):
+                                return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schemaObj.schema)) {[
+                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
+                                    ]}
+                            case .set(itemType: _):
                                 return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schemaObj.schema)) {[
                                     ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
                                     ]}

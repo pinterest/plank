@@ -63,6 +63,8 @@ extension ObjCFileRenderer {
             return propIVarName
         case .array(itemType: _):
             return propIVarName
+        case .set(itemType: _):
+            return propIVarName
         case .map(valueType: _):
             return propIVarName
         case .object:

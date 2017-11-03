@@ -72,13 +72,33 @@ extension ObjCModelRenderer {
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
+                let propertyInit = itemType.isObjCPrimitiveType ? "\(propertyToAssign) = \(rawObjectName);" : renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
                 return [
                     "NSArray *items = \(rawObjectName);",
                     "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items.count];",
                     ObjCIR.forStmt("id \(currentObj) in items") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                             "id \(currentTmp) = nil;",
-                            renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n"),
+                            propertyInit,
+                            ObjCIR.ifStmt("\(currentTmp) != nil") {[
+                                "[\(currentResult) addObject:\(currentTmp)];"
+                                ]}
+                            ]}
+                        ]},
+                    "\(propertyToAssign) = \(currentResult);"
+                ]
+            case .set(itemType: .some(let itemType)):
+                let currentResult = "result\(counter)"
+                let currentTmp = "tmp\(counter)"
+                let currentObj = "obj\(counter)"
+                let propertyInit = itemType.isObjCPrimitiveType ? "\(propertyToAssign) = \(rawObjectName);" : renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
+                return [
+                    "NSArray *items = \(rawObjectName);",
+                    "NSMutableSet *\(currentResult) = [NSMutableSet setWithCapacity:items.count];",
+                    ObjCIR.forStmt("id \(currentObj) in items") { [
+                        ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
+                            "id \(currentTmp) = nil;",
+                            propertyInit,
                             ObjCIR.ifStmt("\(currentTmp) != nil") {[
                                 "[\(currentResult) addObject:\(currentTmp)];"
                                 ]}
@@ -189,6 +209,10 @@ extension ObjCModelRenderer {
                         }
                     case .array(itemType: _):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSArray class]]") {
+                            return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
+                        }
+                    case .set(itemType: _):
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSSet class]]") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
                     case .map(valueType: _):

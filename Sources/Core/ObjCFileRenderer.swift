@@ -51,7 +51,7 @@ extension ObjCFileRenderer {
             return [schemaRoot.className(with: self.params)]
         case .map(valueType: .some(let valueType)):
             return referencedClassNames(schema: valueType)
-        case .array(itemType: .some(let itemType)):
+        case .array(itemType: .some(let itemType)), .set(itemType: .some(let itemType)):
             return referencedClassNames(schema: itemType)
         case .oneOf(types: let itemTypes):
             return itemTypes.flatMap(referencedClassNames)
@@ -73,6 +73,12 @@ extension ObjCFileRenderer {
             return "NSArray<NSNumber /* \(itemType.debugDescription) */ *> *"
         case .array(itemType: .some(let itemType)):
             return "NSArray<\(objcClassFromSchema(param, itemType))> *"
+        case .set(itemType: .none):
+            return "NSSet *"
+        case .set(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
+            return "NSSet<NSNumber /*> \(itemType.debugDescription) */ *> *"
+        case .set(itemType: .some(let itemType)):
+            return "NSSet<\(objcClassFromSchema(param, itemType))> *"
         case .map(valueType: .none):
             return "NSDictionary *"
         case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
