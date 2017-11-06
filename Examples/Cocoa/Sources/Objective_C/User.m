@@ -245,7 +245,7 @@ struct UserDirtyProperties {
     [builder mergeWithModel:modelObject];
     return [[User alloc] initWithBuilder:builder initType:initType];
 }
-- (NSDictionary *)dictionaryRepresentation
+- (NSDictionary *)dictionaryObjectRepresentation
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:8];
     if (_userDirtyProperties.UserDirtyPropertyLastName) {
@@ -271,7 +271,7 @@ struct UserDirtyProperties {
     }
     if (_userDirtyProperties.UserDirtyPropertyImage) {
         if (_image != nil) {
-            [dict setObject:[_image dictionaryRepresentation] forKey:@"image"];
+            [dict setObject:[_image dictionaryObjectRepresentation] forKey:@"image"];
         } else {
             [dict setObject:[NSNull null] forKey:@"image"];
         }

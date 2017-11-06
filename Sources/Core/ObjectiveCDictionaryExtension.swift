@@ -16,10 +16,10 @@ extension ObjCModelRenderer {
                 [renderAddObjectStatement(param, schemaObj.schema, dictionary)]
             }
         }.joined(separator: "\n")
-        return ObjCIR.method("- (NSDictionary *)dictionaryRepresentation") {[
+        return ObjCIR.method("- (NSDictionary *)dictionaryObjectRepresentation") {[
             "NSMutableDictionary *\(dictionary) = " +
                 (self.isBaseClass ? "[[NSMutableDictionary alloc] initWithCapacity:\(self.properties.count)];" :
-                    "[[super dictionaryRepresentation] mutableCopy];"),
+                    "[[super dictionaryObjectRepresentation] mutableCopy];"),
             props,
             "return \(dictionary);"
         ]}
@@ -69,7 +69,7 @@ extension ObjCFileRenderer {
         case .object:
             return
                 ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    "[\(dictionary) setObject:[\(propIVarName) dictionaryRepresentation] forKey:@\"\(param)\"];"
+                    "[\(dictionary) setObject:[\(propIVarName) dictionaryObjectRepresentation] forKey:@\"\(param)\"];"
                 ]} {[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
                 ]}
@@ -115,7 +115,7 @@ extension ObjCFileRenderer {
             func createCollection(destCollection: String, processObject: String, collectionSchema: Schema, collectionCounter: Int = 0) -> String {
                 switch collectionSchema {
                 case .reference, .object, .oneOf(types: _):
-                    return "[\(destCollection) addObject:[\(processObject) dictionaryRepresentation]];"
+                    return "[\(destCollection) addObject:[\(processObject) dictionaryObjectRepresentation]];"
                 case .array(itemType: let type), .set(itemType: let type):
                     let currentResult = "result\(collectionCounter)"
                     let parentResult = "result\(collectionCounter-1)"
@@ -194,7 +194,7 @@ extension ObjCFileRenderer {
                     "NSMutableDictionary *items\(counter) = [NSMutableDictionary new];",
                     ObjCIR.forStmt("id key in \(propIVarName)") { [
                         ObjCIR.ifStmt("[\(propIVarName) objectForKey:key] != (id)kCFNull") { [
-                            "[items\(counter) setObject:[[\(propIVarName) objectForKey:key] dictionaryRepresentation] forKey:key];"
+                            "[items\(counter) setObject:[[\(propIVarName) objectForKey:key] dictionaryObjectRepresentation] forKey:key];"
                         ]}
                     ]},
                     "[\(dictionary) setObject:items\(counter) forKey: @\"\(propIVarName)\" ];"
@@ -213,7 +213,7 @@ extension ObjCFileRenderer {
                     ObjCIR.switchStmt("\(propIVarName).internalType") {
                         avTypes.enumerated().map { (_, schema) -> ObjCIR.SwitchCase in
                             return ObjCIR.caseStmt(self.className+propIVarName.snakeCaseToCamelCase()+"InternalType"+ObjCADTRenderer.objectName(schema)) {[
-                                    "[\(dictionary) setObject:[\(propIVarName) dictionaryRepresentation] forKey:@\"\(param)\"];"
+                                    "[\(dictionary) setObject:[\(propIVarName) dictionaryObjectRepresentation] forKey:@\"\(param)\"];"
                                 ]}
                         }
                     }

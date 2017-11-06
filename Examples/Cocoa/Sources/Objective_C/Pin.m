@@ -76,14 +76,14 @@
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
 }
-- (id)dictionaryRepresentation
+- (id)dictionaryObjectRepresentation
 {
     switch (self.internalType) {
     case PinAttributionObjectsInternalTypeBoard:
-        return [[NSDictionary alloc]initWithDictionary:[self.value0 dictionaryRepresentation]];
+        return [[NSDictionary alloc]initWithDictionary:[self.value0 dictionaryObjectRepresentation]];
         break;
     case PinAttributionObjectsInternalTypeUser:
-        return [[NSDictionary alloc]initWithDictionary:[self.value1 dictionaryRepresentation]];
+        return [[NSDictionary alloc]initWithDictionary:[self.value1 dictionaryObjectRepresentation]];
         break;
     }
 }
@@ -527,7 +527,7 @@ struct PinDirtyProperties {
     [builder mergeWithModel:modelObject];
     return [[Pin alloc] initWithBuilder:builder initType:initType];
 }
-- (NSDictionary *)dictionaryRepresentation
+- (NSDictionary *)dictionaryObjectRepresentation
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:16];
     if (_pinDirtyProperties.PinDirtyPropertyNote) {
@@ -562,7 +562,7 @@ struct PinDirtyProperties {
         NSMutableDictionary *items0 = [NSMutableDictionary new];
         for (id key in _creator) {
             if ([_creator objectForKey:key] != (id)kCFNull) {
-                [items0 setObject:[[_creator objectForKey:key] dictionaryRepresentation] forKey:key];
+                [items0 setObject:[[_creator objectForKey:key] dictionaryObjectRepresentation] forKey:key];
             }
         }
         [dict setObject:items0 forKey: @"_creator" ];
@@ -586,7 +586,7 @@ struct PinDirtyProperties {
     }
     if (_pinDirtyProperties.PinDirtyPropertyBoard) {
         if (_board != nil) {
-            [dict setObject:[_board dictionaryRepresentation] forKey:@"board"];
+            [dict setObject:[_board dictionaryObjectRepresentation] forKey:@"board"];
         } else {
             [dict setObject:[NSNull null] forKey:@"board"];
         }
@@ -621,7 +621,7 @@ struct PinDirtyProperties {
     }
     if (_pinDirtyProperties.PinDirtyPropertyImage) {
         if (_image != nil) {
-            [dict setObject:[_image dictionaryRepresentation] forKey:@"image"];
+            [dict setObject:[_image dictionaryObjectRepresentation] forKey:@"image"];
         } else {
             [dict setObject:[NSNull null] forKey:@"image"];
         }
@@ -639,7 +639,7 @@ struct PinDirtyProperties {
         NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
         for (id obj0 in items0) {
             if (obj0 != (id)kCFNull) {
-                [result0 addObject:[obj0 dictionaryRepresentation]];
+                [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
         }
         [dict setObject:result0 forKey:@"attribution_objects"];
