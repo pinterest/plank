@@ -190,21 +190,21 @@ extension String {
     func snakeCaseToCapitalizedPropertyName() -> String {
         let formattedPropName = self.snakeCaseToPropertyName()
         let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercased()
-        return capitalizedFirstLetter + String(formattedPropName.characters.dropFirst())
+        return capitalizedFirstLetter + String(formattedPropName.dropFirst())
     }
 
     /// Get the last n characters of a string
     func suffixSubstring(_ length: Int) -> String {
-        let index = self.characters.index(self.endIndex, offsetBy: -length)
+        let index = self.index(self.endIndex, offsetBy: -length)
         return String(self[index...])
     }
 
     /// Uppercase the first character
     var uppercaseFirst: String {
-        return String(characters.prefix(1)).uppercased() + String(characters.dropFirst())
+        return String(prefix(1)).uppercased() + String(dropFirst())
     }
 
     var lowercaseFirst: String {
-        return String(characters.prefix(1)).lowercased() + String(characters.dropFirst())
+        return String(prefix(1)).lowercased() + String(dropFirst())
     }
 }
