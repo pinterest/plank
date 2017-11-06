@@ -58,12 +58,12 @@ typealias TypeName = String
 typealias SimpleProperty = (Parameter, TypeName, SchemaObjectProperty, ObjCMutabilityType)
 
 func dirtyPropertyOption(propertyName aPropertyName: String, className: String) -> String {
-    guard className.characters.count > 0 && aPropertyName.characters.count > 0 else {
+    guard className.count > 0 && aPropertyName.count > 0 else {
         fatalError("Invalid class name or property name passed to dirtyPropertyOption(propertyName:className)")
     }
     let propertyName = aPropertyName.snakeCaseToPropertyName()
     let capitalizedFirstLetter = String(propertyName[propertyName.startIndex]).uppercased()
-    let capitalizedPropertyName = capitalizedFirstLetter + String(propertyName.characters.dropFirst())
+    let capitalizedPropertyName = capitalizedFirstLetter + String(propertyName.dropFirst())
     return className + "DirtyProperty" + capitalizedPropertyName
 }
 

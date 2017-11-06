@@ -152,7 +152,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     if let executionPath = ProcessInfo.processInfo.environment["PWD"] {
         // What directory path is the user in when invoke Plank
         outputDirectory = URL(string: executionPath)
-        if output_dir.characters.count > 0 {
+        if output_dir.count > 0 {
             if output_dir.hasPrefix("/") {
                 // Absolute file URL
                 outputDirectory = URL(string: output_dir)!
