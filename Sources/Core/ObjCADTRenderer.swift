@@ -105,19 +105,19 @@ struct ObjCADTRenderer: ObjCFileRenderer {
         }
     }
 
-    func renderDictionaryRepresentation() -> ObjCIR.Method {
-            return ObjCIR.method("- (id)dictionaryRepresentation") {
+    func renderDictionaryObjectRepresentation() -> ObjCIR.Method {
+            return ObjCIR.method("- (id)dictionaryObjectRepresentation") {
                 [
                     ObjCIR.switchStmt("self.internalType") {
                         self.dataTypes.enumerated().map { (index, schemaObj) -> ObjCIR.SwitchCase in
                             switch schemaObj.schema {
                             case .object:
                                 return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schemaObj.schema)) {[
-                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
+                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryObjectRepresentation]]")
                                     ]}
                             case .reference:
                                 return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schemaObj.schema)) {[
-                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
+                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryObjectRepresentation]]")
                                     ]}
                             case .float:
                                 return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schemaObj.schema)) {[
@@ -137,11 +137,11 @@ struct ObjCADTRenderer: ObjCFileRenderer {
                                     ]}
                             case .array(itemType: _):
                                 return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schemaObj.schema)) {[
-                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
+                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryObjectRepresentation]]")
                                     ]}
                             case .set(itemType: _):
                                 return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schemaObj.schema)) {[
-                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryRepresentation]]")
+                                    ObjCIR.stmt("return [[NSDictionary alloc]initWithDictionary:[self.value\(index) dictionaryObjectRepresentation]]")
                                     ]}
                             case .map(valueType: _):
                                 return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schemaObj.schema)) {[
@@ -229,7 +229,7 @@ struct ObjCADTRenderer: ObjCFileRenderer {
                                     (.privateM, self.renderIsEqual()),
                                     (.publicM, self.renderIsEqualToClass()),
                                     (.privateM, self.renderHash()),
-                                    (.publicM, self.renderDictionaryRepresentation())
+                                    (.publicM, self.renderDictionaryObjectRepresentation())
                                     ],
                                  properties: [],
                                  protocols: protocols),

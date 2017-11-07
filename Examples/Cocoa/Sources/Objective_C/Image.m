@@ -164,7 +164,7 @@ struct ImageDirtyProperties {
     [builder mergeWithModel:modelObject];
     return [[Image alloc] initWithBuilder:builder initType:initType];
 }
-- (NSDictionary *)dictionaryRepresentation
+- (NSDictionary *)dictionaryObjectRepresentation
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:3];
     if (_imageDirtyProperties.ImageDirtyPropertyHeight) {

@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isEqualToUser:(User *)anObject;
 - (instancetype)mergeWithModel:(User *)modelObject;
 - (instancetype)mergeWithModel:(User *)modelObject initType:(PlankModelInitType)initType;
-- (NSDictionary *)dictionaryRepresentation;
+- (NSDictionary *)dictionaryObjectRepresentation;
 @end
 
 @interface UserBuilder : NSObject

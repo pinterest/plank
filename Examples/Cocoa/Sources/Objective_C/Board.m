@@ -280,7 +280,7 @@ struct BoardDirtyProperties {
     [builder mergeWithModel:modelObject];
     return [[Board alloc] initWithBuilder:builder initType:initType];
 }
-- (NSDictionary *)dictionaryRepresentation
+- (NSDictionary *)dictionaryObjectRepresentation
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:9];
     if (_boardDirtyProperties.BoardDirtyPropertyName) {
@@ -299,7 +299,7 @@ struct BoardDirtyProperties {
     }
     if (_boardDirtyProperties.BoardDirtyPropertyImage) {
         if (_image != nil) {
-            [dict setObject:[_image dictionaryRepresentation] forKey:@"image"];
+            [dict setObject:[_image dictionaryObjectRepresentation] forKey:@"image"];
         } else {
             [dict setObject:[NSNull null] forKey:@"image"];
         }
@@ -324,7 +324,7 @@ struct BoardDirtyProperties {
         NSMutableSet *result0 = [NSMutableSet setWithCapacity:items0.count];
         for (id obj0 in items0) {
             if (obj0 != (id)kCFNull) {
-                [result0 addObject:[obj0 dictionaryRepresentation]];
+                [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
         }
         [dict setObject:result0 forKey:@"contributors"];

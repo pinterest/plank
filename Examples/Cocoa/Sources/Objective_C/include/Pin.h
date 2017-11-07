@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, PinAttributionObjectsInternalType) {
 + (instancetype)objectWithUser:(User *)user;
 - (void)matchBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler;
 - (BOOL)isEqualToPinAttributionObjects:(PinAttributionObjects *)anObject;
-- (id)dictionaryRepresentation;
+- (id)dictionaryObjectRepresentation;
 @end
 
 NS_ASSUME_NONNULL_END
@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isEqualToPin:(Pin *)anObject;
 - (instancetype)mergeWithModel:(Pin *)modelObject;
 - (instancetype)mergeWithModel:(Pin *)modelObject initType:(PlankModelInitType)initType;
-- (NSDictionary *)dictionaryRepresentation;
+- (NSDictionary *)dictionaryObjectRepresentation;
 @end
 
 @interface PinBuilder : NSObject
