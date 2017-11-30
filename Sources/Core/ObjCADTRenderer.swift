@@ -228,8 +228,8 @@ struct ObjCADTRenderer: ObjCFileRenderer {
                                     (.publicM, self.renderMatchFunction()),
                                     (.privateM, self.renderIsEqual()),
                                     (.publicM, self.renderIsEqualToClass()),
-                                    (.privateM, self.renderHash()),
-                                    (.publicM, self.renderDictionaryObjectRepresentation())
+                                    (.privateM, self.renderHash())
+                               //     (.publicM, self.renderDictionaryObjectRepresentation())
                                     ],
                                  properties: [],
                                  protocols: protocols),
