@@ -60,7 +60,7 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
 
 #### Integer
 <pre><code class="json">{
-    "blocked_by_me" : { "type" : "boolean"}
+    "stock_level" : { "type" : "integer"}
 }
 </code></pre>
 
