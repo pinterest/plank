@@ -164,24 +164,6 @@ struct ImageDirtyProperties {
     [builder mergeWithModel:modelObject];
     return [[Image alloc] initWithBuilder:builder initType:initType];
 }
-- (NSDictionary *)dictionaryObjectRepresentation
-{
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:3];
-    if (_imageDirtyProperties.ImageDirtyPropertyHeight) {
-        [dict setObject:@(_height) forKey: @"height" ];
-    }
-    if (_imageDirtyProperties.ImageDirtyPropertyUrl) {
-        if (_url != nil) {
-            [dict setObject:[_url absoluteString] forKey:@"url"];
-        } else {
-            [dict setObject:[NSNull null] forKey:@"url"];
-        }
-    }
-    if (_imageDirtyProperties.ImageDirtyPropertyWidth) {
-        [dict setObject:@(_width) forKey: @"width" ];
-    }
-    return dict;
-}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {
