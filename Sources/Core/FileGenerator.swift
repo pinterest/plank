@@ -8,7 +8,7 @@
 
 import Foundation
 
-public typealias GenerationParameters = [GenerationParameterType:String]
+public typealias GenerationParameters = [GenerationParameterType: String]
 
 let formatter = DateFormatter()
 let date = Date()
@@ -106,7 +106,7 @@ func generator(forLanguage language: Languages) -> FileGeneratorManager {
 public func generateRuntimeFiles(outputDirectory: URL, generationParameters: GenerationParameters, forLanguages languages: [Languages]) {
     let fileGenerators: [FileGeneratorManager] = languages.map(generator)
     fileGenerators.forEach {
-        $0.generateFileRuntime(outputDirectory: outputDirectory, generationParameters:generationParameters)
+        $0.generateFileRuntime(outputDirectory: outputDirectory, generationParameters: generationParameters)
     }
 }
 

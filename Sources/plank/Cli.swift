@@ -37,7 +37,7 @@ enum FlagOptions: String {
     }
 }
 
-extension FlagOptions : HelpCommandOutput {
+extension FlagOptions: HelpCommandOutput {
     internal static func printHelp() -> String {
         return [
             "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names.",
@@ -52,7 +52,7 @@ extension FlagOptions : HelpCommandOutput {
     }
 }
 
-func parseFlag(arguments: [String]) -> ([FlagOptions:String], [String])? {
+func parseFlag(arguments: [String]) -> ([FlagOptions: String], [String])? {
 
     guard let someFlag = (arguments.first.map {
         $0.components(separatedBy: "=")[0]
@@ -90,7 +90,7 @@ func parseFlag(arguments: [String]) -> ([FlagOptions:String], [String])? {
     }
 }
 
-func parseFlags(fromArguments arguments: [String]) -> ([FlagOptions:String], [String]) {
+func parseFlags(fromArguments arguments: [String]) -> ([FlagOptions: String], [String]) {
     guard !arguments.isEmpty else { return ([:], arguments) }
 
     if let (flagDict, remainingArgs) = parseFlag(arguments: arguments) {
@@ -174,7 +174,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         return lang
         } ?? [.objectiveC]
     guard languages.count > 0 else {
-        fatalError("Unsupported value for lang: \"\(String(describing:flags[.lang]))\"")
+        fatalError("Unsupported value for lang: \"\(String(describing: flags[.lang]))\"")
     }
 
     if flags[.printDeps] != nil {

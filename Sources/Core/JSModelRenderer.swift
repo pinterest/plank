@@ -49,7 +49,7 @@ public struct JSModelRenderer: JSFileRenderer {
         return self.properties.flatMap { (param, prop) -> [JSIR.Root] in
             switch prop.schema {
             case .enumT(let enumValues):
-                return [JSIR.Root.enumDecl(name: JSModelRenderer.enumTypeName(className: self.className, propertyName:param), values: enumValues)]
+                return [JSIR.Root.enumDecl(name: JSModelRenderer.enumTypeName(className: self.className, propertyName: param), values: enumValues)]
             default: return []
             }
         }

@@ -201,10 +201,10 @@ struct ObjCADTRenderer: ObjCFileRenderer {
     func renderClass(name: String) -> [ObjCIR.Root] {
         let internalTypeEnum = self.renderInternalTypeEnum()
         let internalTypeProp: SimpleProperty = ("internal_type", objcClassFromSchema("internal_type", .enumT(.integer([]))),
-                                                SchemaObjectProperty(schema:.enumT(.integer([])), nullability: nil), // Ask @schneider about this
+                                                SchemaObjectProperty(schema: .enumT(.integer([])), nullability: nil), // Ask @schneider about this
                                                 .readwrite)
 
-        let protocols: [String : [ObjCIR.Method]] = [
+        let protocols: [String: [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
             "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }]
         ]
