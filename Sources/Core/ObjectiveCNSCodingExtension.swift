@@ -111,24 +111,25 @@ extension ObjCFileRenderer {
 
     fileprivate func decodeStatement(_ param: String, _ schema: Schema) -> String {
         let propIVarName = "_\(param.snakeCaseToPropertyName())"
-        return "\(propIVarName) = " + { switch schema {
-        case .enumT:
-            return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
-        case .boolean:
-            return "[aDecoder decodeBoolForKey:\(param.objcLiteral())];"
-        case .float:
-            return "[aDecoder decodeDoubleForKey:\(param.objcLiteral())];"
-        case .integer:
-            return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
-        case .string, .map, .array, .set, .oneOf, .reference, .object:
-            let refObjectClasses = referencedObjectClasses(schema).map { "[\($0) class]" }
-            let refObjectClassesString = refObjectClasses.count == 1 ? refObjectClasses.joined(separator: ",") : "[NSSet setWithArray:\(refObjectClasses.objcLiteral())]"
-            if refObjectClasses.count == 0 { fatalError("Can't determine class for decode for \(schema)") }
-            if refObjectClasses.count == 1 {
-                return "[aDecoder decodeObjectOfClass:\(refObjectClassesString) forKey:\(param.objcLiteral())];"
-            } else {
-                return "[aDecoder decodeObjectOfClasses:\(refObjectClassesString) forKey:\(param.objcLiteral())];"
-            }
+        return "\(propIVarName) = " + {
+            switch schema {
+            case .enumT:
+                return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
+            case .boolean:
+                return "[aDecoder decodeBoolForKey:\(param.objcLiteral())];"
+            case .float:
+                return "[aDecoder decodeDoubleForKey:\(param.objcLiteral())];"
+            case .integer:
+                return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
+            case .string, .map, .array, .set, .oneOf, .reference, .object:
+                let refObjectClasses = referencedObjectClasses(schema).map { "[\($0) class]" }
+                let refObjectClassesString = refObjectClasses.count == 1 ? refObjectClasses.joined(separator: ",") : "[NSSet setWithArray:\(refObjectClasses.objcLiteral())]"
+                if refObjectClasses.count == 0 { fatalError("Can't determine class for decode for \(schema)") }
+                if refObjectClasses.count == 1 {
+                    return "[aDecoder decodeObjectOfClass:\(refObjectClassesString) forKey:\(param.objcLiteral())];"
+                } else {
+                    return "[aDecoder decodeObjectOfClasses:\(refObjectClassesString) forKey:\(param.objcLiteral())];"
+                }
             }
             }()
     }

@@ -93,7 +93,7 @@ struct ObjCRuntimeFile {
 
             ObjCIR.Root.optionSetEnum(
                 name: "PlankModelInitType",
-                values:[
+                values: [
                     EnumValue<Int>(defaultValue: 0, description: "Default"),
                     EnumValue<Int>(defaultValue: 1, description: "FromMerge"),
                     EnumValue<Int>(defaultValue: 2, description: "FromSubmerge")

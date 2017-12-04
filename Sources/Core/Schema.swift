@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias JSONObject = [String:Any]
+typealias JSONObject = [String: Any]
 
 public enum JSONType: String {
     case object = "object"
@@ -86,7 +86,7 @@ extension Dictionary {
 func decodeRef(from source: URL, with ref: String) -> URL {
     if ref.hasPrefix("#") {
         // Local URL
-        return URL(string:ref, relativeTo:source)!
+        return URL(string: ref, relativeTo: source)!
     } else {
         let baseUrl = source.deletingLastPathComponent()
         let lastPathComponentString = URL(string: ref)?.pathComponents.last
@@ -109,7 +109,7 @@ public struct SchemaObjectProperty {
 
 public struct SchemaObjectRoot: Equatable {
     let name: String
-    let properties: [String:SchemaObjectProperty]
+    let properties: [String: SchemaObjectProperty]
     let extends: URLSchemaReference?
     let algebraicTypeIdentifier: String?
 
@@ -122,7 +122,7 @@ public func == (lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
     return lhs.name == rhs.name
 }
 
-extension SchemaObjectRoot : CustomDebugStringConvertible {
+extension SchemaObjectRoot: CustomDebugStringConvertible {
     public var debugDescription: String {
         return (["\(name)\n extends from \(String(describing: extends.map { $0.force()?.debugDescription }))\n"] + properties.map { (key, value) in "\t\(key): \(value.schema.debugDescription)\n" }).reduce("", +)
     }
@@ -144,7 +144,7 @@ public indirect enum Schema {
 
 typealias Property = (Parameter, SchemaObjectProperty)
 
-extension Schema : CustomDebugStringConvertible {
+extension Schema: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .array(itemType: let itemType):
@@ -294,7 +294,7 @@ extension Schema {
                                                                        algebraicTypeIdentifier: propertyInfo["algebraicDataTypeIdentifier"] as? String)) }
                 } else {
                     // Map type
-                    return Schema.map(valueType:(propertyInfo["additionalProperties"] as? JSONObject)
+                    return Schema.map(valueType: (propertyInfo["additionalProperties"] as? JSONObject)
                         .flatMap { propertyForType(propertyInfo: $0, source: source) })
                 }
             case JSONType.polymorphic:

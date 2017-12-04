@@ -15,7 +15,7 @@ protocol SchemaLoader {
 class FileSchemaLoader: SchemaLoader {
     static let sharedInstance = FileSchemaLoader()
     static let sharedPropertyLoader = Schema.propertyFunctionForType(loader: FileSchemaLoader.sharedInstance)
-    var refs: [URL:Schema]
+    var refs: [URL: Schema]
 
     init() {
         self.refs = [URL: Schema]()
