@@ -110,7 +110,8 @@ extension Schema {
 
     func memoryAssignmentType() -> ObjCMemoryAssignmentType {
         switch self {
-        case .string(format: .none):
+        // Use copy for any string, date, url etc.
+        case .string:
             return .copy
         case .boolean, .float, .integer, .enumT:
             return .assign
