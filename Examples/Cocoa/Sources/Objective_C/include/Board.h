@@ -19,11 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy, readonly) NSString * identifier;
 @property (nonnull, nonatomic, strong, readonly) Image * image;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
-@property (nullable, nonatomic, strong, readonly) NSDate * createdAt;
+@property (nullable, nonatomic, copy, readonly) NSDate * createdAt;
 @property (nullable, nonatomic, strong, readonly) NSSet<User *> * contributors;
 @property (nullable, nonatomic, copy, readonly) NSString * descriptionText;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * creator;
-@property (nullable, nonatomic, strong, readonly) NSURL * url;
+@property (nullable, nonatomic, copy, readonly) NSURL * url;
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
@@ -41,11 +41,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy, readwrite) NSString * identifier;
 @property (nonnull, nonatomic, strong, readwrite) Image * image;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
-@property (nullable, nonatomic, strong, readwrite) NSDate * createdAt;
+@property (nullable, nonatomic, copy, readwrite) NSDate * createdAt;
 @property (nullable, nonatomic, strong, readwrite) NSSet<User *> * contributors;
 @property (nullable, nonatomic, copy, readwrite) NSString * descriptionText;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * creator;
-@property (nullable, nonatomic, strong, readwrite) NSURL * url;
+@property (nullable, nonatomic, copy, readwrite) NSURL * url;
 - (instancetype)initWithModel:(Board *)modelObject;
 - (Board *)build;
 - (void)mergeWithModel:(Board *)modelObject;
