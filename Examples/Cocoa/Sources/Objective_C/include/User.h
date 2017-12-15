@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy, readonly) NSString * firstName;
 @property (nullable, nonatomic, strong, readonly) Image * image;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
-@property (nullable, nonatomic, strong, readonly) NSDate * createdAt;
+@property (nullable, nonatomic, copy, readonly) NSDate * createdAt;
 @property (nullable, nonatomic, copy, readonly) NSString * username;
 @property (nullable, nonatomic, copy, readonly) NSString * bio;
 + (NSString *)className;
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy, readwrite) NSString * firstName;
 @property (nullable, nonatomic, strong, readwrite) Image * image;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
-@property (nullable, nonatomic, strong, readwrite) NSDate * createdAt;
+@property (nullable, nonatomic, copy, readwrite) NSDate * createdAt;
 @property (nullable, nonatomic, copy, readwrite) NSString * username;
 @property (nullable, nonatomic, copy, readwrite) NSString * bio;
 - (instancetype)initWithModel:(User *)modelObject;

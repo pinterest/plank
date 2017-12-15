@@ -3,6 +3,7 @@ disabled_rules: # rule identifiers to exclude from running
   - todo
   - line_length
   - cyclomatic_complexity
+  - file_length
 included: # paths to include during linting. `--path` is ignored if present.
   - Sources
   - Tests
@@ -13,8 +14,8 @@ line_length: 120
 
 # parameterized rules are first parameterized as a warning level, then error level.
 type_body_length:
-  - 300 # warning
-  - 400 # error
+  - 400 # warning
+  - 500 # error
 
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
 

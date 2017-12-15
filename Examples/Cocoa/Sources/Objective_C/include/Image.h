@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Image : NSObject<NSCopying, NSSecureCoding>
 @property (nonatomic, assign, readonly) NSInteger height;
-@property (nullable, nonatomic, strong, readonly) NSURL * url;
+@property (nullable, nonatomic, copy, readonly) NSURL * url;
 @property (nonatomic, assign, readonly) NSInteger width;
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ImageBuilder : NSObject
 @property (nonatomic, assign, readwrite) NSInteger height;
-@property (nullable, nonatomic, strong, readwrite) NSURL * url;
+@property (nullable, nonatomic, copy, readwrite) NSURL * url;
 @property (nonatomic, assign, readwrite) NSInteger width;
 - (instancetype)initWithModel:(Image *)modelObject;
 - (Image *)build;
