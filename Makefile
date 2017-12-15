@@ -21,7 +21,7 @@ integration_test: build
 	./Utility/integration-test.sh
 
 archive:
-	xcrun swift build -c release -Xswiftc -static-stdlib
+	xcrun swift build -c release -Xswiftc -static-stdlib --disable-sandbox
 
 upload_pipeline:
 	.buildkite/upload_pipeline.sh
@@ -30,4 +30,4 @@ build_test_index_linux:
 	swift Utility/GenerateTestCaseProvider.swift $(PWD)/Tests/CoreTests
 
 archive_linux:
-	swift build -c release
+	swift build -c release --disable-sandbox
