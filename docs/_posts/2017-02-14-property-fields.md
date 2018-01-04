@@ -22,9 +22,11 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
 | Date-time Property (String variant) |
 | String Property                     |
 | URI Property (String variant)       |
-| JSON Pointer Property (`$ref`)        |
+| JSON Pointer Property (`$ref`)      |
 | Array Property                      |
 | Array Property with Item types      |
+| Set Property                        |
+| Set Property with item types        |
 | Object Property                     |
 | Object Property with item types     |
 | Algebraic Data Type (`oneOf`)       |
@@ -111,6 +113,27 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
                  "type": "string",
                  "format": "uri"
              }
+    }
+}
+</code></pre>
+
+#### Set Property
+
+- Simple Set
+<pre><code class="json">{
+    "contributors" : {
+            "type": "array",
+            "unique": "true"
+    }
+}
+</code></pre>
+
+- Set with item type (Set<User>)
+<pre><code class="json">{
+    "contributors" : {
+            "type": "array",
+            "unique": "true",
+            "items": { "$ref": "user.json" }
     }
 }
 </code></pre>
