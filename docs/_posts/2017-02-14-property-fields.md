@@ -128,15 +128,12 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
 }
 </code></pre>
 
-- Set with item type (Set<URI>)
+- Set with item type (Set<User>)
 <pre><code class="json">{
     "contributors" : {
             "type": "array",
-            "unique": "true"
-            "items": {
-                 "type": "string",
-                 "format": "uri"
-             }
+            "unique": "true",
+            "items": { "$ref": "user.json" }
     }
 }
 </code></pre>
