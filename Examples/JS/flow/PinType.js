@@ -14,6 +14,12 @@ import type { UserType } from './UserType.js';
 
 export type PinAttributionObjectsType = BoardType | UserType;
 
+export type PinInStock = 
+  | -1 /* unknown */
+  | 0 /* out_of_stock */
+  | 1 /* in_stock */
+;
+
 export type PinType = $Shape<{|
   +attribution: ?{ +[string]: string },
   +attribution_objects: ?Array<PinAttributionObjectsType>,
@@ -25,6 +31,7 @@ export type PinType = $Shape<{|
   +description: ?string,
   +id: string,
   +image: ?ImageType,
+  +in_stock: PinInStock,
   +link: ?PlankURI,
   +media: ?{ +[string]: string },
   +note: ?string,

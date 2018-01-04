@@ -42,7 +42,7 @@ extension ObjCModelRenderer {
         }
 
         return self.properties.map({ (param, prop) -> ObjCIR.Method in
-            ObjCIR.method("- (void)set\(param.snakeCaseToCapitalizedPropertyName()):(\(objcClassFromSchema(param, prop.schema)))\(param.snakeCaseToPropertyName())") {
+            ObjCIR.method("- (void)set\(param.snakeCaseToCapitalizedPropertyName()):(\(typeFromSchema(param, prop)))\(param.snakeCaseToPropertyName())") {
                 [
                     "_\(param.snakeCaseToPropertyName()) = \(renderBuilderPropertySetter(param, prop.schema))",
                     "_\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = 1;"

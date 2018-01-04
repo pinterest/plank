@@ -120,17 +120,6 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }]
         ]
 
-        func resolveClassName(_ schema: Schema?) -> String? {
-            switch schema {
-            case .some(.object(let root)):
-                return root.className(with: self.params)
-            case .some(.reference(with: let ref)):
-                return resolveClassName(ref.force())
-            default:
-                return nil
-            }
-        }
-
         let parentName = resolveClassName(self.parentDescriptor)
 
         func enumRoot(from prop: Schema, param: String) -> [ObjCIR.Root] {
@@ -177,7 +166,15 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
         }
 
         return [
-            ObjCIR.Root.imports(classNames: self.renderReferencedClasses(), myName: self.className, parentName: parentName)
+            ObjCIR.Root.imports(
+                classNames: Set(self.renderReferencedClasses().map {
+                    // Objective-C types contain "*" if they are a pointer type
+                    // This information is excessive for import statements so
+                    // we're removing it here.
+                    $0.replacingOccurrences(of: "*", with: "")
+                }),
+                myName: self.className,
+                parentName: parentName)
         ] + adtRoots + enumRoots + [
             ObjCIR.Root.structDecl(name: self.dirtyPropertyOptionName,
                                fields: rootSchema.properties.keys
@@ -217,7 +214,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     (.publicM, self.renderMergeWithModelWithInitType()),
                     (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary())
                 ],
-                properties: properties.map { param, prop in (param, objcClassFromSchema(param, prop.schema), prop, .readonly) },
+                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) },
                 protocols: protocols
             ),
             ObjCIR.Root.classDecl(
@@ -230,7 +227,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     }),
                     (.publicM, self.renderBuilderMergeWithModel())
                     ] + self.renderBuilderPropertySetters().map { (.privateM, $0) },
-                properties: properties.map { param, prop in (param, objcClassFromSchema(param, prop.schema), prop, .readwrite) },
+                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readwrite) },
                 protocols: [:]),
             ObjCIR.Root.macro("NS_ASSUME_NONNULL_END")
         ]

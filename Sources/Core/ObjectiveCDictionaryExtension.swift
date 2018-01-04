@@ -139,7 +139,7 @@ extension ObjCFileRenderer {
                     let currentResult = "result\(collectionCounter)"
                     let parentResult = "result\(collectionCounter-1)"
                     let currentObj = "obj\(collectionCounter)"
-                    let collectionItemClass = type.map { objcClassFromSchema("", $0) } ?? "id"
+                    let collectionItemClass = type.map { typeFromSchema("", $0.nonnullProperty()) } ?? "id"
                     return [
                         "\(collectionClass(schema: collectionSchema).name()) *items\(collectionCounter) = \(processObject);",
                         "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(collectionCounter).count];",
@@ -155,10 +155,10 @@ extension ObjCFileRenderer {
                     let parentResult = "result\(collectionCounter-1)"
                     let key = "key\(collectionCounter)"
                     return [
-                        "\(objcClassFromSchema("", collectionSchema)) items\(collectionCounter) = \(processObject);",
+                        "\(typeFromSchema("", collectionSchema.nonnullProperty())) items\(collectionCounter) = \(processObject);",
                         "__auto_type \(currentResult) = [NSMutableDictionary new];",
                         ObjCIR.forStmt("NSString *\(key) in items\(collectionCounter)") { [
-                            "\(objcClassFromSchema("", type)) tmp\(collectionCounter) = [items\(collectionCounter) objectForKey:\(key)];",
+                            "\(typeFromSchema("", type.nonnullProperty())) tmp\(collectionCounter) = [items\(collectionCounter) objectForKey:\(key)];",
                             "NSMutableDictionary *tmpDict\(collectionCounter) = [NSMutableDictionary new];",
                             self.renderAddToDictionaryStatement(.localVariable("tmp\(collectionCounter)"), type, "tmpDict\(collectionCounter)", counter: collectionCounter+1),
                             "\(currentResult)[\(key)] = tmpDict\(collectionCounter)[@\"tmp\(collectionCounter)\"];"
@@ -192,7 +192,7 @@ extension ObjCFileRenderer {
             }
             let currentResult = "result\(counter)"
             let currentObj = "obj\(counter)"
-            let itemClass = itemType.isObjCPrimitiveType ? "id" : objcClassFromSchema(param, itemType)
+            let itemClass = itemType.isObjCPrimitiveType ? "id" : typeFromSchema(param, itemType.nonnullProperty())
             return [
                     "__auto_type items\(counter) = \(propIVarName);",
                     "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(counter).count];",

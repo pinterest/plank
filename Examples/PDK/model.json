@@ -1,0 +1,11 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "id": "model.json",
+    "description": "Base model schema definition",
+    "title": "model",
+    "properties": {
+        "id": { "type": "string" }
+    },
+    "required": []
+}

@@ -1,11 +1,11 @@
 {
     "id": "board.json",
     "title": "board",
+    "extends": { "$ref" : "model.json" },
     "description" : "Schema definition of Pinterest Board",
     "$schema": "http://json-schema.org/schema#",
     "type": "object",
     "properties": {
-		"id" : { "type": "string" },
 		"name" : { "type": "string" },
 		"url" : {
 			"type": "string",

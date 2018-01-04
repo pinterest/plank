@@ -138,6 +138,11 @@ let objectiveCReservedWords = Set<String>([
 ])
 
 extension String {
+    func indent() -> String {
+        // We indent with tabs and in a post process the tabs are changed to a specific number of spaces
+        return "\t"  + self
+    }
+
     /// All components separated by _ will be capitalized including the first one
     func snakeCaseToCamelCase() -> String {
         var str: String = self

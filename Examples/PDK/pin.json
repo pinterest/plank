@@ -1,61 +1,69 @@
 {
-	"id": "pin.json",
-	"title": "pin",
-	"description" : "Schema definition of Pinterest Pin",
-	"$schema": "http://json-schema.org/schema#",
-	"type": "object",
-	"properties": {
-		"id" : { "type": "string" },
-		"link" : {
-			"type": "string",
-			"format": "uri"
-		},
-		"url" : {
-			"type": "string",
-			"format": "uri"
-		},
-		"creator": {
-			"type": "object",
-			"additionalProperties": { "$ref": "user.json" }
-		},
-		"board": { "$ref": "board.json" },
-		"created_at" : {
-			"type": "string",
-			"format": "date-time"
-		},
-		"note" : { "type": "string" },
-		"color" : { "type": "string" },
-		"counts": {
-			"type": "object",
-			"additionalProperties": { "type": "integer" }
-		},
-		"media": {
-			"type": "object",
-			"additionalProperties": { "type": "string" }
-		},
-		"attribution": {
-			"type": "object",
-			"additionalProperties": { "type": "string" }
-		},
-		"description" : { "type": "string" },
-		"image": { "$ref": "image.json" },
-		"tags": {
-			"type": "array",
-			"items": { "type": "object" }
-		},
-		"visual_search_attrs": {
-			"type": "object"
-		},
-		"attribution_objects": {
+    "id": "pin.json",
+    "title": "pin",
+    "description" : "Schema definition of Pinterest Pin",
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "id" : { "type": "string" },
+        "link" : {
+            "type": "string",
+            "format": "uri"
+        },
+        "url" : {
+            "type": "string",
+            "format": "uri"
+        },
+        "creator": {
+            "type": "object",
+            "additionalProperties": { "$ref": "user.json" }
+        },
+        "board": { "$ref": "board.json" },
+        "created_at" : {
+            "type": "string",
+            "format": "date-time"
+        },
+        "note" : { "type": "string" },
+        "color" : { "type": "string" },
+        "counts": {
+            "type": "object",
+            "additionalProperties": { "type": "integer" }
+        },
+        "media": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+        },
+        "attribution": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+        },
+        "description" : { "type": "string" },
+        "image": { "$ref": "image.json" },
+        "tags": {
+            "type": "array",
+            "items": { "type": "object" }
+        },
+        "visual_search_attrs": {
+            "type": "object"
+        },
+        "attribution_objects": {
             "type": "array",
             "items": {
                 "oneOf": [{
                     "$ref": "board.json"
                 }, {
-                    "$ref": "user.json"
+                "$ref": "user.json"
                 }]
             }
-		}
-	},
-	"required": ["id", "created_at", "creator"]
+        },
+        "in_stock" : {
+            "type": "integer",
+            "enum": [
+                { "default" : -1, "description" : "unknown" },
+                { "default" : 0, "description" : "out_of_stock" },
+                { "default" : 1, "description" : "in_stock" }
+            ]
+        }
+    },
+    "required": ["id", "created_at", "creator"]
 }

@@ -3,7 +3,7 @@
 # For more details on bazelrc's:
 # https://docs.bazel.build/versions/master/bazel-user-manual.html#bazelrc
 
-build --xcode_toolchain=com.apple.dt.toolchain.Swift_3_1
+build --xcode_toolchain=com.apple.dt.toolchain.Swift_4_0
 build --apple_crosstool_transition
 build --experimental_objc_crosstool=all
 build --symlink_prefix=.bazel/
