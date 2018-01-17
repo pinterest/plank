@@ -3,6 +3,8 @@
 
 .PHONY: all clean lint build test integration_test archive upload_pipeline build_test_index_linux archive_linux
 
+PREFIX := /usr/local
+
 all: upload_pipeline clean build test integration_test archive
 
 clean:
