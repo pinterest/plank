@@ -31,3 +31,9 @@ build_test_index_linux:
 
 archive_linux:
 	swift build -c release --disable-sandbox
+
+
+install: archive
+	mkdir -p $(PREFIX)/bin
+	cp .build/release/plank $(PREFIX)/bin/
+
