@@ -1,7 +1,9 @@
 # This makefile exposes targets that unify building, testing and archiving of
 # Plank
 
-.PHONY: all clean lint build test integration_test archive upload_pipeline build_test_index_linux archive_linux
+.PHONY: all clean lint build test integration_test archive upload_pipeline build_test_index_linux archive_linux install
+
+PREFIX := /usr/local
 
 all: upload_pipeline clean build test integration_test archive
 
@@ -31,3 +33,9 @@ build_test_index_linux:
 
 archive_linux:
 	swift build -c release --disable-sandbox
+
+
+install: archive
+	mkdir -p $(PREFIX)/bin
+	cp .build/release/plank $(PREFIX)/bin/
+
