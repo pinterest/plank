@@ -12,14 +12,14 @@ import type { ImageType } from './ImageType.js';
 import type { UserType } from './UserType.js';
 
 export type BoardType = $Shape<{|
-  +name: ?string,
-  +id: ?string,
-  +image: ImageType,
+  +contributors: ?Set<UserType>,
   +counts: ?{ +[string]: number } /* Integer */,
   +created_at: ?PlankDate,
-  +contributors: ?Set<UserType>,
-  +description: ?string,
   +creator: ?{ +[string]: string },
+  +description: ?string,
+  +id: ?string,
+  +image: ImageType,
+  +name: ?string,
   +url: ?PlankURI,
 |}> & {
   id: string
