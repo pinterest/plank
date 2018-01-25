@@ -15,22 +15,22 @@ import type { UserType } from './UserType.js';
 export type PinAttributionObjectsType = BoardType | UserType;
 
 export type PinType = $Shape<{|
-  +note: ?string,
-  +media: ?{ +[string]: string },
-  +counts: ?{ +[string]: number } /* Integer */,
-  +description: ?string,
-  +creator: { +[string]: UserType },
-  +tags: ?Array<{}>,
   +attribution: ?{ +[string]: string },
+  +attribution_objects: ?Array<PinAttributionObjectsType>,
   +board: ?BoardType,
-  +visual_search_attrs: ?{},
   +color: ?string,
-  +link: ?PlankURI,
+  +counts: ?{ +[string]: number } /* Integer */,
+  +created_at: PlankDate,
+  +creator: { +[string]: UserType },
+  +description: ?string,
   +id: string,
   +image: ?ImageType,
-  +created_at: PlankDate,
-  +attribution_objects: ?Array<PinAttributionObjectsType>,
+  +link: ?PlankURI,
+  +media: ?{ +[string]: string },
+  +note: ?string,
+  +tags: ?Array<{}>,
   +url: ?PlankURI,
+  +visual_search_attrs: ?{},
 |}> & {
   id: string
 };

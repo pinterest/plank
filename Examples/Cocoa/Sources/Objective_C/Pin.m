@@ -70,8 +70,8 @@
 {
     NSUInteger subhashes[] = {
         17,
-        [_value0 hash],
         (NSUInteger)_internalType,
+        [_value0 hash],
         [_value1 hash]
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
@@ -91,15 +91,15 @@
     if (!(self = [super init])) {
         return self;
     }
-    _value0 = [aDecoder decodeObjectOfClass:[Board class] forKey:@"value0"];
     _internalType = [aDecoder decodeIntegerForKey:@"internal_type"];
+    _value0 = [aDecoder decodeObjectOfClass:[Board class] forKey:@"value0"];
     _value1 = [aDecoder decodeObjectOfClass:[User class] forKey:@"value1"];
     return self;
 }
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.value0 forKey:@"value0"];
     [aCoder encodeInteger:self.internalType forKey:@"internal_type"];
+    [aCoder encodeObject:self.value0 forKey:@"value0"];
     [aCoder encodeObject:self.value1 forKey:@"value1"];
 }
 @end
@@ -158,85 +158,6 @@ struct PinDirtyProperties {
         return self;
     }
         {
-            __unsafe_unretained id value = modelDictionary[@"note"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_note = [value copy];
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyNote = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"media"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSDictionary *items0 = value;
-                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                        if (obj0 != nil && obj0 != (id)kCFNull) {
-                            result0[key0] = [obj0 copy];
-                        }
-                    }];
-                    self->_media = result0;
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyMedia = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"counts"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_counts = value;
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyCounts = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"description"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_descriptionText = [value copy];
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyDescriptionText = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"creator"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSDictionary *items0 = value;
-                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                        if (obj0 != nil && obj0 != (id)kCFNull) {
-                            result0[key0] = [User modelObjectWithDictionary:obj0];
-                        }
-                    }];
-                    self->_creator = result0;
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyCreator = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"tags"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            tmp0 = obj0;
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
-                        }
-                    }
-                    self->_tags = result0;
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyTags = 1;
-            }
-        }
-        {
             __unsafe_unretained id value = modelDictionary[@"attribution"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -250,69 +171,6 @@ struct PinDirtyProperties {
                     self->_attribution = result0;
                 }
                 self->_pinDirtyProperties.PinDirtyPropertyAttribution = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"board"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_board = [Board modelObjectWithDictionary:value];
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyBoard = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"visual_search_attrs"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_visualSearchAttrs = value;
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"color"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_color = [value copy];
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyColor = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"link"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_link = [NSURL URLWithString:value];
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyLink = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"id"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_identifier = [value copy];
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyIdentifier = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"image"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_image = [Image modelObjectWithDictionary:value];
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyImage = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"created_at"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
-                }
-                self->_pinDirtyProperties.PinDirtyPropertyCreatedAt = 1;
             }
         }
         {
@@ -341,12 +199,154 @@ struct PinDirtyProperties {
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"board"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_board = [Board modelObjectWithDictionary:value];
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyBoard = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"color"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_color = [value copy];
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyColor = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"counts"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_counts = value;
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyCounts = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"created_at"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyCreatedAt = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"creator"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    NSDictionary *items0 = value;
+                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                        if (obj0 != nil && obj0 != (id)kCFNull) {
+                            result0[key0] = [User modelObjectWithDictionary:obj0];
+                        }
+                    }];
+                    self->_creator = result0;
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyCreator = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"description"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_descriptionText = [value copy];
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyDescriptionText = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"id"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_identifier = [value copy];
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyIdentifier = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"image"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_image = [Image modelObjectWithDictionary:value];
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyImage = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"link"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_link = [NSURL URLWithString:value];
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyLink = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"media"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    NSDictionary *items0 = value;
+                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                        if (obj0 != nil && obj0 != (id)kCFNull) {
+                            result0[key0] = [obj0 copy];
+                        }
+                    }];
+                    self->_media = result0;
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyMedia = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"note"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_note = [value copy];
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyNote = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"tags"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    NSArray *items = value;
+                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                    for (id obj0 in items) {
+                        if (obj0 != (id)kCFNull) {
+                            id tmp0 = nil;
+                            tmp0 = obj0;
+                            if (tmp0 != nil) {
+                                [result0 addObject:tmp0];
+                            }
+                        }
+                    }
+                    self->_tags = result0;
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyTags = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"url"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_url = [NSURL URLWithString:value];
                 }
                 self->_pinDirtyProperties.PinDirtyPropertyUrl = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"visual_search_attrs"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_visualSearchAttrs = value;
+                }
+                self->_pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs = 1;
             }
         }
     if ([self class] == [Pin class]) {
@@ -365,22 +365,22 @@ struct PinDirtyProperties {
     if (!(self = [super init])) {
         return self;
     }
-    _note = builder.note;
-    _media = builder.media;
-    _counts = builder.counts;
-    _descriptionText = builder.descriptionText;
-    _creator = builder.creator;
-    _tags = builder.tags;
     _attribution = builder.attribution;
+    _attributionObjects = builder.attributionObjects;
     _board = builder.board;
-    _visualSearchAttrs = builder.visualSearchAttrs;
     _color = builder.color;
-    _link = builder.link;
+    _counts = builder.counts;
+    _createdAt = builder.createdAt;
+    _creator = builder.creator;
+    _descriptionText = builder.descriptionText;
     _identifier = builder.identifier;
     _image = builder.image;
-    _createdAt = builder.createdAt;
-    _attributionObjects = builder.attributionObjects;
+    _link = builder.link;
+    _media = builder.media;
+    _note = builder.note;
+    _tags = builder.tags;
     _url = builder.url;
+    _visualSearchAttrs = builder.visualSearchAttrs;
     _pinDirtyProperties = builder.pinDirtyProperties;
     if ([self class] == [Pin class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
@@ -393,38 +393,29 @@ struct PinDirtyProperties {
     NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:16];
     [descriptionFields addObject:parentDebugDescription];
     struct PinDirtyProperties props = _pinDirtyProperties;
-    if (props.PinDirtyPropertyNote) {
-        [descriptionFields addObject:[@"_note = " stringByAppendingFormat:@"%@", _note]];
-    }
-    if (props.PinDirtyPropertyMedia) {
-        [descriptionFields addObject:[@"_media = " stringByAppendingFormat:@"%@", _media]];
-    }
-    if (props.PinDirtyPropertyCounts) {
-        [descriptionFields addObject:[@"_counts = " stringByAppendingFormat:@"%@", _counts]];
-    }
-    if (props.PinDirtyPropertyDescriptionText) {
-        [descriptionFields addObject:[@"_descriptionText = " stringByAppendingFormat:@"%@", _descriptionText]];
-    }
-    if (props.PinDirtyPropertyCreator) {
-        [descriptionFields addObject:[@"_creator = " stringByAppendingFormat:@"%@", _creator]];
-    }
-    if (props.PinDirtyPropertyTags) {
-        [descriptionFields addObject:[@"_tags = " stringByAppendingFormat:@"%@", _tags]];
-    }
     if (props.PinDirtyPropertyAttribution) {
         [descriptionFields addObject:[@"_attribution = " stringByAppendingFormat:@"%@", _attribution]];
+    }
+    if (props.PinDirtyPropertyAttributionObjects) {
+        [descriptionFields addObject:[@"_attributionObjects = " stringByAppendingFormat:@"%@", _attributionObjects]];
     }
     if (props.PinDirtyPropertyBoard) {
         [descriptionFields addObject:[@"_board = " stringByAppendingFormat:@"%@", _board]];
     }
-    if (props.PinDirtyPropertyVisualSearchAttrs) {
-        [descriptionFields addObject:[@"_visualSearchAttrs = " stringByAppendingFormat:@"%@", _visualSearchAttrs]];
-    }
     if (props.PinDirtyPropertyColor) {
         [descriptionFields addObject:[@"_color = " stringByAppendingFormat:@"%@", _color]];
     }
-    if (props.PinDirtyPropertyLink) {
-        [descriptionFields addObject:[@"_link = " stringByAppendingFormat:@"%@", _link]];
+    if (props.PinDirtyPropertyCounts) {
+        [descriptionFields addObject:[@"_counts = " stringByAppendingFormat:@"%@", _counts]];
+    }
+    if (props.PinDirtyPropertyCreatedAt) {
+        [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
+    }
+    if (props.PinDirtyPropertyCreator) {
+        [descriptionFields addObject:[@"_creator = " stringByAppendingFormat:@"%@", _creator]];
+    }
+    if (props.PinDirtyPropertyDescriptionText) {
+        [descriptionFields addObject:[@"_descriptionText = " stringByAppendingFormat:@"%@", _descriptionText]];
     }
     if (props.PinDirtyPropertyIdentifier) {
         [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", _identifier]];
@@ -432,14 +423,23 @@ struct PinDirtyProperties {
     if (props.PinDirtyPropertyImage) {
         [descriptionFields addObject:[@"_image = " stringByAppendingFormat:@"%@", _image]];
     }
-    if (props.PinDirtyPropertyCreatedAt) {
-        [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
+    if (props.PinDirtyPropertyLink) {
+        [descriptionFields addObject:[@"_link = " stringByAppendingFormat:@"%@", _link]];
     }
-    if (props.PinDirtyPropertyAttributionObjects) {
-        [descriptionFields addObject:[@"_attributionObjects = " stringByAppendingFormat:@"%@", _attributionObjects]];
+    if (props.PinDirtyPropertyMedia) {
+        [descriptionFields addObject:[@"_media = " stringByAppendingFormat:@"%@", _media]];
+    }
+    if (props.PinDirtyPropertyNote) {
+        [descriptionFields addObject:[@"_note = " stringByAppendingFormat:@"%@", _note]];
+    }
+    if (props.PinDirtyPropertyTags) {
+        [descriptionFields addObject:[@"_tags = " stringByAppendingFormat:@"%@", _tags]];
     }
     if (props.PinDirtyPropertyUrl) {
         [descriptionFields addObject:[@"_url = " stringByAppendingFormat:@"%@", _url]];
+    }
+    if (props.PinDirtyPropertyVisualSearchAttrs) {
+        [descriptionFields addObject:[@"_visualSearchAttrs = " stringByAppendingFormat:@"%@", _visualSearchAttrs]];
     }
     return [NSString stringWithFormat:@"Pin = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
@@ -464,44 +464,44 @@ struct PinDirtyProperties {
 {
     return (
         (anObject != nil) &&
-        (_note == anObject.note || [_note isEqualToString:anObject.note]) &&
-        (_media == anObject.media || [_media isEqualToDictionary:anObject.media]) &&
-        (_counts == anObject.counts || [_counts isEqualToDictionary:anObject.counts]) &&
-        (_descriptionText == anObject.descriptionText || [_descriptionText isEqualToString:anObject.descriptionText]) &&
-        (_creator == anObject.creator || [_creator isEqualToDictionary:anObject.creator]) &&
-        (_tags == anObject.tags || [_tags isEqualToArray:anObject.tags]) &&
         (_attribution == anObject.attribution || [_attribution isEqualToDictionary:anObject.attribution]) &&
+        (_attributionObjects == anObject.attributionObjects || [_attributionObjects isEqualToArray:anObject.attributionObjects]) &&
         (_board == anObject.board || [_board isEqual:anObject.board]) &&
-        (_visualSearchAttrs == anObject.visualSearchAttrs || [_visualSearchAttrs isEqualToDictionary:anObject.visualSearchAttrs]) &&
         (_color == anObject.color || [_color isEqualToString:anObject.color]) &&
-        (_link == anObject.link || [_link isEqual:anObject.link]) &&
+        (_counts == anObject.counts || [_counts isEqualToDictionary:anObject.counts]) &&
+        (_createdAt == anObject.createdAt || [_createdAt isEqualToDate:anObject.createdAt]) &&
+        (_creator == anObject.creator || [_creator isEqualToDictionary:anObject.creator]) &&
+        (_descriptionText == anObject.descriptionText || [_descriptionText isEqualToString:anObject.descriptionText]) &&
         (_identifier == anObject.identifier || [_identifier isEqualToString:anObject.identifier]) &&
         (_image == anObject.image || [_image isEqual:anObject.image]) &&
-        (_createdAt == anObject.createdAt || [_createdAt isEqualToDate:anObject.createdAt]) &&
-        (_attributionObjects == anObject.attributionObjects || [_attributionObjects isEqualToArray:anObject.attributionObjects]) &&
-        (_url == anObject.url || [_url isEqual:anObject.url])
+        (_link == anObject.link || [_link isEqual:anObject.link]) &&
+        (_media == anObject.media || [_media isEqualToDictionary:anObject.media]) &&
+        (_note == anObject.note || [_note isEqualToString:anObject.note]) &&
+        (_tags == anObject.tags || [_tags isEqualToArray:anObject.tags]) &&
+        (_url == anObject.url || [_url isEqual:anObject.url]) &&
+        (_visualSearchAttrs == anObject.visualSearchAttrs || [_visualSearchAttrs isEqualToDictionary:anObject.visualSearchAttrs])
     );
 }
 - (NSUInteger)hash
 {
     NSUInteger subhashes[] = {
         17,
-        [_note hash],
-        [_media hash],
-        [_counts hash],
-        [_descriptionText hash],
-        [_creator hash],
-        [_tags hash],
         [_attribution hash],
+        [_attributionObjects hash],
         [_board hash],
-        [_visualSearchAttrs hash],
         [_color hash],
-        [_link hash],
+        [_counts hash],
+        [_createdAt hash],
+        [_creator hash],
+        [_descriptionText hash],
         [_identifier hash],
         [_image hash],
-        [_createdAt hash],
-        [_attributionObjects hash],
-        [_url hash]
+        [_link hash],
+        [_media hash],
+        [_note hash],
+        [_tags hash],
+        [_url hash],
+        [_visualSearchAttrs hash]
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
 }
@@ -531,38 +531,38 @@ struct PinDirtyProperties {
     if (!(self = [super init])) {
         return self;
     }
-    _note = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"note"];
-    _media = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"media"];
-    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
-    _descriptionText = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
-    _creator = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class]]] forKey:@"creator"];
-    _tags = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSArray class]]] forKey:@"tags"];
     _attribution = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"attribution"];
+    _attributionObjects = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [User class], [NSArray class]]] forKey:@"attribution_objects"];
     _board = [aDecoder decodeObjectOfClass:[Board class] forKey:@"board"];
-    _visualSearchAttrs = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"visual_search_attrs"];
     _color = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"color"];
-    _link = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"link"];
+    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
+    _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
+    _creator = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class]]] forKey:@"creator"];
+    _descriptionText = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
     _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
-    _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
-    _attributionObjects = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [User class], [NSArray class]]] forKey:@"attribution_objects"];
+    _link = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"link"];
+    _media = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"media"];
+    _note = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"note"];
+    _tags = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSArray class]]] forKey:@"tags"];
     _url = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"url"];
-    _pinDirtyProperties.PinDirtyPropertyNote = [aDecoder decodeIntForKey:@"note_dirty_property"] & 0x1;
-    _pinDirtyProperties.PinDirtyPropertyMedia = [aDecoder decodeIntForKey:@"media_dirty_property"] & 0x1;
-    _pinDirtyProperties.PinDirtyPropertyCounts = [aDecoder decodeIntForKey:@"counts_dirty_property"] & 0x1;
-    _pinDirtyProperties.PinDirtyPropertyDescriptionText = [aDecoder decodeIntForKey:@"description_dirty_property"] & 0x1;
-    _pinDirtyProperties.PinDirtyPropertyCreator = [aDecoder decodeIntForKey:@"creator_dirty_property"] & 0x1;
-    _pinDirtyProperties.PinDirtyPropertyTags = [aDecoder decodeIntForKey:@"tags_dirty_property"] & 0x1;
+    _visualSearchAttrs = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"visual_search_attrs"];
     _pinDirtyProperties.PinDirtyPropertyAttribution = [aDecoder decodeIntForKey:@"attribution_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyAttributionObjects = [aDecoder decodeIntForKey:@"attribution_objects_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyBoard = [aDecoder decodeIntForKey:@"board_dirty_property"] & 0x1;
-    _pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs = [aDecoder decodeIntForKey:@"visual_search_attrs_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyColor = [aDecoder decodeIntForKey:@"color_dirty_property"] & 0x1;
-    _pinDirtyProperties.PinDirtyPropertyLink = [aDecoder decodeIntForKey:@"link_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyCounts = [aDecoder decodeIntForKey:@"counts_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyCreator = [aDecoder decodeIntForKey:@"creator_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyDescriptionText = [aDecoder decodeIntForKey:@"description_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@"id_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyImage = [aDecoder decodeIntForKey:@"image_dirty_property"] & 0x1;
-    _pinDirtyProperties.PinDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
-    _pinDirtyProperties.PinDirtyPropertyAttributionObjects = [aDecoder decodeIntForKey:@"attribution_objects_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyLink = [aDecoder decodeIntForKey:@"link_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyMedia = [aDecoder decodeIntForKey:@"media_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyNote = [aDecoder decodeIntForKey:@"note_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyTags = [aDecoder decodeIntForKey:@"tags_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyUrl = [aDecoder decodeIntForKey:@"url_dirty_property"] & 0x1;
+    _pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs = [aDecoder decodeIntForKey:@"visual_search_attrs_dirty_property"] & 0x1;
     if ([self class] == [Pin class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
     }
@@ -570,38 +570,38 @@ struct PinDirtyProperties {
 }
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.note forKey:@"note"];
-    [aCoder encodeObject:self.media forKey:@"media"];
-    [aCoder encodeObject:self.counts forKey:@"counts"];
-    [aCoder encodeObject:self.descriptionText forKey:@"description"];
-    [aCoder encodeObject:self.creator forKey:@"creator"];
-    [aCoder encodeObject:self.tags forKey:@"tags"];
     [aCoder encodeObject:self.attribution forKey:@"attribution"];
+    [aCoder encodeObject:self.attributionObjects forKey:@"attribution_objects"];
     [aCoder encodeObject:self.board forKey:@"board"];
-    [aCoder encodeObject:self.visualSearchAttrs forKey:@"visual_search_attrs"];
     [aCoder encodeObject:self.color forKey:@"color"];
-    [aCoder encodeObject:self.link forKey:@"link"];
+    [aCoder encodeObject:self.counts forKey:@"counts"];
+    [aCoder encodeObject:self.createdAt forKey:@"created_at"];
+    [aCoder encodeObject:self.creator forKey:@"creator"];
+    [aCoder encodeObject:self.descriptionText forKey:@"description"];
     [aCoder encodeObject:self.identifier forKey:@"id"];
     [aCoder encodeObject:self.image forKey:@"image"];
-    [aCoder encodeObject:self.createdAt forKey:@"created_at"];
-    [aCoder encodeObject:self.attributionObjects forKey:@"attribution_objects"];
+    [aCoder encodeObject:self.link forKey:@"link"];
+    [aCoder encodeObject:self.media forKey:@"media"];
+    [aCoder encodeObject:self.note forKey:@"note"];
+    [aCoder encodeObject:self.tags forKey:@"tags"];
     [aCoder encodeObject:self.url forKey:@"url"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyNote forKey:@"note_dirty_property"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyMedia forKey:@"media_dirty_property"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyCounts forKey:@"counts_dirty_property"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyDescriptionText forKey:@"description_dirty_property"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyCreator forKey:@"creator_dirty_property"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyTags forKey:@"tags_dirty_property"];
+    [aCoder encodeObject:self.visualSearchAttrs forKey:@"visual_search_attrs"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyAttribution forKey:@"attribution_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyAttributionObjects forKey:@"attribution_objects_dirty_property"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyBoard forKey:@"board_dirty_property"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs forKey:@"visual_search_attrs_dirty_property"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyColor forKey:@"color_dirty_property"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyLink forKey:@"link_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyCounts forKey:@"counts_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyCreatedAt forKey:@"created_at_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyCreator forKey:@"creator_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyDescriptionText forKey:@"description_dirty_property"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyIdentifier forKey:@"id_dirty_property"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyImage forKey:@"image_dirty_property"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyCreatedAt forKey:@"created_at_dirty_property"];
-    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyAttributionObjects forKey:@"attribution_objects_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyLink forKey:@"link_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyMedia forKey:@"media_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyNote forKey:@"note_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyTags forKey:@"tags_dirty_property"];
     [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyUrl forKey:@"url_dirty_property"];
+    [aCoder encodeInt:_pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs forKey:@"visual_search_attrs_dirty_property"];
 }
 @end
 
@@ -613,38 +613,29 @@ struct PinDirtyProperties {
         return self;
     }
     struct PinDirtyProperties pinDirtyProperties = modelObject.pinDirtyProperties;
-    if (pinDirtyProperties.PinDirtyPropertyNote) {
-        _note = modelObject.note;
-    }
-    if (pinDirtyProperties.PinDirtyPropertyMedia) {
-        _media = modelObject.media;
-    }
-    if (pinDirtyProperties.PinDirtyPropertyCounts) {
-        _counts = modelObject.counts;
-    }
-    if (pinDirtyProperties.PinDirtyPropertyDescriptionText) {
-        _descriptionText = modelObject.descriptionText;
-    }
-    if (pinDirtyProperties.PinDirtyPropertyCreator) {
-        _creator = modelObject.creator;
-    }
-    if (pinDirtyProperties.PinDirtyPropertyTags) {
-        _tags = modelObject.tags;
-    }
     if (pinDirtyProperties.PinDirtyPropertyAttribution) {
         _attribution = modelObject.attribution;
+    }
+    if (pinDirtyProperties.PinDirtyPropertyAttributionObjects) {
+        _attributionObjects = modelObject.attributionObjects;
     }
     if (pinDirtyProperties.PinDirtyPropertyBoard) {
         _board = modelObject.board;
     }
-    if (pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs) {
-        _visualSearchAttrs = modelObject.visualSearchAttrs;
-    }
     if (pinDirtyProperties.PinDirtyPropertyColor) {
         _color = modelObject.color;
     }
-    if (pinDirtyProperties.PinDirtyPropertyLink) {
-        _link = modelObject.link;
+    if (pinDirtyProperties.PinDirtyPropertyCounts) {
+        _counts = modelObject.counts;
+    }
+    if (pinDirtyProperties.PinDirtyPropertyCreatedAt) {
+        _createdAt = modelObject.createdAt;
+    }
+    if (pinDirtyProperties.PinDirtyPropertyCreator) {
+        _creator = modelObject.creator;
+    }
+    if (pinDirtyProperties.PinDirtyPropertyDescriptionText) {
+        _descriptionText = modelObject.descriptionText;
     }
     if (pinDirtyProperties.PinDirtyPropertyIdentifier) {
         _identifier = modelObject.identifier;
@@ -652,14 +643,23 @@ struct PinDirtyProperties {
     if (pinDirtyProperties.PinDirtyPropertyImage) {
         _image = modelObject.image;
     }
-    if (pinDirtyProperties.PinDirtyPropertyCreatedAt) {
-        _createdAt = modelObject.createdAt;
+    if (pinDirtyProperties.PinDirtyPropertyLink) {
+        _link = modelObject.link;
     }
-    if (pinDirtyProperties.PinDirtyPropertyAttributionObjects) {
-        _attributionObjects = modelObject.attributionObjects;
+    if (pinDirtyProperties.PinDirtyPropertyMedia) {
+        _media = modelObject.media;
+    }
+    if (pinDirtyProperties.PinDirtyPropertyNote) {
+        _note = modelObject.note;
+    }
+    if (pinDirtyProperties.PinDirtyPropertyTags) {
+        _tags = modelObject.tags;
     }
     if (pinDirtyProperties.PinDirtyPropertyUrl) {
         _url = modelObject.url;
+    }
+    if (pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs) {
+        _visualSearchAttrs = modelObject.visualSearchAttrs;
     }
     _pinDirtyProperties = pinDirtyProperties;
     return self;
@@ -672,26 +672,11 @@ struct PinDirtyProperties {
 {
     NSParameterAssert(modelObject);
     PinBuilder *builder = self;
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyNote) {
-        builder.note = modelObject.note;
-    }
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyMedia) {
-        builder.media = modelObject.media;
-    }
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyCounts) {
-        builder.counts = modelObject.counts;
-    }
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyDescriptionText) {
-        builder.descriptionText = modelObject.descriptionText;
-    }
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyCreator) {
-        builder.creator = modelObject.creator;
-    }
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyTags) {
-        builder.tags = modelObject.tags;
-    }
     if (modelObject.pinDirtyProperties.PinDirtyPropertyAttribution) {
         builder.attribution = modelObject.attribution;
+    }
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyAttributionObjects) {
+        builder.attributionObjects = modelObject.attributionObjects;
     }
     if (modelObject.pinDirtyProperties.PinDirtyPropertyBoard) {
         id value = modelObject.board;
@@ -705,14 +690,20 @@ struct PinDirtyProperties {
             builder.board = nil;
         }
     }
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs) {
-        builder.visualSearchAttrs = modelObject.visualSearchAttrs;
-    }
     if (modelObject.pinDirtyProperties.PinDirtyPropertyColor) {
         builder.color = modelObject.color;
     }
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyLink) {
-        builder.link = modelObject.link;
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyCounts) {
+        builder.counts = modelObject.counts;
+    }
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyCreatedAt) {
+        builder.createdAt = modelObject.createdAt;
+    }
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyCreator) {
+        builder.creator = modelObject.creator;
+    }
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyDescriptionText) {
+        builder.descriptionText = modelObject.descriptionText;
     }
     if (modelObject.pinDirtyProperties.PinDirtyPropertyIdentifier) {
         builder.identifier = modelObject.identifier;
@@ -729,70 +720,64 @@ struct PinDirtyProperties {
             builder.image = nil;
         }
     }
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyCreatedAt) {
-        builder.createdAt = modelObject.createdAt;
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyLink) {
+        builder.link = modelObject.link;
     }
-    if (modelObject.pinDirtyProperties.PinDirtyPropertyAttributionObjects) {
-        builder.attributionObjects = modelObject.attributionObjects;
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyMedia) {
+        builder.media = modelObject.media;
+    }
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyNote) {
+        builder.note = modelObject.note;
+    }
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyTags) {
+        builder.tags = modelObject.tags;
     }
     if (modelObject.pinDirtyProperties.PinDirtyPropertyUrl) {
         builder.url = modelObject.url;
     }
-}
-- (void)setNote:(NSString *)note
-{
-    _note = note;
-    _pinDirtyProperties.PinDirtyPropertyNote = 1;
-}
-- (void)setMedia:(NSDictionary<NSString *, NSString *> *)media
-{
-    _media = media;
-    _pinDirtyProperties.PinDirtyPropertyMedia = 1;
-}
-- (void)setCounts:(NSDictionary<NSString *, NSNumber /* Integer */ *> *)counts
-{
-    _counts = counts;
-    _pinDirtyProperties.PinDirtyPropertyCounts = 1;
-}
-- (void)setDescriptionText:(NSString *)descriptionText
-{
-    _descriptionText = descriptionText;
-    _pinDirtyProperties.PinDirtyPropertyDescriptionText = 1;
-}
-- (void)setCreator:(NSDictionary<NSString *, User *> *)creator
-{
-    _creator = creator;
-    _pinDirtyProperties.PinDirtyPropertyCreator = 1;
-}
-- (void)setTags:(NSArray<NSDictionary *> *)tags
-{
-    _tags = tags;
-    _pinDirtyProperties.PinDirtyPropertyTags = 1;
+    if (modelObject.pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs) {
+        builder.visualSearchAttrs = modelObject.visualSearchAttrs;
+    }
 }
 - (void)setAttribution:(NSDictionary<NSString *, NSString *> *)attribution
 {
     _attribution = attribution;
     _pinDirtyProperties.PinDirtyPropertyAttribution = 1;
 }
+- (void)setAttributionObjects:(NSArray<PinAttributionObjects *> *)attributionObjects
+{
+    _attributionObjects = attributionObjects;
+    _pinDirtyProperties.PinDirtyPropertyAttributionObjects = 1;
+}
 - (void)setBoard:(Board *)board
 {
     _board = board;
     _pinDirtyProperties.PinDirtyPropertyBoard = 1;
-}
-- (void)setVisualSearchAttrs:(NSDictionary *)visualSearchAttrs
-{
-    _visualSearchAttrs = visualSearchAttrs;
-    _pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs = 1;
 }
 - (void)setColor:(NSString *)color
 {
     _color = color;
     _pinDirtyProperties.PinDirtyPropertyColor = 1;
 }
-- (void)setLink:(NSURL *)link
+- (void)setCounts:(NSDictionary<NSString *, NSNumber /* Integer */ *> *)counts
 {
-    _link = link;
-    _pinDirtyProperties.PinDirtyPropertyLink = 1;
+    _counts = counts;
+    _pinDirtyProperties.PinDirtyPropertyCounts = 1;
+}
+- (void)setCreatedAt:(NSDate *)createdAt
+{
+    _createdAt = createdAt;
+    _pinDirtyProperties.PinDirtyPropertyCreatedAt = 1;
+}
+- (void)setCreator:(NSDictionary<NSString *, User *> *)creator
+{
+    _creator = creator;
+    _pinDirtyProperties.PinDirtyPropertyCreator = 1;
+}
+- (void)setDescriptionText:(NSString *)descriptionText
+{
+    _descriptionText = descriptionText;
+    _pinDirtyProperties.PinDirtyPropertyDescriptionText = 1;
 }
 - (void)setIdentifier:(NSString *)identifier
 {
@@ -804,19 +789,34 @@ struct PinDirtyProperties {
     _image = image;
     _pinDirtyProperties.PinDirtyPropertyImage = 1;
 }
-- (void)setCreatedAt:(NSDate *)createdAt
+- (void)setLink:(NSURL *)link
 {
-    _createdAt = createdAt;
-    _pinDirtyProperties.PinDirtyPropertyCreatedAt = 1;
+    _link = link;
+    _pinDirtyProperties.PinDirtyPropertyLink = 1;
 }
-- (void)setAttributionObjects:(NSArray<PinAttributionObjects *> *)attributionObjects
+- (void)setMedia:(NSDictionary<NSString *, NSString *> *)media
 {
-    _attributionObjects = attributionObjects;
-    _pinDirtyProperties.PinDirtyPropertyAttributionObjects = 1;
+    _media = media;
+    _pinDirtyProperties.PinDirtyPropertyMedia = 1;
+}
+- (void)setNote:(NSString *)note
+{
+    _note = note;
+    _pinDirtyProperties.PinDirtyPropertyNote = 1;
+}
+- (void)setTags:(NSArray<NSDictionary *> *)tags
+{
+    _tags = tags;
+    _pinDirtyProperties.PinDirtyPropertyTags = 1;
 }
 - (void)setUrl:(NSURL *)url
 {
     _url = url;
     _pinDirtyProperties.PinDirtyPropertyUrl = 1;
+}
+- (void)setVisualSearchAttrs:(NSDictionary *)visualSearchAttrs
+{
+    _visualSearchAttrs = visualSearchAttrs;
+    _pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs = 1;
 }
 @end

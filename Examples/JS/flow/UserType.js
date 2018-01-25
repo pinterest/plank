@@ -11,14 +11,14 @@ import type { PlankDate, PlankURI } from './runtime.flow.js';
 import type { ImageType } from './ImageType.js';
 
 export type UserType = $Shape<{|
-  +last_name: ?string,
-  +id: ?string,
-  +first_name: ?string,
-  +image: ?ImageType,
+  +bio: ?string,
   +counts: ?{ +[string]: number } /* Integer */,
   +created_at: ?PlankDate,
+  +first_name: ?string,
+  +id: ?string,
+  +image: ?ImageType,
+  +last_name: ?string,
   +username: ?string,
-  +bio: ?string,
 |}> & {
   id: string
 };

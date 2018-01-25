@@ -57,30 +57,23 @@ struct BoardDirtyProperties {
         return self;
     }
         {
-            __unsafe_unretained id value = modelDictionary[@"name"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"contributors"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_name = [value copy];
+                    NSArray *items = value;
+                    NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
+                    for (id obj0 in items) {
+                        if (obj0 != (id)kCFNull) {
+                            id tmp0 = nil;
+                            tmp0 = [User modelObjectWithDictionary:obj0];
+                            if (tmp0 != nil) {
+                                [result0 addObject:tmp0];
+                            }
+                        }
+                    }
+                    self->_contributors = result0;
                 }
-                self->_boardDirtyProperties.BoardDirtyPropertyName = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"id"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_identifier = [value copy];
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyIdentifier = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"image"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_image = [Image modelObjectWithDictionary:value];
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyImage = 1;
+                self->_boardDirtyProperties.BoardDirtyPropertyContributors = 1;
             }
         }
         {
@@ -102,35 +95,6 @@ struct BoardDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"contributors"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            tmp0 = [User modelObjectWithDictionary:obj0];
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
-                        }
-                    }
-                    self->_contributors = result0;
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyContributors = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"description"]; // Collection will retain.
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_descriptionText = [value copy];
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyDescriptionText = 1;
-            }
-        }
-        {
             __unsafe_unretained id value = modelDictionary[@"creator"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -144,6 +108,42 @@ struct BoardDirtyProperties {
                     self->_creator = result0;
                 }
                 self->_boardDirtyProperties.BoardDirtyPropertyCreator = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"description"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_descriptionText = [value copy];
+                }
+                self->_boardDirtyProperties.BoardDirtyPropertyDescriptionText = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"id"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_identifier = [value copy];
+                }
+                self->_boardDirtyProperties.BoardDirtyPropertyIdentifier = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"image"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_image = [Image modelObjectWithDictionary:value];
+                }
+                self->_boardDirtyProperties.BoardDirtyPropertyImage = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"name"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_name = [value copy];
+                }
+                self->_boardDirtyProperties.BoardDirtyPropertyName = 1;
             }
         }
         {
@@ -171,14 +171,14 @@ struct BoardDirtyProperties {
     if (!(self = [super init])) {
         return self;
     }
-    _name = builder.name;
-    _identifier = builder.identifier;
-    _image = builder.image;
+    _contributors = builder.contributors;
     _counts = builder.counts;
     _createdAt = builder.createdAt;
-    _contributors = builder.contributors;
-    _descriptionText = builder.descriptionText;
     _creator = builder.creator;
+    _descriptionText = builder.descriptionText;
+    _identifier = builder.identifier;
+    _image = builder.image;
+    _name = builder.name;
     _url = builder.url;
     _boardDirtyProperties = builder.boardDirtyProperties;
     if ([self class] == [Board class]) {
@@ -192,14 +192,8 @@ struct BoardDirtyProperties {
     NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:9];
     [descriptionFields addObject:parentDebugDescription];
     struct BoardDirtyProperties props = _boardDirtyProperties;
-    if (props.BoardDirtyPropertyName) {
-        [descriptionFields addObject:[@"_name = " stringByAppendingFormat:@"%@", _name]];
-    }
-    if (props.BoardDirtyPropertyIdentifier) {
-        [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", _identifier]];
-    }
-    if (props.BoardDirtyPropertyImage) {
-        [descriptionFields addObject:[@"_image = " stringByAppendingFormat:@"%@", _image]];
+    if (props.BoardDirtyPropertyContributors) {
+        [descriptionFields addObject:[@"_contributors = " stringByAppendingFormat:@"%@", _contributors]];
     }
     if (props.BoardDirtyPropertyCounts) {
         [descriptionFields addObject:[@"_counts = " stringByAppendingFormat:@"%@", _counts]];
@@ -207,14 +201,20 @@ struct BoardDirtyProperties {
     if (props.BoardDirtyPropertyCreatedAt) {
         [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
     }
-    if (props.BoardDirtyPropertyContributors) {
-        [descriptionFields addObject:[@"_contributors = " stringByAppendingFormat:@"%@", _contributors]];
+    if (props.BoardDirtyPropertyCreator) {
+        [descriptionFields addObject:[@"_creator = " stringByAppendingFormat:@"%@", _creator]];
     }
     if (props.BoardDirtyPropertyDescriptionText) {
         [descriptionFields addObject:[@"_descriptionText = " stringByAppendingFormat:@"%@", _descriptionText]];
     }
-    if (props.BoardDirtyPropertyCreator) {
-        [descriptionFields addObject:[@"_creator = " stringByAppendingFormat:@"%@", _creator]];
+    if (props.BoardDirtyPropertyIdentifier) {
+        [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", _identifier]];
+    }
+    if (props.BoardDirtyPropertyImage) {
+        [descriptionFields addObject:[@"_image = " stringByAppendingFormat:@"%@", _image]];
+    }
+    if (props.BoardDirtyPropertyName) {
+        [descriptionFields addObject:[@"_name = " stringByAppendingFormat:@"%@", _name]];
     }
     if (props.BoardDirtyPropertyUrl) {
         [descriptionFields addObject:[@"_url = " stringByAppendingFormat:@"%@", _url]];
@@ -242,14 +242,14 @@ struct BoardDirtyProperties {
 {
     return (
         (anObject != nil) &&
-        (_name == anObject.name || [_name isEqualToString:anObject.name]) &&
-        (_identifier == anObject.identifier || [_identifier isEqualToString:anObject.identifier]) &&
-        (_image == anObject.image || [_image isEqual:anObject.image]) &&
+        (_contributors == anObject.contributors || [_contributors isEqualToSet:anObject.contributors]) &&
         (_counts == anObject.counts || [_counts isEqualToDictionary:anObject.counts]) &&
         (_createdAt == anObject.createdAt || [_createdAt isEqualToDate:anObject.createdAt]) &&
-        (_contributors == anObject.contributors || [_contributors isEqualToSet:anObject.contributors]) &&
-        (_descriptionText == anObject.descriptionText || [_descriptionText isEqualToString:anObject.descriptionText]) &&
         (_creator == anObject.creator || [_creator isEqualToDictionary:anObject.creator]) &&
+        (_descriptionText == anObject.descriptionText || [_descriptionText isEqualToString:anObject.descriptionText]) &&
+        (_identifier == anObject.identifier || [_identifier isEqualToString:anObject.identifier]) &&
+        (_image == anObject.image || [_image isEqual:anObject.image]) &&
+        (_name == anObject.name || [_name isEqualToString:anObject.name]) &&
         (_url == anObject.url || [_url isEqual:anObject.url])
     );
 }
@@ -257,14 +257,14 @@ struct BoardDirtyProperties {
 {
     NSUInteger subhashes[] = {
         17,
-        [_name hash],
-        [_identifier hash],
-        [_image hash],
+        [_contributors hash],
         [_counts hash],
         [_createdAt hash],
-        [_contributors hash],
-        [_descriptionText hash],
         [_creator hash],
+        [_descriptionText hash],
+        [_identifier hash],
+        [_image hash],
+        [_name hash],
         [_url hash]
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
@@ -295,23 +295,23 @@ struct BoardDirtyProperties {
     if (!(self = [super init])) {
         return self;
     }
-    _name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"];
-    _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
-    _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
+    _contributors = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [User class]]] forKey:@"contributors"];
     _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
     _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
-    _contributors = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [User class]]] forKey:@"contributors"];
-    _descriptionText = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
     _creator = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"creator"];
+    _descriptionText = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
+    _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
+    _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
+    _name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"];
     _url = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"url"];
-    _boardDirtyProperties.BoardDirtyPropertyName = [aDecoder decodeIntForKey:@"name_dirty_property"] & 0x1;
-    _boardDirtyProperties.BoardDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@"id_dirty_property"] & 0x1;
-    _boardDirtyProperties.BoardDirtyPropertyImage = [aDecoder decodeIntForKey:@"image_dirty_property"] & 0x1;
+    _boardDirtyProperties.BoardDirtyPropertyContributors = [aDecoder decodeIntForKey:@"contributors_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyCounts = [aDecoder decodeIntForKey:@"counts_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
-    _boardDirtyProperties.BoardDirtyPropertyContributors = [aDecoder decodeIntForKey:@"contributors_dirty_property"] & 0x1;
-    _boardDirtyProperties.BoardDirtyPropertyDescriptionText = [aDecoder decodeIntForKey:@"description_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyCreator = [aDecoder decodeIntForKey:@"creator_dirty_property"] & 0x1;
+    _boardDirtyProperties.BoardDirtyPropertyDescriptionText = [aDecoder decodeIntForKey:@"description_dirty_property"] & 0x1;
+    _boardDirtyProperties.BoardDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@"id_dirty_property"] & 0x1;
+    _boardDirtyProperties.BoardDirtyPropertyImage = [aDecoder decodeIntForKey:@"image_dirty_property"] & 0x1;
+    _boardDirtyProperties.BoardDirtyPropertyName = [aDecoder decodeIntForKey:@"name_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyUrl = [aDecoder decodeIntForKey:@"url_dirty_property"] & 0x1;
     if ([self class] == [Board class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
@@ -320,23 +320,23 @@ struct BoardDirtyProperties {
 }
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.name forKey:@"name"];
-    [aCoder encodeObject:self.identifier forKey:@"id"];
-    [aCoder encodeObject:self.image forKey:@"image"];
+    [aCoder encodeObject:self.contributors forKey:@"contributors"];
     [aCoder encodeObject:self.counts forKey:@"counts"];
     [aCoder encodeObject:self.createdAt forKey:@"created_at"];
-    [aCoder encodeObject:self.contributors forKey:@"contributors"];
-    [aCoder encodeObject:self.descriptionText forKey:@"description"];
     [aCoder encodeObject:self.creator forKey:@"creator"];
+    [aCoder encodeObject:self.descriptionText forKey:@"description"];
+    [aCoder encodeObject:self.identifier forKey:@"id"];
+    [aCoder encodeObject:self.image forKey:@"image"];
+    [aCoder encodeObject:self.name forKey:@"name"];
     [aCoder encodeObject:self.url forKey:@"url"];
-    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyName forKey:@"name_dirty_property"];
-    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyIdentifier forKey:@"id_dirty_property"];
-    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyImage forKey:@"image_dirty_property"];
+    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyContributors forKey:@"contributors_dirty_property"];
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyCounts forKey:@"counts_dirty_property"];
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyCreatedAt forKey:@"created_at_dirty_property"];
-    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyContributors forKey:@"contributors_dirty_property"];
-    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyDescriptionText forKey:@"description_dirty_property"];
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyCreator forKey:@"creator_dirty_property"];
+    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyDescriptionText forKey:@"description_dirty_property"];
+    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyIdentifier forKey:@"id_dirty_property"];
+    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyImage forKey:@"image_dirty_property"];
+    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyName forKey:@"name_dirty_property"];
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyUrl forKey:@"url_dirty_property"];
 }
 @end
@@ -349,14 +349,8 @@ struct BoardDirtyProperties {
         return self;
     }
     struct BoardDirtyProperties boardDirtyProperties = modelObject.boardDirtyProperties;
-    if (boardDirtyProperties.BoardDirtyPropertyName) {
-        _name = modelObject.name;
-    }
-    if (boardDirtyProperties.BoardDirtyPropertyIdentifier) {
-        _identifier = modelObject.identifier;
-    }
-    if (boardDirtyProperties.BoardDirtyPropertyImage) {
-        _image = modelObject.image;
+    if (boardDirtyProperties.BoardDirtyPropertyContributors) {
+        _contributors = modelObject.contributors;
     }
     if (boardDirtyProperties.BoardDirtyPropertyCounts) {
         _counts = modelObject.counts;
@@ -364,14 +358,20 @@ struct BoardDirtyProperties {
     if (boardDirtyProperties.BoardDirtyPropertyCreatedAt) {
         _createdAt = modelObject.createdAt;
     }
-    if (boardDirtyProperties.BoardDirtyPropertyContributors) {
-        _contributors = modelObject.contributors;
+    if (boardDirtyProperties.BoardDirtyPropertyCreator) {
+        _creator = modelObject.creator;
     }
     if (boardDirtyProperties.BoardDirtyPropertyDescriptionText) {
         _descriptionText = modelObject.descriptionText;
     }
-    if (boardDirtyProperties.BoardDirtyPropertyCreator) {
-        _creator = modelObject.creator;
+    if (boardDirtyProperties.BoardDirtyPropertyIdentifier) {
+        _identifier = modelObject.identifier;
+    }
+    if (boardDirtyProperties.BoardDirtyPropertyImage) {
+        _image = modelObject.image;
+    }
+    if (boardDirtyProperties.BoardDirtyPropertyName) {
+        _name = modelObject.name;
     }
     if (boardDirtyProperties.BoardDirtyPropertyUrl) {
         _url = modelObject.url;
@@ -387,8 +387,20 @@ struct BoardDirtyProperties {
 {
     NSParameterAssert(modelObject);
     BoardBuilder *builder = self;
-    if (modelObject.boardDirtyProperties.BoardDirtyPropertyName) {
-        builder.name = modelObject.name;
+    if (modelObject.boardDirtyProperties.BoardDirtyPropertyContributors) {
+        builder.contributors = modelObject.contributors;
+    }
+    if (modelObject.boardDirtyProperties.BoardDirtyPropertyCounts) {
+        builder.counts = modelObject.counts;
+    }
+    if (modelObject.boardDirtyProperties.BoardDirtyPropertyCreatedAt) {
+        builder.createdAt = modelObject.createdAt;
+    }
+    if (modelObject.boardDirtyProperties.BoardDirtyPropertyCreator) {
+        builder.creator = modelObject.creator;
+    }
+    if (modelObject.boardDirtyProperties.BoardDirtyPropertyDescriptionText) {
+        builder.descriptionText = modelObject.descriptionText;
     }
     if (modelObject.boardDirtyProperties.BoardDirtyPropertyIdentifier) {
         builder.identifier = modelObject.identifier;
@@ -401,39 +413,17 @@ struct BoardDirtyProperties {
             builder.image = value;
         }
     }
-    if (modelObject.boardDirtyProperties.BoardDirtyPropertyCounts) {
-        builder.counts = modelObject.counts;
-    }
-    if (modelObject.boardDirtyProperties.BoardDirtyPropertyCreatedAt) {
-        builder.createdAt = modelObject.createdAt;
-    }
-    if (modelObject.boardDirtyProperties.BoardDirtyPropertyContributors) {
-        builder.contributors = modelObject.contributors;
-    }
-    if (modelObject.boardDirtyProperties.BoardDirtyPropertyDescriptionText) {
-        builder.descriptionText = modelObject.descriptionText;
-    }
-    if (modelObject.boardDirtyProperties.BoardDirtyPropertyCreator) {
-        builder.creator = modelObject.creator;
+    if (modelObject.boardDirtyProperties.BoardDirtyPropertyName) {
+        builder.name = modelObject.name;
     }
     if (modelObject.boardDirtyProperties.BoardDirtyPropertyUrl) {
         builder.url = modelObject.url;
     }
 }
-- (void)setName:(NSString *)name
+- (void)setContributors:(NSSet<User *> *)contributors
 {
-    _name = name;
-    _boardDirtyProperties.BoardDirtyPropertyName = 1;
-}
-- (void)setIdentifier:(NSString *)identifier
-{
-    _identifier = identifier;
-    _boardDirtyProperties.BoardDirtyPropertyIdentifier = 1;
-}
-- (void)setImage:(Image *)image
-{
-    _image = image;
-    _boardDirtyProperties.BoardDirtyPropertyImage = 1;
+    _contributors = contributors;
+    _boardDirtyProperties.BoardDirtyPropertyContributors = 1;
 }
 - (void)setCounts:(NSDictionary<NSString *, NSNumber /* Integer */ *> *)counts
 {
@@ -445,20 +435,30 @@ struct BoardDirtyProperties {
     _createdAt = createdAt;
     _boardDirtyProperties.BoardDirtyPropertyCreatedAt = 1;
 }
-- (void)setContributors:(NSSet<User *> *)contributors
+- (void)setCreator:(NSDictionary<NSString *, NSString *> *)creator
 {
-    _contributors = contributors;
-    _boardDirtyProperties.BoardDirtyPropertyContributors = 1;
+    _creator = creator;
+    _boardDirtyProperties.BoardDirtyPropertyCreator = 1;
 }
 - (void)setDescriptionText:(NSString *)descriptionText
 {
     _descriptionText = descriptionText;
     _boardDirtyProperties.BoardDirtyPropertyDescriptionText = 1;
 }
-- (void)setCreator:(NSDictionary<NSString *, NSString *> *)creator
+- (void)setIdentifier:(NSString *)identifier
 {
-    _creator = creator;
-    _boardDirtyProperties.BoardDirtyPropertyCreator = 1;
+    _identifier = identifier;
+    _boardDirtyProperties.BoardDirtyPropertyIdentifier = 1;
+}
+- (void)setImage:(Image *)image
+{
+    _image = image;
+    _boardDirtyProperties.BoardDirtyPropertyImage = 1;
+}
+- (void)setName:(NSString *)name
+{
+    _name = name;
+    _boardDirtyProperties.BoardDirtyPropertyName = 1;
 }
 - (void)setUrl:(NSURL *)url
 {

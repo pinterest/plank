@@ -30,7 +30,9 @@ extension JSFileRenderer {
     }
 
     var properties: [(Parameter, SchemaObjectProperty)] {
-        return self.rootSchema.properties.map { $0 }
+        return self.rootSchema.properties.map { $0 }.sorted(by: { (obj1, obj2) -> Bool in
+            return obj1.0 < obj2.0
+        })
     }
 
     var isBaseClass: Bool {
