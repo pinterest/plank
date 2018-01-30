@@ -432,7 +432,7 @@ struct BoardDirtyProperties {
 }
 - (void)setCreatedAt:(NSDate *)createdAt
 {
-    _createdAt = createdAt;
+    _createdAt = [createdAt copy];
     _boardDirtyProperties.BoardDirtyPropertyCreatedAt = 1;
 }
 - (void)setCreator:(NSDictionary<NSString *, NSString *> *)creator
@@ -442,12 +442,12 @@ struct BoardDirtyProperties {
 }
 - (void)setDescriptionText:(NSString *)descriptionText
 {
-    _descriptionText = descriptionText;
+    _descriptionText = [descriptionText copy];
     _boardDirtyProperties.BoardDirtyPropertyDescriptionText = 1;
 }
 - (void)setIdentifier:(NSString *)identifier
 {
-    _identifier = identifier;
+    _identifier = [identifier copy];
     _boardDirtyProperties.BoardDirtyPropertyIdentifier = 1;
 }
 - (void)setImage:(Image *)image
@@ -457,12 +457,12 @@ struct BoardDirtyProperties {
 }
 - (void)setName:(NSString *)name
 {
-    _name = name;
+    _name = [name copy];
     _boardDirtyProperties.BoardDirtyPropertyName = 1;
 }
 - (void)setUrl:(NSURL *)url
 {
-    _url = url;
+    _url = [url copy];
     _boardDirtyProperties.BoardDirtyPropertyUrl = 1;
 }
 @end

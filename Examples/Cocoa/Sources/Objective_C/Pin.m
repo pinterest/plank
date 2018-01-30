@@ -756,7 +756,7 @@ struct PinDirtyProperties {
 }
 - (void)setColor:(NSString *)color
 {
-    _color = color;
+    _color = [color copy];
     _pinDirtyProperties.PinDirtyPropertyColor = 1;
 }
 - (void)setCounts:(NSDictionary<NSString *, NSNumber /* Integer */ *> *)counts
@@ -766,7 +766,7 @@ struct PinDirtyProperties {
 }
 - (void)setCreatedAt:(NSDate *)createdAt
 {
-    _createdAt = createdAt;
+    _createdAt = [createdAt copy];
     _pinDirtyProperties.PinDirtyPropertyCreatedAt = 1;
 }
 - (void)setCreator:(NSDictionary<NSString *, User *> *)creator
@@ -776,12 +776,12 @@ struct PinDirtyProperties {
 }
 - (void)setDescriptionText:(NSString *)descriptionText
 {
-    _descriptionText = descriptionText;
+    _descriptionText = [descriptionText copy];
     _pinDirtyProperties.PinDirtyPropertyDescriptionText = 1;
 }
 - (void)setIdentifier:(NSString *)identifier
 {
-    _identifier = identifier;
+    _identifier = [identifier copy];
     _pinDirtyProperties.PinDirtyPropertyIdentifier = 1;
 }
 - (void)setImage:(Image *)image
@@ -791,7 +791,7 @@ struct PinDirtyProperties {
 }
 - (void)setLink:(NSURL *)link
 {
-    _link = link;
+    _link = [link copy];
     _pinDirtyProperties.PinDirtyPropertyLink = 1;
 }
 - (void)setMedia:(NSDictionary<NSString *, NSString *> *)media
@@ -801,7 +801,7 @@ struct PinDirtyProperties {
 }
 - (void)setNote:(NSString *)note
 {
-    _note = note;
+    _note = [note copy];
     _pinDirtyProperties.PinDirtyPropertyNote = 1;
 }
 - (void)setTags:(NSArray<NSDictionary *> *)tags
@@ -811,7 +811,7 @@ struct PinDirtyProperties {
 }
 - (void)setUrl:(NSURL *)url
 {
-    _url = url;
+    _url = [url copy];
     _pinDirtyProperties.PinDirtyPropertyUrl = 1;
 }
 - (void)setVisualSearchAttrs:(NSDictionary *)visualSearchAttrs

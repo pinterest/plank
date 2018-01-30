@@ -246,7 +246,7 @@ struct ImageDirtyProperties {
 }
 - (void)setUrl:(NSURL *)url
 {
-    _url = url;
+    _url = [url copy];
     _imageDirtyProperties.ImageDirtyPropertyUrl = 1;
 }
 - (void)setWidth:(NSInteger)width
