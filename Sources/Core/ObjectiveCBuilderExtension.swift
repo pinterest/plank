@@ -31,10 +31,20 @@ extension ObjCModelRenderer {
     }
 
     func renderBuilderPropertySetters() -> [ObjCIR.Method] {
+
+        func renderBuilderPropertySetter(_ param: Parameter, _ schema: Schema) -> String {
+            switch schema.memoryAssignmentType() {
+            case .copy:
+                return "[\(param.snakeCaseToPropertyName()) copy];"
+            default:
+                return "\(param.snakeCaseToPropertyName());"
+            }
+        }
+
         return self.properties.map({ (param, prop) -> ObjCIR.Method in
             ObjCIR.method("- (void)set\(param.snakeCaseToCapitalizedPropertyName()):(\(objcClassFromSchema(param, prop.schema)))\(param.snakeCaseToPropertyName())") {
                 [
-                    "_\(param.snakeCaseToPropertyName()) = \(param.snakeCaseToPropertyName());",
+                    "_\(param.snakeCaseToPropertyName()) = \(renderBuilderPropertySetter(param, prop.schema))",
                     "_\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = 1;"
                 ]
             }

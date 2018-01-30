@@ -381,7 +381,7 @@ struct UserDirtyProperties {
 }
 - (void)setBio:(NSString *)bio
 {
-    _bio = bio;
+    _bio = [bio copy];
     _userDirtyProperties.UserDirtyPropertyBio = 1;
 }
 - (void)setCounts:(NSDictionary<NSString *, NSNumber /* Integer */ *> *)counts
@@ -391,17 +391,17 @@ struct UserDirtyProperties {
 }
 - (void)setCreatedAt:(NSDate *)createdAt
 {
-    _createdAt = createdAt;
+    _createdAt = [createdAt copy];
     _userDirtyProperties.UserDirtyPropertyCreatedAt = 1;
 }
 - (void)setFirstName:(NSString *)firstName
 {
-    _firstName = firstName;
+    _firstName = [firstName copy];
     _userDirtyProperties.UserDirtyPropertyFirstName = 1;
 }
 - (void)setIdentifier:(NSString *)identifier
 {
-    _identifier = identifier;
+    _identifier = [identifier copy];
     _userDirtyProperties.UserDirtyPropertyIdentifier = 1;
 }
 - (void)setImage:(Image *)image
@@ -411,12 +411,12 @@ struct UserDirtyProperties {
 }
 - (void)setLastName:(NSString *)lastName
 {
-    _lastName = lastName;
+    _lastName = [lastName copy];
     _userDirtyProperties.UserDirtyPropertyLastName = 1;
 }
 - (void)setUsername:(NSString *)username
 {
-    _username = username;
+    _username = [username copy];
     _userDirtyProperties.UserDirtyPropertyUsername = 1;
 }
 @end
