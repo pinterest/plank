@@ -39,3 +39,5 @@ install: archive
 	mkdir -p $(PREFIX)/bin
 	cp .build/release/plank $(PREFIX)/bin/
 
+project:
+	./Utility/project.sh
