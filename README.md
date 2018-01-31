@@ -19,7 +19,7 @@ Based on the type information specified in the schema definition, each class pro
 #### MacOS
 
 ```sh
-$ brew install pinterest/tap/plank
+$ brew install plank
 ```
 
 #### Linux
