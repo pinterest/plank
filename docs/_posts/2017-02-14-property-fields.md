@@ -150,7 +150,7 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
 <pre><code class="json">{
     "some_map" : {
         "type": "object",
-        “additionalProperties”: { $ref : “user.json” }
+        “additionalProperties”: { "$ref" : “user.json” }
     }
 }
 </code></pre>
