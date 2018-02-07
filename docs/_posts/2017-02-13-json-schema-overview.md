@@ -11,7 +11,7 @@ JSON Schema is a powerful tool for validating the structure of JSON data. In pra
 Here is a simple schema and overview of the fields listed.
 <pre><code class="json">{
     "id": "user.json",
-    "extends": "base_model.json",
+    "extends": { "$ref" : "base_model.json" },
     "title": "user",
     "description" : "Schema definition of a User",
     "$schema": "http://json-schema.org/schema#",
