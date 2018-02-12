@@ -31,6 +31,8 @@ compile_commands.json
 # Swift Package Manager
 .build
 Packages
+plank.xcodeproj/
+Plank.xcodeproj/
 
 # Jekyll
 docs/.jekyll-metadata
