@@ -76,12 +76,7 @@ func enumToStringMethodName(propertyName: String, className: String) -> String {
 }
 
 func enumTypeName(propertyName: String, className: String) -> String {
-    let typeName = "\(className)\(propertyName.snakeCaseToCamelCase())"
-    if typeName.hasSuffix("Type") {
-        return typeName
-    } else {
-        return typeName + "Type"
-    }
+    return "\(className)\(propertyName.snakeCaseToCamelCase())"
 }
 
 extension SchemaObjectRoot {

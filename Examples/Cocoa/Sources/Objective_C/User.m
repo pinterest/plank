@@ -13,6 +13,7 @@ struct UserDirtyProperties {
     unsigned int UserDirtyPropertyBio:1;
     unsigned int UserDirtyPropertyCounts:1;
     unsigned int UserDirtyPropertyCreatedAt:1;
+    unsigned int UserDirtyPropertyEmailFrequency:1;
     unsigned int UserDirtyPropertyFirstName:1;
     unsigned int UserDirtyPropertyIdentifier:1;
     unsigned int UserDirtyPropertyImage:1;
@@ -27,6 +28,35 @@ struct UserDirtyProperties {
 @interface UserBuilder ()
 @property (nonatomic, assign, readwrite) struct UserDirtyProperties userDirtyProperties;
 @end
+
+extern NSString * _Nonnull UserEmailFrequencyToString(UserEmailFrequency enumType)
+{
+    switch (enumType) {
+    case UserEmailFrequencyUnset:
+        return @"unset";
+        break;
+    case UserEmailFrequencyImmediate:
+        return @"immediate";
+        break;
+    case UserEmailFrequencyDaily:
+        return @"daily";
+        break;
+    }
+}
+
+extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
+{
+    if ([str isEqualToString:@"unset"]) {
+        return UserEmailFrequencyUnset;
+    }
+    if ([str isEqualToString:@"immediate"]) {
+        return UserEmailFrequencyImmediate;
+    }
+    if ([str isEqualToString:@"daily"]) {
+        return UserEmailFrequencyDaily;
+    }
+    return UserEmailFrequencyUnset;
+}
 
 @implementation User
 + (NSString *)className
@@ -79,6 +109,15 @@ struct UserDirtyProperties {
                     self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
                 }
                 self->_userDirtyProperties.UserDirtyPropertyCreatedAt = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"email_frequency"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_emailFrequency = UserEmailFrequencyFromString(value);
+                }
+                self->_userDirtyProperties.UserDirtyPropertyEmailFrequency = 1;
             }
         }
         {
@@ -145,6 +184,7 @@ struct UserDirtyProperties {
     _bio = builder.bio;
     _counts = builder.counts;
     _createdAt = builder.createdAt;
+    _emailFrequency = builder.emailFrequency;
     _firstName = builder.firstName;
     _identifier = builder.identifier;
     _image = builder.image;
@@ -159,7 +199,7 @@ struct UserDirtyProperties {
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
-    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:8];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:9];
     [descriptionFields addObject:parentDebugDescription];
     struct UserDirtyProperties props = _userDirtyProperties;
     if (props.UserDirtyPropertyBio) {
@@ -170,6 +210,9 @@ struct UserDirtyProperties {
     }
     if (props.UserDirtyPropertyCreatedAt) {
         [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
+    }
+    if (props.UserDirtyPropertyEmailFrequency) {
+        [descriptionFields addObject:[@"_emailFrequency = " stringByAppendingFormat:@"%@", UserEmailFrequencyToString(_emailFrequency)]];
     }
     if (props.UserDirtyPropertyFirstName) {
         [descriptionFields addObject:[@"_firstName = " stringByAppendingFormat:@"%@", _firstName]];
@@ -209,6 +252,7 @@ struct UserDirtyProperties {
 {
     return (
         (anObject != nil) &&
+        (_emailFrequency == anObject.emailFrequency) &&
         (_bio == anObject.bio || [_bio isEqualToString:anObject.bio]) &&
         (_counts == anObject.counts || [_counts isEqualToDictionary:anObject.counts]) &&
         (_createdAt == anObject.createdAt || [_createdAt isEqualToDate:anObject.createdAt]) &&
@@ -226,6 +270,7 @@ struct UserDirtyProperties {
         [_bio hash],
         [_counts hash],
         [_createdAt hash],
+        (NSUInteger)_emailFrequency,
         [_firstName hash],
         [_identifier hash],
         [_image hash],
@@ -263,6 +308,7 @@ struct UserDirtyProperties {
     _bio = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"bio"];
     _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
     _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
+    _emailFrequency = [aDecoder decodeIntegerForKey:@"email_frequency"];
     _firstName = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"first_name"];
     _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
@@ -271,6 +317,7 @@ struct UserDirtyProperties {
     _userDirtyProperties.UserDirtyPropertyBio = [aDecoder decodeIntForKey:@"bio_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyCounts = [aDecoder decodeIntForKey:@"counts_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
+    _userDirtyProperties.UserDirtyPropertyEmailFrequency = [aDecoder decodeIntForKey:@"email_frequency_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyFirstName = [aDecoder decodeIntForKey:@"first_name_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@"id_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyImage = [aDecoder decodeIntForKey:@"image_dirty_property"] & 0x1;
@@ -286,6 +333,7 @@ struct UserDirtyProperties {
     [aCoder encodeObject:self.bio forKey:@"bio"];
     [aCoder encodeObject:self.counts forKey:@"counts"];
     [aCoder encodeObject:self.createdAt forKey:@"created_at"];
+    [aCoder encodeInteger:self.emailFrequency forKey:@"email_frequency"];
     [aCoder encodeObject:self.firstName forKey:@"first_name"];
     [aCoder encodeObject:self.identifier forKey:@"id"];
     [aCoder encodeObject:self.image forKey:@"image"];
@@ -294,6 +342,7 @@ struct UserDirtyProperties {
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyBio forKey:@"bio_dirty_property"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyCounts forKey:@"counts_dirty_property"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyCreatedAt forKey:@"created_at_dirty_property"];
+    [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyEmailFrequency forKey:@"email_frequency_dirty_property"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyFirstName forKey:@"first_name_dirty_property"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyIdentifier forKey:@"id_dirty_property"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyImage forKey:@"image_dirty_property"];
@@ -318,6 +367,9 @@ struct UserDirtyProperties {
     }
     if (userDirtyProperties.UserDirtyPropertyCreatedAt) {
         _createdAt = modelObject.createdAt;
+    }
+    if (userDirtyProperties.UserDirtyPropertyEmailFrequency) {
+        _emailFrequency = modelObject.emailFrequency;
     }
     if (userDirtyProperties.UserDirtyPropertyFirstName) {
         _firstName = modelObject.firstName;
@@ -353,6 +405,9 @@ struct UserDirtyProperties {
     }
     if (modelObject.userDirtyProperties.UserDirtyPropertyCreatedAt) {
         builder.createdAt = modelObject.createdAt;
+    }
+    if (modelObject.userDirtyProperties.UserDirtyPropertyEmailFrequency) {
+        builder.emailFrequency = modelObject.emailFrequency;
     }
     if (modelObject.userDirtyProperties.UserDirtyPropertyFirstName) {
         builder.firstName = modelObject.firstName;
@@ -393,6 +448,11 @@ struct UserDirtyProperties {
 {
     _createdAt = [createdAt copy];
     _userDirtyProperties.UserDirtyPropertyCreatedAt = 1;
+}
+- (void)setEmailFrequency:(UserEmailFrequency)emailFrequency
+{
+    _emailFrequency = emailFrequency;
+    _userDirtyProperties.UserDirtyPropertyEmailFrequency = 1;
 }
 - (void)setFirstName:(NSString *)firstName
 {
