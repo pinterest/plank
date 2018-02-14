@@ -3,8 +3,8 @@ import XCTest
 @testable import CoreTests
 
 var tests = [XCTestCaseEntry]()
-   tests += [testCase(ObjectiveCInitTests.allTests)]
-   tests += [testCase(ObjectiveCIRTests.allTests)]
    tests += [testCase(StringExtensionsTests.allTests)]
+   tests += [testCase(ObjectiveCIRTests.allTests)]
+   tests += [testCase(ObjectiveCInitTests.allTests)]
 
 XCTMain(tests)
