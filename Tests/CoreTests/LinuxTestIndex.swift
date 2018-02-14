@@ -2,10 +2,16 @@
 import XCTest
 
 #if os(Linux)
-// Generated Test Extension for ObjectiveCInitTests
-extension ObjectiveCInitTests {
+// Generated Test Extension for StringExtensionsTests
+extension StringExtensionsTests {
    static var allTests = [
-       ("testOneOfInit", testOneOfInit)
+       ("testUppercaseFirst", testUppercaseFirst),
+       ("testLowercaseFirst", testLowercaseFirst),
+       ("testSuffixSubstring", testSuffixSubstring),
+       ("testSnakeCaseToCamelCase", testSnakeCaseToCamelCase),
+       ("testSnakeCaseToPropertyName", testSnakeCaseToPropertyName),
+       ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName),
+       ("testReservedKeywordSubstitution", testReservedKeywordSubstitution)
    ]
 }
 // Generated Test Extension for ObjectiveCIRTests
@@ -27,16 +33,10 @@ extension ObjectiveCIRTests {
        ("testIfElseStmt", testIfElseStmt)
    ]
 }
-// Generated Test Extension for StringExtensionsTests
-extension StringExtensionsTests {
+// Generated Test Extension for ObjectiveCInitTests
+extension ObjectiveCInitTests {
    static var allTests = [
-       ("testUppercaseFirst", testUppercaseFirst),
-       ("testLowercaseFirst", testLowercaseFirst),
-       ("testSuffixSubstring", testSuffixSubstring),
-       ("testSnakeCaseToCamelCase", testSnakeCaseToCamelCase),
-       ("testSnakeCaseToPropertyName", testSnakeCaseToPropertyName),
-       ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName),
-       ("testReservedKeywordSubstitution", testReservedKeywordSubstitution)
+       ("testOneOfInit", testOneOfInit)
    ]
 }
 #endif

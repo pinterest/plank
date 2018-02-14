@@ -18,6 +18,15 @@
 			"type": "object",
 			"additionalProperties": { "type": "integer" }
 		},
+    "email_frequency" : {
+        "type" : "string",
+        "enum": [
+            { "default" : "unset", "description" : "unset" },
+            { "default" : "immediate", "description" : "immediate" },
+            { "default" : "daily", "description" : "daily" }
+        ],
+        "default" : "unset"
+    },
 		"image": { "$ref": "image.json" }
 	}
 }

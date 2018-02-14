@@ -22,15 +22,15 @@ class ObjectiveCIRTests: XCTestCase {
     }
 
     func testEnumTypeName() {
-        XCTAssertEqual(enumTypeName(propertyName: "some_prop", className: "class"), "classSomePropType")
+        XCTAssertEqual(enumTypeName(propertyName: "some_prop_type", className: "class"), "classSomePropType")
     }
 
     func testEnumToStringName() {
-        XCTAssertEqual(enumToStringMethodName(propertyName: "some_prop", className: "class"), "classSomePropTypeToString")
+        XCTAssertEqual(enumToStringMethodName(propertyName: "some_prop_type", className: "class"), "classSomePropTypeToString")
     }
 
     func testEnumFromStringName() {
-        XCTAssertEqual(enumFromStringMethodName(propertyName: "some_prop", className: "class"), "classSomePropTypeFromString")
+        XCTAssertEqual(enumFromStringMethodName(propertyName: "some_prop_type", className: "class"), "classSomePropTypeFromString")
     }
 
     func testStatementSyntax() {
