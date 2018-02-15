@@ -59,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isEqualToPin:(Pin *)anObject;
 - (instancetype)mergeWithModel:(Pin *)modelObject;
 - (instancetype)mergeWithModel:(Pin *)modelObject initType:(PlankModelInitType)initType;
+- (NSDictionary *)dictionaryObjectRepresentation;
 @end
 
 @interface PinBuilder : NSObject

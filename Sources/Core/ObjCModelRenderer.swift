@@ -132,13 +132,23 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
         }
 
         let parentName = resolveClassName(self.parentDescriptor)
-        let enumRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
-            switch prop.schema {
+
+        func enumRoot(from prop: Schema, param: String) -> [ObjCIR.Root] {
+            switch prop {
             case .enumT(let enumValues):
-                return [ObjCIR.Root.enumDecl(name: enumTypeName(propertyName: param, className: self.className),
-                                        values: enumValues)]
+                return [ObjCIR.Root.enumDecl(name: enumTypeName(propertyName: param, className: self.className), values: enumValues)]
+            case .oneOf(types: let possibleTypes):
+                return possibleTypes.flatMap { enumRoot(from: $0, param: param) }
+            case .array(itemType: .some(let itemType)):
+                return enumRoot(from: itemType, param: param)
+            case .map(valueType: .some(let additionalProperties)):
+                return enumRoot(from: additionalProperties, param: param)
             default: return []
             }
+        }
+
+        let enumRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
+            enumRoot(from: prop.schema, param: param)
         }
 
         // TODO: Synthesize oneOf ADT Classes and Class Extension
@@ -204,8 +214,8 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     (.publicM, self.renderIsEqualToClass()),
                     (.privateM, self.renderHash()),
                     (.publicM, self.renderMergeWithModel()),
-                    (.publicM, self.renderMergeWithModelWithInitType())
-                    //(self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary())
+                    (.publicM, self.renderMergeWithModelWithInitType()),
+                    (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary())
                 ],
                 properties: properties.map { param, prop in (param, objcClassFromSchema(param, prop.schema), prop, .readonly) },
                 protocols: protocols

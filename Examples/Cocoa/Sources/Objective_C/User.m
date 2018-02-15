@@ -290,6 +290,71 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     [builder mergeWithModel:modelObject];
     return [[User alloc] initWithBuilder:builder initType:initType];
 }
+- (NSDictionary *)dictionaryObjectRepresentation
+{
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:9];
+    if (_userDirtyProperties.UserDirtyPropertyBio) {
+        if (_bio != nil) {
+            [dict setObject:_bio forKey:@"bio"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"bio"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyCounts) {
+        if (_counts != nil) {
+            [dict setObject:_counts forKey:@"counts"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"counts"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyCreatedAt) {
+        NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
+        if (_createdAt != nil && [[valueTransformer class] allowsReverseTransformation]) {
+            [dict setObject:[valueTransformer reverseTransformedValue:_createdAt] forKey:@"created_at"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"created_at"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyEmailFrequency) {
+        [dict setObject:UserEmailFrequencyToString(_emailFrequency) forKey:@"email_frequency"];
+    }
+    if (_userDirtyProperties.UserDirtyPropertyFirstName) {
+        if (_firstName != nil) {
+            [dict setObject:_firstName forKey:@"first_name"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"first_name"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyIdentifier) {
+        if (_identifier != nil) {
+            [dict setObject:_identifier forKey:@"id"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"id"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyImage) {
+        if (_image != nil) {
+            [dict setObject:[_image dictionaryObjectRepresentation] forKey:@"image"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"image"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyLastName) {
+        if (_lastName != nil) {
+            [dict setObject:_lastName forKey:@"last_name"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"last_name"];
+        }
+    }
+    if (_userDirtyProperties.UserDirtyPropertyUsername) {
+        if (_username != nil) {
+            [dict setObject:_username forKey:@"username"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"username"];
+        }
+    }
+    return dict;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {
