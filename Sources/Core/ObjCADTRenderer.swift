@@ -89,11 +89,15 @@ struct ObjCADTRenderer: ObjCFileRenderer {
         return self.className + "InternalType" + name
     }
 
+    private func renderArgName(schema: Schema) -> (String, String) {
+        let name = ObjCADTRenderer.objectName(schema)
+        let arg = name.snakeCaseToPropertyName()
+        return (name, arg)
+    }
+
     func renderClassInitializers() -> [ObjCIR.Method] {
         return self.dataTypes.enumerated().map { (index, prop) in
-            let name = ObjCADTRenderer.objectName(prop.schema)
-            let arg = (String(name.prefix(1)).lowercased() + String(name.dropFirst())).snakeCaseToPropertyName()
-
+            let (name, arg) = renderArgName(schema: prop.schema)
             return ObjCIR.method("+ (instancetype)objectWith\(name):(\(self.objcClassFromSchema(name, prop.schema)))\(arg)") {
                 [
                     "\(self.className) *obj = [[\(self.className) alloc] init];",
@@ -155,16 +159,14 @@ struct ObjCADTRenderer: ObjCFileRenderer {
 
     func renderMatchFunction() -> ObjCIR.Method {
         let signatureComponents  = self.dataTypes.enumerated().map { (index, prop) -> String in
-            let name = ObjCADTRenderer.objectName(prop.schema)
-            let arg = String(name.prefix(1)).lowercased() + String(name.dropFirst())
+            let (name, arg) = renderArgName(schema: prop.schema)
             return "\(index == 0 ? "match" : "or")\(name):(nullable PLANK_NOESCAPE void (^)(\(self.objcClassFromSchema(name, prop.schema)) \(arg)))\(arg)MatchHandler"
         }
 
         return ObjCIR.method("- (void)\(signatureComponents.joined(separator: " "))") {[
             ObjCIR.switchStmt("self.internalType") {
                 self.dataTypes.enumerated().map { (index, prop) -> ObjCIR.SwitchCase in
-                    let name = ObjCADTRenderer.objectName(prop.schema)
-                    let arg = String(name.prefix(1)).lowercased() + String(name.dropFirst())
+                    let (_, arg) = renderArgName(schema: prop.schema)
                     return ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(prop.schema)) {[
                         ObjCIR.ifStmt("\(arg)MatchHandler != NULL") {[
                             ObjCIR.stmt("\(arg)MatchHandler(self.value\(index))")
@@ -208,8 +210,8 @@ struct ObjCADTRenderer: ObjCFileRenderer {
                                     (.publicM, self.renderMatchFunction()),
                                     (.privateM, self.renderIsEqual()),
                                     (.publicM, self.renderIsEqualToClass()),
-                                    (.privateM, self.renderHash())
-                               //     (.publicM, self.renderDictionaryObjectRepresentation())
+                                    (.privateM, self.renderHash()),
+                                    (.publicM, self.renderDictionaryObjectRepresentation())
                                     ],
                                  properties: [],
                                  protocols: protocols),

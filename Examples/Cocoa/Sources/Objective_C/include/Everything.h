@@ -34,6 +34,7 @@ typedef NS_ENUM(NSInteger, EverythingMapPolymorphicValuesInternalType) {
 + (instancetype)objectWithEverything:(Everything *)everything;
 - (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler;
 - (BOOL)isEqualToEverythingMapPolymorphicValues:(EverythingMapPolymorphicValues *)anObject;
+- (id)dictionaryObjectRepresentation;
 @end
 
 NS_ASSUME_NONNULL_END
@@ -67,8 +68,9 @@ typedef NS_ENUM(NSInteger, EverythingPolymorphicPropInternalType) {
 + (instancetype)objectWithFloat:(double)floatProperty;
 + (instancetype)objectWithDate:(NSDate *)date;
 + (instancetype)objectWithURL:(NSURL *)uRL;
-- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler orString:(nullable PLANK_NOESCAPE void (^)(NSString * string))stringMatchHandler orBoolean:(nullable PLANK_NOESCAPE void (^)(BOOL boolean))booleanMatchHandler orInteger:(nullable PLANK_NOESCAPE void (^)(NSInteger integer))integerMatchHandler orFloat:(nullable PLANK_NOESCAPE void (^)(double float))floatMatchHandler orDate:(nullable PLANK_NOESCAPE void (^)(NSDate * date))dateMatchHandler orURL:(nullable PLANK_NOESCAPE void (^)(NSURL * uRL))uRLMatchHandler;
+- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler orString:(nullable PLANK_NOESCAPE void (^)(NSString * string))stringMatchHandler orBoolean:(nullable PLANK_NOESCAPE void (^)(BOOL boolean))booleanMatchHandler orInteger:(nullable PLANK_NOESCAPE void (^)(NSInteger integer))integerMatchHandler orFloat:(nullable PLANK_NOESCAPE void (^)(double floatProperty))floatPropertyMatchHandler orDate:(nullable PLANK_NOESCAPE void (^)(NSDate * date))dateMatchHandler orURL:(nullable PLANK_NOESCAPE void (^)(NSURL * uRL))uRLMatchHandler;
 - (BOOL)isEqualToEverythingPolymorphicProp:(EverythingPolymorphicProp *)anObject;
+- (id)dictionaryObjectRepresentation;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -76,6 +76,17 @@
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
 }
+- (id)dictionaryObjectRepresentation
+{
+    switch (self.internalType) {
+    case PinAttributionObjectsInternalTypeBoard:
+        return [[NSDictionary alloc] initWithDictionary:[self.value0 dictionaryObjectRepresentation]];
+        break;
+    case PinAttributionObjectsInternalTypeUser:
+        return [[NSDictionary alloc] initWithDictionary:[self.value1 dictionaryObjectRepresentation]];
+        break;
+    }
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {

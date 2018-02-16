@@ -122,6 +122,26 @@
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
 }
+- (id)dictionaryObjectRepresentation
+{
+    switch (self.internalType) {
+    case EverythingMapPolymorphicValuesInternalTypeUser:
+        return [[NSDictionary alloc] initWithDictionary:[self.value0 dictionaryObjectRepresentation]];
+        break;
+    case EverythingMapPolymorphicValuesInternalTypeBoard:
+        return [[NSDictionary alloc] initWithDictionary:[self.value1 dictionaryObjectRepresentation]];
+        break;
+    case EverythingMapPolymorphicValuesInternalTypeImage:
+        return [[NSDictionary alloc] initWithDictionary:[self.value2 dictionaryObjectRepresentation]];
+        break;
+    case EverythingMapPolymorphicValuesInternalTypePin:
+        return [[NSDictionary alloc] initWithDictionary:[self.value3 dictionaryObjectRepresentation]];
+        break;
+    case EverythingMapPolymorphicValuesInternalTypeEverything:
+        return [[NSDictionary alloc] initWithDictionary:[self.value4 dictionaryObjectRepresentation]];
+        break;
+    }
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {
@@ -249,7 +269,7 @@
     obj.internalType = EverythingPolymorphicPropInternalTypeURL;
     return obj;
 }
-- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler orString:(nullable PLANK_NOESCAPE void (^)(NSString * string))stringMatchHandler orBoolean:(nullable PLANK_NOESCAPE void (^)(BOOL boolean))booleanMatchHandler orInteger:(nullable PLANK_NOESCAPE void (^)(NSInteger integer))integerMatchHandler orFloat:(nullable PLANK_NOESCAPE void (^)(double float))floatMatchHandler orDate:(nullable PLANK_NOESCAPE void (^)(NSDate * date))dateMatchHandler orURL:(nullable PLANK_NOESCAPE void (^)(NSURL * uRL))uRLMatchHandler
+- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler orString:(nullable PLANK_NOESCAPE void (^)(NSString * string))stringMatchHandler orBoolean:(nullable PLANK_NOESCAPE void (^)(BOOL boolean))booleanMatchHandler orInteger:(nullable PLANK_NOESCAPE void (^)(NSInteger integer))integerMatchHandler orFloat:(nullable PLANK_NOESCAPE void (^)(double floatProperty))floatPropertyMatchHandler orDate:(nullable PLANK_NOESCAPE void (^)(NSDate * date))dateMatchHandler orURL:(nullable PLANK_NOESCAPE void (^)(NSURL * uRL))uRLMatchHandler
 {
     switch (self.internalType) {
     case EverythingPolymorphicPropInternalTypeUser:
@@ -293,8 +313,8 @@
         }
         break;
     case EverythingPolymorphicPropInternalTypeFloat:
-        if (floatMatchHandler != NULL) {
-            floatMatchHandler(self.value8);
+        if (floatPropertyMatchHandler != NULL) {
+            floatPropertyMatchHandler(self.value8);
         }
         break;
     case EverythingPolymorphicPropInternalTypeDate:
@@ -355,6 +375,44 @@
         [_value9 hash]
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
+}
+- (id)dictionaryObjectRepresentation
+{
+    switch (self.internalType) {
+    case EverythingPolymorphicPropInternalTypeUser:
+        return [[NSDictionary alloc] initWithDictionary:[self.value0 dictionaryObjectRepresentation]];
+        break;
+    case EverythingPolymorphicPropInternalTypeBoard:
+        return [[NSDictionary alloc] initWithDictionary:[self.value1 dictionaryObjectRepresentation]];
+        break;
+    case EverythingPolymorphicPropInternalTypeImage:
+        return [[NSDictionary alloc] initWithDictionary:[self.value2 dictionaryObjectRepresentation]];
+        break;
+    case EverythingPolymorphicPropInternalTypePin:
+        return [[NSDictionary alloc] initWithDictionary:[self.value3 dictionaryObjectRepresentation]];
+        break;
+    case EverythingPolymorphicPropInternalTypeEverything:
+        return [[NSDictionary alloc] initWithDictionary:[self.value4 dictionaryObjectRepresentation]];
+        break;
+    case EverythingPolymorphicPropInternalTypeString:
+        return self.value5;
+        break;
+    case EverythingPolymorphicPropInternalTypeBoolean:
+        return [NSNumber numberWithBool:self.value6];
+        break;
+    case EverythingPolymorphicPropInternalTypeInteger:
+        return [NSNumber numberWithInteger:self.value7];
+        break;
+    case EverythingPolymorphicPropInternalTypeFloat:
+        return [NSNumber numberWithFloat:self.value8];
+        break;
+    case EverythingPolymorphicPropInternalTypeDate:
+        return [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] reverseTransformedValue:self.value9];
+        break;
+    case EverythingPolymorphicPropInternalTypeURL:
+        return [self.value10 absoluteString];
+        break;
+    }
 }
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
