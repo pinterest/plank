@@ -583,7 +583,7 @@ struct PinDirtyProperties {
                 [items0 setObject:[[_creator objectForKey:key] dictionaryObjectRepresentation] forKey:key];
             }
         }
-        [dict setObject:items0 forKey: @"_creator" ];
+        [dict setObject:items0 forKey: @"creator" ];
     }
     if (_pinDirtyProperties.PinDirtyPropertyDescriptionText) {
         if (_descriptionText != nil) {

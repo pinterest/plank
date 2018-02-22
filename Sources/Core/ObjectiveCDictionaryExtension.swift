@@ -147,8 +147,8 @@ extension ObjCFileRenderer {
                     return "[\(destCollection) addObject:[\(processObject) absoluteString] ];"
                 case .string(format: .some(.dateTime)):
                     return [
-                        "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
                         ObjCIR.ifElseStmt("\(propIVarName) != nil && [[valueTransformer class] allowsReverseTransformation]") {[
+                            "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
                             "[\(destCollection) addObject:[valueTransformer reverseTransformedValue:\(propIVarName)]];"
                         ]} {[
                             "[\(destCollection) addObject:[NSNull null]];"
@@ -173,13 +173,6 @@ extension ObjCFileRenderer {
                     ]},
                     "[\(dictionary) setObject:\(currentResult) forKey:@\"\(param)\"];"
                 ].joined(separator: "\n")
-        case .map(valueType: .none):
-            return
-                ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
         case .map(valueType: .some(let valueType)):
             switch valueType {
             case .map, .object, .array:
@@ -197,7 +190,7 @@ extension ObjCFileRenderer {
                             "[items\(counter) setObject:[[\(propIVarName) objectForKey:key] dictionaryObjectRepresentation] forKey:key];"
                         ]}
                     ]},
-                    "[\(dictionary) setObject:items\(counter) forKey: @\"\(propIVarName)\" ];"
+                    "[\(dictionary) setObject:items\(counter) forKey: @\"\(param)\" ];"
                 ].joined(separator: "\n")
             default:
                 return
@@ -227,8 +220,21 @@ extension ObjCFileRenderer {
                     assert(false, "TODO: Forward optional across methods")
                     return ""
                 }()
-        default:
-            return ""
+        case .map(valueType: .none), .array(.none):
+            return
+                ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
+                    "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
+                ]} {[
+                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
+                ]}
+        case .set(.none):
+            return
+                ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
+                    "[\(dictionary) setObject:[\(propIVarName) allObjects] forKey:@\"\(param)\"];"
+                ]} {[
+                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
+                ]}
+
         }
     }
 }

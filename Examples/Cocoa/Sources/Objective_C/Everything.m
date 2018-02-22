@@ -648,18 +648,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             __unsafe_unretained id value = modelDictionary[@"list_with_primitive_values"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            self->_listWithPrimitiveValues = value;
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
-                        }
-                    }
-                    self->_listWithPrimitiveValues = result0;
+                    self->_listWithPrimitiveValues = value;
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertyListWithPrimitiveValues = 1;
             }
@@ -845,17 +834,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSArray *items = value;
-                    NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            self->_setPropWithPrimitiveValues = value;
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
-                        }
-                    }
-                    self->_setPropWithPrimitiveValues = result0;
+                    self->_setPropWithPrimitiveValues = [NSSet setWithArray:items];
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertySetPropWithPrimitiveValues = 1;
             }
@@ -1126,7 +1105,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:24];
     if (_everythingDirtyProperties.EverythingDirtyPropertyArrayProp) {
-        
+        if (_arrayProp != nil) {
+            [dict setObject:_arrayProp forKey:@"array_prop"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"array_prop"];
+        }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyBooleanProp) {
         [dict setObject:@(_booleanProp) forKey: @"boolean_prop" ];
@@ -1146,7 +1129,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [dict setObject:@(_intProp) forKey: @"int_prop" ];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues) {
-        
+        if (_listPolymorphicValues != nil) {
+            [dict setObject:_listPolymorphicValues forKey:@"list_polymorphic_values"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"list_polymorphic_values"];
+        }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues) {
         NSArray *items0 = _listWithObjectValues;
@@ -1206,7 +1193,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                 [items0 setObject:[[_mapWithOtherModelValues objectForKey:key] dictionaryObjectRepresentation] forKey:key];
             }
         }
-        [dict setObject:items0 forKey: @"_mapWithOtherModelValues" ];
+        [dict setObject:items0 forKey: @"map_with_other_model_values" ];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues) {
         if (_mapWithPrimitiveValues != nil) {
@@ -1267,7 +1254,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetProp) {
-        
+        if (_setProp != nil) {
+            [dict setObject:[_setProp allObjects] forKey:@"set_prop"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"set_prop"];
+        }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithOtherModelValues) {
         NSSet *items0 = _setPropWithOtherModelValues;
