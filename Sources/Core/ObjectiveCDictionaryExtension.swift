@@ -220,21 +220,13 @@ extension ObjCFileRenderer {
                     assert(false, "TODO: Forward optional across methods")
                     return ""
                 }()
-        case .map(valueType: .none), .array(.none):
+        case .map(valueType: .none), .array(.none), .set(.none):
             return
                 ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
                     "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
                 ]} {[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
                 ]}
-        case .set(.none):
-            return
-                ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    "[\(dictionary) setObject:[\(propIVarName) allObjects] forKey:@\"\(param)\"];"
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
-
         }
     }
 }

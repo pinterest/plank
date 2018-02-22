@@ -1255,7 +1255,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetProp) {
         if (_setProp != nil) {
-            [dict setObject:[_setProp allObjects] forKey:@"set_prop"];
+            [dict setObject:_setProp forKey:@"set_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"set_prop"];
         }
