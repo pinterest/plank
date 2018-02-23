@@ -163,7 +163,7 @@ extension ObjCFileRenderer {
             let currentResult = "result\(counter)"
             let currentObj = "obj\(counter)"
             let collection = collectionClass(schema: schema)
-                return [
+            return ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
                     "\(collection.name()) *items\(counter) = \(propIVarName);",
                     "\(collection.mutableName()) *\(currentResult) = [\(collection.mutableName()) \(collection.initializer())items\(counter).count];",
                     ObjCIR.forStmt("id \(currentObj) in items\(counter)") { [
@@ -172,7 +172,9 @@ extension ObjCFileRenderer {
                         ]}
                     ]},
                     "[\(dictionary) setObject:\(currentResult) forKey:@\"\(param)\"];"
-                ].joined(separator: "\n")
+                ]} {[
+                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
+                ]}
         case .map(valueType: .some(let valueType)):
             switch valueType {
             case .map, .object, .array:

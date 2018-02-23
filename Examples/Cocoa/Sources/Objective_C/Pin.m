@@ -538,14 +538,18 @@ struct PinDirtyProperties {
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyAttributionObjects) {
-        NSArray *items0 = _attributionObjects;
-        NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-        for (id obj0 in items0) {
-            if (obj0 != (id)kCFNull) {
-                [result0 addObject:[obj0 dictionaryObjectRepresentation]];
+        if (_attributionObjects != nil) {
+            NSArray *items0 = _attributionObjects;
+            NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
+            for (id obj0 in items0) {
+                if (obj0 != (id)kCFNull) {
+                    [result0 addObject:[obj0 dictionaryObjectRepresentation]];
+                }
             }
+            [dict setObject:result0 forKey:@"attribution_objects"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"attribution_objects"];
         }
-        [dict setObject:result0 forKey:@"attribution_objects"];
     }
     if (_pinDirtyProperties.PinDirtyPropertyBoard) {
         if (_board != nil) {
@@ -628,14 +632,18 @@ struct PinDirtyProperties {
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyTags) {
-        NSArray *items0 = _tags;
-        NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-        for (id obj0 in items0) {
-            if (obj0 != (id)kCFNull) {
-                [result0 addObject:obj0];
+        if (_tags != nil) {
+            NSArray *items0 = _tags;
+            NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
+            for (id obj0 in items0) {
+                if (obj0 != (id)kCFNull) {
+                    [result0 addObject:obj0];
+                }
             }
+            [dict setObject:result0 forKey:@"tags"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"tags"];
         }
-        [dict setObject:result0 forKey:@"tags"];
     }
     if (_pinDirtyProperties.PinDirtyPropertyUrl) {
         if (_url != nil) {

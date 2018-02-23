@@ -284,14 +284,18 @@ struct BoardDirtyProperties {
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:9];
     if (_boardDirtyProperties.BoardDirtyPropertyContributors) {
-        NSSet *items0 = _contributors;
-        NSMutableSet *result0 = [NSMutableSet setWithCapacity:items0.count];
-        for (id obj0 in items0) {
-            if (obj0 != (id)kCFNull) {
-                [result0 addObject:[obj0 dictionaryObjectRepresentation]];
+        if (_contributors != nil) {
+            NSSet *items0 = _contributors;
+            NSMutableSet *result0 = [NSMutableSet setWithCapacity:items0.count];
+            for (id obj0 in items0) {
+                if (obj0 != (id)kCFNull) {
+                    [result0 addObject:[obj0 dictionaryObjectRepresentation]];
+                }
             }
+            [dict setObject:result0 forKey:@"contributors"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"contributors"];
         }
-        [dict setObject:result0 forKey:@"contributors"];
     }
     if (_boardDirtyProperties.BoardDirtyPropertyCounts) {
         if (_counts != nil) {
