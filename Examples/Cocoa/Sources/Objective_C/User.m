@@ -18,6 +18,7 @@ struct UserDirtyProperties {
     unsigned int UserDirtyPropertyIdentifier:1;
     unsigned int UserDirtyPropertyImage:1;
     unsigned int UserDirtyPropertyLastName:1;
+    unsigned int UserDirtyPropertyType:1;
     unsigned int UserDirtyPropertyUsername:1;
 };
 
@@ -157,6 +158,15 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"type"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_type = [value copy];
+                }
+                self->_userDirtyProperties.UserDirtyPropertyType = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"username"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -189,6 +199,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     _identifier = builder.identifier;
     _image = builder.image;
     _lastName = builder.lastName;
+    _type = builder.type;
     _username = builder.username;
     _userDirtyProperties = builder.userDirtyProperties;
     if ([self class] == [User class]) {
@@ -199,7 +210,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
-    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:9];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:10];
     [descriptionFields addObject:parentDebugDescription];
     struct UserDirtyProperties props = _userDirtyProperties;
     if (props.UserDirtyPropertyBio) {
@@ -225,6 +236,9 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     }
     if (props.UserDirtyPropertyLastName) {
         [descriptionFields addObject:[@"_lastName = " stringByAppendingFormat:@"%@", _lastName]];
+    }
+    if (props.UserDirtyPropertyType) {
+        [descriptionFields addObject:[@"_type = " stringByAppendingFormat:@"%@", _type]];
     }
     if (props.UserDirtyPropertyUsername) {
         [descriptionFields addObject:[@"_username = " stringByAppendingFormat:@"%@", _username]];
@@ -260,6 +274,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
         (_identifier == anObject.identifier || [_identifier isEqualToString:anObject.identifier]) &&
         (_image == anObject.image || [_image isEqual:anObject.image]) &&
         (_lastName == anObject.lastName || [_lastName isEqualToString:anObject.lastName]) &&
+        (_type == anObject.type || [_type isEqualToString:anObject.type]) &&
         (_username == anObject.username || [_username isEqualToString:anObject.username])
     );
 }
@@ -275,6 +290,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
         [_identifier hash],
         [_image hash],
         [_lastName hash],
+        [_type hash],
         [_username hash]
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
@@ -292,7 +308,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
 }
 - (NSDictionary *)dictionaryObjectRepresentation
 {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:9];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:10];
     if (_userDirtyProperties.UserDirtyPropertyBio) {
         if (_bio != nil) {
             [dict setObject:_bio forKey:@"bio"];
@@ -346,6 +362,13 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             [dict setObject:[NSNull null] forKey:@"last_name"];
         }
     }
+    if (_userDirtyProperties.UserDirtyPropertyType) {
+        if (_type != nil) {
+            [dict setObject:_type forKey:@"type"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"type"];
+        }
+    }
     if (_userDirtyProperties.UserDirtyPropertyUsername) {
         if (_username != nil) {
             [dict setObject:_username forKey:@"username"];
@@ -378,6 +401,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
     _lastName = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"last_name"];
+    _type = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"type"];
     _username = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"username"];
     _userDirtyProperties.UserDirtyPropertyBio = [aDecoder decodeIntForKey:@"bio_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyCounts = [aDecoder decodeIntForKey:@"counts_dirty_property"] & 0x1;
@@ -387,6 +411,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     _userDirtyProperties.UserDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@"id_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyImage = [aDecoder decodeIntForKey:@"image_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyLastName = [aDecoder decodeIntForKey:@"last_name_dirty_property"] & 0x1;
+    _userDirtyProperties.UserDirtyPropertyType = [aDecoder decodeIntForKey:@"type_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyUsername = [aDecoder decodeIntForKey:@"username_dirty_property"] & 0x1;
     if ([self class] == [User class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
@@ -403,6 +428,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     [aCoder encodeObject:self.identifier forKey:@"id"];
     [aCoder encodeObject:self.image forKey:@"image"];
     [aCoder encodeObject:self.lastName forKey:@"last_name"];
+    [aCoder encodeObject:self.type forKey:@"type"];
     [aCoder encodeObject:self.username forKey:@"username"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyBio forKey:@"bio_dirty_property"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyCounts forKey:@"counts_dirty_property"];
@@ -412,6 +438,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyIdentifier forKey:@"id_dirty_property"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyImage forKey:@"image_dirty_property"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyLastName forKey:@"last_name_dirty_property"];
+    [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyType forKey:@"type_dirty_property"];
     [aCoder encodeInt:_userDirtyProperties.UserDirtyPropertyUsername forKey:@"username_dirty_property"];
 }
 @end
@@ -447,6 +474,9 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     }
     if (userDirtyProperties.UserDirtyPropertyLastName) {
         _lastName = modelObject.lastName;
+    }
+    if (userDirtyProperties.UserDirtyPropertyType) {
+        _type = modelObject.type;
     }
     if (userDirtyProperties.UserDirtyPropertyUsername) {
         _username = modelObject.username;
@@ -495,6 +525,9 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     if (modelObject.userDirtyProperties.UserDirtyPropertyLastName) {
         builder.lastName = modelObject.lastName;
     }
+    if (modelObject.userDirtyProperties.UserDirtyPropertyType) {
+        builder.type = modelObject.type;
+    }
     if (modelObject.userDirtyProperties.UserDirtyPropertyUsername) {
         builder.username = modelObject.username;
     }
@@ -538,6 +571,11 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
 {
     _lastName = [lastName copy];
     _userDirtyProperties.UserDirtyPropertyLastName = 1;
+}
+- (void)setType:(NSString *)type
+{
+    _type = [type copy];
+    _userDirtyProperties.UserDirtyPropertyType = 1;
 }
 - (void)setUsername:(NSString *)username
 {

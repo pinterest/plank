@@ -1226,41 +1226,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp) {
         if (_polymorphicProp != nil) {
-            switch (_polymorphicProp.internalType) {
-            case EverythingPolymorphicPropInternalTypeUser:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypeBoard:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypeImage:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypePin:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypeEverything:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypeString:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypeBoolean:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypeInteger:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypeFloat:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypeDate:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            case EverythingPolymorphicPropInternalTypeURL:
-                [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
-                break;
-            }
+            [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"polymorphic_prop"];
         }

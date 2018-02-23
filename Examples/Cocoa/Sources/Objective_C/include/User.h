@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readonly) NSDate * createdAt;
 @property (nullable, nonatomic, copy, readonly) NSString * firstName;
+@property (nullable, nonatomic, copy, readonly) NSString * type;
 @property (nullable, nonatomic, copy, readonly) NSString * bio;
 @property (nonatomic, assign, readonly) UserEmailFrequency emailFrequency;
 + (NSString *)className;
@@ -54,6 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readwrite) NSDate * createdAt;
 @property (nullable, nonatomic, copy, readwrite) NSString * firstName;
+@property (nullable, nonatomic, copy, readwrite) NSString * type;
 @property (nullable, nonatomic, copy, readwrite) NSString * bio;
 @property (nonatomic, assign, readwrite) UserEmailFrequency emailFrequency;
 - (instancetype)initWithModel:(User *)modelObject;

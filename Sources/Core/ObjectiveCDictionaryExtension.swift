@@ -202,16 +202,11 @@ extension ObjCFileRenderer {
                         "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
                     ]}
             }
-        case .oneOf(types: let avTypes):
+        case .oneOf(types: _):
+            // oneOf (ADT) types have a dictionaryObjectRepresentation method we will use here
             return
                 ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    ObjCIR.switchStmt("\(propIVarName).internalType") {
-                        avTypes.enumerated().map { (_, schema) -> ObjCIR.SwitchCase in
-                            return ObjCIR.caseStmt(self.className+propIVarName.snakeCaseToCamelCase()+"InternalType"+ObjCADTRenderer.objectName(schema)) {[
-                                    "[\(dictionary) setObject:[\(propIVarName) dictionaryObjectRepresentation] forKey:@\"\(param)\"];"
-                                ]}
-                        }
-                    }
+                    "[\(dictionary) setObject:[\(propIVarName) dictionaryObjectRepresentation] forKey:@\"\(param)\"];"
                 ]} {[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
                 ]}

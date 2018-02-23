@@ -25,6 +25,7 @@ export type UserType = $Shape<{|
   +id: ?string,
   +image: ?ImageType,
   +last_name: ?string,
+  +type: ?string,
   +username: ?string,
 |}> & {
   id: string

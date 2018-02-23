@@ -133,6 +133,7 @@ struct ObjCADTRenderer: ObjCFileRenderer {
             case .string(.some(.uri)):
                 return ObjCIR.stmt("[self.value\(index) absoluteString]")
             case .string(.some(.dateTime)):
+                // TODO: Add check if reverse value transformation is allowed
                 return ObjCIR.stmt("[[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] reverseTransformedValue:self.value\(index)]")
             case .string(.some), .string(.none):
                 return ObjCIR.stmt("self.value\(index)")

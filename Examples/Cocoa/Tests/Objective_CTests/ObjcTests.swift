@@ -266,16 +266,14 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
 
     // TODO: Decide if it's worth enumerating through all the polymorphic cases
     // or if it is redundant here
-    func disabled_testPolymorphicProp() {
+    func testPolymorphicProp() {
         let userModelDictionary: JSONDict = [
             "type": "user",
             "id": 123,
             "email_frequency": "daily"
         ]
         let dict: JSONDict = [
-            "polymorphic_prop": [
-                "user": userModelDictionary
-            ]
+            "polymorphic_prop": userModelDictionary
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -287,11 +285,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
             "email_frequency": "daily"
         ]
         let dict: JSONDict = [
-            "list_polymorphic_prop": [
-                "polymorphic_prop": [
-                    "user": userModelDictionary
-                ]
-            ]
+            "list_polymorphic_prop": [ userModelDictionary ]
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -304,9 +298,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         ]
         let dict: JSONDict = [
             "map_polymorphic_prop": [
-                "polymorphic_prop": [
                     "user": userModelDictionary
-                ]
             ]
         ]
         assertDictionaryRepresentation(dict)
