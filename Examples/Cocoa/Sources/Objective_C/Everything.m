@@ -126,19 +126,59 @@
 {
     switch (self.internalType) {
     case EverythingMapPolymorphicValuesInternalTypeUser:
-        return [[NSDictionary alloc] initWithDictionary:[self.value0 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value0 != nil) {
+                [resultDict setObject:[_value0 dictionaryObjectRepresentation] forKey:@"value0"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value0"];
+            }
+            return resultDict[@"value0"];
+        }
         break;
     case EverythingMapPolymorphicValuesInternalTypeBoard:
-        return [[NSDictionary alloc] initWithDictionary:[self.value1 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value1 != nil) {
+                [resultDict setObject:[_value1 dictionaryObjectRepresentation] forKey:@"value1"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value1"];
+            }
+            return resultDict[@"value1"];
+        }
         break;
     case EverythingMapPolymorphicValuesInternalTypeImage:
-        return [[NSDictionary alloc] initWithDictionary:[self.value2 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value2 != nil) {
+                [resultDict setObject:[_value2 dictionaryObjectRepresentation] forKey:@"value2"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value2"];
+            }
+            return resultDict[@"value2"];
+        }
         break;
     case EverythingMapPolymorphicValuesInternalTypePin:
-        return [[NSDictionary alloc] initWithDictionary:[self.value3 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value3 != nil) {
+                [resultDict setObject:[_value3 dictionaryObjectRepresentation] forKey:@"value3"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value3"];
+            }
+            return resultDict[@"value3"];
+        }
         break;
     case EverythingMapPolymorphicValuesInternalTypeEverything:
-        return [[NSDictionary alloc] initWithDictionary:[self.value4 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value4 != nil) {
+                [resultDict setObject:[_value4 dictionaryObjectRepresentation] forKey:@"value4"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value4"];
+            }
+            return resultDict[@"value4"];
+        }
         break;
     }
 }
@@ -380,37 +420,114 @@
 {
     switch (self.internalType) {
     case EverythingPolymorphicPropInternalTypeUser:
-        return [[NSDictionary alloc] initWithDictionary:[self.value0 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value0 != nil) {
+                [resultDict setObject:[_value0 dictionaryObjectRepresentation] forKey:@"value0"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value0"];
+            }
+            return resultDict[@"value0"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypeBoard:
-        return [[NSDictionary alloc] initWithDictionary:[self.value1 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value1 != nil) {
+                [resultDict setObject:[_value1 dictionaryObjectRepresentation] forKey:@"value1"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value1"];
+            }
+            return resultDict[@"value1"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypeImage:
-        return [[NSDictionary alloc] initWithDictionary:[self.value2 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value2 != nil) {
+                [resultDict setObject:[_value2 dictionaryObjectRepresentation] forKey:@"value2"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value2"];
+            }
+            return resultDict[@"value2"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypePin:
-        return [[NSDictionary alloc] initWithDictionary:[self.value3 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value3 != nil) {
+                [resultDict setObject:[_value3 dictionaryObjectRepresentation] forKey:@"value3"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value3"];
+            }
+            return resultDict[@"value3"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypeEverything:
-        return [[NSDictionary alloc] initWithDictionary:[self.value4 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value4 != nil) {
+                [resultDict setObject:[_value4 dictionaryObjectRepresentation] forKey:@"value4"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value4"];
+            }
+            return resultDict[@"value4"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypeString:
-        return self.value5;
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value5 != nil) {
+                [resultDict setObject:_value5 forKey:@"value5"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value5"];
+            }
+            return resultDict[@"value5"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypeBoolean:
-        return [NSNumber numberWithBool:self.value6];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            [resultDict setObject:@(_value6) forKey: @"value6" ];
+            return resultDict[@"value6"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypeInteger:
-        return [NSNumber numberWithInteger:self.value7];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            [resultDict setObject:@(_value7) forKey: @"value7" ];
+            return resultDict[@"value7"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypeFloat:
-        return [NSNumber numberWithFloat:self.value8];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            [resultDict setObject:@(_value8) forKey: @"value8" ];
+            return resultDict[@"value8"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypeDate:
-        return [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] reverseTransformedValue:self.value9];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
+            if (_value9 != nil && [[valueTransformer class] allowsReverseTransformation]) {
+                [resultDict setObject:[valueTransformer reverseTransformedValue:_value9] forKey:@"value9"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value9"];
+            }
+            return resultDict[@"value9"];
+        }
         break;
     case EverythingPolymorphicPropInternalTypeURL:
-        return [self.value10 absoluteString];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value10 != nil) {
+                [resultDict setObject:[_value10 absoluteString] forKey:@"value10"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value10"];
+            }
+            return resultDict[@"value10"];
+        }
         break;
     }
 }
@@ -1178,11 +1295,13 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapPolymorphicValues) {
-        if (_mapPolymorphicValues != nil) {
-            [dict setObject:_mapPolymorphicValues forKey:@"map_polymorphic_values"];
-        } else {
-            [dict setObject:[NSNull null] forKey:@"map_polymorphic_values"];
+        NSMutableDictionary *items0 = [NSMutableDictionary new];
+        for (id key in _mapPolymorphicValues) {
+            if ([_mapPolymorphicValues objectForKey:key] != (id)kCFNull) {
+                [items0 setObject:[[_mapPolymorphicValues objectForKey:key] dictionaryObjectRepresentation] forKey:key];
+            }
         }
+        [dict setObject:items0 forKey: @"map_polymorphic_values" ];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapProp) {
         if (_mapProp != nil) {

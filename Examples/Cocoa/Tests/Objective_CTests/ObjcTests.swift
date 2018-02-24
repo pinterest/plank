@@ -278,27 +278,27 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         assertDictionaryRepresentation(dict)
     }
 
-    func disabled_testListPolymorphicProp() {
+    func testListPolymorphicProp() {
         let userModelDictionary: JSONDict = [
             "type": "user",
             "id": 123,
             "email_frequency": "daily"
         ]
         let dict: JSONDict = [
-            "list_polymorphic_prop": [ userModelDictionary ]
+            "list_polymorphic_values": [ userModelDictionary ]
         ]
         assertDictionaryRepresentation(dict)
     }
 
-    func disabled_testMapPolymorphicProp() {
+    func testMapPolymorphicProp() {
         let userModelDictionary: JSONDict = [
             "type": "user",
             "id": 123,
             "email_frequency": "daily"
         ]
         let dict: JSONDict = [
-            "map_polymorphic_prop": [
-                    "user": userModelDictionary
+            "map_polymorphic_values": [
+              "user": userModelDictionary
             ]
         ]
         assertDictionaryRepresentation(dict)

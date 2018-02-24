@@ -13,7 +13,7 @@ extension ObjCModelRenderer {
         let dictionary = "dict"
         let props = self.properties.map { (param, schemaObj) -> String in
             ObjCIR.ifStmt("_"+"\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
-                [renderAddObjectStatement(param, schemaObj.schema, dictionary)]
+                [renderAddToDictionaryStatement(param, schemaObj.schema, dictionary)]
             }
         }.joined(separator: "\n")
         return ObjCIR.method("- (NSDictionary *)dictionaryObjectRepresentation") {[
@@ -59,7 +59,7 @@ private enum CollectionClass {
 }
 
 extension ObjCFileRenderer {
-    fileprivate func renderAddObjectStatement(_ param: String, _ schema: Schema, _ dictionary: String, counter: Int = 0) -> String {
+    func renderAddToDictionaryStatement(_ param: String, _ schema: Schema, _ dictionary: String, counter: Int = 0) -> String {
         var propIVarName = "_\(param.snakeCaseToPropertyName())"
         switch schema {
         // TODO: After nullability PR landed we should revisit this and don't check for nil if
@@ -134,7 +134,7 @@ extension ObjCFileRenderer {
                 case .map(valueType: .none):
                     return "[\(destCollection) addObject:\(processObject)];"
                 case .map(valueType: .some(let valueType)):
-                    return self.renderAddObjectStatement(processObject, valueType, processObject)
+                    return self.renderAddToDictionaryStatement(processObject, valueType, processObject)
                 case .integer, .float, .boolean:
                     return "[\(destCollection) addObject:\(processObject)];"
                 case .string(format: .none),
@@ -177,14 +177,14 @@ extension ObjCFileRenderer {
                 ]}
         case .map(valueType: .some(let valueType)):
             switch valueType {
-            case .map, .object, .array:
+            case .map, .array:
                 return
                     ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                        self.renderAddObjectStatement(param, valueType, dictionary)
+                        self.renderAddToDictionaryStatement(param, valueType, dictionary)
                     ]} {[
                         "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
                     ]}
-            case .reference(with: _):
+            case .reference(with: _), .oneOf(types: _), .object:
                 return [
                     "NSMutableDictionary *items\(counter) = [NSMutableDictionary new];",
                     ObjCIR.forStmt("id key in \(propIVarName)") { [
@@ -212,7 +212,7 @@ extension ObjCFileRenderer {
                 ]}
         case .reference(with: let ref):
             return ref.force().map {
-                renderAddObjectStatement(param, $0, dictionary)
+                renderAddToDictionaryStatement(param, $0, dictionary)
                 } ?? {
                     assert(false, "TODO: Forward optional across methods")
                     return ""

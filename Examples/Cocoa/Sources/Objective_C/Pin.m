@@ -80,10 +80,26 @@
 {
     switch (self.internalType) {
     case PinAttributionObjectsInternalTypeBoard:
-        return [[NSDictionary alloc] initWithDictionary:[self.value0 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value0 != nil) {
+                [resultDict setObject:[_value0 dictionaryObjectRepresentation] forKey:@"value0"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value0"];
+            }
+            return resultDict[@"value0"];
+        }
         break;
     case PinAttributionObjectsInternalTypeUser:
-        return [[NSDictionary alloc] initWithDictionary:[self.value1 dictionaryObjectRepresentation]];
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            if (_value1 != nil) {
+                [resultDict setObject:[_value1 dictionaryObjectRepresentation] forKey:@"value1"];
+            } else {
+                [resultDict setObject:[NSNull null] forKey:@"value1"];
+            }
+            return resultDict[@"value1"];
+        }
         break;
     }
 }
