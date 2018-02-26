@@ -264,9 +264,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         assertDictionaryRepresentation(dict)
     }
 
-    // TODO: Decide if it's worth enumerating through all the polymorphic cases
-    // or if it is redundant here
-    func testPolymorphicProp() {
+    func testPolymorphicPropWithModel() {
         let userModelDictionary: JSONDict = [
             "type": "user",
             "id": 123,
@@ -278,6 +276,58 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         assertDictionaryRepresentation(dict)
     }
 
+    func testPolymorphicPropWithSelf() {
+        let everythingModelDictionary: JSONDict = [
+            // Should we just add type to dictionaries if the property doesn't
+            // exist?
+            "type": "everything",
+            "int_prop": 123
+        ]
+        let dict: JSONDict = [
+            "polymorphic_prop": everythingModelDictionary
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testPolymorphicPropWithString() {
+        let dict: JSONDict = [
+            "polymorphic_prop": "some_value"
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testPolymorphicPropWithBool() {
+        let dict: JSONDict = [
+            "polymorphic_prop": true
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testPolymorphicPropWithInt() {
+        let dict: JSONDict = [
+            "polymorphic_prop": 123
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testPolymorphicPropWithNumber() {
+        let dict: JSONDict = [
+            "polymorphic_prop": 3.14
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testPolymorphicPropWithDateTime() {
+        // TODO: Implement this
+    }
+
+    func testPolymorphicPropWithURI() {
+        let dict: JSONDict = [
+            "polymorphic_prop": "https://www.pinterest.com"
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
     func testListPolymorphicProp() {
         let userModelDictionary: JSONDict = [
             "type": "user",
@@ -285,7 +335,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
             "email_frequency": "daily"
         ]
         let dict: JSONDict = [
-            "list_polymorphic_values": [ userModelDictionary ]
+            "list_polymorphic_values": [userModelDictionary]
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -298,7 +348,51 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         ]
         let dict: JSONDict = [
             "map_polymorphic_values": [
-              "user": userModelDictionary
+                "user": userModelDictionary
+            ]
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testNestedListPolymorphicProp() {
+        let nestedList = [1, 2, 3]
+        let dict: JSONDict = [
+            "list_polymorphic_values": [nestedList]
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testMapInListPolymorphicProp() {
+        let nestedMap = [
+            "one": 1,
+            "two": 2,
+            "three": 3
+        ]
+        let dict: JSONDict = [
+            "list_polymorphic_values": [nestedMap]
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testNestedMapPolymorphicProp() {
+        let nestedMap = [
+            "one": 1,
+            "two": 2,
+            "three": 3
+        ]
+        let dict: JSONDict = [
+            "map_polymorphic_values": [
+                "key": nestedMap
+            ]
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testNestedListInMapPolymorphicProp() {
+        let nestedList = [1, 2, 3]
+        let dict: JSONDict = [
+            "map_polymorphic_values": [
+                "key": nestedList
             ]
         ]
         assertDictionaryRepresentation(dict)

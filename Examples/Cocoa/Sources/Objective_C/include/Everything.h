@@ -22,7 +22,9 @@ typedef NS_ENUM(NSInteger, EverythingMapPolymorphicValuesInternalType) {
     EverythingMapPolymorphicValuesInternalTypeBoard = 2,
     EverythingMapPolymorphicValuesInternalTypeImage = 3,
     EverythingMapPolymorphicValuesInternalTypePin = 4,
-    EverythingMapPolymorphicValuesInternalTypeEverything = 5
+    EverythingMapPolymorphicValuesInternalTypeEverything = 5,
+    EverythingMapPolymorphicValuesInternalTypeArray = 6,
+    EverythingMapPolymorphicValuesInternalTypeDictionary = 7
 };
 
 @interface EverythingMapPolymorphicValues : NSObject<NSCopying, NSSecureCoding>
@@ -32,7 +34,9 @@ typedef NS_ENUM(NSInteger, EverythingMapPolymorphicValuesInternalType) {
 + (instancetype)objectWithImage:(Image *)image;
 + (instancetype)objectWithPin:(Pin *)pin;
 + (instancetype)objectWithEverything:(Everything *)everything;
-- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler;
++ (instancetype)objectWithArray:(NSArray *)array;
++ (instancetype)objectWithDictionary:(NSDictionary *)dictionary;
+- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler orArray:(nullable PLANK_NOESCAPE void (^)(NSArray * array))arrayMatchHandler orDictionary:(nullable PLANK_NOESCAPE void (^)(NSDictionary * dictionary))dictionaryMatchHandler;
 - (BOOL)isEqualToEverythingMapPolymorphicValues:(EverythingMapPolymorphicValues *)anObject;
 - (id)dictionaryObjectRepresentation;
 @end
@@ -98,25 +102,26 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) BOOL booleanProp;
 @property (nullable, nonatomic, strong, readonly) NSSet<NSString *> * setPropWithValues;
 @property (nullable, nonatomic, copy, readonly) NSString * stringProp;
-@property (nullable, nonatomic, copy, readonly) NSDate * dateProp;
-@property (nullable, nonatomic, strong, readonly) NSArray * listPolymorphicValues;
 @property (nullable, nonatomic, strong, readonly) NSArray<NSNumber /* Integer */ *> * listWithPrimitiveValues;
+@property (nullable, nonatomic, strong, readonly) NSArray * listPolymorphicValues;
 @property (nullable, nonatomic, strong, readonly) NSSet * setProp;
 @property (nullable, nonatomic, strong, readonly) NSArray<NSString *> * listWithObjectValues;
-@property (nullable, nonatomic, strong, readonly) User * otherModelProp;
-@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * mapWithObjectValues;
+@property (nullable, nonatomic, copy, readonly) NSString * type;
 @property (nullable, nonatomic, strong, readonly) NSSet<User *> * setPropWithOtherModelValues;
-@property (nonatomic, assign, readonly) EverythingIntEnum intEnum;
-@property (nullable, nonatomic, strong, readonly) NSArray<User *> * listWithOtherModelValues;
-@property (nonatomic, assign, readonly) double numberProp;
-@property (nonatomic, assign, readonly) NSInteger intProp;
-@property (nullable, nonatomic, strong, readonly) NSDictionary * mapProp;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, User *> * mapWithOtherModelValues;
 @property (nullable, nonatomic, strong, readonly) NSArray * arrayProp;
-@property (nonatomic, assign, readonly) EverythingStringEnum stringEnum;
 @property (nullable, nonatomic, copy, readonly) NSURL * uriProp;
 @property (nullable, nonatomic, strong, readonly) NSSet<NSNumber /*> Integer */ *> * setPropWithPrimitiveValues;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * mapWithPrimitiveValues;
+@property (nullable, nonatomic, copy, readonly) NSDate * dateProp;
+@property (nullable, nonatomic, strong, readonly) User * otherModelProp;
+@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * mapWithObjectValues;
+@property (nullable, nonatomic, strong, readonly) NSArray<User *> * listWithOtherModelValues;
+@property (nonatomic, assign, readonly) EverythingIntEnum intEnum;
+@property (nonatomic, assign, readonly) double numberProp;
+@property (nonatomic, assign, readonly) NSInteger intProp;
+@property (nullable, nonatomic, strong, readonly) NSDictionary * mapProp;
+@property (nonatomic, assign, readonly) EverythingStringEnum stringEnum;
 @property (nullable, nonatomic, strong, readonly) EverythingPolymorphicProp * polymorphicProp;
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
@@ -136,25 +141,26 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readwrite) BOOL booleanProp;
 @property (nullable, nonatomic, strong, readwrite) NSSet<NSString *> * setPropWithValues;
 @property (nullable, nonatomic, copy, readwrite) NSString * stringProp;
-@property (nullable, nonatomic, copy, readwrite) NSDate * dateProp;
-@property (nullable, nonatomic, strong, readwrite) NSArray * listPolymorphicValues;
 @property (nullable, nonatomic, strong, readwrite) NSArray<NSNumber /* Integer */ *> * listWithPrimitiveValues;
+@property (nullable, nonatomic, strong, readwrite) NSArray * listPolymorphicValues;
 @property (nullable, nonatomic, strong, readwrite) NSSet * setProp;
 @property (nullable, nonatomic, strong, readwrite) NSArray<NSString *> * listWithObjectValues;
-@property (nullable, nonatomic, strong, readwrite) User * otherModelProp;
-@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * mapWithObjectValues;
+@property (nullable, nonatomic, copy, readwrite) NSString * type;
 @property (nullable, nonatomic, strong, readwrite) NSSet<User *> * setPropWithOtherModelValues;
-@property (nonatomic, assign, readwrite) EverythingIntEnum intEnum;
-@property (nullable, nonatomic, strong, readwrite) NSArray<User *> * listWithOtherModelValues;
-@property (nonatomic, assign, readwrite) double numberProp;
-@property (nonatomic, assign, readwrite) NSInteger intProp;
-@property (nullable, nonatomic, strong, readwrite) NSDictionary * mapProp;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, User *> * mapWithOtherModelValues;
 @property (nullable, nonatomic, strong, readwrite) NSArray * arrayProp;
-@property (nonatomic, assign, readwrite) EverythingStringEnum stringEnum;
 @property (nullable, nonatomic, copy, readwrite) NSURL * uriProp;
 @property (nullable, nonatomic, strong, readwrite) NSSet<NSNumber /*> Integer */ *> * setPropWithPrimitiveValues;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * mapWithPrimitiveValues;
+@property (nullable, nonatomic, copy, readwrite) NSDate * dateProp;
+@property (nullable, nonatomic, strong, readwrite) User * otherModelProp;
+@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * mapWithObjectValues;
+@property (nullable, nonatomic, strong, readwrite) NSArray<User *> * listWithOtherModelValues;
+@property (nonatomic, assign, readwrite) EverythingIntEnum intEnum;
+@property (nonatomic, assign, readwrite) double numberProp;
+@property (nonatomic, assign, readwrite) NSInteger intProp;
+@property (nullable, nonatomic, strong, readwrite) NSDictionary * mapProp;
+@property (nonatomic, assign, readwrite) EverythingStringEnum stringEnum;
 @property (nullable, nonatomic, strong, readwrite) EverythingPolymorphicProp * polymorphicProp;
 - (instancetype)initWithModel:(Everything *)modelObject;
 - (Everything *)build;

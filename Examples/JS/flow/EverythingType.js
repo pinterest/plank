@@ -13,7 +13,7 @@ import type { ImageType } from './ImageType.js';
 import type { PinType } from './PinType.js';
 import type { UserType } from './UserType.js';
 
-export type EverythingMapPolymorphicValuesType = UserType | BoardType | ImageType | PinType | EverythingType;
+export type EverythingMapPolymorphicValuesType = UserType | BoardType | ImageType | PinType | EverythingType | Array<*> | {};
 
 export type EverythingPolymorphicPropType = UserType | BoardType | ImageType | PinType | EverythingType | string | boolean | number | number | PlankDate | PlankURI;
 
@@ -53,6 +53,7 @@ export type EverythingType = $Shape<{|
   +set_prop_with_values: ?Set<string>,
   +string_enum: EverythingStringEnum,
   +string_prop: ?string,
+  +type: ?string,
   +uri_prop: ?PlankURI,
 |}> & {
   id: string
