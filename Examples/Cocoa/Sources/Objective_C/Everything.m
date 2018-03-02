@@ -1336,7 +1336,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
                 if (obj0 != (id)kCFNull) {
-                    [result0 addObject:obj0 ];
+                    [result0 addObject:obj0];
                 }
             }
             [dict setObject:result0 forKey:@"list_with_object_values"];
@@ -1438,7 +1438,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithOtherModelValues) {
         if (_setPropWithOtherModelValues != nil) {
             NSSet *items0 = _setPropWithOtherModelValues;
-            NSMutableSet *result0 = [NSMutableSet setWithCapacity:items0.count];
+            NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
                 if (obj0 != (id)kCFNull) {
                     [result0 addObject:[obj0 dictionaryObjectRepresentation]];
@@ -1452,7 +1452,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithPrimitiveValues) {
         if (_setPropWithPrimitiveValues != nil) {
             NSSet *items0 = _setPropWithPrimitiveValues;
-            NSMutableSet *result0 = [NSMutableSet setWithCapacity:items0.count];
+            NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
                 if (obj0 != (id)kCFNull) {
                     [result0 addObject:obj0];
@@ -1466,10 +1466,10 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues) {
         if (_setPropWithValues != nil) {
             NSSet *items0 = _setPropWithValues;
-            NSMutableSet *result0 = [NSMutableSet setWithCapacity:items0.count];
+            NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
                 if (obj0 != (id)kCFNull) {
-                    [result0 addObject:obj0 ];
+                    [result0 addObject:obj0];
                 }
             }
             [dict setObject:result0 forKey:@"set_prop_with_values"];

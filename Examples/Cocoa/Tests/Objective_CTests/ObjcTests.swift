@@ -146,7 +146,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         ]
 
         assertDictionaryRepresentation(dict) { d1, d2 in
-            guard let a1 = d1["set_prop_with_primitive_values"] as? [Int], let a2 = d2["set_prop_with_primitive_values"] as? Set<NSNumber> else {
+            guard let a1 = d1["set_prop_with_primitive_values"] as? [Int], let a2 = d2["set_prop_with_primitive_values"] as? [NSNumber] else {
                 print("Unexpected type in dictionary: \(d2)")
                 return false
             }
@@ -162,7 +162,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         ]
 
         assertDictionaryRepresentation(dict) { d1, d2 in
-            guard let a1 = d1["set_prop_with_values"] as? [String], let a2 = d2["set_prop_with_values"] as? Set<String> else {
+            guard let a1 = d1["set_prop_with_values"] as? [String], let a2 = d2["set_prop_with_values"] as? [String] else {
                 print("Unexpected type in dictionary: \(d2)")
                 return false
             }

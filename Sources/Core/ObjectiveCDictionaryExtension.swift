@@ -123,7 +123,7 @@ extension ObjCFileRenderer {
                     let collection = collectionClass(schema: collectionSchema)
                     return [
                         "\(collection.name()) *items\(collectionCounter) = \(processObject);",
-                        "\(collection.mutableName()) *\(currentResult) = [\(collection.mutableName()) \(collection.initializer())items\(collectionCounter).count];",
+                        "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(collectionCounter).count];",
                         ObjCIR.forStmt("id \(currentObj) in items\(collectionCounter)") { [
                             ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                                 createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: type!, collectionCounter: collectionCounter+1)
@@ -142,9 +142,9 @@ extension ObjCFileRenderer {
                      .string(format: .some(.hostname)),
                      .string(format: .some(.ipv4)),
                      .string(format: .some(.ipv6)):
-                    return "[\(destCollection) addObject:\(processObject) ];"
+                    return "[\(destCollection) addObject:\(processObject)];"
                 case .string(format: .some(.uri)):
-                    return "[\(destCollection) addObject:[\(processObject) absoluteString] ];"
+                    return "[\(destCollection) addObject:[\(processObject) absoluteString]];"
                 case .string(format: .some(.dateTime)):
                     return [
                         ObjCIR.ifElseStmt("\(propIVarName) != nil && [[valueTransformer class] allowsReverseTransformation]") {[
@@ -165,7 +165,7 @@ extension ObjCFileRenderer {
             let collection = collectionClass(schema: schema)
             return ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
                     "\(collection.name()) *items\(counter) = \(propIVarName);",
-                    "\(collection.mutableName()) *\(currentResult) = [\(collection.mutableName()) \(collection.initializer())items\(counter).count];",
+                    "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(counter).count];",
                     ObjCIR.forStmt("id \(currentObj) in items\(counter)") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                             createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: itemType, collectionCounter: counter+1)

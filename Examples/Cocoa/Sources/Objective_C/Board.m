@@ -286,7 +286,7 @@ struct BoardDirtyProperties {
     if (_boardDirtyProperties.BoardDirtyPropertyContributors) {
         if (_contributors != nil) {
             NSSet *items0 = _contributors;
-            NSMutableSet *result0 = [NSMutableSet setWithCapacity:items0.count];
+            NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
                 if (obj0 != (id)kCFNull) {
                     [result0 addObject:[obj0 dictionaryObjectRepresentation]];
