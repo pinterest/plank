@@ -1,32 +1,42 @@
 {
-    "id": "user.json",
-    "title": "user",
-    "description" : "Schema definition of Pinterest User",
-    "$schema": "http://json-schema.org/schema#",
-    "type": "object",
-    "properties": {
-		"id" : { "type": "string" },
-		"username" : { "type": "string" },
-		"first_name" : { "type": "string" },
-		"last_name" : { "type": "string" },
-		"bio" : { "type": "string" },
-		"created_at" : {
-			"type": "string",
-			"format": "date-time"
-		},
-		"counts": {
-			"type": "object",
-			"additionalProperties": { "type": "integer" }
-		},
-    "email_frequency" : {
-        "type" : "string",
-        "enum": [
-            { "default" : "unset", "description" : "unset" },
-            { "default" : "immediate", "description" : "immediate" },
-            { "default" : "daily", "description" : "daily" }
-        ],
-        "default" : "unset"
+  "id": "user.json",
+  "title": "user",
+  "description" : "Schema definition of Pinterest User",
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "id" : { "type": "string" },
+    "type": { "type": "string" },
+    "username" : { "type": "string" },
+    "first_name" : { "type": "string" },
+    "last_name" : { "type": "string" },
+    "bio" : { "type": "string" },
+    "created_at" : {
+      "type": "string",
+      "format": "date-time"
     },
-		"image": { "$ref": "image.json" }
-	}
+    "counts": {
+      "type": "object",
+      "additionalProperties": { "type": "integer" }
+    },
+    "email_frequency" : {
+      "type" : "string",
+      "enum": [
+        { "default" : "unset", "description" : "unset" },
+        { "default" : "immediate", "description" : "immediate" },
+        { "default" : "daily", "description" : "daily" }
+      ],
+      "default" : "unset"
+    },
+    "email_frequency" : {
+      "type" : "string",
+      "enum": [
+        { "default" : "unset", "description" : "unset" },
+        { "default" : "immediate", "description" : "immediate" },
+        { "default" : "daily", "description" : "daily" }
+      ],
+      "default" : "unset"
+    },
+    "image": { "$ref": "image.json" }
+  }
 }

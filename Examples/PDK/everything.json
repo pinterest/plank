@@ -1,0 +1,134 @@
+{
+  "id": "everything.json",
+  "title": "everything",
+  "description" : "Schema definition representing all possible properties supported by plank",
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "type" : { "type": "string" },
+    "string_prop" : { "type": "string" },
+    "int_prop" : { "type": "integer" },
+    "number_prop" : { "type": "number" },
+    "boolean_prop" : { "type": "boolean" },
+    "uri_prop" : { "type": "string", "format": "uri" },
+    "map_prop": { "type": "object" },
+    "set_prop": { "type": "array", "unique": "true" },
+    "array_prop": { "type": "array" },
+    "other_model_prop": { "$ref": "user.json" },
+    "date_prop" : {
+      "type": "string",
+      "format": "date-time"
+    },
+    "set_prop_with_primitive_values": { 
+      "type": "array", 
+      "items": { "type": "integer" },
+      "unique": "true" 
+    },
+    "set_prop_with_values": { 
+      "type": "array", 
+      "items": { "type": "string" },
+      "unique": "true" 
+    },
+    "set_prop_with_other_model_values": { 
+      "type": "array", 
+      "items": { "$ref": "user.json" },
+      "unique": "true" 
+    },
+    "list_with_primitive_values": {
+      "type": "array",
+      "items": { "type": "integer" }
+    },
+    "list_with_object_values": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "list_with_other_model_values": {
+      "type": "array",
+      "items": { "$ref": "user.json" }
+    },
+    "map_with_primitive_values": {
+      "type": "object",
+      "additionalProperties": { "type": "integer" }
+    },
+    "map_with_object_values": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "map_with_other_model_values": {
+      "type": "object",
+      "additionalProperties": { "$ref": "user.json" }
+    },
+    "string_enum" : {
+      "type" : "string",
+      "enum": [
+        { "default" : "case1", "description" : "case1" },
+        { "default" : "case2", "description" : "case2" },
+        { "default" : "case3", "description" : "case3" }
+      ],
+      "default" : "case1"
+    },
+    "int_enum" : {
+      "type" : "integer",
+      "enum": [
+        { "default" : 1, "description" : "int_case_1" },
+        { "default" : 2, "description" : "int_case_2" },
+        { "default" : 3, "description" : "int_case_3" }
+      ]
+    },
+    "polymorphic_prop": {
+      "oneOf" : [
+        { "$ref" : "user.json" },
+        { "$ref" : "board.json" },
+        { "$ref" : "image.json" },
+        { "$ref" : "pin.json" },
+        { "$ref" : "everything.json" },
+        { "type" : "string" },
+        { "type" : "boolean" },
+        { "type" : "integer" },
+        { "type" : "number" },
+        { "type" : "string", "format": "date-time" },
+        { "type" : "string", "format": "uri" }
+      ]
+    },
+    "list_polymorphic_values" : {
+      "type": "array",
+      "items": {
+        "oneof" : [
+          { "$ref" : "user.json" },
+          { "$ref" : "board.json" },
+          { "$ref" : "image.json" },
+          { "$ref" : "pin.json" },
+          { "$ref" : "everything.json" },
+          { 
+            "type": "array",
+            "items": "integer"
+          },
+          { 
+            "type": "object",
+            "additionalProperties": "integer"
+          }
+        ]
+      }
+    },
+    "map_polymorphic_values" : {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf" : [
+          { "$ref" : "user.json" },
+          { "$ref" : "board.json" },
+          { "$ref" : "image.json" },
+          { "$ref" : "pin.json" },
+          { "$ref" : "everything.json" },
+          { 
+            "type": "array",
+            "items": "integer"
+          },
+          { 
+            "type": "object",
+            "additionalProperties": "integer"
+          }
+        ]
+      }
+    }
+  }
+}

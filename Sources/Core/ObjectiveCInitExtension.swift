@@ -72,7 +72,12 @@ extension ObjCModelRenderer {
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
-                let propertyInit = itemType.isObjCPrimitiveType ? "\(propertyToAssign) = \(rawObjectName);" : renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
+                if itemType.isObjCPrimitiveType {
+                    return [
+                        "\(propertyToAssign) = \(rawObjectName);"
+                    ]
+                }
+                let propertyInit = renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
                 return [
                     "NSArray *items = \(rawObjectName);",
                     "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items.count];",
@@ -91,7 +96,14 @@ extension ObjCModelRenderer {
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
-                let propertyInit = itemType.isObjCPrimitiveType ? "\(propertyToAssign) = \(rawObjectName);" : renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
+
+                if itemType.isObjCPrimitiveType {
+                    return [
+                        "NSArray *items = \(rawObjectName);",
+                        "\(propertyToAssign) = [NSSet setWithArray:items];"
+                    ]
+                }
+                let propertyInit = renderPropertyInit(currentTmp, currentObj, schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
                 return [
                     "NSArray *items = \(rawObjectName);",
                     "NSMutableSet *\(currentResult) = [NSMutableSet setWithCapacity:items.count];",

@@ -166,9 +166,10 @@ extension String {
         let components = str.components(separatedBy: "_")
 
         var name: String = ""
+
         for (idx, component) in components.enumerated() {
-            // Hack: Force URL's to be uppercase
-            if idx != 0 && component == "url" {
+            // Hack: Force URL's to be uppercase if they appear
+            if idx != 0 && components.count > 1 && component == "url" {
                 name += component.uppercased()
                 continue
             }

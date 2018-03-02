@@ -75,11 +75,11 @@ extension JSFileRenderer {
         case .array(itemType: .some(let itemType)):
             return "Array<\(flowTypeName(param, itemType))>"
         case .set(itemType: .none):
-            return "Set<*>"
+            return "Array<*>"
         case .set(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
-            return "Set<number /* \(itemType.debugDescription)> */>"
+            return "Array<number /* \(itemType.debugDescription)> */>"
         case .set(itemType: .some(let itemType)):
-            return "Set<\(flowTypeName(param, itemType))>"
+            return "Array<\(flowTypeName(param, itemType))>"
         case .map(valueType: .none):
             return "{}"
         case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:

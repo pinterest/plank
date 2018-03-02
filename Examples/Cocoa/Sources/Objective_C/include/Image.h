@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isEqualToImage:(Image *)anObject;
 - (instancetype)mergeWithModel:(Image *)modelObject;
 - (instancetype)mergeWithModel:(Image *)modelObject initType:(PlankModelInitType)initType;
+- (NSDictionary *)dictionaryObjectRepresentation;
 @end
 
 @interface ImageBuilder : NSObject
