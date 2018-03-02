@@ -12,7 +12,7 @@ import type { ImageType } from './ImageType.js';
 import type { UserType } from './UserType.js';
 
 export type BoardType = $Shape<{|
-  +contributors: ?Set<UserType>,
+  +contributors: ?Array<UserType>,
   +counts: ?{ +[string]: number } /* Integer */,
   +created_at: ?PlankDate,
   +creator: ?{ +[string]: string },
