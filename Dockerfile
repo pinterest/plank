@@ -1,6 +1,6 @@
 # Base image from SwiftDocker
 # https://hub.docker.com/r/swiftdocker/swift/
-FROM swiftdocker/swift
+FROM library/swift
 MAINTAINER Pinterest
 
 # Vim config so we have an editor available
