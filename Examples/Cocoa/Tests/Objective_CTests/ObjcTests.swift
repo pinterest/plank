@@ -433,8 +433,8 @@ class ObjcJavaScriptCoreBridgingTestSuite: XCTestCase {
         return ObjcJavaScriptCoreBridgingTestSuite._context
     }
 
-    func testImageModelBridging() {
-        // Expected model dictionary
+    func testImageModelBridgingGetImage() {
+        // Expected modelc dictionary
         let imageModelDictionary: JSONDict = [
             "height": 300,
             "width": 200,
@@ -449,5 +449,21 @@ class ObjcJavaScriptCoreBridgingTestSuite: XCTestCase {
         
         XCTAssert(expectedImage.isEqual(to: Image(modelDictionary:jsImageModel)))
         XCTAssert(jsImageModel == expectedImageDictionaryRepresentation)
+    }
+
+    func testImageModelBridgingSendImage() {
+        // Expected model dictionary
+        let imageModelDictionary: JSONDict = [
+            "height": 300,
+            "width": 200,
+            "url": "https://picsum.photos/200/300"
+        ]
+        let imageModel = Image(modelDictionary: imageModelDictionary);
+        let imageModelDictionaryRepresentation = imageModel.dictionaryObjectRepresentation()
+
+        let testImageModelJSON = context.objectForKeyedSubscript("sendTestImageModelJSON")!
+        let result = testImageModelJSON.call(withArguments:[imageModelDictionaryRepresentation]).toBool()
+
+        XCTAssert(result)
     }
 }
