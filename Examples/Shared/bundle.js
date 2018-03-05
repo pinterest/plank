@@ -28,6 +28,6 @@ function sendTestImageModelJSON(passed) {
   return (
     expected.height === passed.height &&
     expected.width === passed.width &&
-    expected.height === passed.height
+    expected.url === passed.url
   );
 }
