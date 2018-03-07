@@ -549,7 +549,7 @@ struct PinDirtyProperties {
         if (_attributionObjects != (id)kCFNull) {
             __auto_type items0 = _attributionObjects;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
+            for (PinAttributionObjects * obj0 in items0) {
                 [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
             [dict setObject:result0 forKey:@"attribution_objects"];
@@ -650,7 +650,7 @@ struct PinDirtyProperties {
         if (_tags != (id)kCFNull) {
             __auto_type items0 = _tags;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
+            for (NSDictionary * obj0 in items0) {
                 [result0 addObject:obj0];
             }
             [dict setObject:result0 forKey:@"tags"];

@@ -287,7 +287,7 @@ struct BoardDirtyProperties {
         if (_contributors != (id)kCFNull) {
             __auto_type items0 = _contributors;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
+            for (User * obj0 in items0) {
                 [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
             [dict setObject:result0 forKey:@"contributors"];

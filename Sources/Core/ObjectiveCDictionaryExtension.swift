@@ -139,10 +139,11 @@ extension ObjCFileRenderer {
                     let currentResult = "result\(collectionCounter)"
                     let parentResult = "result\(collectionCounter-1)"
                     let currentObj = "obj\(collectionCounter)"
+                    let collectionItemClass = type.map { objcClassFromSchema("", $0) } ?? "id"
                     return [
                         "\(collectionClass(schema: collectionSchema).name()) *items\(collectionCounter) = \(processObject);",
                         "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(collectionCounter).count];",
-                        ObjCIR.forStmt("id \(currentObj) in items\(collectionCounter)") { [
+                        ObjCIR.forStmt("\(collectionItemClass) \(currentObj) in items\(collectionCounter)") { [
                             createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: type!, collectionCounter: collectionCounter+1)
                             ]},
                         "[\(parentResult) addObject:\(currentResult)];"
@@ -191,10 +192,11 @@ extension ObjCFileRenderer {
             }
             let currentResult = "result\(counter)"
             let currentObj = "obj\(counter)"
+            let itemClass = itemType.isObjCPrimitiveType ? "id" : objcClassFromSchema(param, itemType)
             return [
                     "__auto_type items\(counter) = \(propIVarName);",
                     "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(counter).count];",
-                    ObjCIR.forStmt("id \(currentObj) in items\(counter)") { [
+                    ObjCIR.forStmt("\(itemClass) \(currentObj) in items\(counter)") { [
                         createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: itemType, collectionCounter: counter+1)
                     ]},
                     "[\(dictionary) setObject:\(currentResult) forKey:@\"\(param)\"];"

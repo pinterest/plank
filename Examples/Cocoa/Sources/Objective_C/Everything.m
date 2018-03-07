@@ -1411,10 +1411,10 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         if (_listWithListAndOtherModelValues != (id)kCFNull) {
             __auto_type items0 = _listWithListAndOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
+            for (NSArray<User *> * obj0 in items0) {
                 NSArray *items1 = obj0;
                 NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items1.count];
-                for (id obj1 in items1) {
+                for (User * obj1 in items1) {
                     [result1 addObject:[obj1 dictionaryObjectRepresentation]];
                 }
                 [result0 addObject:result1];
@@ -1428,7 +1428,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         if (_listWithMapAndOtherModelValues != (id)kCFNull) {
             __auto_type items0 = _listWithMapAndOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
+            for (NSDictionary<NSString *, User *> * obj0 in items0) {
                 NSDictionary<NSString *, User *> * items1 = obj0;
                 __auto_type result1 = [NSMutableDictionary new];
                 for (NSString *key1 in items1) {
@@ -1448,7 +1448,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         if (_listWithObjectValues != (id)kCFNull) {
             __auto_type items0 = _listWithObjectValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
+            for (NSString * obj0 in items0) {
                 [result0 addObject:obj0];
             }
             [dict setObject:result0 forKey:@"list_with_object_values"];
@@ -1460,7 +1460,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         if (_listWithOtherModelValues != (id)kCFNull) {
             __auto_type items0 = _listWithOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
+            for (User * obj0 in items0) {
                 [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
             [dict setObject:result0 forKey:@"list_with_other_model_values"];
@@ -1509,7 +1509,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                 NSMutableDictionary *tmp0 = [NSMutableDictionary new];
                 __auto_type items1 = dictValue0;
                 NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items1.count];
-                for (id obj1 in items1) {
+                for (User * obj1 in items1) {
                     [result1 addObject:[obj1 dictionaryObjectRepresentation]];
                 }
                 [tmp0 setObject:result1 forKey:@"dictValue0"];
@@ -1590,7 +1590,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         if (_setPropWithOtherModelValues != (id)kCFNull) {
             __auto_type items0 = _setPropWithOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
+            for (User * obj0 in items0) {
                 [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
             [dict setObject:result0 forKey:@"set_prop_with_other_model_values"];
@@ -1614,7 +1614,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         if (_setPropWithValues != (id)kCFNull) {
             __auto_type items0 = _setPropWithValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
+            for (NSString * obj0 in items0) {
                 [result0 addObject:obj0];
             }
             [dict setObject:result0 forKey:@"set_prop_with_values"];
