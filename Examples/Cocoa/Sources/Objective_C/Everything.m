@@ -158,77 +158,49 @@
     case EverythingMapPolymorphicValuesInternalTypeUser:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value0 != nil) {
-                [resultDict setObject:[_value0 dictionaryObjectRepresentation] forKey:@"value0"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value0"];
-            }
+            [resultDict setObject:[_value0 dictionaryObjectRepresentation] forKey:@"value0"];
             return resultDict[@"value0"];
         }
         break;
     case EverythingMapPolymorphicValuesInternalTypeBoard:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value1 != nil) {
-                [resultDict setObject:[_value1 dictionaryObjectRepresentation] forKey:@"value1"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value1"];
-            }
+            [resultDict setObject:[_value1 dictionaryObjectRepresentation] forKey:@"value1"];
             return resultDict[@"value1"];
         }
         break;
     case EverythingMapPolymorphicValuesInternalTypeImage:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value2 != nil) {
-                [resultDict setObject:[_value2 dictionaryObjectRepresentation] forKey:@"value2"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value2"];
-            }
+            [resultDict setObject:[_value2 dictionaryObjectRepresentation] forKey:@"value2"];
             return resultDict[@"value2"];
         }
         break;
     case EverythingMapPolymorphicValuesInternalTypePin:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value3 != nil) {
-                [resultDict setObject:[_value3 dictionaryObjectRepresentation] forKey:@"value3"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value3"];
-            }
+            [resultDict setObject:[_value3 dictionaryObjectRepresentation] forKey:@"value3"];
             return resultDict[@"value3"];
         }
         break;
     case EverythingMapPolymorphicValuesInternalTypeEverything:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value4 != nil) {
-                [resultDict setObject:[_value4 dictionaryObjectRepresentation] forKey:@"value4"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value4"];
-            }
+            [resultDict setObject:[_value4 dictionaryObjectRepresentation] forKey:@"value4"];
             return resultDict[@"value4"];
         }
         break;
     case EverythingMapPolymorphicValuesInternalTypeArray:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value5 != nil) {
-                [resultDict setObject:_value5 forKey:@"value5"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value5"];
-            }
+            [resultDict setObject:_value5 forKey:@"value5"];
             return resultDict[@"value5"];
         }
         break;
     case EverythingMapPolymorphicValuesInternalTypeDictionary:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value6 != nil) {
-                [resultDict setObject:_value6 forKey:@"value6"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value6"];
-            }
+            [resultDict setObject:_value6 forKey:@"value6"];
             return resultDict[@"value6"];
         }
         break;
@@ -478,87 +450,63 @@
     case EverythingPolymorphicPropInternalTypeUser:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value0 != nil) {
-                [resultDict setObject:[_value0 dictionaryObjectRepresentation] forKey:@"value0"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value0"];
-            }
+            [resultDict setObject:[_value0 dictionaryObjectRepresentation] forKey:@"value0"];
             return resultDict[@"value0"];
         }
         break;
     case EverythingPolymorphicPropInternalTypeBoard:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value1 != nil) {
-                [resultDict setObject:[_value1 dictionaryObjectRepresentation] forKey:@"value1"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value1"];
-            }
+            [resultDict setObject:[_value1 dictionaryObjectRepresentation] forKey:@"value1"];
             return resultDict[@"value1"];
         }
         break;
     case EverythingPolymorphicPropInternalTypeImage:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value2 != nil) {
-                [resultDict setObject:[_value2 dictionaryObjectRepresentation] forKey:@"value2"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value2"];
-            }
+            [resultDict setObject:[_value2 dictionaryObjectRepresentation] forKey:@"value2"];
             return resultDict[@"value2"];
         }
         break;
     case EverythingPolymorphicPropInternalTypePin:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value3 != nil) {
-                [resultDict setObject:[_value3 dictionaryObjectRepresentation] forKey:@"value3"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value3"];
-            }
+            [resultDict setObject:[_value3 dictionaryObjectRepresentation] forKey:@"value3"];
             return resultDict[@"value3"];
         }
         break;
     case EverythingPolymorphicPropInternalTypeEverything:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value4 != nil) {
-                [resultDict setObject:[_value4 dictionaryObjectRepresentation] forKey:@"value4"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value4"];
-            }
+            [resultDict setObject:[_value4 dictionaryObjectRepresentation] forKey:@"value4"];
             return resultDict[@"value4"];
         }
         break;
     case EverythingPolymorphicPropInternalTypeString:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value5 != nil) {
-                [resultDict setObject:_value5 forKey:@"value5"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value5"];
-            }
+            [resultDict setObject:_value5 forKey:@"value5"];
             return resultDict[@"value5"];
         }
         break;
     case EverythingPolymorphicPropInternalTypeBoolean:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            [resultDict setObject:@(_value6) forKey: @"value6" ];
+            [resultDict setObject:@(_value6) forKey: @"value6"];
             return resultDict[@"value6"];
         }
         break;
     case EverythingPolymorphicPropInternalTypeInteger:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            [resultDict setObject:@(_value7) forKey: @"value7" ];
+            [resultDict setObject:@(_value7) forKey: @"value7"];
             return resultDict[@"value7"];
         }
         break;
     case EverythingPolymorphicPropInternalTypeFloat:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            [resultDict setObject:@(_value8) forKey: @"value8" ];
+            [resultDict setObject:@(_value8) forKey: @"value8"];
             return resultDict[@"value8"];
         }
         break;
@@ -566,7 +514,7 @@
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
             NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
-            if (_value9 != nil && [[valueTransformer class] allowsReverseTransformation]) {
+            if ([[valueTransformer class] allowsReverseTransformation]) {
                 [resultDict setObject:[valueTransformer reverseTransformedValue:_value9] forKey:@"value9"];
             } else {
                 [resultDict setObject:[NSNull null] forKey:@"value9"];
@@ -577,11 +525,7 @@
     case EverythingPolymorphicPropInternalTypeURL:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value10 != nil) {
-                [resultDict setObject:[_value10 absoluteString] forKey:@"value10"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value10"];
-            }
+            [resultDict setObject:[_value10 absoluteString] forKey:@"value10"];
             return resultDict[@"value10"];
         }
         break;
@@ -640,11 +584,15 @@ struct EverythingDirtyProperties {
     unsigned int EverythingDirtyPropertyIntEnum:1;
     unsigned int EverythingDirtyPropertyIntProp:1;
     unsigned int EverythingDirtyPropertyListPolymorphicValues:1;
+    unsigned int EverythingDirtyPropertyListWithListAndOtherModelValues:1;
+    unsigned int EverythingDirtyPropertyListWithMapAndOtherModelValues:1;
     unsigned int EverythingDirtyPropertyListWithObjectValues:1;
     unsigned int EverythingDirtyPropertyListWithOtherModelValues:1;
     unsigned int EverythingDirtyPropertyListWithPrimitiveValues:1;
     unsigned int EverythingDirtyPropertyMapPolymorphicValues:1;
     unsigned int EverythingDirtyPropertyMapProp:1;
+    unsigned int EverythingDirtyPropertyMapWithListAndOtherModelValues:1;
+    unsigned int EverythingDirtyPropertyMapWithMapAndOtherModelValues:1;
     unsigned int EverythingDirtyPropertyMapWithObjectValues:1;
     unsigned int EverythingDirtyPropertyMapWithOtherModelValues:1;
     unsigned int EverythingDirtyPropertyMapWithPrimitiveValues:1;
@@ -779,6 +727,64 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"list_with_list_and_other_model_values"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    NSArray *items = value;
+                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                    for (id obj0 in items) {
+                        if (obj0 != (id)kCFNull) {
+                            id tmp0 = nil;
+                            NSArray *items = obj0;
+                            NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items.count];
+                            for (id obj1 in items) {
+                                if (obj1 != (id)kCFNull) {
+                                    id tmp1 = nil;
+                                    tmp1 = [User modelObjectWithDictionary:obj1];
+                                    if (tmp1 != nil) {
+                                        [result1 addObject:tmp1];
+                                    }
+                                }
+                            }
+                            tmp0 = result1;
+                            if (tmp0 != nil) {
+                                [result0 addObject:tmp0];
+                            }
+                        }
+                    }
+                    self->_listWithListAndOtherModelValues = result0;
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"list_with_map_and_other_model_values"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    NSArray *items = value;
+                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                    for (id obj0 in items) {
+                        if (obj0 != (id)kCFNull) {
+                            id tmp0 = nil;
+                            NSDictionary *items1 = obj0;
+                            NSMutableDictionary *result1 = [NSMutableDictionary dictionaryWithCapacity:items1.count];
+                            [items1 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key1, id  _Nonnull obj1, __unused BOOL * _Nonnull stop1){
+                                if (obj1 != nil && obj1 != (id)kCFNull) {
+                                    result1[key1] = [User modelObjectWithDictionary:obj1];
+                                }
+                            }];
+                            tmp0 = result1;
+                            if (tmp0 != nil) {
+                                [result0 addObject:tmp0];
+                            }
+                        }
+                    }
+                    self->_listWithMapAndOtherModelValues = result0;
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"list_with_object_values"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -870,6 +876,49 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                     self->_mapProp = value;
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertyMapProp = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"map_with_list_and_other_model_values"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    NSDictionary *items0 = value;
+                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                        if (obj0 != nil && obj0 != (id)kCFNull) {
+                            NSArray *items = obj0;
+                            NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items.count];
+                            for (id obj1 in items) {
+                                if (obj1 != (id)kCFNull) {
+                                    id tmp1 = nil;
+                                    tmp1 = [User modelObjectWithDictionary:obj1];
+                                    if (tmp1 != nil) {
+                                        [result1 addObject:tmp1];
+                                    }
+                                }
+                            }
+                            result0[key0] = result1;
+                        }
+                    }];
+                    self->_mapWithListAndOtherModelValues = result0;
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"map_with_map_and_other_model_values"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    NSDictionary *items0 = value;
+                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                        if (obj0 != nil && obj0 != (id)kCFNull) {
+                            result0[key0] = obj0;
+                        }
+                    }];
+                    self->_mapWithMapAndOtherModelValues = result0;
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues = 1;
             }
         }
         {
@@ -1097,11 +1146,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _intEnum = builder.intEnum;
     _intProp = builder.intProp;
     _listPolymorphicValues = builder.listPolymorphicValues;
+    _listWithListAndOtherModelValues = builder.listWithListAndOtherModelValues;
+    _listWithMapAndOtherModelValues = builder.listWithMapAndOtherModelValues;
     _listWithObjectValues = builder.listWithObjectValues;
     _listWithOtherModelValues = builder.listWithOtherModelValues;
     _listWithPrimitiveValues = builder.listWithPrimitiveValues;
     _mapPolymorphicValues = builder.mapPolymorphicValues;
     _mapProp = builder.mapProp;
+    _mapWithListAndOtherModelValues = builder.mapWithListAndOtherModelValues;
+    _mapWithMapAndOtherModelValues = builder.mapWithMapAndOtherModelValues;
     _mapWithObjectValues = builder.mapWithObjectValues;
     _mapWithOtherModelValues = builder.mapWithOtherModelValues;
     _mapWithPrimitiveValues = builder.mapWithPrimitiveValues;
@@ -1125,7 +1178,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
-    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:25];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:29];
     [descriptionFields addObject:parentDebugDescription];
     struct EverythingDirtyProperties props = _everythingDirtyProperties;
     if (props.EverythingDirtyPropertyArrayProp) {
@@ -1146,6 +1199,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (props.EverythingDirtyPropertyListPolymorphicValues) {
         [descriptionFields addObject:[@"_listPolymorphicValues = " stringByAppendingFormat:@"%@", _listPolymorphicValues]];
     }
+    if (props.EverythingDirtyPropertyListWithListAndOtherModelValues) {
+        [descriptionFields addObject:[@"_listWithListAndOtherModelValues = " stringByAppendingFormat:@"%@", _listWithListAndOtherModelValues]];
+    }
+    if (props.EverythingDirtyPropertyListWithMapAndOtherModelValues) {
+        [descriptionFields addObject:[@"_listWithMapAndOtherModelValues = " stringByAppendingFormat:@"%@", _listWithMapAndOtherModelValues]];
+    }
     if (props.EverythingDirtyPropertyListWithObjectValues) {
         [descriptionFields addObject:[@"_listWithObjectValues = " stringByAppendingFormat:@"%@", _listWithObjectValues]];
     }
@@ -1160,6 +1219,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (props.EverythingDirtyPropertyMapProp) {
         [descriptionFields addObject:[@"_mapProp = " stringByAppendingFormat:@"%@", _mapProp]];
+    }
+    if (props.EverythingDirtyPropertyMapWithListAndOtherModelValues) {
+        [descriptionFields addObject:[@"_mapWithListAndOtherModelValues = " stringByAppendingFormat:@"%@", _mapWithListAndOtherModelValues]];
+    }
+    if (props.EverythingDirtyPropertyMapWithMapAndOtherModelValues) {
+        [descriptionFields addObject:[@"_mapWithMapAndOtherModelValues = " stringByAppendingFormat:@"%@", _mapWithMapAndOtherModelValues]];
     }
     if (props.EverythingDirtyPropertyMapWithObjectValues) {
         [descriptionFields addObject:[@"_mapWithObjectValues = " stringByAppendingFormat:@"%@", _mapWithObjectValues]];
@@ -1232,11 +1297,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         (_stringEnum == anObject.stringEnum) &&
         (_booleanProp == anObject.booleanProp) &&
         (_arrayProp == anObject.arrayProp || [_arrayProp isEqualToArray:anObject.arrayProp]) &&
+        (_listWithListAndOtherModelValues == anObject.listWithListAndOtherModelValues || [_listWithListAndOtherModelValues isEqualToArray:anObject.listWithListAndOtherModelValues]) &&
+        (_listWithMapAndOtherModelValues == anObject.listWithMapAndOtherModelValues || [_listWithMapAndOtherModelValues isEqualToArray:anObject.listWithMapAndOtherModelValues]) &&
         (_listWithObjectValues == anObject.listWithObjectValues || [_listWithObjectValues isEqualToArray:anObject.listWithObjectValues]) &&
         (_listWithOtherModelValues == anObject.listWithOtherModelValues || [_listWithOtherModelValues isEqualToArray:anObject.listWithOtherModelValues]) &&
         (_listWithPrimitiveValues == anObject.listWithPrimitiveValues || [_listWithPrimitiveValues isEqualToArray:anObject.listWithPrimitiveValues]) &&
         (_mapPolymorphicValues == anObject.mapPolymorphicValues || [_mapPolymorphicValues isEqualToDictionary:anObject.mapPolymorphicValues]) &&
         (_mapProp == anObject.mapProp || [_mapProp isEqualToDictionary:anObject.mapProp]) &&
+        (_mapWithListAndOtherModelValues == anObject.mapWithListAndOtherModelValues || [_mapWithListAndOtherModelValues isEqualToDictionary:anObject.mapWithListAndOtherModelValues]) &&
+        (_mapWithMapAndOtherModelValues == anObject.mapWithMapAndOtherModelValues || [_mapWithMapAndOtherModelValues isEqualToDictionary:anObject.mapWithMapAndOtherModelValues]) &&
         (_mapWithObjectValues == anObject.mapWithObjectValues || [_mapWithObjectValues isEqualToDictionary:anObject.mapWithObjectValues]) &&
         (_mapWithOtherModelValues == anObject.mapWithOtherModelValues || [_mapWithOtherModelValues isEqualToDictionary:anObject.mapWithOtherModelValues]) &&
         (_mapWithPrimitiveValues == anObject.mapWithPrimitiveValues || [_mapWithPrimitiveValues isEqualToDictionary:anObject.mapWithPrimitiveValues]) &&
@@ -1263,11 +1332,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         (NSUInteger)_intEnum,
         (NSUInteger)_intProp,
         [_listPolymorphicValues hash],
+        [_listWithListAndOtherModelValues hash],
+        [_listWithMapAndOtherModelValues hash],
         [_listWithObjectValues hash],
         [_listWithOtherModelValues hash],
         [_listWithPrimitiveValues hash],
         [_mapPolymorphicValues hash],
         [_mapProp hash],
+        [_mapWithListAndOtherModelValues hash],
+        [_mapWithMapAndOtherModelValues hash],
         [_mapWithObjectValues hash],
         [_mapWithOtherModelValues hash],
         [_mapWithPrimitiveValues hash],
@@ -1298,21 +1371,25 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 }
 - (NSDictionary *)dictionaryObjectRepresentation
 {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:25];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:29];
     if (_everythingDirtyProperties.EverythingDirtyPropertyArrayProp) {
-        if (_arrayProp != nil) {
+        if (_arrayProp != (id)kCFNull) {
             [dict setObject:_arrayProp forKey:@"array_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"array_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyBooleanProp) {
-        [dict setObject:@(_booleanProp) forKey: @"boolean_prop" ];
+        [dict setObject:@(_booleanProp) forKey: @"boolean_prop"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyDateProp) {
-        NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
-        if (_dateProp != nil && [[valueTransformer class] allowsReverseTransformation]) {
-            [dict setObject:[valueTransformer reverseTransformedValue:_dateProp] forKey:@"date_prop"];
+        if (_dateProp != (id)kCFNull) {
+            NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
+            if ([[valueTransformer class] allowsReverseTransformation]) {
+                [dict setObject:[valueTransformer reverseTransformedValue:_dateProp] forKey:@"date_prop"];
+            } else {
+                [dict setObject:[NSNull null] forKey:@"date_prop"];
+            }
         } else {
             [dict setObject:[NSNull null] forKey:@"date_prop"];
         }
@@ -1321,23 +1398,58 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [dict setObject:@(_intEnum) forKey:@"int_enum"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyIntProp) {
-        [dict setObject:@(_intProp) forKey: @"int_prop" ];
+        [dict setObject:@(_intProp) forKey: @"int_prop"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues) {
-        if (_listPolymorphicValues != nil) {
+        if (_listPolymorphicValues != (id)kCFNull) {
             [dict setObject:_listPolymorphicValues forKey:@"list_polymorphic_values"];
         } else {
             [dict setObject:[NSNull null] forKey:@"list_polymorphic_values"];
         }
     }
-    if (_everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues) {
-        if (_listWithObjectValues != nil) {
-            NSArray *items0 = _listWithObjectValues;
+    if (_everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues) {
+        if (_listWithListAndOtherModelValues != (id)kCFNull) {
+            __auto_type items0 = _listWithListAndOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
-                if (obj0 != (id)kCFNull) {
-                    [result0 addObject:obj0];
+            for (NSArray<User *> * obj0 in items0) {
+                NSArray *items1 = obj0;
+                NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items1.count];
+                for (User * obj1 in items1) {
+                    [result1 addObject:[obj1 dictionaryObjectRepresentation]];
                 }
+                [result0 addObject:result1];
+            }
+            [dict setObject:result0 forKey:@"list_with_list_and_other_model_values"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"list_with_list_and_other_model_values"];
+        }
+    }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues) {
+        if (_listWithMapAndOtherModelValues != (id)kCFNull) {
+            __auto_type items0 = _listWithMapAndOtherModelValues;
+            NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
+            for (NSDictionary<NSString *, User *> * obj0 in items0) {
+                NSDictionary<NSString *, User *> * items1 = obj0;
+                __auto_type result1 = [NSMutableDictionary new];
+                for (NSString *key1 in items1) {
+                    User * tmp1 = [items1 objectForKey:key1];
+                    NSMutableDictionary *tmpDict1 = [NSMutableDictionary new];
+                    [tmpDict1 setObject:[tmp1 dictionaryObjectRepresentation] forKey:@"tmp1"];
+                    result1[key1] = tmpDict1[@"tmp1"];
+                }
+                [result0 addObject:result1];
+            }
+            [dict setObject:result0 forKey:@"list_with_map_and_other_model_values"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"list_with_map_and_other_model_values"];
+        }
+    }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues) {
+        if (_listWithObjectValues != (id)kCFNull) {
+            __auto_type items0 = _listWithObjectValues;
+            NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
+            for (NSString * obj0 in items0) {
+                [result0 addObject:obj0];
             }
             [dict setObject:result0 forKey:@"list_with_object_values"];
         } else {
@@ -1345,13 +1457,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListWithOtherModelValues) {
-        if (_listWithOtherModelValues != nil) {
-            NSArray *items0 = _listWithOtherModelValues;
+        if (_listWithOtherModelValues != (id)kCFNull) {
+            __auto_type items0 = _listWithOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
-                if (obj0 != (id)kCFNull) {
-                    [result0 addObject:[obj0 dictionaryObjectRepresentation]];
-                }
+            for (User * obj0 in items0) {
+                [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
             [dict setObject:result0 forKey:@"list_with_other_model_values"];
         } else {
@@ -1359,13 +1469,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListWithPrimitiveValues) {
-        if (_listWithPrimitiveValues != nil) {
-            NSArray *items0 = _listWithPrimitiveValues;
+        if (_listWithPrimitiveValues != (id)kCFNull) {
+            __auto_type items0 = _listWithPrimitiveValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
-                if (obj0 != (id)kCFNull) {
-                    [result0 addObject:obj0];
-                }
+                [result0 addObject:obj0];
             }
             [dict setObject:result0 forKey:@"list_with_primitive_values"];
         } else {
@@ -1373,76 +1481,117 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapPolymorphicValues) {
-        NSMutableDictionary *items0 = [NSMutableDictionary new];
-        for (id key in _mapPolymorphicValues) {
-            if ([_mapPolymorphicValues objectForKey:key] != (id)kCFNull) {
-                [items0 setObject:[[_mapPolymorphicValues objectForKey:key] dictionaryObjectRepresentation] forKey:key];
+        if (_mapPolymorphicValues != (id)kCFNull) {
+            NSMutableDictionary *items0 = [NSMutableDictionary new];
+            for (NSString *key0 in _mapPolymorphicValues) {
+                __auto_type dictValue0 = _mapPolymorphicValues[key0];
+                NSMutableDictionary *tmp0 = [NSMutableDictionary new];
+                [tmp0 setObject:[dictValue0 dictionaryObjectRepresentation] forKey:@"dictValue0"];
+                [items0 setObject:tmp0[@"dictValue0"] forKey:key0];
             }
+            [dict setObject:items0 forKey:@"map_polymorphic_values"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"map_polymorphic_values"];
         }
-        [dict setObject:items0 forKey: @"map_polymorphic_values" ];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapProp) {
-        if (_mapProp != nil) {
+        if (_mapProp != (id)kCFNull) {
             [dict setObject:_mapProp forKey:@"map_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"map_prop"];
         }
     }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues) {
+        if (_mapWithListAndOtherModelValues != (id)kCFNull) {
+            NSMutableDictionary *items0 = [NSMutableDictionary new];
+            for (NSString *key0 in _mapWithListAndOtherModelValues) {
+                __auto_type dictValue0 = _mapWithListAndOtherModelValues[key0];
+                NSMutableDictionary *tmp0 = [NSMutableDictionary new];
+                __auto_type items1 = dictValue0;
+                NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items1.count];
+                for (User * obj1 in items1) {
+                    [result1 addObject:[obj1 dictionaryObjectRepresentation]];
+                }
+                [tmp0 setObject:result1 forKey:@"dictValue0"];
+                [items0 setObject:tmp0[@"dictValue0"] forKey:key0];
+            }
+            [dict setObject:items0 forKey:@"map_with_list_and_other_model_values"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"map_with_list_and_other_model_values"];
+        }
+    }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues) {
+        if (_mapWithMapAndOtherModelValues != (id)kCFNull) {
+            NSMutableDictionary *items0 = [NSMutableDictionary new];
+            for (NSString *key0 in _mapWithMapAndOtherModelValues) {
+                __auto_type dictValue0 = _mapWithMapAndOtherModelValues[key0];
+                NSMutableDictionary *tmp0 = [NSMutableDictionary new];
+                [tmp0 setObject:dictValue0 forKey:@"dictValue0"];
+                [items0 setObject:tmp0[@"dictValue0"] forKey:key0];
+            }
+            [dict setObject:items0 forKey:@"map_with_map_and_other_model_values"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"map_with_map_and_other_model_values"];
+        }
+    }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues) {
-        if (_mapWithObjectValues != nil) {
+        if (_mapWithObjectValues != (id)kCFNull) {
             [dict setObject:_mapWithObjectValues forKey:@"map_with_object_values"];
         } else {
             [dict setObject:[NSNull null] forKey:@"map_with_object_values"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues) {
-        NSMutableDictionary *items0 = [NSMutableDictionary new];
-        for (id key in _mapWithOtherModelValues) {
-            if ([_mapWithOtherModelValues objectForKey:key] != (id)kCFNull) {
-                [items0 setObject:[[_mapWithOtherModelValues objectForKey:key] dictionaryObjectRepresentation] forKey:key];
+        if (_mapWithOtherModelValues != (id)kCFNull) {
+            NSMutableDictionary *items0 = [NSMutableDictionary new];
+            for (NSString *key0 in _mapWithOtherModelValues) {
+                __auto_type dictValue0 = _mapWithOtherModelValues[key0];
+                NSMutableDictionary *tmp0 = [NSMutableDictionary new];
+                [tmp0 setObject:[dictValue0 dictionaryObjectRepresentation] forKey:@"dictValue0"];
+                [items0 setObject:tmp0[@"dictValue0"] forKey:key0];
             }
+            [dict setObject:items0 forKey:@"map_with_other_model_values"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"map_with_other_model_values"];
         }
-        [dict setObject:items0 forKey: @"map_with_other_model_values" ];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues) {
-        if (_mapWithPrimitiveValues != nil) {
+        if (_mapWithPrimitiveValues != (id)kCFNull) {
             [dict setObject:_mapWithPrimitiveValues forKey:@"map_with_primitive_values"];
         } else {
             [dict setObject:[NSNull null] forKey:@"map_with_primitive_values"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyNumberProp) {
-        [dict setObject:@(_numberProp) forKey: @"number_prop" ];
+        [dict setObject:@(_numberProp) forKey: @"number_prop"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyOtherModelProp) {
-        if (_otherModelProp != nil) {
+        if (_otherModelProp != (id)kCFNull) {
             [dict setObject:[_otherModelProp dictionaryObjectRepresentation] forKey:@"other_model_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"other_model_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp) {
-        if (_polymorphicProp != nil) {
+        if (_polymorphicProp != (id)kCFNull) {
             [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"polymorphic_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetProp) {
-        if (_setProp != nil) {
+        if (_setProp != (id)kCFNull) {
             [dict setObject:_setProp forKey:@"set_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"set_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithOtherModelValues) {
-        if (_setPropWithOtherModelValues != nil) {
-            NSSet *items0 = _setPropWithOtherModelValues;
+        if (_setPropWithOtherModelValues != (id)kCFNull) {
+            __auto_type items0 = _setPropWithOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
-                if (obj0 != (id)kCFNull) {
-                    [result0 addObject:[obj0 dictionaryObjectRepresentation]];
-                }
+            for (User * obj0 in items0) {
+                [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
             [dict setObject:result0 forKey:@"set_prop_with_other_model_values"];
         } else {
@@ -1450,13 +1599,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithPrimitiveValues) {
-        if (_setPropWithPrimitiveValues != nil) {
-            NSSet *items0 = _setPropWithPrimitiveValues;
+        if (_setPropWithPrimitiveValues != (id)kCFNull) {
+            __auto_type items0 = _setPropWithPrimitiveValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
-                if (obj0 != (id)kCFNull) {
-                    [result0 addObject:obj0];
-                }
+                [result0 addObject:obj0];
             }
             [dict setObject:result0 forKey:@"set_prop_with_primitive_values"];
         } else {
@@ -1464,13 +1611,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues) {
-        if (_setPropWithValues != nil) {
-            NSSet *items0 = _setPropWithValues;
+        if (_setPropWithValues != (id)kCFNull) {
+            __auto_type items0 = _setPropWithValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
-                if (obj0 != (id)kCFNull) {
-                    [result0 addObject:obj0];
-                }
+            for (NSString * obj0 in items0) {
+                [result0 addObject:obj0];
             }
             [dict setObject:result0 forKey:@"set_prop_with_values"];
         } else {
@@ -1481,21 +1626,21 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [dict setObject:EverythingStringEnumToString(_stringEnum) forKey:@"string_enum"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyStringProp) {
-        if (_stringProp != nil) {
+        if (_stringProp != (id)kCFNull) {
             [dict setObject:_stringProp forKey:@"string_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"string_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyType) {
-        if (_type != nil) {
+        if (_type != (id)kCFNull) {
             [dict setObject:_type forKey:@"type"];
         } else {
             [dict setObject:[NSNull null] forKey:@"type"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyUriProp) {
-        if (_uriProp != nil) {
+        if (_uriProp != (id)kCFNull) {
             [dict setObject:[_uriProp absoluteString] forKey:@"uri_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"uri_prop"];
@@ -1524,11 +1669,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _intEnum = [aDecoder decodeIntegerForKey:@"int_enum"];
     _intProp = [aDecoder decodeIntegerForKey:@"int_prop"];
     _listPolymorphicValues = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@"list_polymorphic_values"];
+    _listWithListAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSArray class]]] forKey:@"list_with_list_and_other_model_values"];
+    _listWithMapAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class], [NSArray class]]] forKey:@"list_with_map_and_other_model_values"];
     _listWithObjectValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSString class], [NSArray class]]] forKey:@"list_with_object_values"];
     _listWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSArray class]]] forKey:@"list_with_other_model_values"];
     _listWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSArray class]]] forKey:@"list_with_primitive_values"];
     _mapPolymorphicValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [NSArray class], [NSDictionary class], [Image class], [Everything class], [Pin class], [User class]]] forKey:@"map_polymorphic_values"];
     _mapProp = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"map_prop"];
+    _mapWithListAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class], [NSArray class]]] forKey:@"map_with_list_and_other_model_values"];
+    _mapWithMapAndOtherModelValues = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"map_with_map_and_other_model_values"];
     _mapWithObjectValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"map_with_object_values"];
     _mapWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class]]] forKey:@"map_with_other_model_values"];
     _mapWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"map_with_primitive_values"];
@@ -1549,11 +1698,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _everythingDirtyProperties.EverythingDirtyPropertyIntEnum = [aDecoder decodeIntForKey:@"int_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyIntProp = [aDecoder decodeIntForKey:@"int_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues = [aDecoder decodeIntForKey:@"list_polymorphic_values_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues = [aDecoder decodeIntForKey:@"list_with_list_and_other_model_values_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues = [aDecoder decodeIntForKey:@"list_with_map_and_other_model_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues = [aDecoder decodeIntForKey:@"list_with_object_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyListWithOtherModelValues = [aDecoder decodeIntForKey:@"list_with_other_model_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyListWithPrimitiveValues = [aDecoder decodeIntForKey:@"list_with_primitive_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapPolymorphicValues = [aDecoder decodeIntForKey:@"map_polymorphic_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapProp = [aDecoder decodeIntForKey:@"map_prop_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues = [aDecoder decodeIntForKey:@"map_with_list_and_other_model_values_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues = [aDecoder decodeIntForKey:@"map_with_map_and_other_model_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues = [aDecoder decodeIntForKey:@"map_with_object_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues = [aDecoder decodeIntForKey:@"map_with_other_model_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues = [aDecoder decodeIntForKey:@"map_with_primitive_values_dirty_property"] & 0x1;
@@ -1581,11 +1734,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeInteger:self.intEnum forKey:@"int_enum"];
     [aCoder encodeInteger:self.intProp forKey:@"int_prop"];
     [aCoder encodeObject:self.listPolymorphicValues forKey:@"list_polymorphic_values"];
+    [aCoder encodeObject:self.listWithListAndOtherModelValues forKey:@"list_with_list_and_other_model_values"];
+    [aCoder encodeObject:self.listWithMapAndOtherModelValues forKey:@"list_with_map_and_other_model_values"];
     [aCoder encodeObject:self.listWithObjectValues forKey:@"list_with_object_values"];
     [aCoder encodeObject:self.listWithOtherModelValues forKey:@"list_with_other_model_values"];
     [aCoder encodeObject:self.listWithPrimitiveValues forKey:@"list_with_primitive_values"];
     [aCoder encodeObject:self.mapPolymorphicValues forKey:@"map_polymorphic_values"];
     [aCoder encodeObject:self.mapProp forKey:@"map_prop"];
+    [aCoder encodeObject:self.mapWithListAndOtherModelValues forKey:@"map_with_list_and_other_model_values"];
+    [aCoder encodeObject:self.mapWithMapAndOtherModelValues forKey:@"map_with_map_and_other_model_values"];
     [aCoder encodeObject:self.mapWithObjectValues forKey:@"map_with_object_values"];
     [aCoder encodeObject:self.mapWithOtherModelValues forKey:@"map_with_other_model_values"];
     [aCoder encodeObject:self.mapWithPrimitiveValues forKey:@"map_with_primitive_values"];
@@ -1606,11 +1763,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyIntEnum forKey:@"int_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyIntProp forKey:@"int_prop_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues forKey:@"list_polymorphic_values_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues forKey:@"list_with_list_and_other_model_values_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues forKey:@"list_with_map_and_other_model_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues forKey:@"list_with_object_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyListWithOtherModelValues forKey:@"list_with_other_model_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyListWithPrimitiveValues forKey:@"list_with_primitive_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapPolymorphicValues forKey:@"map_polymorphic_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapProp forKey:@"map_prop_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues forKey:@"map_with_list_and_other_model_values_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues forKey:@"map_with_map_and_other_model_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues forKey:@"map_with_object_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues forKey:@"map_with_other_model_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues forKey:@"map_with_primitive_values_dirty_property"];
@@ -1654,6 +1815,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues) {
         _listPolymorphicValues = modelObject.listPolymorphicValues;
     }
+    if (everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues) {
+        _listWithListAndOtherModelValues = modelObject.listWithListAndOtherModelValues;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues) {
+        _listWithMapAndOtherModelValues = modelObject.listWithMapAndOtherModelValues;
+    }
     if (everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues) {
         _listWithObjectValues = modelObject.listWithObjectValues;
     }
@@ -1668,6 +1835,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyMapProp) {
         _mapProp = modelObject.mapProp;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues) {
+        _mapWithListAndOtherModelValues = modelObject.mapWithListAndOtherModelValues;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues) {
+        _mapWithMapAndOtherModelValues = modelObject.mapWithMapAndOtherModelValues;
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues) {
         _mapWithObjectValues = modelObject.mapWithObjectValues;
@@ -1740,6 +1913,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues) {
         builder.listPolymorphicValues = modelObject.listPolymorphicValues;
     }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues) {
+        builder.listWithListAndOtherModelValues = modelObject.listWithListAndOtherModelValues;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues) {
+        builder.listWithMapAndOtherModelValues = modelObject.listWithMapAndOtherModelValues;
+    }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues) {
         builder.listWithObjectValues = modelObject.listWithObjectValues;
     }
@@ -1754,6 +1933,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyMapProp) {
         builder.mapProp = modelObject.mapProp;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues) {
+        builder.mapWithListAndOtherModelValues = modelObject.mapWithListAndOtherModelValues;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues) {
+        builder.mapWithMapAndOtherModelValues = modelObject.mapWithMapAndOtherModelValues;
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues) {
         builder.mapWithObjectValues = modelObject.mapWithObjectValues;
@@ -1837,6 +2022,16 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _listPolymorphicValues = listPolymorphicValues;
     _everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues = 1;
 }
+- (void)setListWithListAndOtherModelValues:(NSArray<NSArray<User *> *> *)listWithListAndOtherModelValues
+{
+    _listWithListAndOtherModelValues = listWithListAndOtherModelValues;
+    _everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues = 1;
+}
+- (void)setListWithMapAndOtherModelValues:(NSArray<NSDictionary<NSString *, User *> *> *)listWithMapAndOtherModelValues
+{
+    _listWithMapAndOtherModelValues = listWithMapAndOtherModelValues;
+    _everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues = 1;
+}
 - (void)setListWithObjectValues:(NSArray<NSString *> *)listWithObjectValues
 {
     _listWithObjectValues = listWithObjectValues;
@@ -1861,6 +2056,16 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     _mapProp = mapProp;
     _everythingDirtyProperties.EverythingDirtyPropertyMapProp = 1;
+}
+- (void)setMapWithListAndOtherModelValues:(NSDictionary<NSString *, NSArray<User *> *> *)mapWithListAndOtherModelValues
+{
+    _mapWithListAndOtherModelValues = mapWithListAndOtherModelValues;
+    _everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues = 1;
+}
+- (void)setMapWithMapAndOtherModelValues:(NSDictionary<NSString *, NSDictionary *> *)mapWithMapAndOtherModelValues
+{
+    _mapWithMapAndOtherModelValues = mapWithMapAndOtherModelValues;
+    _everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues = 1;
 }
 - (void)setMapWithObjectValues:(NSDictionary<NSString *, NSString *> *)mapWithObjectValues
 {

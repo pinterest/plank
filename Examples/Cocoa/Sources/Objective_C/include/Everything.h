@@ -100,6 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Everything : NSObject<NSCopying, NSSecureCoding>
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, EverythingMapPolymorphicValues *> * mapPolymorphicValues;
 @property (nonatomic, assign, readonly) BOOL booleanProp;
+@property (nullable, nonatomic, strong, readonly) NSArray<NSDictionary<NSString *, User *> *> * listWithMapAndOtherModelValues;
 @property (nullable, nonatomic, strong, readonly) NSSet<NSString *> * setPropWithValues;
 @property (nullable, nonatomic, copy, readonly) NSString * stringProp;
 @property (nullable, nonatomic, strong, readonly) NSArray<NSNumber /* Integer */ *> * listWithPrimitiveValues;
@@ -108,6 +109,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readonly) NSArray<NSString *> * listWithObjectValues;
 @property (nullable, nonatomic, copy, readonly) NSString * type;
 @property (nullable, nonatomic, strong, readonly) NSSet<User *> * setPropWithOtherModelValues;
+@property (nullable, nonatomic, strong, readonly) NSArray<NSArray<User *> *> * listWithListAndOtherModelValues;
+@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSDictionary *> * mapWithMapAndOtherModelValues;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, User *> * mapWithOtherModelValues;
 @property (nullable, nonatomic, strong, readonly) NSArray * arrayProp;
 @property (nullable, nonatomic, copy, readonly) NSURL * uriProp;
@@ -120,6 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) EverythingIntEnum intEnum;
 @property (nonatomic, assign, readonly) double numberProp;
 @property (nonatomic, assign, readonly) NSInteger intProp;
+@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSArray<User *> *> * mapWithListAndOtherModelValues;
 @property (nullable, nonatomic, strong, readonly) NSDictionary * mapProp;
 @property (nonatomic, assign, readonly) EverythingStringEnum stringEnum;
 @property (nullable, nonatomic, strong, readonly) EverythingPolymorphicProp * polymorphicProp;
@@ -139,6 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface EverythingBuilder : NSObject
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, EverythingMapPolymorphicValues *> * mapPolymorphicValues;
 @property (nonatomic, assign, readwrite) BOOL booleanProp;
+@property (nullable, nonatomic, strong, readwrite) NSArray<NSDictionary<NSString *, User *> *> * listWithMapAndOtherModelValues;
 @property (nullable, nonatomic, strong, readwrite) NSSet<NSString *> * setPropWithValues;
 @property (nullable, nonatomic, copy, readwrite) NSString * stringProp;
 @property (nullable, nonatomic, strong, readwrite) NSArray<NSNumber /* Integer */ *> * listWithPrimitiveValues;
@@ -147,6 +152,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readwrite) NSArray<NSString *> * listWithObjectValues;
 @property (nullable, nonatomic, copy, readwrite) NSString * type;
 @property (nullable, nonatomic, strong, readwrite) NSSet<User *> * setPropWithOtherModelValues;
+@property (nullable, nonatomic, strong, readwrite) NSArray<NSArray<User *> *> * listWithListAndOtherModelValues;
+@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSDictionary *> * mapWithMapAndOtherModelValues;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, User *> * mapWithOtherModelValues;
 @property (nullable, nonatomic, strong, readwrite) NSArray * arrayProp;
 @property (nullable, nonatomic, copy, readwrite) NSURL * uriProp;
@@ -159,6 +166,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readwrite) EverythingIntEnum intEnum;
 @property (nonatomic, assign, readwrite) double numberProp;
 @property (nonatomic, assign, readwrite) NSInteger intProp;
+@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSArray<User *> *> * mapWithListAndOtherModelValues;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary * mapProp;
 @property (nonatomic, assign, readwrite) EverythingStringEnum stringEnum;
 @property (nullable, nonatomic, strong, readwrite) EverythingPolymorphicProp * polymorphicProp;

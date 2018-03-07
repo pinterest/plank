@@ -397,4 +397,84 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         ]
         assertDictionaryRepresentation(dict)
     }
+
+    func testNestedMapWithMapAndModels() {
+        let nestedList = [
+        "user1": [
+            "id": 123,
+            "first_name": "Rahul",
+            "last_name": "Malik"
+        ], 
+        "user2": [
+            "id": 456,
+            "first_name": "Michael",
+            "last_name": "Schneider"
+        ]]
+        let dict: JSONDict = [
+            "map_with_map_and_other_model_values": [
+                "key": nestedList
+            ]
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+
+    func testNestedMapWithListAndModels() {
+        let nestedList = [
+        [
+            "id": 123,
+            "first_name": "Rahul",
+            "last_name": "Malik"
+        ], [
+            "id": 456,
+            "first_name": "Michael",
+            "last_name": "Schneider"
+        ]]
+        let dict: JSONDict = [
+            "map_with_list_and_other_model_values": [
+                "key": nestedList
+            ]
+        ]
+        assertDictionaryRepresentation(dict)
+    }
+    func testNestedListWithMapAndModels() {
+        let nestedMap: JSONDict = [
+            "user_one": [
+                "id": 123,
+                "type": "user",
+                "first_name": "Rahul",
+                "last_name": "Malik"
+            ], 
+            "user_two": [
+                "id": 456,
+                "type": "user",
+                "first_name": "Michael",
+                "last_name": "Schneider"
+            ]
+        ]
+        let list: JSONDict = [
+            "list_with_map_and_other_model_values": [nestedMap]
+        ]
+        assertDictionaryRepresentation(list)
+    }
+
+    func testNestedListWithListAndModels() {
+        let nestedList = [
+            [
+                "id": 123,
+                "type": "user",
+                "first_name": "Rahul",
+                "last_name": "Malik"
+            ], 
+            [
+                "id": 456,
+                "type": "user",
+                "first_name": "Michael",
+                "last_name": "Schneider"
+            ]
+        ]
+        let list: JSONDict = [
+            "list_with_list_and_other_model_values": [nestedList]
+        ]
+        assertDictionaryRepresentation(list)
+    }
 }

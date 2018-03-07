@@ -118,7 +118,7 @@ struct ObjCADTRenderer: ObjCFileRenderer {
                         ObjCIR.caseStmt(self.internalTypeEnumName + ObjCADTRenderer.objectName(schemaObj.schema)) {[
                             ObjCIR.scope {[
                             "NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];",
-                            self.renderAddToDictionaryStatement("value\(index)",
+                            self.renderAddToDictionaryStatement(.ivar("value\(index)"),
                                 schemaObj.schema,
                                 "resultDict"),
                             "return resultDict[@\"value\(index)\"];"

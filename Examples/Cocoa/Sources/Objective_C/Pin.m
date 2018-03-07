@@ -82,22 +82,14 @@
     case PinAttributionObjectsInternalTypeBoard:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value0 != nil) {
-                [resultDict setObject:[_value0 dictionaryObjectRepresentation] forKey:@"value0"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value0"];
-            }
+            [resultDict setObject:[_value0 dictionaryObjectRepresentation] forKey:@"value0"];
             return resultDict[@"value0"];
         }
         break;
     case PinAttributionObjectsInternalTypeUser:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            if (_value1 != nil) {
-                [resultDict setObject:[_value1 dictionaryObjectRepresentation] forKey:@"value1"];
-            } else {
-                [resultDict setObject:[NSNull null] forKey:@"value1"];
-            }
+            [resultDict setObject:[_value1 dictionaryObjectRepresentation] forKey:@"value1"];
             return resultDict[@"value1"];
         }
         break;
@@ -547,20 +539,18 @@ struct PinDirtyProperties {
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:16];
     if (_pinDirtyProperties.PinDirtyPropertyAttribution) {
-        if (_attribution != nil) {
+        if (_attribution != (id)kCFNull) {
             [dict setObject:_attribution forKey:@"attribution"];
         } else {
             [dict setObject:[NSNull null] forKey:@"attribution"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyAttributionObjects) {
-        if (_attributionObjects != nil) {
-            NSArray *items0 = _attributionObjects;
+        if (_attributionObjects != (id)kCFNull) {
+            __auto_type items0 = _attributionObjects;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
-                if (obj0 != (id)kCFNull) {
-                    [result0 addObject:[obj0 dictionaryObjectRepresentation]];
-                }
+            for (PinAttributionObjects * obj0 in items0) {
+                [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
             [dict setObject:result0 forKey:@"attribution_objects"];
         } else {
@@ -568,93 +558,100 @@ struct PinDirtyProperties {
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyBoard) {
-        if (_board != nil) {
+        if (_board != (id)kCFNull) {
             [dict setObject:[_board dictionaryObjectRepresentation] forKey:@"board"];
         } else {
             [dict setObject:[NSNull null] forKey:@"board"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyColor) {
-        if (_color != nil) {
+        if (_color != (id)kCFNull) {
             [dict setObject:_color forKey:@"color"];
         } else {
             [dict setObject:[NSNull null] forKey:@"color"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyCounts) {
-        if (_counts != nil) {
+        if (_counts != (id)kCFNull) {
             [dict setObject:_counts forKey:@"counts"];
         } else {
             [dict setObject:[NSNull null] forKey:@"counts"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyCreatedAt) {
-        NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
-        if (_createdAt != nil && [[valueTransformer class] allowsReverseTransformation]) {
-            [dict setObject:[valueTransformer reverseTransformedValue:_createdAt] forKey:@"created_at"];
+        if (_createdAt != (id)kCFNull) {
+            NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
+            if ([[valueTransformer class] allowsReverseTransformation]) {
+                [dict setObject:[valueTransformer reverseTransformedValue:_createdAt] forKey:@"created_at"];
+            } else {
+                [dict setObject:[NSNull null] forKey:@"created_at"];
+            }
         } else {
             [dict setObject:[NSNull null] forKey:@"created_at"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyCreator) {
-        NSMutableDictionary *items0 = [NSMutableDictionary new];
-        for (id key in _creator) {
-            if ([_creator objectForKey:key] != (id)kCFNull) {
-                [items0 setObject:[[_creator objectForKey:key] dictionaryObjectRepresentation] forKey:key];
+        if (_creator != (id)kCFNull) {
+            NSMutableDictionary *items0 = [NSMutableDictionary new];
+            for (NSString *key0 in _creator) {
+                __auto_type dictValue0 = _creator[key0];
+                NSMutableDictionary *tmp0 = [NSMutableDictionary new];
+                [tmp0 setObject:[dictValue0 dictionaryObjectRepresentation] forKey:@"dictValue0"];
+                [items0 setObject:tmp0[@"dictValue0"] forKey:key0];
             }
+            [dict setObject:items0 forKey:@"creator"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"creator"];
         }
-        [dict setObject:items0 forKey: @"creator" ];
     }
     if (_pinDirtyProperties.PinDirtyPropertyDescriptionText) {
-        if (_descriptionText != nil) {
+        if (_descriptionText != (id)kCFNull) {
             [dict setObject:_descriptionText forKey:@"description"];
         } else {
             [dict setObject:[NSNull null] forKey:@"description"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyIdentifier) {
-        if (_identifier != nil) {
+        if (_identifier != (id)kCFNull) {
             [dict setObject:_identifier forKey:@"id"];
         } else {
             [dict setObject:[NSNull null] forKey:@"id"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyImage) {
-        if (_image != nil) {
+        if (_image != (id)kCFNull) {
             [dict setObject:[_image dictionaryObjectRepresentation] forKey:@"image"];
         } else {
             [dict setObject:[NSNull null] forKey:@"image"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyLink) {
-        if (_link != nil) {
+        if (_link != (id)kCFNull) {
             [dict setObject:[_link absoluteString] forKey:@"link"];
         } else {
             [dict setObject:[NSNull null] forKey:@"link"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyMedia) {
-        if (_media != nil) {
+        if (_media != (id)kCFNull) {
             [dict setObject:_media forKey:@"media"];
         } else {
             [dict setObject:[NSNull null] forKey:@"media"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyNote) {
-        if (_note != nil) {
+        if (_note != (id)kCFNull) {
             [dict setObject:_note forKey:@"note"];
         } else {
             [dict setObject:[NSNull null] forKey:@"note"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyTags) {
-        if (_tags != nil) {
-            NSArray *items0 = _tags;
+        if (_tags != (id)kCFNull) {
+            __auto_type items0 = _tags;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
-            for (id obj0 in items0) {
-                if (obj0 != (id)kCFNull) {
-                    [result0 addObject:obj0];
-                }
+            for (NSDictionary * obj0 in items0) {
+                [result0 addObject:obj0];
             }
             [dict setObject:result0 forKey:@"tags"];
         } else {
@@ -662,14 +659,14 @@ struct PinDirtyProperties {
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyUrl) {
-        if (_url != nil) {
+        if (_url != (id)kCFNull) {
             [dict setObject:[_url absoluteString] forKey:@"url"];
         } else {
             [dict setObject:[NSNull null] forKey:@"url"];
         }
     }
     if (_pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs) {
-        if (_visualSearchAttrs != nil) {
+        if (_visualSearchAttrs != (id)kCFNull) {
             [dict setObject:_visualSearchAttrs forKey:@"visual_search_attrs"];
         } else {
             [dict setObject:[NSNull null] forKey:@"visual_search_attrs"];
