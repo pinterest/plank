@@ -310,23 +310,27 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:10];
     if (_userDirtyProperties.UserDirtyPropertyBio) {
-        if (_bio != nil) {
+        if (_bio != (id)kCFNull) {
             [dict setObject:_bio forKey:@"bio"];
         } else {
             [dict setObject:[NSNull null] forKey:@"bio"];
         }
     }
     if (_userDirtyProperties.UserDirtyPropertyCounts) {
-        if (_counts != nil) {
+        if (_counts != (id)kCFNull) {
             [dict setObject:_counts forKey:@"counts"];
         } else {
             [dict setObject:[NSNull null] forKey:@"counts"];
         }
     }
     if (_userDirtyProperties.UserDirtyPropertyCreatedAt) {
-        NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
-        if (_createdAt != nil && [[valueTransformer class] allowsReverseTransformation]) {
-            [dict setObject:[valueTransformer reverseTransformedValue:_createdAt] forKey:@"created_at"];
+        if (_createdAt != (id)kCFNull) {
+            NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
+            if ([[valueTransformer class] allowsReverseTransformation]) {
+                [dict setObject:[valueTransformer reverseTransformedValue:_createdAt] forKey:@"created_at"];
+            } else {
+                [dict setObject:[NSNull null] forKey:@"created_at"];
+            }
         } else {
             [dict setObject:[NSNull null] forKey:@"created_at"];
         }
@@ -335,42 +339,42 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
         [dict setObject:UserEmailFrequencyToString(_emailFrequency) forKey:@"email_frequency"];
     }
     if (_userDirtyProperties.UserDirtyPropertyFirstName) {
-        if (_firstName != nil) {
+        if (_firstName != (id)kCFNull) {
             [dict setObject:_firstName forKey:@"first_name"];
         } else {
             [dict setObject:[NSNull null] forKey:@"first_name"];
         }
     }
     if (_userDirtyProperties.UserDirtyPropertyIdentifier) {
-        if (_identifier != nil) {
+        if (_identifier != (id)kCFNull) {
             [dict setObject:_identifier forKey:@"id"];
         } else {
             [dict setObject:[NSNull null] forKey:@"id"];
         }
     }
     if (_userDirtyProperties.UserDirtyPropertyImage) {
-        if (_image != nil) {
+        if (_image != (id)kCFNull) {
             [dict setObject:[_image dictionaryObjectRepresentation] forKey:@"image"];
         } else {
             [dict setObject:[NSNull null] forKey:@"image"];
         }
     }
     if (_userDirtyProperties.UserDirtyPropertyLastName) {
-        if (_lastName != nil) {
+        if (_lastName != (id)kCFNull) {
             [dict setObject:_lastName forKey:@"last_name"];
         } else {
             [dict setObject:[NSNull null] forKey:@"last_name"];
         }
     }
     if (_userDirtyProperties.UserDirtyPropertyType) {
-        if (_type != nil) {
+        if (_type != (id)kCFNull) {
             [dict setObject:_type forKey:@"type"];
         } else {
             [dict setObject:[NSNull null] forKey:@"type"];
         }
     }
     if (_userDirtyProperties.UserDirtyPropertyUsername) {
-        if (_username != nil) {
+        if (_username != (id)kCFNull) {
             [dict setObject:_username forKey:@"username"];
         } else {
             [dict setObject:[NSNull null] forKey:@"username"];

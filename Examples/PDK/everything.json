@@ -58,6 +58,36 @@
       "type": "object",
       "additionalProperties": { "$ref": "user.json" }
     },
+    "map_with_list_and_other_model_values": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "$ref": "user.json" }
+      }
+    },
+    "map_with_map_and_other_model_values": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": { "$ref": "user.json" }
+        }
+      }
+    },
+    "list_with_map_and_other_model_values": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": { "$ref": "user.json" }
+      }
+    },
+    "list_with_list_and_other_model_values": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": { "$ref": "user.json" }
+      }
+    },
     "string_enum" : {
       "type" : "string",
       "enum": [

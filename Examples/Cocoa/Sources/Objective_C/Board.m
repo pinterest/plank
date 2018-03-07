@@ -284,13 +284,11 @@ struct BoardDirtyProperties {
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:9];
     if (_boardDirtyProperties.BoardDirtyPropertyContributors) {
-        if (_contributors != nil) {
-            NSSet *items0 = _contributors;
+        if (_contributors != (id)kCFNull) {
+            __auto_type items0 = _contributors;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
-                if (obj0 != (id)kCFNull) {
-                    [result0 addObject:[obj0 dictionaryObjectRepresentation]];
-                }
+                [result0 addObject:[obj0 dictionaryObjectRepresentation]];
             }
             [dict setObject:result0 forKey:@"contributors"];
         } else {
@@ -298,57 +296,61 @@ struct BoardDirtyProperties {
         }
     }
     if (_boardDirtyProperties.BoardDirtyPropertyCounts) {
-        if (_counts != nil) {
+        if (_counts != (id)kCFNull) {
             [dict setObject:_counts forKey:@"counts"];
         } else {
             [dict setObject:[NSNull null] forKey:@"counts"];
         }
     }
     if (_boardDirtyProperties.BoardDirtyPropertyCreatedAt) {
-        NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
-        if (_createdAt != nil && [[valueTransformer class] allowsReverseTransformation]) {
-            [dict setObject:[valueTransformer reverseTransformedValue:_createdAt] forKey:@"created_at"];
+        if (_createdAt != (id)kCFNull) {
+            NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
+            if ([[valueTransformer class] allowsReverseTransformation]) {
+                [dict setObject:[valueTransformer reverseTransformedValue:_createdAt] forKey:@"created_at"];
+            } else {
+                [dict setObject:[NSNull null] forKey:@"created_at"];
+            }
         } else {
             [dict setObject:[NSNull null] forKey:@"created_at"];
         }
     }
     if (_boardDirtyProperties.BoardDirtyPropertyCreator) {
-        if (_creator != nil) {
+        if (_creator != (id)kCFNull) {
             [dict setObject:_creator forKey:@"creator"];
         } else {
             [dict setObject:[NSNull null] forKey:@"creator"];
         }
     }
     if (_boardDirtyProperties.BoardDirtyPropertyDescriptionText) {
-        if (_descriptionText != nil) {
+        if (_descriptionText != (id)kCFNull) {
             [dict setObject:_descriptionText forKey:@"description"];
         } else {
             [dict setObject:[NSNull null] forKey:@"description"];
         }
     }
     if (_boardDirtyProperties.BoardDirtyPropertyIdentifier) {
-        if (_identifier != nil) {
+        if (_identifier != (id)kCFNull) {
             [dict setObject:_identifier forKey:@"id"];
         } else {
             [dict setObject:[NSNull null] forKey:@"id"];
         }
     }
     if (_boardDirtyProperties.BoardDirtyPropertyImage) {
-        if (_image != nil) {
+        if (_image != (id)kCFNull) {
             [dict setObject:[_image dictionaryObjectRepresentation] forKey:@"image"];
         } else {
             [dict setObject:[NSNull null] forKey:@"image"];
         }
     }
     if (_boardDirtyProperties.BoardDirtyPropertyName) {
-        if (_name != nil) {
+        if (_name != (id)kCFNull) {
             [dict setObject:_name forKey:@"name"];
         } else {
             [dict setObject:[NSNull null] forKey:@"name"];
         }
     }
     if (_boardDirtyProperties.BoardDirtyPropertyUrl) {
-        if (_url != nil) {
+        if (_url != (id)kCFNull) {
             [dict setObject:[_url absoluteString] forKey:@"url"];
         } else {
             [dict setObject:[NSNull null] forKey:@"url"];

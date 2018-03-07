@@ -168,17 +168,17 @@ struct ImageDirtyProperties {
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:3];
     if (_imageDirtyProperties.ImageDirtyPropertyHeight) {
-        [dict setObject:@(_height) forKey: @"height" ];
+        [dict setObject:@(_height) forKey: @"height"];
     }
     if (_imageDirtyProperties.ImageDirtyPropertyUrl) {
-        if (_url != nil) {
+        if (_url != (id)kCFNull) {
             [dict setObject:[_url absoluteString] forKey:@"url"];
         } else {
             [dict setObject:[NSNull null] forKey:@"url"];
         }
     }
     if (_imageDirtyProperties.ImageDirtyPropertyWidth) {
-        [dict setObject:@(_width) forKey: @"width" ];
+        [dict setObject:@(_width) forKey: @"width"];
     }
     return dict;
 }

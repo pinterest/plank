@@ -11,10 +11,18 @@ import Foundation
 extension ObjCModelRenderer {
     func renderGenerateDictionary() -> ObjCIR.Method {
         let dictionary = "dict"
+
         let props = self.properties.map { (param, schemaObj) -> String in
-            ObjCIR.ifStmt("_"+"\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
-                [renderAddToDictionaryStatement(param, schemaObj.schema, dictionary)]
-            }
+
+            ObjCIR.ifStmt("_"+"\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {[
+                schemaObj.schema.isObjCPrimitiveType ?
+                    self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary) :
+                ObjCIR.ifElseStmt("_\(param.snakeCaseToPropertyName()) != (id)kCFNull") {[
+                    self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary)
+                ]} {[
+                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
+                ]}
+            ]}
         }.joined(separator: "\n")
         return ObjCIR.method("- (NSDictionary *)dictionaryObjectRepresentation") {[
             "NSMutableDictionary *\(dictionary) = " +
@@ -58,43 +66,54 @@ private enum CollectionClass {
     }
 }
 
+enum ParamType {
+    case ivar(String)
+    case localVariable(String)
+
+    func paramVariable() -> String {
+        switch self {
+        case .ivar(let paramName):
+            return "_\(paramName.snakeCaseToPropertyName())"
+        case .localVariable(let paramName)
+            :
+            return paramName.snakeCaseToPropertyName()
+        }
+    }
+
+    func paramName() -> String {
+        switch self {
+        case .ivar(let paramName):
+            return paramName
+        case .localVariable(let paramName)
+            :
+            return paramName
+        }
+    }
+}
+
 extension ObjCFileRenderer {
-    func renderAddToDictionaryStatement(_ param: String, _ schema: Schema, _ dictionary: String, counter: Int = 0) -> String {
-        var propIVarName = "_\(param.snakeCaseToPropertyName())"
+    func renderAddToDictionaryStatement(_ paramWrapped: ParamType, _ schema: Schema, _ dictionary: String, counter: Int = 0) -> String {
+        let param = paramWrapped.paramName()
+        let propIVarName = paramWrapped.paramVariable()
         switch schema {
         // TODO: After nullability PR landed we should revisit this and don't check for nil if
         //       the ivar is nonnull in all of this cases
         case .boolean, .float, .integer:
-            return "[\(dictionary) setObject:@(\(propIVarName)) forKey: @\"\(param)\" ];"
+            return "[\(dictionary) setObject:@(\(propIVarName)) forKey: @\"\(param)\"];"
         case .object:
-            return
-                ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    "[\(dictionary) setObject:[\(propIVarName) dictionaryObjectRepresentation] forKey:@\"\(param)\"];"
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
+            return "[\(dictionary) setObject:[\(propIVarName) dictionaryObjectRepresentation] forKey:@\"\(param)\"];"
         case .string(format: .none),
              .string(format: .some(.email)),
              .string(format: .some(.hostname)),
              .string(format: .some(.ipv4)),
              .string(format: .some(.ipv6)):
-            return
-                ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
+            return "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
         case .string(format: .some(.uri)):
-            return
-                ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    "[\(dictionary) setObject:[\(propIVarName) absoluteString] forKey:@\"\(param)\"];"
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
+            return "[\(dictionary) setObject:[\(propIVarName) absoluteString] forKey:@\"\(param)\"];"
         case .string(format: .some(.dateTime)):
             return [
                 "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
-                ObjCIR.ifElseStmt("\(propIVarName) != nil && [[valueTransformer class] allowsReverseTransformation]") {[
+                ObjCIR.ifElseStmt("[[valueTransformer class] allowsReverseTransformation]") {[
                     "[\(dictionary) setObject:[valueTransformer reverseTransformedValue:\(propIVarName)] forKey:@\"\(param)\"];"
                 ]} {[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
@@ -120,21 +139,31 @@ extension ObjCFileRenderer {
                     let currentResult = "result\(collectionCounter)"
                     let parentResult = "result\(collectionCounter-1)"
                     let currentObj = "obj\(collectionCounter)"
-                    let collection = collectionClass(schema: collectionSchema)
                     return [
-                        "\(collection.name()) *items\(collectionCounter) = \(processObject);",
+                        "\(collectionClass(schema: collectionSchema).name()) *items\(collectionCounter) = \(processObject);",
                         "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(collectionCounter).count];",
                         ObjCIR.forStmt("id \(currentObj) in items\(collectionCounter)") { [
-                            ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
-                                createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: type!, collectionCounter: collectionCounter+1)
-                                ]}
+                            createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: type!, collectionCounter: collectionCounter+1)
                             ]},
                         "[\(parentResult) addObject:\(currentResult)];"
                     ].joined(separator: "\n")
                 case .map(valueType: .none):
                     return "[\(destCollection) addObject:\(processObject)];"
-                case .map(valueType: .some(let valueType)):
-                    return self.renderAddToDictionaryStatement(processObject, valueType, processObject)
+                case .map(valueType: .some(let type)):
+                    let currentResult = "result\(collectionCounter)"
+                    let parentResult = "result\(collectionCounter-1)"
+                    let key = "key\(collectionCounter)"
+                    return [
+                        "\(objcClassFromSchema("", collectionSchema)) items\(collectionCounter) = \(processObject);",
+                        "__auto_type \(currentResult) = [NSMutableDictionary new];",
+                        ObjCIR.forStmt("NSString *\(key) in items\(collectionCounter)") { [
+                            "\(objcClassFromSchema("", type)) tmp\(collectionCounter) = [items\(collectionCounter) objectForKey:\(key)];",
+                            "NSMutableDictionary *tmpDict\(collectionCounter) = [NSMutableDictionary new];",
+                            self.renderAddToDictionaryStatement(.localVariable("tmp\(collectionCounter)"), type, "tmpDict\(collectionCounter)", counter: collectionCounter+1),
+                            "\(currentResult)[\(key)] = tmpDict\(collectionCounter)[@\"tmp\(collectionCounter)\"];"
+                        ]},
+                        "[\(parentResult) addObject:\(currentResult)];"
+                        ].joined(separator: "\n")
                 case .integer, .float, .boolean:
                     return "[\(destCollection) addObject:\(processObject)];"
                 case .string(format: .none),
@@ -147,8 +176,8 @@ extension ObjCFileRenderer {
                     return "[\(destCollection) addObject:[\(processObject) absoluteString]];"
                 case .string(format: .some(.dateTime)):
                     return [
-                        ObjCIR.ifElseStmt("\(propIVarName) != nil && [[valueTransformer class] allowsReverseTransformation]") {[
-                            "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
+                        "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
+                        ObjCIR.ifElseStmt("[[valueTransformer class] allowsReverseTransformation]") {[
                             "[\(destCollection) addObject:[valueTransformer reverseTransformedValue:\(propIVarName)]];"
                         ]} {[
                             "[\(destCollection) addObject:[NSNull null]];"
@@ -162,68 +191,43 @@ extension ObjCFileRenderer {
             }
             let currentResult = "result\(counter)"
             let currentObj = "obj\(counter)"
-            let collection = collectionClass(schema: schema)
-            return ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    "\(collection.name()) *items\(counter) = \(propIVarName);",
+            return [
+                    "__auto_type items\(counter) = \(propIVarName);",
                     "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(counter).count];",
                     ObjCIR.forStmt("id \(currentObj) in items\(counter)") { [
-                        ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
-                            createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: itemType, collectionCounter: counter+1)
-                        ]}
+                        createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: itemType, collectionCounter: counter+1)
                     ]},
                     "[\(dictionary) setObject:\(currentResult) forKey:@\"\(param)\"];"
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
+                ].joined(separator: "\n")
         case .map(valueType: .some(let valueType)):
+
             switch valueType {
-            case .map, .array:
-                return
-                    ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                        self.renderAddToDictionaryStatement(param, valueType, dictionary)
-                    ]} {[
-                        "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                    ]}
-            case .reference(with: _), .oneOf(types: _), .object:
+            case .map, .array, .reference(with: _), .oneOf(types: _), .object:
                 return [
                     "NSMutableDictionary *items\(counter) = [NSMutableDictionary new];",
-                    ObjCIR.forStmt("id key in \(propIVarName)") { [
-                        ObjCIR.ifStmt("[\(propIVarName) objectForKey:key] != (id)kCFNull") { [
-                            "[items\(counter) setObject:[[\(propIVarName) objectForKey:key] dictionaryObjectRepresentation] forKey:key];"
-                        ]}
+                    ObjCIR.forStmt("NSString *key\(counter) in \(propIVarName)") {[
+                        "__auto_type dictValue\(counter) = \(propIVarName)[key\(counter)];",
+                        "NSMutableDictionary *tmp\(counter) = [NSMutableDictionary new];",
+                        self.renderAddToDictionaryStatement(.localVariable("dictValue\(counter)"), valueType, "tmp\(counter)", counter: counter+1),
+                        "[items\(counter) setObject:tmp\(counter)[@\"dictValue\(counter)\"] forKey:key\(counter)];"
                     ]},
-                    "[\(dictionary) setObject:items\(counter) forKey: @\"\(param)\" ];"
+                    "[\(dictionary) setObject:items\(counter) forKey:@\"\(param)\"];"
                 ].joined(separator: "\n")
             default:
-                return
-                    ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                        "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
-                    ]} {[
-                        "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                    ]}
+                return "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
             }
         case .oneOf(types: _):
             // oneOf (ADT) types have a dictionaryObjectRepresentation method we will use here
-            return
-                ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    "[\(dictionary) setObject:[\(propIVarName) dictionaryObjectRepresentation] forKey:@\"\(param)\"];"
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
+            return "[\(dictionary) setObject:[\(propIVarName) dictionaryObjectRepresentation] forKey:@\"\(param)\"];"
         case .reference(with: let ref):
             return ref.force().map {
-                renderAddToDictionaryStatement(param, $0, dictionary)
+                renderAddToDictionaryStatement(paramWrapped, $0, dictionary)
                 } ?? {
                     assert(false, "TODO: Forward optional across methods")
                     return ""
                 }()
         case .map(valueType: .none), .array(.none), .set(.none):
-            return
-                ObjCIR.ifElseStmt("\(propIVarName) != nil") {[
-                    "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
+            return "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
         }
     }
 }
