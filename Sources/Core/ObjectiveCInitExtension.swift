@@ -166,7 +166,7 @@ extension ObjCModelRenderer {
                 return ["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"]
             case .oneOf(types: let schemas):
                 // TODO Update to create ADT objects
-                let adtClassName = self.objcClassFromSchema(firstName, schema).trimmingCharacters(in: CharacterSet(charactersIn: "*"))
+                let adtClassName = self.typeFromSchema(firstName, schema.nonnullProperty()).trimmingCharacters(in: CharacterSet(charactersIn: "*"))
                 func loop(schema: Schema) -> String {
                     func transformToADTInit(_ lines: [String]) -> [String] {
                         if let assignmentLine = lines.last {

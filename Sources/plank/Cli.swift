@@ -16,6 +16,7 @@ protocol HelpCommandOutput {
 enum FlagOptions: String {
     case outputDirectory = "output_dir"
     case objectiveCClassPrefix = "objc_class_prefix"
+    case javaPackageName = "java_package_name"
     case printDeps = "print_deps"
     case noRecursive = "no_recursive"
     case onlyRuntime = "only_runtime"
@@ -33,6 +34,7 @@ enum FlagOptions: String {
         case .onlyRuntime: return false
         case .lang: return true
         case .help: return false
+        case .javaPackageName: return true
         }
     }
 }
@@ -40,14 +42,19 @@ enum FlagOptions: String {
 extension FlagOptions: HelpCommandOutput {
     internal static func printHelp() -> String {
         return [
-            "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names.",
-            "    --\(FlagOptions.outputDirectory.rawValue) - The directory where generated code will be written.",
-            "    --\(FlagOptions.printDeps.rawValue) - Just print the path to the dependent schemas necessary to generate the schemas provided and exit.",
-            "    --\(FlagOptions.noRecursive.rawValue) - Don't generate files recursively. Only generate the one file I ask for.",
-            "    --\(FlagOptions.onlyRuntime.rawValue) - Only generate runtime files and exit.",
-            "    --\(FlagOptions.indent.rawValue) - Define a custom indentation.",
+            "    --\(FlagOptions.outputDirectory.rawValue) - The directory where generated code will be written",
+            "    --\(FlagOptions.printDeps.rawValue) - Just print the path to the dependent schemas necessary to generate the schemas provided and exit",
+            "    --\(FlagOptions.noRecursive.rawValue) - Don't generate files recursively. Only generate the one file I ask for",
+            "    --\(FlagOptions.onlyRuntime.rawValue) - Only generate runtime files and exit",
+            "    --\(FlagOptions.indent.rawValue) - Define a custom indentation",
             "    --\(FlagOptions.lang.rawValue) - Comma separated list of target language(s) for generating code. Default: \"objc\"",
-            "    --\(FlagOptions.help.rawValue) - Show this text and exit."
+            "    --\(FlagOptions.help.rawValue) - Show this text and exit",
+            "",
+            "    Objective-C:",
+            "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names",
+            "",
+            "    Java:",
+            "    --\(FlagOptions.javaPackageName.rawValue) - The package name to associate with generated Java sources"
         ].joined(separator: "\n")
     }
 }
@@ -127,12 +134,14 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let classPrefix: String? = flags[.objectiveCClassPrefix]
     let includeRuntime: String? = flags[.onlyRuntime] != nil || flags[.noRecursive] == nil ? .some("") : .none
     let indent: String? = flags[.indent]
+    let packageName: String? = flags[.javaPackageName]
 
     let generationParameters: GenerationParameters = [
         (.recursive, recursive),
         (.classPrefix, classPrefix),
         (.includeRuntime, includeRuntime),
-        (.indent, indent)
+        (.indent, indent),
+        (.packageName, packageName)
     ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
             var d = dict
             if let v = tuple.1 {

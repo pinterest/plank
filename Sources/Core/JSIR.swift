@@ -106,7 +106,7 @@ public struct JSIR {
     }
 
     // Handles printing out the representation for each type
-    enum Root {
+    enum Root: RootRenderer {
         case structDecl(name: String, fields: [String])
         case imports(classNames: Set<String>, myName: String, parentName: String?)
         case macro(String)

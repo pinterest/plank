@@ -1,9 +1,14 @@
+// swift-tools-version:4.0
+
 import PackageDescription
 
 let package = Package(
     name: "plank",
-    targets: [Target(name: "plank", dependencies:["Core"]),
-              Target(name: "Core", dependencies:[])],
-    exclude: ["Utility", "Examples"]
+    targets: [
+        .target(name: "plank", dependencies:["Core"], exclude: ["Utility", "Examples"]),
+        .target(name: "Core", dependencies:[], exclude: ["Utility",
+        "Examples"]),
+        .testTarget(name: "CoreTests", dependencies: ["Core"])
+    ]
 )
 

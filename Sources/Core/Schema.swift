@@ -105,6 +105,25 @@ public enum Nullability: String {
 public struct SchemaObjectProperty {
     let schema: Schema
     let nullability: Nullability? // Nullability does not apply for primitive types
+
+    init(schema aSchema: Schema, nullability aNullability: Nullability?) {
+        schema = aSchema
+        nullability = aNullability
+    }
+
+    init(schema: Schema) {
+        self.init(schema: schema, nullability: nil)
+    }
+}
+
+extension Schema {
+    func nonnullProperty() -> SchemaObjectProperty {
+        return SchemaObjectProperty(schema: self, nullability: .nonnull)
+    }
+
+    func nullableProperty() -> SchemaObjectProperty {
+        return SchemaObjectProperty(schema: self, nullability: .nullable)
+    }
 }
 
 public struct SchemaObjectRoot: Equatable {

@@ -17,7 +17,6 @@ export type BoardType = $Shape<{|
   +created_at: ?PlankDate,
   +creator: ?{ +[string]: string },
   +description: ?string,
-  +id: ?string,
   +image: ImageType,
   +name: ?string,
   +url: ?PlankURI,

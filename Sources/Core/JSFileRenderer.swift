@@ -8,84 +8,30 @@
 
 import Foundation
 
-protocol JSFileRenderer {
-    var rootSchema: SchemaObjectRoot { get }
-    var params: GenerationParameters { get }
-
-    func renderRoots() -> [JSIR.Root]
-}
+protocol JSFileRenderer: FileRenderer {}
 
 extension JSFileRenderer {
-
-    var className: String {
-        return self.rootSchema.className(with: self.params)
-    }
-
-    var typeName: String {
-        return self.rootSchema.typeName(with: self.params)
-    }
-
-    var parentDescriptor: Schema? {
-        return self.rootSchema.extends.flatMap { $0.force() }
-    }
-
-    var properties: [(Parameter, SchemaObjectProperty)] {
-        return self.rootSchema.properties.map { $0 }.sorted(by: { (obj1, obj2) -> Bool in
-            return obj1.0 < obj2.0
-        })
-    }
-
-    var isBaseClass: Bool {
-        return rootSchema.extends == nil
-    }
-
-    func referencedClassNames(schema: Schema) -> [String] {
-        switch schema {
-        case .reference(with: let ref):
-            switch ref.force() {
-            case .some(.object(let schemaRoot)):
-                return ["\(schemaRoot.typeName(with: self.params))"]
-            default:
-                fatalError("Bad reference found in schema for class: \(self.className)")
-            }
-        case .object(let schemaRoot):
-            return [schemaRoot.className(with: self.params)]
-        case .map(valueType: .some(let valueType)):
-            return referencedClassNames(schema: valueType)
-        case .array(itemType: .some(let itemType)), .set(itemType: .some(let itemType)):
-            return referencedClassNames(schema: itemType)
-        case .oneOf(types: let itemTypes):
-            return itemTypes.flatMap(referencedClassNames)
-        default:
-            return []
-        }
-    }
-
-    func renderReferencedClasses() -> Set<String> {
-        return Set(rootSchema.properties.values.map { $0.schema }.flatMap(referencedClassNames))
-    }
-
-    func flowTypeName(_ param: String, _ schema: Schema) -> String {
-        switch schema {
+    func typeFromSchema(_ param: String, _ schema: SchemaObjectProperty) -> String {
+        switch schema.schema {
         case .array(itemType: .none):
             return "Array<*>"
         case .array(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
             // JS primitive types are represented as number
             return "Array<number /* \(itemType.debugDescription) */>"
         case .array(itemType: .some(let itemType)):
-            return "Array<\(flowTypeName(param, itemType))>"
+            return "Array<\(typeFromSchema(param, itemType.nonnullProperty()))>"
         case .set(itemType: .none):
             return "Array<*>"
         case .set(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
             return "Array<number /* \(itemType.debugDescription)> */>"
         case .set(itemType: .some(let itemType)):
-            return "Array<\(flowTypeName(param, itemType))>"
+            return "Array<\(typeFromSchema(param, itemType.nonnullProperty()))>"
         case .map(valueType: .none):
             return "{}"
         case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
             return "{ +[string]: number } /* \(valueType.debugDescription) */"
         case .map(valueType: .some(let valueType)):
-            return "{ +[string]: \(flowTypeName(param, valueType)) }"
+            return "{ +[string]: \(typeFromSchema(param, valueType.nonnullProperty())) }"
         case .string(format: .none),
              .string(format: .some(.email)),
              .string(format: .some(.hostname)),
@@ -109,7 +55,7 @@ extension JSFileRenderer {
         case .reference(with: let ref):
             switch ref.force() {
             case .some(.object(let schemaRoot)):
-                return flowTypeName(param, .object(schemaRoot))
+                return typeFromSchema(param, (.object(schemaRoot) as Schema).nonnullProperty())
             default:
                 fatalError("Bad reference found in schema for class: \(className)")
             }

@@ -37,11 +37,6 @@ extension String {
     func objcLiteral() -> String {
         return "@\"\(self)\""
     }
-
-    func indent() -> String {
-        // We indent with tabs and in a post process the tabs are changed to a specific number of spaces
-        return "\t"  + self
-    }
 }
 
 extension Sequence {
@@ -282,7 +277,7 @@ public struct ObjCIR {
         }
     }
 
-    enum Root {
+    enum Root: RootRenderer {
         case structDecl(name: String, fields: [String])
         case imports(classNames: Set<String>, myName: String, parentName: String?)
         case category(className: String, categoryName: String?, methods: [ObjCIR.Method],
@@ -311,7 +306,8 @@ public struct ObjCIR {
                     "#import <Foundation/Foundation.h>",
                     parentName.map(ObjCIR.fileImportStmt) ?? "",
                     "#import \"\(ObjCRuntimeHeaderFile().fileName)\""
-                    ].filter { $0 != "" }  + (["\(myName)Builder"] + classNames).sorted().map { "@class \($0);" }
+                ].filter { $0 != "" }  + (["\(myName)Builder"] + classNames)
+                    .sorted().map { "@class \($0.trimmingCharacters(in: .whitespaces));" }
             case .classDecl(let className, let extends, let methods, let properties, let protocols):
                 let protocolList = protocols.keys.sorted().joined(separator: ", ")
                 let protocolDeclarations = protocols.count > 0 ? "<\(protocolList)>" : ""
@@ -363,7 +359,11 @@ public struct ObjCIR {
                 // skip macro in impl
                 return []
             case .imports(let classNames, let myName, _):
-                return [classNames.union(Set([myName])).sorted().map(ObjCIR.fileImportStmt).joined(separator: "\n")]
+                return [classNames.union(Set([myName]))
+                    .sorted()
+                    .map { $0.trimmingCharacters(in: .whitespaces) }
+                    .map(ObjCIR.fileImportStmt)
+                    .joined(separator: "\n")]
             case .classDecl(name: let className, extends: _, methods: let methods, properties: _, protocols: let protocols):
                 return [
                     "@implementation \(className)",
