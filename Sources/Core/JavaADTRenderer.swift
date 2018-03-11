@@ -48,7 +48,7 @@ extension JavaModelRenderer {
         let enumOptions = schemas.enumerated()
             .map { (typeFromSchema("", $0.element.schema.unknownNullabilityProperty())
                 .split(separator: " ")
-                .filter { !$0.hasPrefix("@") }
+                .filter { !String($0).hasPrefix("@") }
                 .map { $0.trimmingCharacters(in: .whitespaces ) }
                 .map { $0.replacingOccurrences(of: "<", with: "") }
                 .map { $0.replacingOccurrences(of: ">", with: "") }
