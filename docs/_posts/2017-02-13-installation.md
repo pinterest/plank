@@ -48,17 +48,8 @@ Generate a schema file (`user.json`) using Plank.
 User.h User.m
 </code></pre>
 
-There are a couple of options that can be specified with your invocation of
-plank.
-
-| Option | Description |
-|---|---|
-| `output_dir` | Specifies the directory where Plank will write generated files |
-| `objc_class_prefix` | Specifies a prefix to append to the beginning of all classes (i.e. `PIN` for `PINUser`) |
-| `print_deps` | Displays schema dependencies for any schemas passed as arguments and then exits (i.e. for `pin.json` return `user.json`, `board.json`, and `image.json` separated by colons) |
-| `no_recursive` | Only generates files passed in on the commandline (i.e. for `pin.json` only generate `Pin.m` and `Pin.h`) |
-| `only_runtime` | Only generates runtime files and exits |
-| `help` | Displays usage documentation |
+There are a number of options that can be specified with your invocation of
+plank. The [command line reference](/plank/docs/getting-started/command-line-reference.html) describes the general and language specific options available.
 
 ## Next Steps
 
