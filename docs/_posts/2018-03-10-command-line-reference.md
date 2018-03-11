@@ -13,7 +13,7 @@ plank [options] file1 file2 ...
 
 | Option | Description |
 |---|---|
-| `lang` | Comma separated list of target language(s) for generating code. Values supported: "objc", "flow", "java". Default: "objc" |
+| `lang` | Comma separated list of target language(s) for generating code. Values supported: `objc`, `flow`, `java`. Default: `objc` |
 | `output_dir` | Specifies the directory where Plank will write generated files |
 | `print_deps` | Displays schema dependencies for any schemas passed as arguments and then exits (i.e. for `pin.json` return `user.json`, `board.json`, and `image.json` separated by colons) |
 | `indent` | Define a custom indentation width. Default "4" for Objective-C, Java and "2" for Flow |
@@ -33,4 +33,4 @@ plank [options] file1 file2 ...
 
 | Option | Description |
 |---|---|
-| `java_package_name` | The package name to associate with generated Java sources |
+| `java_package_name` | The package name to associate with generated Java sources. Example "--java_package_name=com.pinterest.models" |
