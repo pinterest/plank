@@ -9,6 +9,7 @@
 package com.pinterest.models;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import com.google.auto.value.AutoValue;
@@ -59,10 +60,10 @@ public abstract class Pin {
     public abstract @SerializedName("board") @Nullable Board board();
     public abstract @SerializedName("color") @Nullable String color();
     public abstract @SerializedName("counts") @Nullable Map<String, Integer> counts();
-    public abstract @SerializedName("created_at") Date createdAt();
-    public abstract @SerializedName("creator") Map<String, User> creator();
+    public abstract @SerializedName("created_at") @NonNull Date createdAt();
+    public abstract @SerializedName("creator") @NonNull Map<String, User> creator();
     public abstract @SerializedName("description") @Nullable String descriptionText();
-    public abstract @SerializedName("id") String identifier();
+    public abstract @SerializedName("id") @NonNull String identifier();
     public abstract @SerializedName("image") @Nullable Image image();
     public abstract @SerializedName("in_stock") @Nullable @PinInStock int inStock();
     public abstract @SerializedName("link") @Nullable String link();
@@ -87,10 +88,10 @@ public abstract class Pin {
         public abstract Builder setBoard(@Nullable Board value);
         public abstract Builder setColor(@Nullable String value);
         public abstract Builder setCounts(@Nullable Map<String, Integer> value);
-        public abstract Builder setCreatedAt(Date value);
-        public abstract Builder setCreator(Map<String, User> value);
+        public abstract Builder setCreatedAt(@NonNull Date value);
+        public abstract Builder setCreator(@NonNull Map<String, User> value);
         public abstract Builder setDescriptionText(@Nullable String value);
-        public abstract Builder setIdentifier(String value);
+        public abstract Builder setIdentifier(@NonNull String value);
         public abstract Builder setImage(@Nullable Image value);
         public abstract Builder setInStock(@Nullable @PinInStock int value);
         public abstract Builder setLink(@Nullable String value);

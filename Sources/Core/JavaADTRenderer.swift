@@ -46,7 +46,15 @@ extension JavaModelRenderer {
             .map { JavaIR.Property(modifiers: [.private], type: $0.0, name: "value\($0.1)") }
 
         let enumOptions = schemas.enumerated()
-            .map { (typeFromSchema("", $0.element.schema.nonnullProperty()), $0.offset) }
+            .map { (typeFromSchema("", $0.element.schema.unknownNullabilityProperty())
+                .split(separator: " ")
+                .filter { !$0.hasPrefix("@") }
+                .map { $0.trimmingCharacters(in: .whitespaces ) }
+                .map { $0.replacingOccurrences(of: "<", with: "") }
+                .map { $0.replacingOccurrences(of: ">", with: "") }
+                .map { $0.replacingOccurrences(of: ",", with: "") }
+                .filter { $0 != "" }
+                .joined(separator: "_"), $0.offset) }
             .map { EnumValue<Int>(defaultValue: $0.1, description: $0.0) }
 
         let internalStorageEnum = JavaIR.Enum(name: "InternalStorage", values: .integer(enumOptions))

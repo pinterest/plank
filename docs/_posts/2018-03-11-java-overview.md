@@ -177,6 +177,12 @@ We will be utilizing [AutoValue Gson](https://github.com/rharter/auto-value-gson
 
 ## Implementation Details
 
+### Nullability
+
+For properties that are not required (i.e. nullable), we will annotate them with [`@Nullable`](https://developer.android.com/reference/android/support/annotation/Nullable.html).
+
+Properties that are required, we will annotate them with [`@NonNull`](https://developer.android.com/reference/android/support/annotation/NonNull.html). 
+
 ### Enums
 
 Enums are classes in Java. Using Enums over [`@IntDef`](https://developer.android.com/reference/android/support/annotation/IntDef.html) adds about 13x more memory as if you would have used [`@IntDef`](https://developer.android.com/reference/android/support/annotation/IntDef.html).
@@ -185,6 +191,5 @@ For similar reasons, we will be utilizing [@StringDef](https://developer.android
 ) for String enumerations.
 
 For more in-depth information, watch this [video](https://www.youtube.com/watch?v=Hzs6OBcvNQE) by Android Developers.
-
 
 

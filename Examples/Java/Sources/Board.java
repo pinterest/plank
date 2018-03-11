@@ -9,6 +9,7 @@
 package com.pinterest.models;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import com.google.auto.value.AutoValue;
@@ -32,7 +33,7 @@ public abstract class Board {
     public abstract @SerializedName("created_at") @Nullable Date createdAt();
     public abstract @SerializedName("creator") @Nullable Map<String, String> creator();
     public abstract @SerializedName("description") @Nullable String descriptionText();
-    public abstract @SerializedName("image") Image image();
+    public abstract @SerializedName("image") @NonNull Image image();
     public abstract @SerializedName("name") @Nullable String name();
     public abstract @SerializedName("url") @Nullable String url();
     public static Builder builder() {
@@ -52,7 +53,7 @@ public abstract class Board {
         public abstract Builder setCreatedAt(@Nullable Date value);
         public abstract Builder setCreator(@Nullable Map<String, String> value);
         public abstract Builder setDescriptionText(@Nullable String value);
-        public abstract Builder setImage(Image value);
+        public abstract Builder setImage(@NonNull Image value);
         public abstract Builder setName(@Nullable String value);
         public abstract Builder setUrl(@Nullable String value);
         public abstract Board build();

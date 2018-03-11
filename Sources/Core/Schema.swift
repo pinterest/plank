@@ -124,6 +124,10 @@ extension Schema {
     func nullableProperty() -> SchemaObjectProperty {
         return SchemaObjectProperty(schema: self, nullability: .nullable)
     }
+
+    func unknownNullabilityProperty() -> SchemaObjectProperty {
+        return SchemaObjectProperty(schema: self, nullability: nil)
+    }
 }
 
 public struct SchemaObjectRoot: Equatable {

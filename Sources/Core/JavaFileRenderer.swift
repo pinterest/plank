@@ -43,7 +43,7 @@ extension JavaFileRenderer {
     func typeFromSchema(_ param: String, _ schema: SchemaObjectProperty) -> String {
         switch schema.nullability {
         case .some(.nonnull):
-            return unwrappedTypeFromSchema(param, schema.schema)
+            return "@NonNull \(unwrappedTypeFromSchema(param, schema.schema))"
         case .some(.nullable), .none:
             return "@Nullable \(unwrappedTypeFromSchema(param, schema.schema))"
         }
@@ -53,15 +53,15 @@ extension JavaFileRenderer {
         case .array(itemType: .none):
             return "List<Object>"
         case .array(itemType: .some(let itemType)):
-            return "List<\(typeFromSchema(param, itemType.nonnullProperty()))>"
+            return "List<\(unwrappedTypeFromSchema(param, itemType))>"
         case .set(itemType: .none):
             return "Set<Object>"
         case .set(itemType: .some(let itemType)):
-            return "Set<\(typeFromSchema(param, itemType.nonnullProperty()))>"
+            return "Set<\(unwrappedTypeFromSchema(param, itemType))>"
         case .map(valueType: .none):
             return "Map<String, Object>"
         case .map(valueType: .some(let valueType)):
-            return "Map<String, \(typeFromSchema(param, valueType.nonnullProperty()))>"
+            return "Map<String, \(unwrappedTypeFromSchema(param, valueType))>"
         case .string(format: .none),
              .string(format: .some(.email)),
              .string(format: .some(.hostname)),
@@ -90,7 +90,7 @@ extension JavaFileRenderer {
         case .reference(with: let ref):
             switch ref.force() {
             case .some(.object(let schemaRoot)):
-                return typeFromSchema(param, (.object(schemaRoot) as Schema).nonnullProperty())
+                return unwrappedTypeFromSchema(param, (.object(schemaRoot) as Schema))
             default:
                 fatalError("Bad reference found in schema for class: \(className)")
             }

@@ -9,6 +9,7 @@
 package com.pinterest.models;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import com.google.auto.value.AutoValue;
@@ -38,9 +39,9 @@ public final class EverythingMapPolymorphicValues<R> {
     public static final int IMAGE = 2;
     public static final int PIN = 3;
     public static final int EVERYTHING = 4;
-    public static final int LIST<OBJECT> = 5;
-    public static final int MAP<STRING, OBJECT> = 6;
-    @IntDef({USER, BOARD, IMAGE, PIN, EVERYTHING, LIST<OBJECT>, MAP<STRING, OBJECT>})
+    public static final int LISTOBJECT = 5;
+    public static final int MAPSTRING_OBJECT = 6;
+    @IntDef({USER, BOARD, IMAGE, PIN, EVERYTHING, LISTOBJECT, MAPSTRING_OBJECT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface InternalStorage {}
     private @Nullable User value0;
