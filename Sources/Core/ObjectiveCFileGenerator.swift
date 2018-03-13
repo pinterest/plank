@@ -101,18 +101,9 @@ struct ObjCRuntimeFile {
             ),
             // TODO Add another root for constant variables instead of using Macro
             ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
-            ObjCIR.Root.macro("static NSString *const kPlankDateValueTransformerKey = @\"kPlankDateValueTransformerKey\";"),
-            ObjCIR.Root.macro("static NSString *const kPlankDidInitializeNotification = @\"kPlankDidInitializeNotification\";"),
+            ObjCIR.Root.macro("static NSValueTransformerName const kPlankDateValueTransformerKey = @\"kPlankDateValueTransformerKey\";"),
+            ObjCIR.Root.macro("static NSNotificationName const kPlankDidInitializeNotification = @\"kPlankDidInitializeNotification\";"),
             ObjCIR.Root.macro("static NSString *const kPlankInitTypeKey = @\"kPlankInitTypeKey\";"),
-            ObjCIR.Root.function(
-                ObjCIR.method("id _Nullable valueOrNil(NSDictionary *dict, NSString *key)") {[
-                    "id value = dict[key];",
-                    ObjCIR.ifStmt("value == nil || value == (id)kCFNull") {
-                        ["return nil;"]
-                    },
-                    "return value;"
-                    ]}
-            ),
             ObjCIR.Root.function(
                 ObjCIR.method("NSString *debugDescriptionForFields(NSArray *descriptionFields)") {[
                     "NSMutableString *stringBuf = [NSMutableString string];",

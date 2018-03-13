@@ -28,8 +28,6 @@ static NSString *const kPlankDidInitializeNotification = @"kPlankDidInitializeNo
 
 static NSString *const kPlankInitTypeKey = @"kPlankInitTypeKey";
 
-id _Nullable valueOrNil(NSDictionary *dict, NSString *key);
-
 NSString *debugDescriptionForFields(NSArray *descriptionFields);
 
 NSUInteger PINIntegerArrayHash(const NSUInteger *subhashes, NSUInteger count);

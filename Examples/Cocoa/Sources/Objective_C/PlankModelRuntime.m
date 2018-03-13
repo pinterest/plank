@@ -10,14 +10,6 @@
 
 #import "PlankModelRuntime.h"
 
-id _Nullable valueOrNil(NSDictionary *dict, NSString *key)
-{
-    id value = dict[key];
-    if (value == nil || value == (id)kCFNull) {
-        return nil;
-    }
-    return value;
-}
 NSString *debugDescriptionForFields(NSArray *descriptionFields)
 {
     NSMutableString *stringBuf = [NSMutableString string];
