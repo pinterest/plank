@@ -22,9 +22,9 @@ typedef NS_OPTIONS(NSUInteger, PlankModelInitType) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString *const kPlankDateValueTransformerKey = @"kPlankDateValueTransformerKey";
+static NSValueTransformerName const kPlankDateValueTransformerKey = @"kPlankDateValueTransformerKey";
 
-static NSString *const kPlankDidInitializeNotification = @"kPlankDidInitializeNotification";
+static NSNotificationName const kPlankDidInitializeNotification = @"kPlankDidInitializeNotification";
 
 static NSString *const kPlankInitTypeKey = @"kPlankInitTypeKey";
 
