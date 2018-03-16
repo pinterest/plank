@@ -34,16 +34,17 @@ interface EverythingMapPolymorphicValuesMatcher<R> {
 }
 
 public final class EverythingMapPolymorphicValues<R> {
-    public static final int USER = 0;
-    public static final int BOARD = 1;
-    public static final int IMAGE = 2;
-    public static final int PIN = 3;
-    public static final int EVERYTHING = 4;
-    public static final int LISTOBJECT = 5;
-    public static final int MAPSTRING_OBJECT = 6;
-    @IntDef({USER, BOARD, IMAGE, PIN, EVERYTHING, LISTOBJECT, MAPSTRING_OBJECT})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface InternalStorage {}
+    @IntDef({InternalStorage.USER, InternalStorage.BOARD, InternalStorage.IMAGE, InternalStorage.PIN, InternalStorage.EVERYTHING, InternalStorage.LISTOBJECT, InternalStorage.MAPSTRING_OBJECT})
+    public @interface InternalStorage {
+        int USER = 0;
+        int BOARD = 1;
+        int IMAGE = 2;
+        int PIN = 3;
+        int EVERYTHING = 4;
+        int LISTOBJECT = 5;
+        int MAPSTRING_OBJECT = 6;
+    }
     private @Nullable User value0;
     private @Nullable Board value1;
     private @Nullable Image value2;
@@ -76,20 +77,21 @@ interface EverythingPolymorphicPropMatcher<R> {
 }
 
 public final class EverythingPolymorphicProp<R> {
-    public static final int USER = 0;
-    public static final int BOARD = 1;
-    public static final int IMAGE = 2;
-    public static final int PIN = 3;
-    public static final int EVERYTHING = 4;
-    public static final int STRING = 5;
-    public static final int BOOLEAN = 6;
-    public static final int INTEGER = 7;
-    public static final int DOUBLE = 8;
-    public static final int DATE = 9;
-    public static final int STRING = 10;
-    @IntDef({USER, BOARD, IMAGE, PIN, EVERYTHING, STRING, BOOLEAN, INTEGER, DOUBLE, DATE, STRING})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface InternalStorage {}
+    @IntDef({InternalStorage.USER, InternalStorage.BOARD, InternalStorage.IMAGE, InternalStorage.PIN, InternalStorage.EVERYTHING, InternalStorage.STRING, InternalStorage.BOOLEAN, InternalStorage.INTEGER, InternalStorage.DOUBLE, InternalStorage.DATE, InternalStorage.STRING})
+    public @interface InternalStorage {
+        int USER = 0;
+        int BOARD = 1;
+        int IMAGE = 2;
+        int PIN = 3;
+        int EVERYTHING = 4;
+        int STRING = 5;
+        int BOOLEAN = 6;
+        int INTEGER = 7;
+        int DOUBLE = 8;
+        int DATE = 9;
+        int STRING = 10;
+    }
     private @Nullable User value0;
     private @Nullable Board value1;
     private @Nullable Image value2;
@@ -113,18 +115,20 @@ public final class EverythingPolymorphicProp<R> {
 
 @AutoValue
 public abstract class Everything {
-    public static final int INT_CASE_1 = 1;
-    public static final int INT_CASE_2 = 2;
-    public static final int INT_CASE_3 = 3;
-    @IntDef({INT_CASE_1, INT_CASE_2, INT_CASE_3})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface EverythingIntEnum {}
-    public static final String CASE1 = "case1";
-    public static final String CASE2 = "case2";
-    public static final String CASE3 = "case3";
-    @StringDef({CASE1, CASE2, CASE3})
+    @IntDef({EverythingIntEnum.INT_CASE_1, EverythingIntEnum.INT_CASE_2, EverythingIntEnum.INT_CASE_3})
+    public @interface EverythingIntEnum {
+        int INT_CASE_1 = 1;
+        int INT_CASE_2 = 2;
+        int INT_CASE_3 = 3;
+    }
     @Retention(RetentionPolicy.SOURCE)
-    public @interface EverythingStringEnum {}
+    @StringDef({EverythingStringEnum.CASE1, EverythingStringEnum.CASE2, EverythingStringEnum.CASE3})
+    public @interface EverythingStringEnum {
+        String CASE1 = "case1";
+        String CASE2 = "case2";
+        String CASE3 = "case3";
+    }
 
     public abstract @SerializedName("array_prop") @Nullable List<Object> arrayProp();
     public abstract @SerializedName("boolean_prop") @Nullable Boolean booleanProp();

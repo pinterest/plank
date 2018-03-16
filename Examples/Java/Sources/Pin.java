@@ -29,11 +29,12 @@ interface PinAttributionObjectsMatcher<R> {
 }
 
 public final class PinAttributionObjects<R> {
-    public static final int BOARD = 0;
-    public static final int USER = 1;
-    @IntDef({BOARD, USER})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface InternalStorage {}
+    @IntDef({InternalStorage.BOARD, InternalStorage.USER})
+    public @interface InternalStorage {
+        int BOARD = 0;
+        int USER = 1;
+    }
     private @Nullable Board value0;
     private @Nullable User value1;
     private @InternalStorage int internalStorage;
@@ -48,12 +49,13 @@ public final class PinAttributionObjects<R> {
 
 @AutoValue
 public abstract class Pin {
-    public static final int UNKNOWN = -1;
-    public static final int OUT_OF_STOCK = 0;
-    public static final int IN_STOCK = 1;
-    @IntDef({UNKNOWN, OUT_OF_STOCK, IN_STOCK})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface PinInStock {}
+    @IntDef({PinInStock.UNKNOWN, PinInStock.OUT_OF_STOCK, PinInStock.IN_STOCK})
+    public @interface PinInStock {
+        int UNKNOWN = -1;
+        int OUT_OF_STOCK = 0;
+        int IN_STOCK = 1;
+    }
 
     public abstract @SerializedName("attribution") @Nullable Map<String, String> attribution();
     public abstract @SerializedName("attribution_objects") @Nullable List<PinAttributionObjects> attributionObjects();

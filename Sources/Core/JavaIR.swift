@@ -71,27 +71,31 @@ public struct JavaIR {
             case let .integer(values):
                 let names = values
                     .map { ($0.description.uppercased(), $0.defaultValue) }
-                    .map { "public static final int \($0.0) = \($0.1);" }
+                    .map { "int \($0.0) = \($0.1);" }
                 let defAnnotationNames = values
-                    .map { $0.description.uppercased() }
+                    .map { "\(name).\($0.description.uppercased())" }
                     .joined(separator: ", ")
-                return names + [
-                    "@IntDef({\(defAnnotationNames)})",
+                return [
                     "@Retention(RetentionPolicy.SOURCE)",
-                    "public @interface \(name) {}"
+                    "@IntDef({\(defAnnotationNames)})",
+                    "public @interface \(name) {",
+                    -->names,
+                    "}"
                 ]
             case let .string(values, defaultValue: _):
                 // TODO: Use default value in builder method to specify what our default value should be
                 let names = values
                     .map { ($0.description.uppercased(), $0.defaultValue) }
-                    .map { "public static final String \($0.0) = \"\($0.1)\";" }
+                    .map { "String \($0.0) = \"\($0.1)\";" }
                 let defAnnotationNames = values
-                    .map { $0.description.uppercased() }
+                    .map { "\(name).\($0.description.uppercased())" }
                     .joined(separator: ", ")
-                return names + [
-                    "@StringDef({\(defAnnotationNames)})",
+                return [
                     "@Retention(RetentionPolicy.SOURCE)",
-                    "public @interface \(name) {}"
+                    "@StringDef({\(defAnnotationNames)})",
+                    "public @interface \(name) {",
+                    -->names,
+                    "}"
                 ]
             }
         }

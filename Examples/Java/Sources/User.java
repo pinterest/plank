@@ -25,12 +25,13 @@ import java.util.Set;
 
 @AutoValue
 public abstract class User {
-    public static final String UNSET = "unset";
-    public static final String IMMEDIATE = "immediate";
-    public static final String DAILY = "daily";
-    @StringDef({UNSET, IMMEDIATE, DAILY})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface UserEmailFrequency {}
+    @StringDef({UserEmailFrequency.UNSET, UserEmailFrequency.IMMEDIATE, UserEmailFrequency.DAILY})
+    public @interface UserEmailFrequency {
+        String UNSET = "unset";
+        String IMMEDIATE = "immediate";
+        String DAILY = "daily";
+    }
 
     public abstract @SerializedName("bio") @Nullable String bio();
     public abstract @SerializedName("counts") @Nullable Map<String, Integer> counts();
