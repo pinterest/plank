@@ -136,7 +136,7 @@ public struct JavaIR {
             let extendsStmt = extends.map { "extends \($0) " } ?? ""
             return [
                 "\(modifiers.render()) interface \(name) \(extendsStmt){",
-                -->methods.flatMap { "\($0.signature);" },
+                -->methods.compactMap { "\($0.signature);" },
                 "}"
             ]
         }

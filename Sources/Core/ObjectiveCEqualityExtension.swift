@@ -97,10 +97,22 @@ extension ObjCFileRenderer {
             return [pointerEqStmt, deepEqStmt].filter { $0 != "" }.joined(separator: " || ")
         }
 
+        func parentName(_ schema: Schema?) -> String? {
+            switch schema {
+            case .some(.object(let root)):
+                return root.className(with: GenerationParameters())
+            case .some(.reference(with: let ref)):
+                return parentName(ref.force())
+            default:
+                return nil
+            }
+        }
+
+        let superInvocation = parentName(self.parentDescriptor).map { ["[super isEqualTo\($0):anObject]"] } ?? []
         return ObjCIR.method("- (BOOL)isEqualTo\(self.rootSchema.name.snakeCaseToCamelCase()):(\(self.className) *)anObject") {
             [
                 "return (",
-                -->[(["anObject != nil"] + propReturnStmts)
+                -->[(["anObject != nil"] + superInvocation + propReturnStmts)
                     .map { "(\($0))" }.joined(separator: " &&\n")],
                 ");"
             ]
