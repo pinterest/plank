@@ -229,6 +229,7 @@ struct BoardDirtyProperties {
 {
     return (
         (anObject != nil) &&
+        ([super isEqualToModel:anObject]) &&
         (_contributors == anObject.contributors || [_contributors isEqualToSet:anObject.contributors]) &&
         (_counts == anObject.counts || [_counts isEqualToDictionary:anObject.counts]) &&
         (_createdAt == anObject.createdAt || [_createdAt isEqualToDate:anObject.createdAt]) &&
