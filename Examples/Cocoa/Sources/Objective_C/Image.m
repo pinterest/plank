@@ -171,7 +171,7 @@ struct ImageDirtyProperties {
         [dict setObject:@(_height) forKey: @"height"];
     }
     if (_imageDirtyProperties.ImageDirtyPropertyUrl) {
-        if (_url != (id)kCFNull) {
+        if (_url != nil) {
             [dict setObject:[_url absoluteString] forKey:@"url"];
         } else {
             [dict setObject:[NSNull null] forKey:@"url"];

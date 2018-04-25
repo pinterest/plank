@@ -17,7 +17,7 @@ extension ObjCModelRenderer {
             ObjCIR.ifStmt("_"+"\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {[
                 schemaObj.schema.isObjCPrimitiveType ?
                     self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary) :
-                ObjCIR.ifElseStmt("_\(param.snakeCaseToPropertyName()) != (id)kCFNull") {[
+                ObjCIR.ifElseStmt("_\(param.snakeCaseToPropertyName()) != nil") {[
                     self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary)
                 ]} {[
                     "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
