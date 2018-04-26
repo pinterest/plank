@@ -69,6 +69,15 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
             """)
     }
 
+    func testPropWithNilValue() {
+        let everything = Everything(modelDictionary: JSONDict())
+        let builder = EverythingBuilder(model: everything)
+        builder.stringProp = nil
+        let modified_everything = builder.build()
+        let dictRepresentation = modified_everything.dictionaryObjectRepresentation()
+        XCTAssert(dictRepresentation == ["string_prop": NSNull() ])
+    }
+
     func testStringProperty() {
         let dict: JSONDict = [
             "string_prop": "some string"

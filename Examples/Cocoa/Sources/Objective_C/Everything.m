@@ -1374,7 +1374,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:29];
     if (_everythingDirtyProperties.EverythingDirtyPropertyArrayProp) {
-        if (_arrayProp != (id)kCFNull) {
+        if (_arrayProp != nil) {
             [dict setObject:_arrayProp forKey:@"array_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"array_prop"];
@@ -1384,7 +1384,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [dict setObject:@(_booleanProp) forKey: @"boolean_prop"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyDateProp) {
-        if (_dateProp != (id)kCFNull) {
+        if (_dateProp != nil) {
             NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
             if ([[valueTransformer class] allowsReverseTransformation]) {
                 [dict setObject:[valueTransformer reverseTransformedValue:_dateProp] forKey:@"date_prop"];
@@ -1402,14 +1402,14 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [dict setObject:@(_intProp) forKey: @"int_prop"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues) {
-        if (_listPolymorphicValues != (id)kCFNull) {
+        if (_listPolymorphicValues != nil) {
             [dict setObject:_listPolymorphicValues forKey:@"list_polymorphic_values"];
         } else {
             [dict setObject:[NSNull null] forKey:@"list_polymorphic_values"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues) {
-        if (_listWithListAndOtherModelValues != (id)kCFNull) {
+        if (_listWithListAndOtherModelValues != nil) {
             __auto_type items0 = _listWithListAndOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (NSArray<User *> * obj0 in items0) {
@@ -1426,7 +1426,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues) {
-        if (_listWithMapAndOtherModelValues != (id)kCFNull) {
+        if (_listWithMapAndOtherModelValues != nil) {
             __auto_type items0 = _listWithMapAndOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (NSDictionary<NSString *, User *> * obj0 in items0) {
@@ -1446,7 +1446,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues) {
-        if (_listWithObjectValues != (id)kCFNull) {
+        if (_listWithObjectValues != nil) {
             __auto_type items0 = _listWithObjectValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (NSString * obj0 in items0) {
@@ -1458,7 +1458,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListWithOtherModelValues) {
-        if (_listWithOtherModelValues != (id)kCFNull) {
+        if (_listWithOtherModelValues != nil) {
             __auto_type items0 = _listWithOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (User * obj0 in items0) {
@@ -1470,7 +1470,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyListWithPrimitiveValues) {
-        if (_listWithPrimitiveValues != (id)kCFNull) {
+        if (_listWithPrimitiveValues != nil) {
             __auto_type items0 = _listWithPrimitiveValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
@@ -1482,7 +1482,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapPolymorphicValues) {
-        if (_mapPolymorphicValues != (id)kCFNull) {
+        if (_mapPolymorphicValues != nil) {
             NSMutableDictionary *items0 = [NSMutableDictionary new];
             for (NSString *key0 in _mapPolymorphicValues) {
                 __auto_type dictValue0 = _mapPolymorphicValues[key0];
@@ -1496,14 +1496,14 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapProp) {
-        if (_mapProp != (id)kCFNull) {
+        if (_mapProp != nil) {
             [dict setObject:_mapProp forKey:@"map_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"map_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues) {
-        if (_mapWithListAndOtherModelValues != (id)kCFNull) {
+        if (_mapWithListAndOtherModelValues != nil) {
             NSMutableDictionary *items0 = [NSMutableDictionary new];
             for (NSString *key0 in _mapWithListAndOtherModelValues) {
                 __auto_type dictValue0 = _mapWithListAndOtherModelValues[key0];
@@ -1522,7 +1522,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues) {
-        if (_mapWithMapAndOtherModelValues != (id)kCFNull) {
+        if (_mapWithMapAndOtherModelValues != nil) {
             NSMutableDictionary *items0 = [NSMutableDictionary new];
             for (NSString *key0 in _mapWithMapAndOtherModelValues) {
                 __auto_type dictValue0 = _mapWithMapAndOtherModelValues[key0];
@@ -1536,14 +1536,14 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues) {
-        if (_mapWithObjectValues != (id)kCFNull) {
+        if (_mapWithObjectValues != nil) {
             [dict setObject:_mapWithObjectValues forKey:@"map_with_object_values"];
         } else {
             [dict setObject:[NSNull null] forKey:@"map_with_object_values"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues) {
-        if (_mapWithOtherModelValues != (id)kCFNull) {
+        if (_mapWithOtherModelValues != nil) {
             NSMutableDictionary *items0 = [NSMutableDictionary new];
             for (NSString *key0 in _mapWithOtherModelValues) {
                 __auto_type dictValue0 = _mapWithOtherModelValues[key0];
@@ -1557,7 +1557,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues) {
-        if (_mapWithPrimitiveValues != (id)kCFNull) {
+        if (_mapWithPrimitiveValues != nil) {
             [dict setObject:_mapWithPrimitiveValues forKey:@"map_with_primitive_values"];
         } else {
             [dict setObject:[NSNull null] forKey:@"map_with_primitive_values"];
@@ -1567,28 +1567,28 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [dict setObject:@(_numberProp) forKey: @"number_prop"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyOtherModelProp) {
-        if (_otherModelProp != (id)kCFNull) {
+        if (_otherModelProp != nil) {
             [dict setObject:[_otherModelProp dictionaryObjectRepresentation] forKey:@"other_model_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"other_model_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp) {
-        if (_polymorphicProp != (id)kCFNull) {
+        if (_polymorphicProp != nil) {
             [dict setObject:[_polymorphicProp dictionaryObjectRepresentation] forKey:@"polymorphic_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"polymorphic_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetProp) {
-        if (_setProp != (id)kCFNull) {
+        if (_setProp != nil) {
             [dict setObject:_setProp forKey:@"set_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"set_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithOtherModelValues) {
-        if (_setPropWithOtherModelValues != (id)kCFNull) {
+        if (_setPropWithOtherModelValues != nil) {
             __auto_type items0 = _setPropWithOtherModelValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (User * obj0 in items0) {
@@ -1600,7 +1600,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithPrimitiveValues) {
-        if (_setPropWithPrimitiveValues != (id)kCFNull) {
+        if (_setPropWithPrimitiveValues != nil) {
             __auto_type items0 = _setPropWithPrimitiveValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (id obj0 in items0) {
@@ -1612,7 +1612,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues) {
-        if (_setPropWithValues != (id)kCFNull) {
+        if (_setPropWithValues != nil) {
             __auto_type items0 = _setPropWithValues;
             NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items0.count];
             for (NSString * obj0 in items0) {
@@ -1627,21 +1627,21 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [dict setObject:EverythingStringEnumToString(_stringEnum) forKey:@"string_enum"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyStringProp) {
-        if (_stringProp != (id)kCFNull) {
+        if (_stringProp != nil) {
             [dict setObject:_stringProp forKey:@"string_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"string_prop"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyType) {
-        if (_type != (id)kCFNull) {
+        if (_type != nil) {
             [dict setObject:_type forKey:@"type"];
         } else {
             [dict setObject:[NSNull null] forKey:@"type"];
         }
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyUriProp) {
-        if (_uriProp != (id)kCFNull) {
+        if (_uriProp != nil) {
             [dict setObject:[_uriProp absoluteString] forKey:@"uri_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"uri_prop"];

@@ -136,7 +136,7 @@ struct ModelDirtyProperties {
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:1];
     if (_modelDirtyProperties.ModelDirtyPropertyIdentifier) {
-        if (_identifier != (id)kCFNull) {
+        if (_identifier != nil) {
             [dict setObject:_identifier forKey:@"id"];
         } else {
             [dict setObject:[NSNull null] forKey:@"id"];
