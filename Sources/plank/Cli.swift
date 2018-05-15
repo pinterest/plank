@@ -19,6 +19,7 @@ enum FlagOptions: String {
     case javaPackageName = "java_package_name"
     case printDeps = "print_deps"
     case noRecursive = "no_recursive"
+    case noRuntime = "no_runtime"
     case onlyRuntime = "only_runtime"
     case indent = "indent"
     case lang = "lang"
@@ -31,6 +32,7 @@ enum FlagOptions: String {
         case .indent: return true
         case .printDeps: return false
         case .noRecursive: return false
+        case .noRuntime: return false
         case .onlyRuntime: return false
         case .lang: return true
         case .help: return false
@@ -45,6 +47,7 @@ extension FlagOptions: HelpCommandOutput {
             "    --\(FlagOptions.outputDirectory.rawValue) - The directory where generated code will be written",
             "    --\(FlagOptions.printDeps.rawValue) - Just print the path to the dependent schemas necessary to generate the schemas provided and exit",
             "    --\(FlagOptions.noRecursive.rawValue) - Don't generate files recursively. Only generate the one file I ask for",
+            "    --\(FlagOptions.noRuntime.rawValue) - Don't generate runtime files",
             "    --\(FlagOptions.onlyRuntime.rawValue) - Only generate runtime files and exit",
             "    --\(FlagOptions.indent.rawValue) - Define a custom indentation",
             "    --\(FlagOptions.lang.rawValue) - Comma separated list of target language(s) for generating code. Default: \"objc\"",
@@ -132,7 +135,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     // need to be lifted out of literal because https://bugs.swift.org/browse/SR-2372
     let recursive: String? = (flags[.noRecursive] == nil) ? .some("") : .none
     let classPrefix: String? = flags[.objectiveCClassPrefix]
-    let includeRuntime: String? = flags[.onlyRuntime] != nil || flags[.noRecursive] == nil ? .some("") : .none
+    let includeRuntime: String? = flags[.onlyRuntime] != nil || (flags[.noRuntime] == nil || flags[.noRecursive] != nil) ? .some("") : .none
     let indent: String? = flags[.indent]
     let packageName: String? = flags[.javaPackageName]
 
