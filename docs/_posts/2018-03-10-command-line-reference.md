@@ -19,7 +19,9 @@ plank [options] file1 file2 ...
 | `indent` | Define a custom indentation width. Default "4" for Objective-C, Java and "2" for Flow |
 | `no_recursive` | Only generates files passed in on the commandline (i.e. for `pin.json` only generate `Pin.m` and `Pin.h`) |
 | `only_runtime` | Only generates runtime files and exits |
+| `no_runtime` | Avoids generating runtime files |
 | `help` | Displays usage documentation |
+| `version` | Displays version |
 
 ## Objective-C 
 
