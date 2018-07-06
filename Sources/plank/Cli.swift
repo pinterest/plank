@@ -24,6 +24,7 @@ enum FlagOptions: String {
     case indent = "indent"
     case lang = "lang"
     case help = "help"
+    case version = "version"
 
     func needsArgument() -> Bool {
         switch self {
@@ -36,6 +37,7 @@ enum FlagOptions: String {
         case .onlyRuntime: return false
         case .lang: return true
         case .help: return false
+        case .version: return false
         case .javaPackageName: return true
         }
     }
@@ -52,6 +54,7 @@ extension FlagOptions: HelpCommandOutput {
             "    --\(FlagOptions.indent.rawValue) - Define a custom indentation",
             "    --\(FlagOptions.lang.rawValue) - Comma separated list of target language(s) for generating code. Default: \"objc\"",
             "    --\(FlagOptions.help.rawValue) - Show this text and exit",
+            "    --\(FlagOptions.version.rawValue) - Show version number and exit",
             "",
             "    Objective-C:",
             "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names",
@@ -127,6 +130,11 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     if flags[.help] != nil {
         handleHelpCommand()
         return
+    }
+    
+    if flags[.version] != nil{
+	    handleVersionCommand()
+	    return
     }
 
     let output_dir = flags[.outputDirectory] ?? ""
@@ -213,4 +221,9 @@ func handleHelpCommand() {
     ].joined(separator: "\n")
 
     print(helpDocs)
+}
+
+
+func handleVersionCommand() {
+    print("1.4.1")
 }
