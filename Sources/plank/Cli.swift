@@ -225,5 +225,5 @@ func handleHelpCommand() {
 
 
 func handleVersionCommand() {
-    print(PLANK_VERSION)
+    print(Version.current.value)
 }
