@@ -170,7 +170,7 @@ The Java output currently has external dependencies.
 The generated code will reference annotations from [AutoValue](https://github.com/google/auto/tree/master/value) to automatically create implementations of getters/setters for fields and `equals`, `hashCode` and `toString` implementations. Motivation is to use a well adopted framework that provides compile-time generation of boilerplate code which makes the generated code easier to read and maintain.
 
 ### Gson
-To support JSON deserialization, we will be utilizing the `@SerializedName` annotation in [Gson](https://github.com/google/gson) to facilitate the convertion between Plank types and JSON objects.
+To support JSON deserialization, we will be utilizing the `@SerializedName` annotation in [Gson](https://github.com/google/gson) to facilitate the conversion between Plank types and JSON objects.
 
 ### AutoValue Gson
 We will be utilizing [AutoValue Gson](https://github.com/rharter/auto-value-gson) to synthesize type adapters from the Gson and AutoValue annotations.
