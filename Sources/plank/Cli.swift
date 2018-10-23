@@ -25,6 +25,7 @@ enum FlagOptions: String {
     case lang = "lang"
     case help = "help"
     case version = "version"
+    case includeUtility = "include_utility"
 
     func needsArgument() -> Bool {
         switch self {
@@ -39,6 +40,7 @@ enum FlagOptions: String {
         case .help: return false
         case .version: return false
         case .javaPackageName: return true
+        case .includeUtility: return false
         }
     }
 }
@@ -55,6 +57,7 @@ extension FlagOptions: HelpCommandOutput {
             "    --\(FlagOptions.lang.rawValue) - Comma separated list of target language(s) for generating code. Default: \"objc\"",
             "    --\(FlagOptions.help.rawValue) - Show this text and exit",
             "    --\(FlagOptions.version.rawValue) - Show version number and exit",
+            "    --\(FlagOptions.includeUtility.rawValue) - Include utility source for the defined language",
             "",
             "    Objective-C:",
             "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names",
@@ -209,6 +212,12 @@ func handleGenerateCommand(withArguments arguments: [String]) {
                       generationParameters: generationParameters,
                       forLanguages: languages)
     }
+    
+    if flags[.includeUtility] != nil {
+        UtilitySourceIncluder(languages: languages,
+                              outputDirectory: outputDirectory,
+                              generationParameters: generationParameters).write()
+    }
 }
 
 func handleHelpCommand() {
@@ -227,3 +236,4 @@ func handleHelpCommand() {
 func handleVersionCommand() {
     print(Version.current.value)
 }
+

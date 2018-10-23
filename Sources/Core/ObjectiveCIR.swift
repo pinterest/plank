@@ -326,9 +326,20 @@ public struct ObjCIR {
                             .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                 ]
-            case .category(className: _, categoryName: _, methods: _, properties: _):
-                // skip categories in header
-                return []
+            case .category(let className, let categoryName, let methods, let properties):
+                
+                let nullability = { (prop: SchemaObjectProperty) in
+                    prop.nullability.map { "\($0), " } ?? ""
+                }
+                
+                return [
+                    "@interface \(className) (\(categoryName ?? ""))",
+                    properties.map { (param, typeName, propSchema, access) in
+                        "@property (\(nullability(propSchema))nonatomic, \(propSchema.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
+                        }.joined(separator: "\n"),
+                    methods.map { $0.signature + ";" }.joined(separator: "\n"),
+                    "@end"
+                ]
             case .function(let method):
                 return ["\(method.signature);"]
             case .enumDecl(let name, let values):
@@ -375,13 +386,13 @@ public struct ObjCIR {
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .category(className: let className, categoryName: let categoryName, methods: let methods, properties: let properties):
                 // Only render anonymous categories in the implementation
-                guard categoryName == nil else { return [] }
+                guard let categoryName = categoryName else { return [] }
                 return [
-                    "@interface \(className) ()",
+                    "@implementation \(className) (\(categoryName))",
                     properties.map { (param, typeName, prop, access) in
                         "@property (nonatomic, \(prop.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
-                    methods.map { $0.signature + ";" }.joined(separator: "\n"),
+                    methods.flatMap {$0.render()}.joined(separator: "\n"),
                     "@end"
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .function(let method):

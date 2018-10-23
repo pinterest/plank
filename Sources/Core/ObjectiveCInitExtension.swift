@@ -148,7 +148,7 @@ extension ObjCModelRenderer {
             case .boolean:
                 return ["\(propertyToAssign) = [\(rawObjectName) boolValue];"]
             case .string(format: .some(.uri)):
-                return ["\(propertyToAssign) = [NSURL URLWithString:\(rawObjectName)];"]
+                return ["\(propertyToAssign) = [NSURLComponents URLWithUnsafeString:\(rawObjectName)];"]
             case .string(format: .some(.dateTime)):
                 return ["\(propertyToAssign) = [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] transformedValue:\(rawObjectName)];"]
             case .reference(with: let ref):
