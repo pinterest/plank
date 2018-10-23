@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-set -euo pipefail
+set -eo pipefail
 
 PLANK_BIN=.build/debug/plank
 # Generate Objective-C files
