@@ -1,0 +1,17 @@
+language: generic
+osx_image: xcode10
+jobs:
+    include:
+        - stage: "test"
+          script: "make test"
+          os: osx
+        - stage: "test linux"
+          script: "make test"
+          sudo: required
+          dist: trusty
+          install:
+              - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
+          os: linux
+        - stage: "integration"
+          script: "make integration_test"
+          os: osx

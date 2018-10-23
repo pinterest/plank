@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-set -euo pipefail
+set -eo pipefail
 
 PLANK_BIN=.build/debug/plank
 # Generate Objective-C files
@@ -22,9 +22,9 @@ ROOT_DIR="${PWD}"
 
 # Build the ObjC library
 cd Examples/Cocoa
-xcrun swift package clean
-xcrun swift build
-xcrun swift test
+swift package clean
+swift build
+swift test
 cd "${ROOT_DIR}"
 
 # Verify flow types
