@@ -12,5 +12,5 @@ jobs:
     - stage: "Unit Tests"
       script:  "make test"
     - stage: "Integration Tests"
-      if: os = linux
+      if: os = osx
       script:  "make integration_test"
