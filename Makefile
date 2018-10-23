@@ -11,8 +11,7 @@ clean:
 	swift package clean
 
 lint:
-	@echo "Lint disabled for now since swiftlint breaks the build by failing to detect variables referenced within string interpolation"
-	#./Utility/lint.sh
+	./Utility/lint.sh
 
 build: lint
 	swift build -v

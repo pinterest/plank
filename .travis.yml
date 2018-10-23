@@ -1,7 +1,14 @@
 language: generic
 osx_image: xcode10
+addons:
+  homebrew:
+    packages:
+    - swiftlint 
 jobs:
     include:
+        - stage: "lint"
+          script: "make lint"
+          os: osx
         - stage: "test"
           script: "make test"
           os: osx
