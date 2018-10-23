@@ -10,8 +10,10 @@ install:
 jobs:
     include:
         - stage: "test"
+          name: "Unit Tests"
           script: "make test"
         - stage: "integration"
+          name: "Integration Tests"
           script: "make integration_test"
 
 stages:
