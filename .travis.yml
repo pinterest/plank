@@ -1,5 +1,6 @@
 language: generic
 os:
   - osx
+  - linux
 osx_image: xcode10
 script: make test
