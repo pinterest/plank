@@ -47,7 +47,7 @@ struct ObjCHeaderFile: FileGenerator {
     func renderFile() -> String {
         let output = (
                 [self.renderCommentHeader()] +
-                self.roots.compactMap { $0.renderHeader().joined(separator: "\n") }
+                self.roots.map { $0.renderHeader().joined(separator: "\n") }
             )
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }

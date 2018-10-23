@@ -190,7 +190,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     outputDirectory = URL(fileURLWithPath: outputDirectory.absoluteString, isDirectory: true)
 
     let urls = args.map { URL(string: $0)! }
-    let languages: [Languages] = flags[.lang]?.trimmingCharacters(in: .whitespaces).components(separatedBy: ",").compactMap {
+    let languages: [Languages] = flags[.lang]?.trimmingCharacters(in: .whitespaces).components(separatedBy: ",").map {
         guard let lang = Languages.init(rawValue: $0) else {
             fatalError("Invalid or unsupported language: \($0)")
         }
