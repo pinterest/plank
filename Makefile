@@ -17,7 +17,7 @@ lint:
 build: lint
 	swift build -v
 
-test: build_test_index_linux build
+test: build
 	swift test
 
 integration_test: build
