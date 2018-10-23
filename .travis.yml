@@ -1,14 +1,16 @@
 language: generic
 sudo: required
 dist: trusty
-services:
-  - docker
 os:
   - osx
   - linux
 osx_image: xcode10
 install:
       - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-script:
-  - make test
-  - make integration_test
+jobs:
+  include:
+    - stage: "Unit Tests"
+      script:  "make test"
+    - stage: "Integration Tests"
+      if: os = linux
+      script:  "make integration_test"
