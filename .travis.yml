@@ -6,9 +6,14 @@ os:
   - linux
 osx_image: xcode10
 install:
-  - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-- name: "Unit Tests"
-  script:  "make test"
-- if: (os = osx)
-  - name: "Integration Tests"
-    script:  "make integration_test"
+    - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
+jobs:
+    include:
+          script: "make test"
+        - stage: integration
+          script: "make integration_test"
+
+stages:
+    - test
+    - name: integration
+      if: os = osx
