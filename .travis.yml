@@ -11,6 +11,6 @@ jobs:
   include:
     - stage: "Unit Tests"
       script:  "make test"
-    - stage: "Integration Tests"
-      if: os = osx
-      script:  "make integration_test"
+    - if: os = osx
+      - stage: "Integration Tests"
+        script:  "make integration_test"
