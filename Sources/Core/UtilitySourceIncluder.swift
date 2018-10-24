@@ -109,14 +109,16 @@ extension UtilitySourceIncluder {
                                     return ["unsafeString = baseURL;"]
                                 }),
                                 ObjCIR.elseStmt({ () -> [String] in
-                                    return ["fragment = [unsafeString substringFromIndex:(firstFragmentRange.location+1)];"]
-                                }),
-                                ObjCIR.ifStmt("[fragment rangeOfCharacterFromSet:fragmentDefinition].location != NSNotFound", body: { () -> [String] in
                                     return [
-                                        "fragment = [fragment stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLFragmentAllowedCharacterSet];",
+                                        "fragment = [unsafeString substringFromIndex:(firstFragmentRange.location+1)];",
+                                        ObjCIR.ifStmt("[fragment rangeOfCharacterFromSet:fragmentDefinition].location != NSNotFound", body: { () -> [String] in
+                                            return [
+                                                "fragment = [fragment stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLFragmentAllowedCharacterSet];",
+                                                ]
+                                        }),
+                                        "unsafeString = [NSString stringWithFormat:@\"%@#%@\", baseURL, fragment];"
                                     ]
-                                }),
-                                "unsafeString = [NSString stringWithFormat:@\"%@#%@\", baseURL, fragment];"
+                                })
                             ]
                         },
                         "return [NSURLComponents componentsWithString:unsafeString].URL;"
