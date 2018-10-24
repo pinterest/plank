@@ -280,8 +280,8 @@ public struct ObjCIR {
     enum Root: RootRenderer {
         case structDecl(name: String, fields: [String])
         case imports(classNames: Set<String>, myName: String, parentName: String?)
-        case category(className: String, categoryName: String?, methods: [ObjCIR.Method],
-            properties: [SimpleProperty])
+        case categoryDecl(className: String, categoryName: String?, methods: [ObjCIR.Method], properties: [SimpleProperty], headerOnly: Bool)
+        case categoryImpl(className: String, categoryName: String?, methods: [ObjCIR.Method])
         case macro(String)
         case function(ObjCIR.Method)
         case classDecl(
@@ -293,6 +293,8 @@ public struct ObjCIR {
         )
         case enumDecl(name: String, values: EnumType)
         case optionSetEnum(name: String, values: [EnumValue<Int>])
+        case literalImport(name: String)
+        case forwardDeclarations(classNames: Set<String>, myName: String)
 
         func renderHeader() -> [String] {
             switch self {
@@ -301,13 +303,16 @@ public struct ObjCIR {
                 return []
             case .macro(let macro):
                 return [macro]
-            case .imports(let classNames, let myName, let parentName):
+            case .imports(classNames: _, myName: _, let parentName):
                 return [
                     "#import <Foundation/Foundation.h>",
                     parentName.map(ObjCIR.fileImportStmt) ?? "",
                     "#import \"\(ObjCRuntimeHeaderFile().fileName)\""
-                ].filter { $0 != "" }  + (["\(myName)Builder"] + classNames)
-                    .sorted().map { "@class \($0.trimmingCharacters(in: .whitespaces));" }
+                ].filter { $0 != "" }
+            case .forwardDeclarations(let classNames, let myName):
+                return (["\(myName)Builder"] + classNames)
+                    .sorted()
+                    .map { "@class \($0.trimmingCharacters(in: .whitespaces));" }
             case .classDecl(let className, let extends, let methods, let properties, let protocols):
                 let protocolList = protocols.keys.sorted().joined(separator: ", ")
                 let protocolDeclarations = protocols.count > 0 ? "<\(protocolList)>" : ""
@@ -326,7 +331,10 @@ public struct ObjCIR {
                             .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                 ]
-            case .category(let className, let categoryName, let methods, let properties):
+            case .categoryDecl(let className, let categoryName, let methods, let properties, headerOnly: _):
+                guard categoryName != nil else {
+                    return []
+                }
                 
                 let nullability = { (prop: SchemaObjectProperty) in
                     prop.nullability.map { "\($0), " } ?? ""
@@ -340,6 +348,8 @@ public struct ObjCIR {
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                 ]
+            case .categoryImpl(className: _, categoryName: _, methods: _):
+                return []
             case .function(let method):
                 return ["\(method.signature);"]
             case .enumDecl(let name, let values):
@@ -355,6 +365,8 @@ public struct ObjCIR {
                 return [ObjCIR.optionEnumStmt(name) {
                     values.map { "\(name + $0.camelCaseDescription) = 1 << \($0.defaultValue)" }
                 }]
+            case .literalImport(name: _):
+                return []
             }
         }
 
@@ -375,6 +387,8 @@ public struct ObjCIR {
                     .map { $0.trimmingCharacters(in: .whitespaces) }
                     .map(ObjCIR.fileImportStmt)
                     .joined(separator: "\n")]
+            case .forwardDeclarations( classNames: _, myName: _):
+                return []
             case .classDecl(name: let className, extends: _, methods: let methods, properties: _, protocols: let protocols):
                 return [
                     "@implementation \(className)",
@@ -384,23 +398,29 @@ public struct ObjCIR {
                     }).joined(separator: "\n"),
                     "@end"
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
-            case .category(className: let className, categoryName: let categoryName, methods: let methods, properties: let properties):
-                // Only render anonymous categories in the implementation
-                guard let categoryName = categoryName else { return [] }
-                return [
-                    "@implementation \(className) (\(categoryName))",
+            case .categoryDecl(let className, let categoryName, let methods, let properties, let headerOnly):
+                return headerOnly ? [] : [
+                    "@interface \(className) (\(categoryName ?? ""))",
                     properties.map { (param, typeName, prop, access) in
                         "@property (nonatomic, \(prop.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
-                    methods.flatMap {$0.render()}.joined(separator: "\n"),
+                    methods.map {$0.signature + ";"}.joined(separator: "\n"),
                     "@end"
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
+            case .categoryImpl(className: let className, categoryName: let categoryName, methods: let methods):
+                return [
+                    "@implementation \(className) (\(categoryName ?? ""))",
+                    methods.flatMap {$0.render()}.joined(separator: "\n"),
+                    "@end"
+                    ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .function(let method):
                 return method.render()
             case .enumDecl:
                 return []
             case .optionSetEnum:
                 return []
+            case .literalImport(let name):
+                return [ObjCIR.fileImportStmt(name)]
             }
         }
     }

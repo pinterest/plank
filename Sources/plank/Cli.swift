@@ -149,21 +149,22 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let includeRuntime: String? = flags[.onlyRuntime] != nil || (flags[.noRuntime] == nil || flags[.noRecursive] != nil) ? .some("") : .none
     let indent: String? = flags[.indent]
     let packageName: String? = flags[.javaPackageName]
+    let includeUtility: String? = flags[.includeUtility] != nil ? .some("") : .none
 
     let generationParameters: GenerationParameters = [
         (.recursive, recursive),
         (.classPrefix, classPrefix),
         (.includeRuntime, includeRuntime),
         (.indent, indent),
-        (.packageName, packageName)
-    ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
+        (.packageName, packageName),
+        (.includeUtility, includeUtility)
+        ].reduce(GenerationParameters()) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) -> GenerationParameters in
             var d = dict
             if let v = tuple.1 {
                 d[tuple.0] = v
             }
             return d
     }
-
     guard !args.isEmpty || flags[.onlyRuntime] != nil else {
         print("Error: Missing or invalid URL to JSONSchema")
         handleHelpCommand()

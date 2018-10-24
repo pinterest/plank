@@ -114,14 +114,14 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
 
     func renderRoots() -> [ObjCIR.Root] {
         let properties: [(Parameter, SchemaObjectProperty)] = rootSchema.properties.map { $0 } // Convert [String:Schema] -> [(String, Schema)]
-
+        
         let protocols: [String: [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
             "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }]
         ]
-
+        
         let parentName = resolveClassName(self.parentDescriptor)
-
+        
         func enumRoot(from prop: Schema, param: String) -> [ObjCIR.Root] {
             switch prop {
             case .enumT(let enumValues):
@@ -135,11 +135,11 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             default: return []
             }
         }
-
+        
         let enumRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
             enumRoot(from: prop.schema, param: param)
         }
-
+        
         // TODO: Synthesize oneOf ADT Classes and Class Extension
         // TODO (rmalik): Clean this up, too much copy / paste here to support oneOf cases
         let adtRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
@@ -164,72 +164,83 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             default: return []
             }
         }
-
+        
+        let classDependencies = Set(self.renderReferencedClasses().map {
+            // Objective-C types contain "*" if they are a pointer type
+            // This information is excessive for import statements so
+            // we're removing it here.
+            $0.replacingOccurrences(of: "*", with: "")
+        })
+        var dependencies = Set(classDependencies)
+        let utilityDependencies = Set<String>(UtilitySourceIncluder.imports(for: params, language: Languages.objectiveC))
+        dependencies.formUnion(utilityDependencies)
+        
         return [
             ObjCIR.Root.imports(
-                classNames: Set(self.renderReferencedClasses().map {
-                    // Objective-C types contain "*" if they are a pointer type
-                    // This information is excessive for import statements so
-                    // we're removing it here.
-                    $0.replacingOccurrences(of: "*", with: "")
-                }),
+                classNames: dependencies,
                 myName: self.className,
                 parentName: parentName)
-        ] + adtRoots + enumRoots + [
-            ObjCIR.Root.structDecl(name: self.dirtyPropertyOptionName,
-                               fields: rootSchema.properties.keys
-                                .map { "unsigned int \(dirtyPropertyOption(propertyName: $0, className: self.className)):1;" }
-            ),
-            ObjCIR.Root.category(className: self.className,
-                                 categoryName: nil,
-                                 methods: [],
-                                 properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
-                                    SchemaObjectProperty(schema: .integer, nullability: nil),
-                                    .readwrite)]),
-            ObjCIR.Root.category(className: self.builderClassName,
-                                 categoryName: nil,
-                                 methods: [],
-                                 properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
-                                    SchemaObjectProperty(schema: .integer, nullability: nil),
-                                    .readwrite)])
-        ] + self.renderStringEnumerationMethods().map { ObjCIR.Root.function($0) } + [
-            ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
-            ObjCIR.Root.classDecl(
-                name: self.className,
-                extends: parentName,
-                methods: [
-                    (self.isBaseClass ? .publicM : .privateM, self.renderClassName()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderPolymorphicTypeIdentifier()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderModelObjectWithDictionary()),
-                    (.privateM, self.renderDesignatedInit()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderInitWithModelDictionary()),
-                    (.publicM, self.renderInitWithBuilder()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderInitWithBuilderWithInitType()),
-                    (.privateM, self.renderDebugDescription()),
-                    (.publicM, self.renderCopyWithBlock()),
-                    (.privateM, self.renderIsEqual()),
-                    (.publicM, self.renderIsEqualToClass()),
-                    (.privateM, self.renderHash()),
-                    (.publicM, self.renderMergeWithModel()),
-                    (.publicM, self.renderMergeWithModelWithInitType()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary())
-                ],
-                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) },
-                protocols: protocols
-            ),
-            ObjCIR.Root.classDecl(
-                name: self.builderClassName,
-                extends: resolveClassName(self.parentDescriptor).map { "\($0)Builder"},
-                methods: [
-                    (.publicM, self.renderBuilderInitWithModel()),
-                    (.publicM, ObjCIR.method("- (\(self.className) *)build") {
-                        ["return [[\(self.className) alloc] initWithBuilder:self];"]
-                    }),
-                    (.publicM, self.renderBuilderMergeWithModel())
-                    ] + self.renderBuilderPropertySetters().map { (.privateM, $0) },
-                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readwrite) },
-                protocols: [:]),
-            ObjCIR.Root.macro("NS_ASSUME_NONNULL_END")
+            ] + [
+                ObjCIR.Root.forwardDeclarations(classNames: classDependencies, myName: self.className)
+            ] + adtRoots
+            + enumRoots
+            + [
+                ObjCIR.Root.structDecl(name: self.dirtyPropertyOptionName,
+                                       fields: rootSchema.properties.keys
+                                        .map { "unsigned int \(dirtyPropertyOption(propertyName: $0, className: self.className)):1;" }
+                ),
+                ObjCIR.Root.categoryDecl(className: self.className,
+                                     categoryName: nil,
+                                     methods: [],
+                                     properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
+                                        SchemaObjectProperty(schema: .integer, nullability: nil),
+                                        .readwrite)],
+                                     headerOnly: false),
+                ObjCIR.Root.categoryDecl(className: self.builderClassName,
+                                         categoryName: nil,
+                                         methods: [],
+                                         properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
+                                            SchemaObjectProperty(schema: .integer, nullability: nil),
+                                            .readwrite)],
+                                         headerOnly: false),
+            ] + self.renderStringEnumerationMethods().map { ObjCIR.Root.function($0) } + [
+                ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
+                ObjCIR.Root.classDecl(
+                    name: self.className,
+                    extends: parentName,
+                    methods: [
+                        (self.isBaseClass ? .publicM : .privateM, self.renderClassName()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderPolymorphicTypeIdentifier()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderModelObjectWithDictionary()),
+                        (.privateM, self.renderDesignatedInit()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderInitWithModelDictionary()),
+                        (.publicM, self.renderInitWithBuilder()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderInitWithBuilderWithInitType()),
+                        (.privateM, self.renderDebugDescription()),
+                        (.publicM, self.renderCopyWithBlock()),
+                        (.privateM, self.renderIsEqual()),
+                        (.publicM, self.renderIsEqualToClass()),
+                        (.privateM, self.renderHash()),
+                        (.publicM, self.renderMergeWithModel()),
+                        (.publicM, self.renderMergeWithModelWithInitType()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary())
+                    ],
+                    properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) },
+                    protocols: protocols
+                ),
+                ObjCIR.Root.classDecl(
+                    name: self.builderClassName,
+                    extends: resolveClassName(self.parentDescriptor).map { "\($0)Builder"},
+                    methods: [
+                        (.publicM, self.renderBuilderInitWithModel()),
+                        (.publicM, ObjCIR.method("- (\(self.className) *)build") {
+                            ["return [[\(self.className) alloc] initWithBuilder:self];"]
+                        }),
+                        (.publicM, self.renderBuilderMergeWithModel())
+                        ] + self.renderBuilderPropertySetters().map { (.privateM, $0) },
+                    properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readwrite) },
+                    protocols: [:]),
+                ObjCIR.Root.macro("NS_ASSUME_NONNULL_END")
         ]
     }
 }

@@ -19,6 +19,7 @@ public enum GenerationParameterType {
     case includeRuntime
     case indent
     case packageName
+    case includeUtility
 }
 
 public enum Languages: String {

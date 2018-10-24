@@ -36,6 +36,21 @@ public struct UtilitySourceIncluder {
             writeFile(file: file, outputDirectory: outputDirectory, generationParameters: generationParameters)
         }
     }
+    
+    static func imports(for generationParameters: GenerationParameters, language: Languages) -> [String] {
+        guard generationParameters[.includeUtility] != nil else {
+            return []
+        }
+        
+        switch language {
+        case .objectiveC:
+            return [
+                ObjectiveCCategoryExtensions.NSURLComponents.fullName
+            ]
+        default:
+            return []
+        }
+    }
 
 }
 
@@ -50,19 +65,29 @@ extension UtilitySourceIncluder {
             return NSURLComponents.extensions()
         }
         
-        private class NSURLComponents {
+        public class NSURLComponents {
+            
+            static let className = "NSURLComponents"
+            static let categoryName = "PlankUtility"
+            static let fullName = "\(NSURLComponents.className)+\(NSURLComponents.categoryName)"
             
             class func extensions() -> [FileGenerator] {
-                let classToExtend = "NSURLComponents"
-                let extensionName = "PlankUtility"
-                let fileNameBase = "\(classToExtend)+\(extensionName)"
+                let fileNameBase = "\(NSURLComponents.className)+\(NSURLComponents.categoryName)"
 
                 let categoryMethods: [ObjCIR.Method] = [
                     NSURLComponents.NSURLComponentsUnsafeInitializer()
                 ]
                 
                 let categoryRoots = [
-                    ObjCIR.Root.category(className: classToExtend, categoryName: extensionName, methods: categoryMethods, properties: [])
+                    ObjCIR.Root.imports(classNames: Set([NSURLComponents.fullName]), myName: NSURLComponents.fullName, parentName: nil),
+                    ObjCIR.Root.categoryDecl(className: NSURLComponents.className,
+                                             categoryName: NSURLComponents.categoryName,
+                                             methods: categoryMethods,
+                                             properties: [],
+                                             headerOnly: true),
+                    ObjCIR.Root.categoryImpl(className: NSURLComponents.className,
+                                             categoryName: NSURLComponents.categoryName,
+                                             methods: categoryMethods)
                 ]
                 
                 let files: [FileGenerator] = [
@@ -75,21 +100,24 @@ extension UtilitySourceIncluder {
             class func NSURLComponentsUnsafeInitializer() -> ObjCIR.Method {
                 return ObjCIR.method("+ (NSURL * _Nullable)URLWithUnsafeString:(NSString * _Nonnull)unsafeString", body: { () -> [String] in
                     return [
-                        "static NSCharacterSet * const fragmentDefinition = [NSCharacterSet characterSetWithCharactersInString:@\"#\"];",
-                        "NSRange firstFragmentRange = [unsafeString rangeOfCharacterInSet:fragmentDefinition];",
+                        "static NSCharacterSet * fragmentDefinition;",
+                        ObjCIR.ifStmt("fragmentDefinition == nil", body: { () -> [String] in
+                            return [ "fragmentDefinition = [NSCharacterSet characterSetWithCharactersInString:@\"#\"];" ]
+                        }),
+                        "NSRange firstFragmentRange = [unsafeString rangeOfCharacterFromSet:fragmentDefinition];",
                         ObjCIR.ifStmt("firstFragmentRange.location != NSNotFound") {
                             return [
                                 "NSString *baseURL = [unsafeString substringToIndex:firstFragmentRange.location];",
                                 "NSString *fragment = [unsafeString substringFromIndex:firstFragmentRange.location];",
-                                ObjCIR.ifStmt("[unsafeString rangeOfCharacterInSet:fragmentDefinition].location != NSNotFound", body: { () -> [String] in
+                                ObjCIR.ifStmt("[unsafeString rangeOfCharacterFromSet:fragmentDefinition].location != NSNotFound", body: { () -> [String] in
                                     return [
-                                        "NSString *encodedFragment = [fragment stringByAddingPercentEncodingWithAllowedCharacters:URLFragmentAllowedCharacterSet];",
-                                        "unsafeString = [NSStringWithFormat:@\"%@#%@\", baseUrl, encodedFragment];"
+                                        "NSString *encodedFragment = [fragment stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLFragmentAllowedCharacterSet];",
+                                        "unsafeString = [NSString stringWithFormat:@\"%@#%@\", baseURL, encodedFragment];"
                                     ]
                                 })
                             ]
                         },
-                        "return [NSURLComponents urlComponentsWithString:unsafeString].URL;"
+                        "return [NSURLComponents componentsWithString:unsafeString].URL;"
                     ]
                 })
             }
