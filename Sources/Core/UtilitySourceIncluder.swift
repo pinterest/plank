@@ -38,10 +38,6 @@ public struct UtilitySourceIncluder {
     }
     
     static func imports(for generationParameters: GenerationParameters, language: Languages) -> [String] {
-        guard generationParameters[.includeUtility] != nil else {
-            return []
-        }
-        
         switch language {
         case .objectiveC:
             return [

@@ -25,7 +25,6 @@ enum FlagOptions: String {
     case lang = "lang"
     case help = "help"
     case version = "version"
-    case includeUtility = "include_utility"
     case debugIR = "debug_ir"
 
     func needsArgument() -> Bool {
@@ -41,7 +40,6 @@ enum FlagOptions: String {
         case .help: return false
         case .version: return false
         case .javaPackageName: return true
-        case .includeUtility: return false
         case .debugIR: return false
         }
     }
@@ -59,7 +57,6 @@ extension FlagOptions: HelpCommandOutput {
             "    --\(FlagOptions.lang.rawValue) - Comma separated list of target language(s) for generating code. Default: \"objc\"",
             "    --\(FlagOptions.help.rawValue) - Show this text and exit",
             "    --\(FlagOptions.version.rawValue) - Show version number and exit",
-            "    --\(FlagOptions.includeUtility.rawValue) - Include utility source for the defined language",
             "    --\(FlagOptions.debugIR.rawValue) - Includes IR statement above generated source",
             "",
             "    Objective-C:",
@@ -152,7 +149,6 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let includeRuntime: String? = flags[.onlyRuntime] != nil || (flags[.noRuntime] == nil || flags[.noRecursive] != nil) ? .some("") : .none
     let indent: String? = flags[.indent]
     let packageName: String? = flags[.javaPackageName]
-    let includeUtility: String? = flags[.includeUtility] != nil ? .some("") : .none
     let debugIR: String? = flags[.debugIR] != nil ? .some("") : .none
 
     let generationParameters: GenerationParameters = [
@@ -161,7 +157,6 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         (.includeRuntime, includeRuntime),
         (.indent, indent),
         (.packageName, packageName),
-        (.includeUtility, includeUtility),
         (.debugIR, debugIR)
         ].reduce(GenerationParameters()) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) -> GenerationParameters in
             var d = dict
@@ -219,11 +214,9 @@ func handleGenerateCommand(withArguments arguments: [String]) {
                       forLanguages: languages)
     }
     
-    if flags[.includeUtility] != nil {
-        UtilitySourceIncluder(languages: languages,
-                              outputDirectory: outputDirectory,
-                              generationParameters: generationParameters).write()
-    }
+    UtilitySourceIncluder(languages: languages,
+                          outputDirectory: outputDirectory,
+                          generationParameters: generationParameters).write()
 }
 
 func handleHelpCommand() {

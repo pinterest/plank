@@ -19,7 +19,6 @@ public enum GenerationParameterType {
     case includeRuntime
     case indent
     case packageName
-    case includeUtility
     case debugIR
 }
 
