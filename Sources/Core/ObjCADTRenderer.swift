@@ -172,10 +172,14 @@ struct ObjCADTRenderer: ObjCFileRenderer {
         return [
             ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
             internalTypeEnum,
-            ObjCIR.Root.category(className: self.className,
+            ObjCIR.Root.categoryDecl(className: self.className,
                                  categoryName: nil,
                                  methods: [],
-                                 properties: props),
+                                 properties: props,
+                                 headerOnly: false),
+            ObjCIR.Root.categoryImpl(className: self.className,
+                                     categoryName: nil,
+                                     methods: []),
             ObjCIR.Root.classDecl(name: name,
                                  extends: nil,
                                  methods:

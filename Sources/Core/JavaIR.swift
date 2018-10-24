@@ -136,7 +136,7 @@ public struct JavaIR {
             let extendsStmt = extends.map { "extends \($0) " } ?? ""
             return [
                 "\(modifiers.render()) interface \(name) \(extendsStmt){",
-                -->methods.compactMap { "\($0.signature);" },
+                -->methods.map { "\($0.signature);" },
                 "}"
             ]
         }
@@ -148,17 +148,29 @@ public struct JavaIR {
         case classDecl(aClass: JavaIR.Class)
         case interfaceDecl(aInterface: JavaIR.Interface)
 
-        func renderImplementation() -> [String] {
+        func humanReadableString() -> [String] {
+            return [String(describing: self)]
+        }
+
+        func renderImplementation(generationParameters: GenerationParameters) -> [String] {
+            var generatedSource = [String]()
+            
+            if let debugString = debugStatement(generationParameters: generationParameters, language: .java) {
+                generatedSource += debugString
+            }
+
             switch self {
             case let .packages(names):
-                return names.sorted().map { "package \($0);" }
+                generatedSource += names.sorted().map { "package \($0);" }
             case let .imports(names):
-                return names.sorted().map { "import \($0);" }
+                generatedSource += names.sorted().map { "import \($0);" }
             case let .classDecl(aClass: cls):
-                return cls.render()
+                generatedSource += cls.render()
             case let .interfaceDecl(aInterface: interface):
-                return interface.render()
+                generatedSource += interface.render()
             }
+
+            return generatedSource
         }
     }
 }

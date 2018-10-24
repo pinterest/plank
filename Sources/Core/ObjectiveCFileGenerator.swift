@@ -44,10 +44,10 @@ struct ObjCHeaderFile: FileGenerator {
         return objcDefaultIndent
     }
 
-    func renderFile() -> String {
+    func renderFile(generationParameters: GenerationParameters) -> String {
         let output = (
                 [self.renderCommentHeader()] +
-                self.roots.compactMap { $0.renderHeader().joined(separator: "\n") }
+                self.roots.map { $0.renderHeader(generationParameters: generationParameters).joined(separator: "\n") }
             )
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }
@@ -68,10 +68,10 @@ struct ObjCImplementationFile: FileGenerator {
         return objcDefaultIndent
     }
 
-    func renderFile() -> String {
+    func renderFile(generationParameters: GenerationParameters) -> String {
         let output = (
                 [self.renderCommentHeader()] +
-                self.roots.map { $0.renderImplementation().joined(separator: "\n") }
+                self.roots.map { $0.renderImplementation(generationParameters: generationParameters).joined(separator: "\n") }
             )
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }
@@ -161,9 +161,9 @@ struct ObjCRuntimeHeaderFile: FileGenerator {
         return objcDefaultIndent
     }
 
-    func renderFile() -> String {
+    func renderFile(generationParameters: GenerationParameters) -> String {
         let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
-        let outputs = roots.map { $0.renderHeader() }.reduce([], +)
+        let outputs = roots.map { $0.renderHeader(generationParameters: generationParameters) }.reduce([], +)
         return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", ""] + outputs)
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }
@@ -179,9 +179,9 @@ struct ObjCRuntimeImplementationFile: FileGenerator {
         return objcDefaultIndent
     }
 
-    func renderFile() -> String {
+    func renderFile(generationParameters: GenerationParameters) -> String {
         let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
-        let outputs = roots.map { $0.renderImplementation() }.reduce([], +)
+        let outputs = roots.map { $0.renderImplementation(generationParameters: generationParameters) }.reduce([], +)
         return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", "", "#import \"\(ObjCRuntimeHeaderFile().fileName)\"", outputs.joined(separator: "\n")])
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }

@@ -8,6 +8,7 @@
 *.mode1v3
 xcuserdata
 Snapshots
+plank.xcodeproj
 
 # OS X
 *.DS_Store

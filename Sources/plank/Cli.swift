@@ -25,6 +25,8 @@ enum FlagOptions: String {
     case lang = "lang"
     case help = "help"
     case version = "version"
+    case includeUtility = "include_utility"
+    case debugIR = "debug_ir"
 
     func needsArgument() -> Bool {
         switch self {
@@ -39,6 +41,8 @@ enum FlagOptions: String {
         case .help: return false
         case .version: return false
         case .javaPackageName: return true
+        case .includeUtility: return false
+        case .debugIR: return false
         }
     }
 }
@@ -55,6 +59,8 @@ extension FlagOptions: HelpCommandOutput {
             "    --\(FlagOptions.lang.rawValue) - Comma separated list of target language(s) for generating code. Default: \"objc\"",
             "    --\(FlagOptions.help.rawValue) - Show this text and exit",
             "    --\(FlagOptions.version.rawValue) - Show version number and exit",
+            "    --\(FlagOptions.includeUtility.rawValue) - Include utility source for the defined language",
+            "    --\(FlagOptions.debugIR.rawValue) - Includes IR statement above generated source",
             "",
             "    Objective-C:",
             "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names",
@@ -146,21 +152,24 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let includeRuntime: String? = flags[.onlyRuntime] != nil || (flags[.noRuntime] == nil || flags[.noRecursive] != nil) ? .some("") : .none
     let indent: String? = flags[.indent]
     let packageName: String? = flags[.javaPackageName]
+    let includeUtility: String? = flags[.includeUtility] != nil ? .some("") : .none
+    let debugIR: String? = flags[.debugIR] != nil ? .some("") : .none
 
     let generationParameters: GenerationParameters = [
         (.recursive, recursive),
         (.classPrefix, classPrefix),
         (.includeRuntime, includeRuntime),
         (.indent, indent),
-        (.packageName, packageName)
-    ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
+        (.packageName, packageName),
+        (.includeUtility, includeUtility),
+        (.debugIR, debugIR)
+        ].reduce(GenerationParameters()) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) -> GenerationParameters in
             var d = dict
             if let v = tuple.1 {
                 d[tuple.0] = v
             }
             return d
     }
-
     guard !args.isEmpty || flags[.onlyRuntime] != nil else {
         print("Error: Missing or invalid URL to JSONSchema")
         handleHelpCommand()
@@ -187,7 +196,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     outputDirectory = URL(fileURLWithPath: outputDirectory.absoluteString, isDirectory: true)
 
     let urls = args.map { URL(string: $0)! }
-    let languages: [Languages] = flags[.lang]?.trimmingCharacters(in: .whitespaces).components(separatedBy: ",").compactMap {
+    let languages: [Languages] = flags[.lang]?.trimmingCharacters(in: .whitespaces).components(separatedBy: ",").map {
         guard let lang = Languages.init(rawValue: $0) else {
             fatalError("Invalid or unsupported language: \($0)")
         }
@@ -209,6 +218,12 @@ func handleGenerateCommand(withArguments arguments: [String]) {
                       generationParameters: generationParameters,
                       forLanguages: languages)
     }
+    
+    if flags[.includeUtility] != nil {
+        UtilitySourceIncluder(languages: languages,
+                              outputDirectory: outputDirectory,
+                              generationParameters: generationParameters).write()
+    }
 }
 
 func handleHelpCommand() {
@@ -227,3 +242,4 @@ func handleHelpCommand() {
 func handleVersionCommand() {
     print(Version.current.value)
 }
+
