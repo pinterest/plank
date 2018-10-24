@@ -114,14 +114,14 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
 
     func renderRoots() -> [ObjCIR.Root] {
         let properties: [(Parameter, SchemaObjectProperty)] = rootSchema.properties.map { $0 } // Convert [String:Schema] -> [(String, Schema)]
-        
+
         let protocols: [String: [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
             "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }]
         ]
-        
+
         let parentName = resolveClassName(self.parentDescriptor)
-        
+
         func enumRoot(from prop: Schema, param: String) -> [ObjCIR.Root] {
             switch prop {
             case .enumT(let enumValues):
@@ -135,11 +135,11 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             default: return []
             }
         }
-        
+
         let enumRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
             enumRoot(from: prop.schema, param: param)
         }
-        
+
         // TODO: Synthesize oneOf ADT Classes and Class Extension
         // TODO (rmalik): Clean this up, too much copy / paste here to support oneOf cases
         let adtRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
@@ -164,7 +164,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             default: return []
             }
         }
-        
+
         let classDependencies = Set(self.renderReferencedClasses().map {
             // Objective-C types contain "*" if they are a pointer type
             // This information is excessive for import statements so
@@ -174,7 +174,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
         var dependencies = Set(classDependencies)
         let utilityDependencies = Set<String>(UtilitySourceIncluder.imports(for: params, language: Languages.objectiveC))
         dependencies.formUnion(utilityDependencies)
-        
+
         return [
             ObjCIR.Root.imports(
                 classNames: dependencies,
