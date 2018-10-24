@@ -20,6 +20,7 @@ public enum GenerationParameterType {
     case indent
     case packageName
     case includeUtility
+    case debugIR
 }
 
 public enum Languages: String {
@@ -34,13 +35,43 @@ public protocol FileGeneratorManager {
 }
 
 public protocol FileGenerator {
-    func renderFile() -> String
+    func renderFile(generationParameters: GenerationParameters) -> String
     var fileName: String { mutating get }
     var indent: Int { get }
 }
 
 protocol RootRenderer {
-    func renderImplementation() -> [String]
+    func renderImplementation(generationParameters: GenerationParameters) -> [String]
+    func humanReadableString() -> [String]
+}
+
+extension RootRenderer {
+    func debugStatement(generationParameters: GenerationParameters, language: Languages) -> [String]? {
+        guard generationParameters[.debugIR] != nil else {
+            return nil
+        }
+        var debugInfo: [String] = ["// vv PlankDebug ON vv"]
+        switch language {
+        default:
+             debugInfo += ["/*"] + humanReadableString() + ["*/"]
+        }
+        debugInfo += ["// ^^ PlankDebug ON ^^"]
+        
+        return debugInfo
+    }
+
+    var label: String {
+        let mirror = Mirror(reflecting: self)
+        if let label = mirror.children.first?.label {
+            return label
+        } else {
+            var debugDescription = String(describing:self)
+            if let firstParenthesesLocation = debugDescription.range(of: "(") {
+                debugDescription = String(debugDescription.prefix(upTo: firstParenthesesLocation.lowerBound))
+            }
+            return debugDescription
+        }
+    }
 }
 
 protocol FileRenderer {
@@ -211,7 +242,7 @@ public func writeFile(file: FileGenerator, outputDirectory: URL, generationParam
     var file = file
     let indent = generationParameters.indent(file: file)
     let indentSpaces = String(repeating: " ", count: indent)
-    let fileContents = file.renderFile()
+    let fileContents = file.renderFile(generationParameters: generationParameters)
                            .replacingOccurrences(of: "\t", with: indentSpaces)
                            .appending("\n") // Ensure there is exactly one new line a the end of the file
     do {

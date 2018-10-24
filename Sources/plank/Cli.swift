@@ -26,6 +26,7 @@ enum FlagOptions: String {
     case help = "help"
     case version = "version"
     case includeUtility = "include_utility"
+    case debugIR = "debug_ir"
 
     func needsArgument() -> Bool {
         switch self {
@@ -41,6 +42,7 @@ enum FlagOptions: String {
         case .version: return false
         case .javaPackageName: return true
         case .includeUtility: return false
+        case .debugIR: return false
         }
     }
 }
@@ -58,6 +60,7 @@ extension FlagOptions: HelpCommandOutput {
             "    --\(FlagOptions.help.rawValue) - Show this text and exit",
             "    --\(FlagOptions.version.rawValue) - Show version number and exit",
             "    --\(FlagOptions.includeUtility.rawValue) - Include utility source for the defined language",
+            "    --\(FlagOptions.debugIR.rawValue) - Includes IR statement above generated source",
             "",
             "    Objective-C:",
             "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names",
@@ -150,6 +153,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let indent: String? = flags[.indent]
     let packageName: String? = flags[.javaPackageName]
     let includeUtility: String? = flags[.includeUtility] != nil ? .some("") : .none
+    let debugIR: String? = flags[.debugIR] != nil ? .some("") : .none
 
     let generationParameters: GenerationParameters = [
         (.recursive, recursive),
@@ -157,7 +161,8 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         (.includeRuntime, includeRuntime),
         (.indent, indent),
         (.packageName, packageName),
-        (.includeUtility, includeUtility)
+        (.includeUtility, includeUtility),
+        (.debugIR, debugIR)
         ].reduce(GenerationParameters()) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) -> GenerationParameters in
             var d = dict
             if let v = tuple.1 {

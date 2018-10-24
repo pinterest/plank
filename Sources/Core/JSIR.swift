@@ -125,7 +125,11 @@ public struct JSIR {
         )
         case enumDecl(name: String, values: EnumType)
 
-        func renderImplementation() -> [String] {
+        func humanReadableString() -> [String] {
+            return [String(describing: self)]
+        }
+
+        func renderImplementation(generationParameters: GenerationParameters) -> [String] {
             switch self {
             case .structDecl(name: _, fields: _):
                 // Structs are not supported

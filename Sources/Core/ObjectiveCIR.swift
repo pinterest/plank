@@ -150,15 +150,15 @@ public struct ObjCIR {
         return
             "[\(variable) " +
                 messages.map { (param, arg) in "\(param):\(arg)" }.joined(separator: " ") +
-            "]"
+        "]"
     }
 
     static func block(_ params: [Parameter], body: () -> [String]) -> String {
         return [
             "^" + (params.count == 0 ? "" : "(\(params.joined(separator: ", ")))") + "{",
-              -->body,
+            -->body,
             "}"
-        ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
 
     static func scope(body: () -> [String]) -> String {
@@ -166,7 +166,7 @@ public struct ObjCIR {
             "{",
             -->body,
             "}"
-        ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
 
     enum SwitchCase {
@@ -179,12 +179,12 @@ public struct ObjCIR {
                 return [ "case \(condition):",
                     -->body,
                     -->[ObjCIR.stmt("break")]
-                ].joined(separator: "\n")
+                    ].joined(separator: "\n")
             case .defaultStmt(let body):
                 return [ "default:",
-                    -->body,
-                    -->[ObjCIR.stmt("break")]
-                ].joined(separator: "\n")
+                         -->body,
+                         -->[ObjCIR.stmt("break")]
+                    ].joined(separator: "\n")
             }
         }
     }
@@ -202,45 +202,45 @@ public struct ObjCIR {
             "switch (\(switchVariable)) {",
             body().map { $0.render() }.joined(separator: "\n"),
             "}"
-        ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
     static func ifStmt(_ condition: String, body: () -> [String]) -> String {
         return [
             "if (\(condition)) {",
-                -->body,
+            -->body,
             "}"
-        ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
 
     static func elseIfStmt(_ condition: String, _ body:() -> [String]) -> String {
         return [
             " else if (\(condition)) {",
-                -->body,
+            -->body,
             "}"
-        ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
 
     static func elseStmt(_ body: () -> [String]) -> String {
         return [
             " else {",
-                -->body,
+            -->body,
             "}"
-        ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
 
     static func ifElseStmt(_ condition: String, body: @escaping () -> [String]) -> (() -> [String]) -> String {
         return { elseBody in [
             ObjCIR.ifStmt(condition, body: body) +
-            ObjCIR.elseStmt(elseBody)
-        ].joined(separator: "\n") }
+                ObjCIR.elseStmt(elseBody)
+            ].joined(separator: "\n") }
     }
 
     static func forStmt(_ condition: String, body: () -> [String]) -> String {
         return [
             "for (\(condition)) {",
-              -->body,
+            -->body,
             "}"
-        ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
 
     static func fileImportStmt(_ filename: String) -> String {
@@ -250,9 +250,9 @@ public struct ObjCIR {
     static func enumStmt(_ enumName: String, body: () -> [String]) -> String {
         return [
             "typedef NS_ENUM(NSInteger, \(enumName)) {",
-              -->[body().joined(separator: ",\n")],
+            -->[body().joined(separator: ",\n")],
             "};"
-        ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
 
     static func optionEnumStmt(_ enumName: String, body: () -> [String]) -> String {
@@ -260,7 +260,7 @@ public struct ObjCIR {
             "typedef NS_OPTIONS(NSUInteger, \(enumName)) {",
             -->[body().joined(separator: ",\n")],
             "};"
-        ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
 
     public struct Method {
@@ -271,7 +271,7 @@ public struct ObjCIR {
             return [
                 signature,
                 "{",
-                  -->body,
+                -->body,
                 "}"
             ]
         }
@@ -296,21 +296,27 @@ public struct ObjCIR {
         case literalImport(name: String)
         case forwardDeclarations(classNames: Set<String>, myName: String)
 
-        func renderHeader() -> [String] {
+        func renderHeader(generationParameters: GenerationParameters) -> [String] {
+            var generatedSource = [String]()
+
+            if let debugString = debugStatement(generationParameters: generationParameters, language: .objectiveC) {
+                generatedSource += debugString
+            }
+
             switch self {
             case .structDecl:
                 // skip structs in header
-                return []
+                generatedSource += []
             case .macro(let macro):
-                return [macro]
+                generatedSource += [macro]
             case .imports(classNames: _, myName: _, let parentName):
-                return [
+                generatedSource += [
                     "#import <Foundation/Foundation.h>",
                     parentName.map(ObjCIR.fileImportStmt) ?? "",
                     "#import \"\(ObjCRuntimeHeaderFile().fileName)\""
-                ].filter { $0 != "" }
+                    ].filter { $0 != "" }
             case .forwardDeclarations(let classNames, let myName):
-                return (["\(myName)Builder"] + classNames)
+                generatedSource += (["\(myName)Builder"] + classNames)
                     .sorted()
                     .map { "@class \($0.trimmingCharacters(in: .whitespaces));" }
             case .classDecl(let className, let extends, let methods, let properties, let protocols):
@@ -322,25 +328,25 @@ public struct ObjCIR {
                     prop.nullability.map { "\($0), " } ?? ""
                 }
 
-                return [
+                generatedSource += [
                     "@interface \(className) : \(superClass)",
                     properties.map { (param, typeName, propSchema, access) in
                         "@property (\(nullability(propSchema))nonatomic, \(propSchema.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
-                    }.joined(separator: "\n"),
+                        }.joined(separator: "\n"),
                     methods.filter { visibility, _ in visibility == .publicM }
-                            .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
+                        .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end"
                 ]
             case .categoryDecl(let className, let categoryName, let methods, let properties, headerOnly: _):
                 guard categoryName != nil else {
-                    return []
+                    break
                 }
-                
+
                 let nullability = { (prop: SchemaObjectProperty) in
                     prop.nullability.map { "\($0), " } ?? ""
                 }
-                
-                return [
+
+                generatedSource += [
                     "@interface \(className) (\(categoryName ?? ""))",
                     properties.map { (param, typeName, propSchema, access) in
                         "@property (\(nullability(propSchema))nonatomic, \(propSchema.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
@@ -349,79 +355,174 @@ public struct ObjCIR {
                     "@end"
                 ]
             case .categoryImpl(className: _, categoryName: _, methods: _):
-                return []
+                generatedSource += []
             case .function(let method):
-                return ["\(method.signature);"]
+                generatedSource += ["\(method.signature);"]
             case .enumDecl(let name, let values):
-                return [ObjCIR.enumStmt(name) {
+                generatedSource += [ObjCIR.enumStmt(name) {
                     switch values {
                     case .integer(let options):
                         return options.map { "\(name + $0.camelCaseDescription) = \($0.defaultValue)" }
                     case .string(let options, _):
                         return options.map { "\(name + $0.camelCaseDescription) /* \($0.defaultValue) */" }
                     }
-                }]
+                    }]
             case .optionSetEnum(let name, let values):
-                return [ObjCIR.optionEnumStmt(name) {
+                generatedSource += [ObjCIR.optionEnumStmt(name) {
                     values.map { "\(name + $0.camelCaseDescription) = 1 << \($0.defaultValue)" }
-                }]
+                    }]
             case .literalImport(name: _):
-                return []
+                generatedSource += []
             }
+
+            return generatedSource
         }
 
-        func renderImplementation() -> [String] {
+        func renderImplementation(generationParameters: GenerationParameters) -> [String] {
+            var generatedSource = [String]()
+
+            if let debugString = debugStatement(generationParameters: generationParameters, language: .objectiveC) {
+                generatedSource += debugString
+            }
+
             switch self {
             case .structDecl(name: let name, fields: let fields):
-                return [
+                generatedSource += [
                     "struct \(name) {",
-                        fields.sorted().map { $0.indent() }.joined(separator: "\n"),
+                    fields.sorted().map { $0.indent() }.joined(separator: "\n"),
                     "};"
                 ]
             case .macro:
                 // skip macro in impl
-                return []
+                generatedSource += []
             case .imports(let classNames, let myName, _):
-                return [classNames.union(Set([myName]))
+                generatedSource += [classNames.union(Set([myName]))
                     .sorted()
                     .map { $0.trimmingCharacters(in: .whitespaces) }
                     .map(ObjCIR.fileImportStmt)
                     .joined(separator: "\n")]
             case .forwardDeclarations( classNames: _, myName: _):
-                return []
+                generatedSource += []
             case .classDecl(name: let className, extends: _, methods: let methods, properties: _, protocols: let protocols):
-                return [
+                generatedSource += [
                     "@implementation \(className)",
                     methods.flatMap {$1.render()}.joined(separator: "\n"),
                     protocols.flatMap({ (protocolName, methods) -> [String] in
                         return ["#pragma mark - \(protocolName)"] + methods.flatMap {$0.render()}
                     }).joined(separator: "\n"),
                     "@end"
-                ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
+                    ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .categoryDecl(let className, let categoryName, let methods, let properties, let headerOnly):
-                return headerOnly ? [] : [
+                generatedSource += headerOnly ? [] : [
                     "@interface \(className) (\(categoryName ?? ""))",
                     properties.map { (param, typeName, prop, access) in
                         "@property (nonatomic, \(prop.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
-                    }.joined(separator: "\n"),
+                        }.joined(separator: "\n"),
                     methods.map {$0.signature + ";"}.joined(separator: "\n"),
                     "@end"
-                ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
+                    ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .categoryImpl(className: let className, categoryName: let categoryName, methods: let methods):
-                return [
-                    "@implementation \(className) (\(categoryName ?? ""))",
+                guard let categoryName = categoryName else {
+                    generatedSource += []
+                    break
+                }
+
+                generatedSource += [
+                    "@implementation \(className) (\(categoryName))",
                     methods.flatMap {$0.render()}.joined(separator: "\n"),
                     "@end"
                     ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .function(let method):
-                return method.render()
+                generatedSource += method.render()
             case .enumDecl:
-                return []
+                generatedSource += []
             case .optionSetEnum:
-                return []
+                generatedSource += []
             case .literalImport(let name):
-                return [ObjCIR.fileImportStmt(name)]
+                generatedSource += [ObjCIR.fileImportStmt(name)]
+            }
+
+            return generatedSource
+        }
+
+        func humanReadableString() -> [String] {
+            switch self {
+            case .structDecl:
+                return [label + ": \(self)"]
+            case .macro(macro: _):
+                return [label + ": \(self)"]
+            case .imports(let classNames, let myName, let parentName):
+                return [label + ": className:"] + classNames.map({$0})
+                    + ["myName: \(myName), parentName: \(parentName ?? "none")"]
+            case .forwardDeclarations(let classNames, let myName):
+                return [label + ": className:"]
+                    + classNames.map({$0})
+                    + ["myName: \(myName)"]
+            case .classDecl(let className, let extends, let methods, let properties, let protocols):
+                return ([label + ": className: \(className), extends: \(extends ?? "none"), methods: "] as [String])
+                    + methods.humanReadableDescription()
+                    + ["properties: "] + properties.map({"\($0)"}) + ["\tprotocols: "]
+                    + protocols.humanReadableDescription()
+            case .categoryDecl(let className, let categoryName, let methods, let properties, let headerOnly):
+                return ([label + ": className: \(className), categpryName: \(categoryName ?? "none"), methods: "]) as [String]
+                    + methods.humanReadableDescription()
+                    + ([" properties: "] + properties.map({"\($0)"}) + ["headerOnly: \(headerOnly ? "y" : "n")"] as [String])
+            case .categoryImpl(let className, let categoryName, let methods):
+                return ([label + ": className: \(className), categpryName: \(categoryName ?? "none"), methods:"] as [String])
+                    + methods.humanReadableDescription()
+            case .function(let method):
+                return method.humanReadableDescription()
+            case .enumDecl(let name, let values):
+                return [label + ": name: \(name), values: \(values)"]
+            case .optionSetEnum(let name, let values):
+                return [label + ": name: \(name), values: \(values)"]
+            case .literalImport(let name):
+                return [label + ": name: \(name)"]
             }
         }
     }
+}
+
+// MARK: Collection extensions
+
+extension Collection where Element == (MethodVisibility, ObjCIR.Method) {
+
+    func humanReadableDescription() -> [String] {
+        var flattenedDescription = [String]()
+        for element in self {
+            flattenedDescription += ["\tvisibility: \(element.0)"]
+            flattenedDescription += element.1.humanReadableDescription().map({"\t" + $0})
+        }
+        return flattenedDescription
+    }
+
+}
+
+extension Collection where Element == ObjCIR.Method {
+
+    func humanReadableDescription() -> [String] {
+        return reduce([String](), { (result, element) -> [String] in
+            return result + element.humanReadableDescription().map({"\t" + $0})
+        })
+    }
+
+}
+
+extension ObjCIR.Method {
+
+    func humanReadableDescription() -> [String] {
+        return ["\(signature)"] + body.map({"\t\t" + $0})
+    }
+
+}
+
+extension Dictionary where Value == [ObjCIR.Method] {
+
+    func humanReadableDescription() -> [String] {
+        return reduce([String](), { (result, element) -> [String] in
+            let (key, value) = element
+            return result + [key as! String].map({"\t" + $0}) + value.humanReadableDescription().map({"\t\t" + $0})
+        })
+    }
+
 }
