@@ -80,7 +80,7 @@ extension JavaFileRenderer {
         case .enumT(let enumObj):
             let enumName = enumTypeName(propertyName: param, className: className)
             switch enumObj {
-            case .integer(_):
+            case .integer:
                 return "@\(enumName) int"
             case .string(_, defaultValue: _):
                 return "@\(enumName) String"

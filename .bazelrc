@@ -3,5 +3,4 @@
 # For more details on bazelrc's:
 # https://docs.bazel.build/versions/master/bazel-user-manual.html#bazelrc
 
-build --apple_crosstool_transition
 build --symlink_prefix=.bazel/

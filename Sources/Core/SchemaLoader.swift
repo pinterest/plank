@@ -39,9 +39,9 @@ class FileSchemaLoader: SchemaLoader {
             fatalError("Invalid Schema. Expected dictionary as the root object type for schema at URL: \(schemaUrl)")
         }
 
-        let id = jsonDict["id"] as? String ?? ""
-        guard id.hasSuffix(schemaUrl.lastPathComponent) == true else {
-            fatalError("Invalid Schema: The value for the `id` (\(id) must end with the filename \(schemaUrl.lastPathComponent).")
+        let idVal = jsonDict["id"] as? String ?? ""
+        guard idVal.hasSuffix(schemaUrl.lastPathComponent) == true else {
+            fatalError("Invalid Schema: The value for the `id` (\(idVal) must end with the filename \(schemaUrl.lastPathComponent).")
         }
 
         guard let schema = FileSchemaLoader.sharedPropertyLoader(jsonDict, schemaUrl) else {

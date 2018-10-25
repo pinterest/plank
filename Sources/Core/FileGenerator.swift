@@ -107,7 +107,7 @@ extension FileRenderer {
         switch schema {
         case .reference(with: let ref):
             switch ref.force() {
-            case .some(.object(_)):
+            case .some(.object):
                 return [typeFromSchema("", schema.nonnullProperty())]
             default:
                 fatalError("Bad reference found in schema for class: \(self.className)")
