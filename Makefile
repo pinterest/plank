@@ -13,7 +13,7 @@ clean:
 lint:
 	./Utility/lint.sh
 
-build: lint
+build: 
 	swift build -v
 
 test: build
