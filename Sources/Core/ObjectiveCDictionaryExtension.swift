@@ -106,10 +106,9 @@ extension ObjCFileRenderer {
              .string(format: .some(.email)),
              .string(format: .some(.hostname)),
              .string(format: .some(.ipv4)),
-             .string(format: .some(.ipv6)):
+             .string(format: .some(.ipv6)),
+             .string(format: .some(.uri)):
             return "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
-        case .string(format: .some(.uri)):
-            return "[\(dictionary) setObject:[\(propIVarName) absoluteString] forKey:@\"\(param)\"];"
         case .string(format: .some(.dateTime)):
             return [
                 "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
@@ -171,10 +170,9 @@ extension ObjCFileRenderer {
                      .string(format: .some(.email)),
                      .string(format: .some(.hostname)),
                      .string(format: .some(.ipv4)),
-                     .string(format: .some(.ipv6)):
+                     .string(format: .some(.ipv6)),
+                     .string(format: .some(.uri)):
                     return "[\(destCollection) addObject:\(processObject)];"
-                case .string(format: .some(.uri)):
-                    return "[\(destCollection) addObject:[\(processObject) absoluteString]];"
                 case .string(format: .some(.dateTime)):
                     return [
                         "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",

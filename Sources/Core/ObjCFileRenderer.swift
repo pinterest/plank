@@ -40,12 +40,11 @@ extension ObjCFileRenderer {
              .string(format: .some(.email)),
              .string(format: .some(.hostname)),
              .string(format: .some(.ipv4)),
-             .string(format: .some(.ipv6)):
+             .string(format: .some(.ipv6)),
+             .string(format: .some(.uri)):
             return "NSString *"
         case .string(format: .some(.dateTime)):
             return "NSDate *"
-        case .string(format: .some(.uri)):
-            return "NSURL *"
         case .integer:
             return "NSInteger"
         case .float:

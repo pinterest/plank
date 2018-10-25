@@ -41,3 +41,5 @@ docs/_site
 .bazel/
 bazel-out/
 bazel-out
+plank.xcodeproj/project.pbxproj
+plank.xcodeproj/xcshareddata/xcschemes/plank.xcscheme

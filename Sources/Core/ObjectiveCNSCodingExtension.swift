@@ -87,12 +87,11 @@ extension ObjCFileRenderer {
              .string(format: .some(.email)),
              .string(format: .some(.hostname)),
              .string(format: .some(.ipv4)),
-             .string(format: .some(.ipv6)):
+             .string(format: .some(.ipv6)),
+             .string(format: .some(.uri)):
             return Set(["NSString"])
         case .string(format: .some(.dateTime)):
             return Set(["NSDate"])
-        case .string(format: .some(.uri)):
-            return Set(["NSURL"])
         case .integer, .float, .boolean, .enumT:
             return Set(["NSNumber"])
         case .object(let objSchemaRoot):
