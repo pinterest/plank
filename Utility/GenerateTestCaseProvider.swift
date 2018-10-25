@@ -46,7 +46,7 @@ func processFile(withPath path: String) -> String {
 
     if let file = try? String(contentsOfFile: path, encoding: .utf8) {
 		var output: [String] = []
-        var currentClassName: String? = nil
+        var currentClassName: String?
         var testNames: [String] = []
         file.enumerateLines { (currentLine, _) in
             let line = currentLine.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)

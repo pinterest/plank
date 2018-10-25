@@ -131,13 +131,13 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         handleHelpCommand()
         return
     }
-    
-    if flags[.version] != nil{
+
+    if flags[.version] != nil {
 	    handleVersionCommand()
 	    return
     }
 
-    let output_dir = flags[.outputDirectory] ?? ""
+    let outputDirectoryArg = flags[.outputDirectory] ?? ""
 
     // defaults
     // need to be lifted out of literal because https://bugs.swift.org/browse/SR-2372
@@ -154,11 +154,11 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         (.indent, indent),
         (.packageName, packageName)
     ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
-            var d = dict
-            if let v = tuple.1 {
-                d[tuple.0] = v
+            var mutableDict = dict
+            if let val = tuple.1 {
+                mutableDict[tuple.0] = val
             }
-            return d
+            return mutableDict
     }
 
     guard !args.isEmpty || flags[.onlyRuntime] != nil else {
@@ -172,12 +172,12 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     if let executionPath = ProcessInfo.processInfo.environment["PWD"] {
         // What directory path is the user in when invoke Plank
         outputDirectory = URL(string: executionPath)
-        if output_dir.count > 0 {
-            if output_dir.hasPrefix("/") {
+        if outputDirectoryArg.count > 0 {
+            if outputDirectoryArg.hasPrefix("/") {
                 // Absolute file URL
-                outputDirectory = URL(string: output_dir)!
+                outputDirectory = URL(string: outputDirectoryArg)!
             } else {
-                outputDirectory = outputDirectory.appendingPathComponent(output_dir)
+                outputDirectory = outputDirectory.appendingPathComponent(outputDirectoryArg)
             }
         }
     } else {
@@ -222,7 +222,6 @@ func handleHelpCommand() {
 
     print(helpDocs)
 }
-
 
 func handleVersionCommand() {
     print(Version.current.value)
