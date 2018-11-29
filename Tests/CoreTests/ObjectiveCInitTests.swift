@@ -30,10 +30,17 @@ class ObjectiveCInitTests: XCTestCase {
             ]
         ] as JSONObject
 
-        let schemaLoader = MockSchemaLoader(schema: .oneOf(types: [.map(valueType: nil), .float]), url: URL(string: "http://google.com/")!)
+        // https://www.ietf.org/rfc/rfc3986.txt
+        let urlRFC3986 = "http://google.com/path/to/greatness?query=parameters&another=one#fragment_life=jump"
+        guard let url = URLComponents(string: urlRFC3986)?.url else {
+            XCTFail("Could not generate URL using Apple API!")
+            return
+        }
+
+        let schemaLoader = MockSchemaLoader(schema: .oneOf(types: [.map(valueType: nil), .float]), url: url)
         let propSchemaFn = Schema.propertyFunctionForType(loader: schemaLoader)
 
-        if let prop = propSchemaFn(properties, URL(string: "http://google.com/")!) {
+        if let prop = propSchemaFn(properties, url) {
 
             let schema = SchemaObjectRoot(
                 name: "request",

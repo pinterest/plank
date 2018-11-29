@@ -12,16 +12,23 @@ public func == (lhs: JSONDict, rhs: JSONDict) -> Bool {
 
 class ObjcTestSuite: XCTestCase {
 
+    // https://www.ietf.org/rfc/rfc3986.txt
+    let urlRFC3986 = "http://google.com/path/to/greatness?query=parameters&another=one#fragment_life=jump"
+
     func testBasicObjectInitialization() {
+        guard let url = URLComponents(string: urlRFC3986)?.url else {
+            XCTFail("Could not generate URL using Apple API!")
+            return
+        }
         let imageModelDictionary: JSONDict = [
             "height": 12,
             "width": 11,
-            "url": "http://google.com"
+            "url": urlRFC3986
         ]
         let image = Image(modelDictionary: imageModelDictionary)
-        XCTAssert(imageModelDictionary["height"] as! Int == image.height, "Image height should be the same")
-        XCTAssert(imageModelDictionary["width"] as! Int == image.width, "Image width should be the same")
-        XCTAssert(URL(string: imageModelDictionary["url"] as! String)! == image.url!, "URL should be the same")
+        XCTAssertEqual(imageModelDictionary["height"] as! Int, image.height, "Image height should be the same")
+        XCTAssertEqual(imageModelDictionary["width"] as! Int, image.width, "Image width should be the same")
+        XCTAssertEqual(URLComponents(string: urlRFC3986)?.url, image.url, "URL should be the same")
     }
 
     func testDictionaryRepresentation() {
@@ -29,10 +36,10 @@ class ObjcTestSuite: XCTestCase {
         let imageModelDictionary: JSONDict = [
             "height": 12,
             "width": 11,
-            "url": "http://google.com"
+            "url": urlRFC3986
         ]
         let image = Image(modelDictionary: imageModelDictionary)
-        XCTAssert(imageModelDictionary == image.dictionaryObjectRepresentation(), "Image dictionary representation should be the same as the model dictionary.")
+        XCTAssertEqual(imageModelDictionary, image.dictionaryObjectRepresentation(), "Image dictionary representation should be the same as the model dictionary.")
 
         let userModelDictionary: JSONDict = [
             "id": 123,
@@ -47,7 +54,7 @@ class ObjcTestSuite: XCTestCase {
         ]
         let user = User(modelDictionary: userModelDictionary)
 
-        XCTAssert(userModelDictionary == user.dictionaryObjectRepresentation(), "User dictionary representation should be the same as the model dictionary")
+        XCTAssertEqual(userModelDictionary, user.dictionaryObjectRepresentation(), "User dictionary representation should be the same as the model dictionary")
     }
 }
 
@@ -108,7 +115,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
 
     func testURIProperty() {
         let dict: JSONDict = [
-            "uri_prop": "https://www.pinterest.com"
+            "uri_prop": urlRFC3986
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -332,7 +339,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
 
     func testPolymorphicPropWithURI() {
         let dict: JSONDict = [
-            "polymorphic_prop": "https://www.pinterest.com"
+            "polymorphic_prop": urlRFC3986
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -413,7 +420,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
             "id": 123,
             "first_name": "Rahul",
             "last_name": "Malik"
-        ], 
+        ],
         "user2": [
             "id": 456,
             "first_name": "Michael",
@@ -452,7 +459,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
                 "type": "user",
                 "first_name": "Rahul",
                 "last_name": "Malik"
-            ], 
+            ],
             "user_two": [
                 "id": 456,
                 "type": "user",
@@ -473,7 +480,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
                 "type": "user",
                 "first_name": "Rahul",
                 "last_name": "Malik"
-            ], 
+            ],
             [
                 "id": 456,
                 "type": "user",
