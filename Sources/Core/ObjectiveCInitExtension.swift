@@ -148,7 +148,7 @@ extension ObjCModelRenderer {
             case .boolean:
                 return ["\(propertyToAssign) = [\(rawObjectName) boolValue];"]
             case .string(format: .some(.uri)):
-                return ["\(propertyToAssign) = [NSURL URLWithString:\(rawObjectName)];"]
+                return ["\(propertyToAssign) = [NSURLComponents componentsWithString:\(rawObjectName)].URL;"]
             case .string(format: .some(.dateTime)):
                 return ["\(propertyToAssign) = [[NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)] transformedValue:\(rawObjectName)];"]
             case .reference(with: let ref):
@@ -232,7 +232,7 @@ extension ObjCModelRenderer {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
                     case .string(.some(.uri)):
-                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]] && [NSURL URLWithString:\(rawObjectName)] != nil") {
+                        return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSString class]] && [NSURLComponents componentsWithString:\(rawObjectName)].URL != nil") {
                             return transformToADTInit(renderPropertyInit(propertyToAssign, rawObjectName, schema: schema, firstName: firstName, counter: counter))
                         }
                     case .string(.some(.dateTime)):
