@@ -40,23 +40,23 @@ typedef NS_ENUM(NSInteger, PinInStock) {
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Pin : NSObject<NSCopying, NSSecureCoding>
-@property (nullable, nonatomic, copy, readonly) NSURL * url;
-@property (nonnull, nonatomic, copy, readonly) NSDate * createdAt;
 @property (nonnull, nonatomic, strong, readonly) NSDictionary<NSString *, User *> * creator;
-@property (nullable, nonatomic, strong, readonly) NSArray<PinAttributionObjects *> * attributionObjects;
 @property (nullable, nonatomic, strong, readonly) NSDictionary * visualSearchAttrs;
-@property (nullable, nonatomic, copy, readonly) NSString * note;
+@property (nonnull, nonatomic, copy, readonly) NSDate * createdAt;
+@property (nullable, nonatomic, copy, readonly) NSString * color;
 @property (nullable, nonatomic, strong, readonly) NSArray<NSDictionary *> * tags;
 @property (nonatomic, assign, readonly) PinInStock inStock;
-@property (nullable, nonatomic, copy, readonly) NSString * descriptionText;
-@property (nullable, nonatomic, copy, readonly) NSString * color;
-@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * attribution;
-@property (nullable, nonatomic, strong, readonly) Image * image;
-@property (nonnull, nonatomic, copy, readonly) NSString * identifier;
-@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * media;
-@property (nullable, nonatomic, copy, readonly) NSURL * link;
-@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
+@property (nullable, nonatomic, strong, readonly) NSArray<PinAttributionObjects *> * attributionObjects;
 @property (nullable, nonatomic, strong, readonly) Board * board;
+@property (nullable, nonatomic, copy, readonly) NSURL * url;
+@property (nullable, nonatomic, copy, readonly) NSURL * link;
+@property (nullable, nonatomic, copy, readonly) NSString * descriptionText;
+@property (nonnull, nonatomic, copy, readonly) NSString * identifier;
+@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
+@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * media;
+@property (nullable, nonatomic, copy, readonly) NSString * note;
+@property (nullable, nonatomic, strong, readonly) Image * image;
+@property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * attribution;
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
@@ -71,23 +71,23 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface PinBuilder : NSObject
-@property (nullable, nonatomic, copy, readwrite) NSURL * url;
-@property (nonnull, nonatomic, copy, readwrite) NSDate * createdAt;
 @property (nonnull, nonatomic, strong, readwrite) NSDictionary<NSString *, User *> * creator;
-@property (nullable, nonatomic, strong, readwrite) NSArray<PinAttributionObjects *> * attributionObjects;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary * visualSearchAttrs;
-@property (nullable, nonatomic, copy, readwrite) NSString * note;
+@property (nonnull, nonatomic, copy, readwrite) NSDate * createdAt;
+@property (nullable, nonatomic, copy, readwrite) NSString * color;
 @property (nullable, nonatomic, strong, readwrite) NSArray<NSDictionary *> * tags;
 @property (nonatomic, assign, readwrite) PinInStock inStock;
-@property (nullable, nonatomic, copy, readwrite) NSString * descriptionText;
-@property (nullable, nonatomic, copy, readwrite) NSString * color;
-@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * attribution;
-@property (nullable, nonatomic, strong, readwrite) Image * image;
-@property (nonnull, nonatomic, copy, readwrite) NSString * identifier;
-@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * media;
-@property (nullable, nonatomic, copy, readwrite) NSURL * link;
-@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
+@property (nullable, nonatomic, strong, readwrite) NSArray<PinAttributionObjects *> * attributionObjects;
 @property (nullable, nonatomic, strong, readwrite) Board * board;
+@property (nullable, nonatomic, copy, readwrite) NSURL * url;
+@property (nullable, nonatomic, copy, readwrite) NSURL * link;
+@property (nullable, nonatomic, copy, readwrite) NSString * descriptionText;
+@property (nonnull, nonatomic, copy, readwrite) NSString * identifier;
+@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
+@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * media;
+@property (nullable, nonatomic, copy, readwrite) NSString * note;
+@property (nullable, nonatomic, strong, readwrite) Image * image;
+@property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * attribution;
 - (instancetype)initWithModel:(Pin *)modelObject;
 - (Pin *)build;
 - (void)mergeWithModel:(Pin *)modelObject;

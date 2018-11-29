@@ -16,10 +16,11 @@ class ObjcTestSuite: XCTestCase {
     let urlRFC3986 = "http://google.com/path/to/greatness?query=parameters&another=one#fragment_life=jump"
 
     func testBasicObjectInitialization() {
-        guard let url = URLComponents(string: urlRFC3986)?.url else {
+        guard let _ = URLComponents(string: urlRFC3986)?.url else {
             XCTFail("Could not generate URL using Apple API!")
             return
         }
+
         let imageModelDictionary: JSONDict = [
             "height": 12,
             "width": 11,
@@ -39,7 +40,7 @@ class ObjcTestSuite: XCTestCase {
             "url": urlRFC3986
         ]
         let image = Image(modelDictionary: imageModelDictionary)
-        XCTAssertEqual(imageModelDictionary, image.dictionaryObjectRepresentation(), "Image dictionary representation should be the same as the model dictionary.")
+        XCTAssert(imageModelDictionary == image.dictionaryObjectRepresentation(), "Image dictionary representation should be the same as the model dictionary.")
 
         let userModelDictionary: JSONDict = [
             "id": 123,
@@ -54,11 +55,14 @@ class ObjcTestSuite: XCTestCase {
         ]
         let user = User(modelDictionary: userModelDictionary)
 
-        XCTAssertEqual(userModelDictionary, user.dictionaryObjectRepresentation(), "User dictionary representation should be the same as the model dictionary")
+        XCTAssert(userModelDictionary == user.dictionaryObjectRepresentation(), "User dictionary representation should be the same as the model dictionary")
     }
 }
 
 class ObjcDictionaryRepresentationTestSuite: XCTestCase {
+
+    // https://www.ietf.org/rfc/rfc3986.txt
+    let urlRFC3986 = "http://google.com/path/to/greatness?query=parameters&another=one#fragment_life=jump"
 
     func assertDictionaryRepresentation(
         _ input: JSONDict,

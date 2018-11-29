@@ -398,7 +398,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
         return self;
     }
     _bio = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"bio"];
-    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSDictionary class]]] forKey:@"counts"];
+    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
     _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
     _emailFrequency = [aDecoder decodeIntegerForKey:@"email_frequency"];
     _firstName = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"first_name"];

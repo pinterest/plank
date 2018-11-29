@@ -350,8 +350,8 @@ struct BoardDirtyProperties {
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (!(self = [super initWithCoder:aDecoder])) { return self; }
-    _contributors = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSSet class]]] forKey:@"contributors"];
-    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSDictionary class]]] forKey:@"counts"];
+    _contributors = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [User class]]] forKey:@"contributors"];
+    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
     _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
     _creator = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSString class], [NSDictionary class]]] forKey:@"creator"];
     _descriptionText = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
