@@ -1023,8 +1023,8 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                     if ([value isKindOfClass:[NSString class]] && [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value] != nil) {
                         self->_polymorphicProp = [EverythingPolymorphicProp  objectWithDate:[[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value]];
                     }
-                    if ([value isKindOfClass:[NSString class]] && [NSURL URLWithString:value] != nil) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithURL:[NSURL URLWithString:value]];
+                    if ([value isKindOfClass:[NSString class]] && [NSURLComponents componentsWithString:value].URL != nil) {
+                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithURL:[NSURLComponents componentsWithString:value].URL];
                     }
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp = 1;
@@ -1120,7 +1120,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             __unsafe_unretained id value = modelDictionary[@"uri_prop"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_uriProp = [NSURL URLWithString:value];
+                    self->_uriProp = [NSURLComponents componentsWithString:value].URL;
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertyUriProp = 1;
             }
@@ -1671,24 +1671,24 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _intProp = [aDecoder decodeIntegerForKey:@"int_prop"];
     _listPolymorphicValues = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@"list_polymorphic_values"];
     _listWithListAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSArray class]]] forKey:@"list_with_list_and_other_model_values"];
-    _listWithMapAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class], [NSArray class]]] forKey:@"list_with_map_and_other_model_values"];
+    _listWithMapAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSArray class], [NSDictionary class]]] forKey:@"list_with_map_and_other_model_values"];
     _listWithObjectValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSString class], [NSArray class]]] forKey:@"list_with_object_values"];
     _listWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSArray class]]] forKey:@"list_with_other_model_values"];
     _listWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSArray class]]] forKey:@"list_with_primitive_values"];
-    _mapPolymorphicValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [NSArray class], [NSDictionary class], [Image class], [Everything class], [Pin class], [User class]]] forKey:@"map_polymorphic_values"];
+    _mapPolymorphicValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [NSDictionary class], [User class], [Pin class], [NSArray class], [Everything class], [Image class]]] forKey:@"map_polymorphic_values"];
     _mapProp = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"map_prop"];
-    _mapWithListAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class], [NSArray class]]] forKey:@"map_with_list_and_other_model_values"];
+    _mapWithListAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSArray class], [NSDictionary class]]] forKey:@"map_with_list_and_other_model_values"];
     _mapWithMapAndOtherModelValues = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"map_with_map_and_other_model_values"];
-    _mapWithObjectValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"map_with_object_values"];
-    _mapWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class]]] forKey:@"map_with_other_model_values"];
-    _mapWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"map_with_primitive_values"];
+    _mapWithObjectValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSString class], [NSDictionary class]]] forKey:@"map_with_object_values"];
+    _mapWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSDictionary class]]] forKey:@"map_with_other_model_values"];
+    _mapWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSDictionary class]]] forKey:@"map_with_primitive_values"];
     _numberProp = [aDecoder decodeDoubleForKey:@"number_prop"];
     _otherModelProp = [aDecoder decodeObjectOfClass:[User class] forKey:@"other_model_prop"];
-    _polymorphicProp = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [NSDate class], [NSNumber class], [Image class], [Everything class], [NSURL class], [Pin class], [User class], [NSString class]]] forKey:@"polymorphic_prop"];
+    _polymorphicProp = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [NSDate class], [User class], [Pin class], [NSString class], [NSNumber class], [Everything class], [NSURL class], [Image class]]] forKey:@"polymorphic_prop"];
     _setProp = [aDecoder decodeObjectOfClass:[NSSet class] forKey:@"set_prop"];
-    _setPropWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [User class]]] forKey:@"set_prop_with_other_model_values"];
+    _setPropWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSSet class]]] forKey:@"set_prop_with_other_model_values"];
     _setPropWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSSet class]]] forKey:@"set_prop_with_primitive_values"];
-    _setPropWithValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [NSString class]]] forKey:@"set_prop_with_values"];
+    _setPropWithValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSString class], [NSSet class]]] forKey:@"set_prop_with_values"];
     _stringEnum = [aDecoder decodeIntegerForKey:@"string_enum"];
     _stringProp = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"string_prop"];
     _type = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"type"];

@@ -61,7 +61,7 @@ struct ImageDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"url"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_url = [NSURL URLWithString:value];
+                    self->_url = [NSURLComponents componentsWithString:value].URL;
                 }
                 self->_imageDirtyProperties.ImageDirtyPropertyUrl = 1;
             }

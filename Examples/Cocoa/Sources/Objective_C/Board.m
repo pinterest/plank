@@ -138,7 +138,7 @@ struct BoardDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"url"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_url = [NSURL URLWithString:value];
+                    self->_url = [NSURLComponents componentsWithString:value].URL;
                 }
                 self->_boardDirtyProperties.BoardDirtyPropertyUrl = 1;
             }
@@ -350,10 +350,10 @@ struct BoardDirtyProperties {
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (!(self = [super initWithCoder:aDecoder])) { return self; }
-    _contributors = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [User class]]] forKey:@"contributors"];
-    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
+    _contributors = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSSet class]]] forKey:@"contributors"];
+    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSDictionary class]]] forKey:@"counts"];
     _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
-    _creator = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"creator"];
+    _creator = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSString class], [NSDictionary class]]] forKey:@"creator"];
     _descriptionText = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
     _name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"];

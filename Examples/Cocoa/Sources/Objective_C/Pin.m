@@ -310,7 +310,7 @@ struct PinDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"link"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_link = [NSURL URLWithString:value];
+                    self->_link = [NSURLComponents componentsWithString:value].URL;
                 }
                 self->_pinDirtyProperties.PinDirtyPropertyLink = 1;
             }
@@ -364,7 +364,7 @@ struct PinDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"url"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_url = [NSURL URLWithString:value];
+                    self->_url = [NSURLComponents componentsWithString:value].URL;
                 }
                 self->_pinDirtyProperties.PinDirtyPropertyUrl = 1;
             }
@@ -708,21 +708,21 @@ struct PinDirtyProperties {
     if (!(self = [super init])) {
         return self;
     }
-    _attribution = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"attribution"];
-    _attributionObjects = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [User class], [NSArray class]]] forKey:@"attribution_objects"];
+    _attribution = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSString class], [NSDictionary class]]] forKey:@"attribution"];
+    _attributionObjects = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSArray class], [Board class]]] forKey:@"attribution_objects"];
     _board = [aDecoder decodeObjectOfClass:[Board class] forKey:@"board"];
     _color = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"color"];
-    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
+    _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSDictionary class]]] forKey:@"counts"];
     _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
-    _creator = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class]]] forKey:@"creator"];
+    _creator = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[User class], [NSDictionary class]]] forKey:@"creator"];
     _descriptionText = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
     _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
     _inStock = [aDecoder decodeIntegerForKey:@"in_stock"];
     _link = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"link"];
-    _media = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"media"];
+    _media = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSString class], [NSDictionary class]]] forKey:@"media"];
     _note = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"note"];
-    _tags = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSArray class]]] forKey:@"tags"];
+    _tags = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSArray class], [NSDictionary class]]] forKey:@"tags"];
     _url = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"url"];
     _visualSearchAttrs = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"visual_search_attrs"];
     _pinDirtyProperties.PinDirtyPropertyAttribution = [aDecoder decodeIntForKey:@"attribution_dirty_property"] & 0x1;
