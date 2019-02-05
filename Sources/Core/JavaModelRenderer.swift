@@ -64,7 +64,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         
         let privateConstructor = JavaIR.method([.private], "Builder(@NonNull " + self.className + " model)") {
             self.transitiveProperties.map { param, schemaObj in
-                "this." + param.snakeCaseToPropertyName() + " = model." + param.snakeCaseToPropertyName()
+                "this." + param.snakeCaseToPropertyName() + " = model." + param.snakeCaseToPropertyName() + ";"
             }
         }
         
@@ -75,7 +75,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let params = self.transitiveProperties.map { param, schemaObj in
             "this." + param.snakeCaseToPropertyName()
         }.joined(separator: ",\n")
-        return JavaIR.method([.public], "\(self.className) build()") {["return new " + self.className + "(", params,  ")"]}
+        return JavaIR.method([.public], "\(self.className) build()") {["return new " + self.className + "(", params,  ");"]}
     }
 
     func renderToBuilder() -> JavaIR.Method {
@@ -117,6 +117,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "java.util.Map",
                 "java.util.Set",
                 "java.util.List",
+                "java.util.Objects",
                 "java.lang.annotation.Retention",
                 "java.lang.annotation.RetentionPolicy",
                 "android.support.annotation.IntDef",
@@ -178,7 +179,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
         let modelClass = JavaIR.Root.classDecl(
             aClass: JavaIR.Class(
-                annotations: ["AutoTypeAdapter"],
+                annotations: [],
                 modifiers: [.public],
                 extends: nil,
                 implements: nil,
