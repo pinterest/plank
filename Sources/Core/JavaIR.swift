@@ -49,11 +49,12 @@ public struct JavaIR {
     }
 
     public struct Property {
+        let annotations: Set<String>
         let modifiers: JavaModifier
         let type: String
         let name: String
         func render() -> String {
-            return "\(modifiers.render()) \(type) \(name);"
+            return "\(annotations.map{ "@\($0)" }.joined(separator: " ")) \(modifiers.render()) \(type) \(name);"
         }
     }
 
