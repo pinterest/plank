@@ -91,7 +91,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderProperties(modifiers: JavaModifier = [.private]) -> [JavaIR.Property] {
         let props = self.transitiveProperties.map { param, schemaObj in
-            JavaIR.Property(annotations: [], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName())
+            JavaIR.Property(annotations: ["SerializedName(\"\(param)\")"], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName())
         }
         return props
     }
