@@ -86,7 +86,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let setters = self.transitiveProperties.map { param, schemaObj in
             JavaIR.method(modifiers, "Builder set\(param.snakeCaseToCamelCase())(\(self.typeFromSchema(param, schemaObj)) value)") {[
                 "this." + param.snakeCaseToPropertyName() + " = value;",
-                "_bits |= " + param.uppercased() + "_SET;",
+                "this._bits |= " + param.uppercased() + "_SET;",
                 "return this;"
             ]}
         }
