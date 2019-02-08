@@ -28,7 +28,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         }
     }
     
-    func renderEquals() -> JavaIR.Method {
+    func renderHashCode() -> JavaIR.Method {
         let bodyHashCode = self.transitiveProperties.map { param, schemaObj in
             param.snakeCaseToPropertyName()
             }.joined(separator: ",\n")
@@ -39,7 +39,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         }
     }
     
-    func renderHashCode() -> JavaIR.Method {
+    func renderEquals() -> JavaIR.Method {
         let bodyEquals = self.transitiveProperties.map { param, schemaObj in
             "Objects.equals(this." + param.snakeCaseToPropertyName() + ", that." + param.snakeCaseToPropertyName() + ")"
             }.joined(separator: " &&\n")
