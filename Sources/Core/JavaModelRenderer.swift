@@ -125,6 +125,15 @@ public struct JavaModelRenderer: JavaFileRenderer {
         return JavaIR.method([.public], "\(self.className) build()") {["return new " + self.className + "(", params, ");"]}
     }
 
+    func renderBuilderGetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
+        let getters = self.transitiveProperties.map { param, schemaObj in
+            JavaIR.method(modifiers, self.typeFromSchema(param, schemaObj) + " get" + param.snakeCaseToCapitalizedPropertyName() + "()") {[
+                "return this." + param.snakeCaseToPropertyName() + ";"
+                ]}
+        }
+        return getters
+    }
+    
     func renderBuilderSetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
         let setters = self.transitiveProperties.map { param, schemaObj in
             JavaIR.method(modifiers, "Builder set\(param.snakeCaseToCamelCase())(\(self.typeFromSchema(param, schemaObj)) value)") {[
@@ -222,7 +231,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             extends: nil,
             implements: nil,
             name: "Builder",
-            methods: self.renderBuilderConstructors() + self.renderBuilderSetters() + [
+            methods: self.renderBuilderConstructors() + self.renderBuilderSetters() + self.renderBuilderGetters() + [
                 self.renderBuilderBuild(),
                 self.renderBuilderMerge()
             ],
