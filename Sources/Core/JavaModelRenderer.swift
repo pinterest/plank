@@ -54,7 +54,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
     
     func renderBuilder() -> JavaIR.Method {
-        return JavaIR.method([.public, .static], "Builder builder()") {[
+        return JavaIR.method([.public, .static], self.className + ".Builder builder()") {[
             "return new \(className).Builder();"
         ]}
     }
@@ -79,7 +79,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
 
     func renderToBuilder() -> JavaIR.Method {
-        return JavaIR.method([.public], "Builder toBuilder()") {["return new Builder(this);"]}
+        return JavaIR.method([.public], self.className + ".Builder toBuilder()") {["return new " + self.className + ".Builder(this);"]}
     }
 
     func renderBuilderSetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
@@ -93,6 +93,16 @@ public struct JavaModelRenderer: JavaFileRenderer {
         return setters
     }
 
+    func renderBuilderMerge() -> JavaIR.Method {
+        let body = (self.transitiveProperties.map { param, schemaObj in
+            "if (model.get" + param.snakeCaseToCapitalizedPropertyName() + "IsSet()) {\n" +
+                "    this." + param.snakeCaseToPropertyName() + " = model." + param.snakeCaseToPropertyName() + ";\n" +
+            "}"
+        })
+        
+        return JavaIR.method([.public], self.className + ".Builder mergeWith(" + self.className + " model)") { body }
+    }
+    
     func renderBuilderProperties(modifiers: JavaModifier = [.private]) -> [JavaIR.Property] {
         let props = self.transitiveProperties.map { param, schemaObj in
             JavaIR.Property(annotations: ["SerializedName(\"\(param)\")"], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName(), initialValue: "")
@@ -136,6 +146,12 @@ public struct JavaModelRenderer: JavaFileRenderer {
             ]}
         }
         return getters
+    }
+    
+    func renderModelMerge() -> JavaIR.Method {
+        return JavaIR.method([.public], self.className + " mergeWith(" + self.className + " model)") {[
+            "return toBuilder().mergeWith(model).build();"
+        ]}
     }
 
     func renderRoots() -> [JavaIR.Root] {
@@ -205,7 +221,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
             implements: nil,
             name: "Builder",
             methods: self.renderBuilderConstructors() + self.renderBuilderSetters() + [
-                self.renderBuilderBuild()
+                self.renderBuilderBuild(),
+                self.renderBuilderMerge()
             ],
             enums: [],
             innerClasses: [],
@@ -223,6 +240,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                     self.renderConstructor(),
                     self.renderBuilder(),
                     self.renderToBuilder(),
+                    self.renderModelMerge(),
                     self.renderEquals(),
                     self.renderHashCode()] +
                     self.renderModelGetters() +
