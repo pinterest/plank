@@ -54,17 +54,17 @@ public struct JavaIR {
         let type: String
         let name: String
         let initialValue: String
-        
+
         func render() -> String {
-            var prop = "\(annotations.map{ "@\($0)" }.joined(separator: " ")) \(modifiers.render()) \(type) \(name)"
-            if (initialValue.count > 0) {
+            var prop = "\(annotations.map { "@\($0)" }.joined(separator: " ")) \(modifiers.render()) \(type) \(name)"
+            if initialValue.count > 0 {
                 prop.append(" = " + initialValue)
             }
             prop.append(";")
             return prop
         }
     }
-    
+
     static func method(annotations: Set<String> = [], _ modifiers: JavaModifier, _ signature: String, body: () -> [String]) -> JavaIR.Method {
         return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature)
     }
