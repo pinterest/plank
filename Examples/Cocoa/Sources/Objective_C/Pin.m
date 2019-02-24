@@ -709,7 +709,7 @@ struct PinDirtyProperties {
         return self;
     }
     _attribution = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"attribution"];
-    _attributionObjects = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [User class], [NSArray class]]] forKey:@"attribution_objects"];
+    _attributionObjects = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [NSArray class], [User class]]] forKey:@"attribution_objects"];
     _board = [aDecoder decodeObjectOfClass:[Board class] forKey:@"board"];
     _color = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"color"];
     _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
@@ -722,7 +722,7 @@ struct PinDirtyProperties {
     _link = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"link"];
     _media = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"media"];
     _note = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"note"];
-    _tags = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSArray class]]] forKey:@"tags"];
+    _tags = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSArray class], [NSDictionary class]]] forKey:@"tags"];
     _url = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"url"];
     _visualSearchAttrs = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"visual_search_attrs"];
     _pinDirtyProperties.PinDirtyPropertyAttribution = [aDecoder decodeIntForKey:@"attribution_dirty_property"] & 0x1;

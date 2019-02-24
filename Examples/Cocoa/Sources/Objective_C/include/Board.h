@@ -16,13 +16,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Board : Model
-@property (nullable, nonatomic, copy, readonly) NSString * name;
-@property (nonnull, nonatomic, strong, readonly) Image * image;
+@property (nullable, nonatomic, strong, readonly) NSSet<User *> * contributors;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readonly) NSDate * createdAt;
-@property (nullable, nonatomic, strong, readonly) NSSet<User *> * contributors;
-@property (nullable, nonatomic, copy, readonly) NSString * descriptionText;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * creator;
+@property (nullable, nonatomic, copy, readonly) NSString * descriptionText;
+@property (nonnull, nonatomic, strong, readonly) Image * image;
+@property (nullable, nonatomic, copy, readonly) NSString * name;
 @property (nullable, nonatomic, copy, readonly) NSURL * url;
 - (instancetype)initWithBuilder:(BoardBuilder *)builder;
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(BoardBuilder *builder))block;
@@ -32,13 +32,13 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface BoardBuilder : ModelBuilder
-@property (nullable, nonatomic, copy, readwrite) NSString * name;
-@property (nonnull, nonatomic, strong, readwrite) Image * image;
+@property (nullable, nonatomic, strong, readwrite) NSSet<User *> * contributors;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readwrite) NSDate * createdAt;
-@property (nullable, nonatomic, strong, readwrite) NSSet<User *> * contributors;
-@property (nullable, nonatomic, copy, readwrite) NSString * descriptionText;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * creator;
+@property (nullable, nonatomic, copy, readwrite) NSString * descriptionText;
+@property (nonnull, nonatomic, strong, readwrite) Image * image;
+@property (nullable, nonatomic, copy, readwrite) NSString * name;
 @property (nullable, nonatomic, copy, readwrite) NSURL * url;
 - (instancetype)initWithModel:(Board *)modelObject;
 - (Board *)build;

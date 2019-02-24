@@ -24,16 +24,16 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str);
 NS_ASSUME_NONNULL_BEGIN
 
 @interface User : NSObject<NSCopying, NSSecureCoding>
-@property (nullable, nonatomic, copy, readonly) NSString * username;
-@property (nullable, nonatomic, copy, readonly) NSString * lastName;
-@property (nullable, nonatomic, copy, readonly) NSString * identifier;
-@property (nullable, nonatomic, strong, readonly) Image * image;
+@property (nullable, nonatomic, copy, readonly) NSString * bio;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readonly) NSDate * createdAt;
-@property (nullable, nonatomic, copy, readonly) NSString * firstName;
-@property (nullable, nonatomic, copy, readonly) NSString * type;
-@property (nullable, nonatomic, copy, readonly) NSString * bio;
 @property (nonatomic, assign, readonly) UserEmailFrequency emailFrequency;
+@property (nullable, nonatomic, copy, readonly) NSString * firstName;
+@property (nullable, nonatomic, copy, readonly) NSString * identifier;
+@property (nullable, nonatomic, strong, readonly) Image * image;
+@property (nullable, nonatomic, copy, readonly) NSString * lastName;
+@property (nullable, nonatomic, copy, readonly) NSString * type;
+@property (nullable, nonatomic, copy, readonly) NSString * username;
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
@@ -48,16 +48,16 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface UserBuilder : NSObject
-@property (nullable, nonatomic, copy, readwrite) NSString * username;
-@property (nullable, nonatomic, copy, readwrite) NSString * lastName;
-@property (nullable, nonatomic, copy, readwrite) NSString * identifier;
-@property (nullable, nonatomic, strong, readwrite) Image * image;
+@property (nullable, nonatomic, copy, readwrite) NSString * bio;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readwrite) NSDate * createdAt;
-@property (nullable, nonatomic, copy, readwrite) NSString * firstName;
-@property (nullable, nonatomic, copy, readwrite) NSString * type;
-@property (nullable, nonatomic, copy, readwrite) NSString * bio;
 @property (nonatomic, assign, readwrite) UserEmailFrequency emailFrequency;
+@property (nullable, nonatomic, copy, readwrite) NSString * firstName;
+@property (nullable, nonatomic, copy, readwrite) NSString * identifier;
+@property (nullable, nonatomic, strong, readwrite) Image * image;
+@property (nullable, nonatomic, copy, readwrite) NSString * lastName;
+@property (nullable, nonatomic, copy, readwrite) NSString * type;
+@property (nullable, nonatomic, copy, readwrite) NSString * username;
 - (instancetype)initWithModel:(User *)modelObject;
 - (User *)build;
 - (void)mergeWithModel:(User *)modelObject;
