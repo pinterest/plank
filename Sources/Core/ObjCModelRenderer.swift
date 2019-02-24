@@ -214,7 +214,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     (.publicM, self.renderMergeWithModelWithInitType()),
                     (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary())
                 ],
-                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) },
+                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
                 protocols: protocols
             ),
             ObjCIR.Root.classDecl(

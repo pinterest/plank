@@ -122,7 +122,7 @@ extension ObjCFileRenderer {
             case .integer:
                 return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
             case .string, .map, .array, .set, .oneOf, .reference, .object:
-                let refObjectClasses = referencedObjectClasses(schema).map { "[\($0) class]" }
+                let refObjectClasses = referencedObjectClasses(schema).map { "[\($0) class]" }.sorted()
                 let refObjectClassesString = refObjectClasses.count == 1 ? refObjectClasses.joined(separator: ",") : "[NSSet setWithArray:\(refObjectClasses.objcLiteral())]"
                 if refObjectClasses.count == 0 { fatalError("Can't determine class for decode for \(schema)") }
                 if refObjectClasses.count == 1 {

@@ -319,7 +319,7 @@ public struct ObjCIR {
 
                 return [
                     "@interface \(className) : \(superClass)",
-                    properties.map { (param, typeName, propSchema, access) in
+                    properties.sorted { $0.0 < $1.0 }.map { (param, typeName, propSchema, access) in
                         "@property (\(nullability(propSchema))nonatomic, \(propSchema.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
                     methods.filter { visibility, _ in visibility == .publicM }
@@ -368,7 +368,7 @@ public struct ObjCIR {
                 return [
                     "@implementation \(className)",
                     methods.flatMap {$1.render()}.joined(separator: "\n"),
-                    protocols.flatMap({ (protocolName, methods) -> [String] in
+                    protocols.sorted { $0.0 < $1.0 }.flatMap({ (protocolName, methods) -> [String] in
                         return ["#pragma mark - \(protocolName)"] + methods.flatMap {$0.render()}
                     }).joined(separator: "\n"),
                     "@end"
