@@ -22,6 +22,9 @@ test: build
 integration_test: build
 	./Utility/integration-test.sh
 
+output_stability_test: build
+	./Utility/stable-output-test.sh
+
 archive:
 	swift build -c release -Xswiftc -static-stdlib --disable-sandbox
 

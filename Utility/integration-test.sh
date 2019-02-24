@@ -34,6 +34,3 @@ if [ -x "$(command -v flow)" ]; then
   flow
   cd "${ROOT_DIR}"
 fi
-
-# Verify output stabilty
-Utility/stable-output-test.sh
