@@ -138,6 +138,35 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)mergeWithModel:(Everything *)modelObject;
 - (instancetype)mergeWithModel:(Everything *)modelObject initType:(PlankModelInitType)initType;
 - (NSDictionary *)dictionaryObjectRepresentation;
+- (BOOL)isArrayPropSet;
+- (BOOL)isBooleanPropSet;
+- (BOOL)isDatePropSet;
+- (BOOL)isIntEnumSet;
+- (BOOL)isIntPropSet;
+- (BOOL)isListPolymorphicValuesSet;
+- (BOOL)isListWithListAndOtherModelValuesSet;
+- (BOOL)isListWithMapAndOtherModelValuesSet;
+- (BOOL)isListWithObjectValuesSet;
+- (BOOL)isListWithOtherModelValuesSet;
+- (BOOL)isListWithPrimitiveValuesSet;
+- (BOOL)isMapPolymorphicValuesSet;
+- (BOOL)isMapPropSet;
+- (BOOL)isMapWithListAndOtherModelValuesSet;
+- (BOOL)isMapWithMapAndOtherModelValuesSet;
+- (BOOL)isMapWithObjectValuesSet;
+- (BOOL)isMapWithOtherModelValuesSet;
+- (BOOL)isMapWithPrimitiveValuesSet;
+- (BOOL)isNumberPropSet;
+- (BOOL)isOtherModelPropSet;
+- (BOOL)isPolymorphicPropSet;
+- (BOOL)isSetPropSet;
+- (BOOL)isSetPropWithOtherModelValuesSet;
+- (BOOL)isSetPropWithPrimitiveValuesSet;
+- (BOOL)isSetPropWithValuesSet;
+- (BOOL)isStringEnumSet;
+- (BOOL)isStringPropSet;
+- (BOOL)isTypeSet;
+- (BOOL)isUriPropSet;
 @end
 
 @interface EverythingBuilder : NSObject

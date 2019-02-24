@@ -182,6 +182,18 @@ struct ImageDirtyProperties {
     }
     return dict;
 }
+- (BOOL)isHeightSet
+{
+    return _imageDirtyProperties.ImageDirtyPropertyHeight == 1;
+}
+- (BOOL)isUrlSet
+{
+    return _imageDirtyProperties.ImageDirtyPropertyUrl == 1;
+}
+- (BOOL)isWidthSet
+{
+    return _imageDirtyProperties.ImageDirtyPropertyWidth == 1;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {

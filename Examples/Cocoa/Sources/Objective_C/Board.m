@@ -337,6 +337,38 @@ struct BoardDirtyProperties {
     }
     return dict;
 }
+- (BOOL)isContributorsSet
+{
+    return _boardDirtyProperties.BoardDirtyPropertyContributors == 1;
+}
+- (BOOL)isCountsSet
+{
+    return _boardDirtyProperties.BoardDirtyPropertyCounts == 1;
+}
+- (BOOL)isCreatedAtSet
+{
+    return _boardDirtyProperties.BoardDirtyPropertyCreatedAt == 1;
+}
+- (BOOL)isCreatorSet
+{
+    return _boardDirtyProperties.BoardDirtyPropertyCreator == 1;
+}
+- (BOOL)isDescriptionTextSet
+{
+    return _boardDirtyProperties.BoardDirtyPropertyDescriptionText == 1;
+}
+- (BOOL)isImageSet
+{
+    return _boardDirtyProperties.BoardDirtyPropertyImage == 1;
+}
+- (BOOL)isNameSet
+{
+    return _boardDirtyProperties.BoardDirtyPropertyName == 1;
+}
+- (BOOL)isUrlSet
+{
+    return _boardDirtyProperties.BoardDirtyPropertyUrl == 1;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {

@@ -693,6 +693,74 @@ struct PinDirtyProperties {
     }
     return dict;
 }
+- (BOOL)isAttributionSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyAttribution == 1;
+}
+- (BOOL)isAttributionObjectsSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyAttributionObjects == 1;
+}
+- (BOOL)isBoardSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyBoard == 1;
+}
+- (BOOL)isColorSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyColor == 1;
+}
+- (BOOL)isCountsSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyCounts == 1;
+}
+- (BOOL)isCreatedAtSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyCreatedAt == 1;
+}
+- (BOOL)isCreatorSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyCreator == 1;
+}
+- (BOOL)isDescriptionTextSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyDescriptionText == 1;
+}
+- (BOOL)isIdentifierSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyIdentifier == 1;
+}
+- (BOOL)isImageSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyImage == 1;
+}
+- (BOOL)isInStockSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyInStock == 1;
+}
+- (BOOL)isLinkSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyLink == 1;
+}
+- (BOOL)isMediaSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyMedia == 1;
+}
+- (BOOL)isNoteSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyNote == 1;
+}
+- (BOOL)isTagsSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyTags == 1;
+}
+- (BOOL)isUrlSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyUrl == 1;
+}
+- (BOOL)isVisualSearchAttrsSet
+{
+    return _pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs == 1;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {

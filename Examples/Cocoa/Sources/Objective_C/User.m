@@ -382,6 +382,46 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     }
     return dict;
 }
+- (BOOL)isBioSet
+{
+    return _userDirtyProperties.UserDirtyPropertyBio == 1;
+}
+- (BOOL)isCountsSet
+{
+    return _userDirtyProperties.UserDirtyPropertyCounts == 1;
+}
+- (BOOL)isCreatedAtSet
+{
+    return _userDirtyProperties.UserDirtyPropertyCreatedAt == 1;
+}
+- (BOOL)isEmailFrequencySet
+{
+    return _userDirtyProperties.UserDirtyPropertyEmailFrequency == 1;
+}
+- (BOOL)isFirstNameSet
+{
+    return _userDirtyProperties.UserDirtyPropertyFirstName == 1;
+}
+- (BOOL)isIdentifierSet
+{
+    return _userDirtyProperties.UserDirtyPropertyIdentifier == 1;
+}
+- (BOOL)isImageSet
+{
+    return _userDirtyProperties.UserDirtyPropertyImage == 1;
+}
+- (BOOL)isLastNameSet
+{
+    return _userDirtyProperties.UserDirtyPropertyLastName == 1;
+}
+- (BOOL)isTypeSet
+{
+    return _userDirtyProperties.UserDirtyPropertyType == 1;
+}
+- (BOOL)isUsernameSet
+{
+    return _userDirtyProperties.UserDirtyPropertyUsername == 1;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {

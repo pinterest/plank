@@ -29,6 +29,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isEqualToBoard:(Board *)anObject;
 - (instancetype)mergeWithModel:(Board *)modelObject;
 - (instancetype)mergeWithModel:(Board *)modelObject initType:(PlankModelInitType)initType;
+- (BOOL)isContributorsSet;
+- (BOOL)isCountsSet;
+- (BOOL)isCreatedAtSet;
+- (BOOL)isCreatorSet;
+- (BOOL)isDescriptionTextSet;
+- (BOOL)isImageSet;
+- (BOOL)isNameSet;
+- (BOOL)isUrlSet;
 @end
 
 @interface BoardBuilder : ModelBuilder

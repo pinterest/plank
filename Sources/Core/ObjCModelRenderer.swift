@@ -112,6 +112,14 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
       }
     }
 
+    func renderIsSetMethods() -> [ObjCIR.Method] {
+        return self.properties.map { (param, prop)  in
+            ObjCIR.method("- (BOOL)is\(param.snakeCaseToCamelCase())Set") {[
+                "return _\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) == 1;"
+            ]}
+        }
+    }
+
     func renderRoots() -> [ObjCIR.Root] {
         let properties: [(Parameter, SchemaObjectProperty)] = rootSchema.properties.map { $0 } // Convert [String:Schema] -> [(String, Schema)]
 
@@ -213,7 +221,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     (.publicM, self.renderMergeWithModel()),
                     (.publicM, self.renderMergeWithModelWithInitType()),
                     (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary())
-                ],
+                ] + self.renderIsSetMethods().map { (.publicM, $0) },
                 properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
                 protocols: protocols
             ),
