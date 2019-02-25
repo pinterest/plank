@@ -144,6 +144,10 @@ struct ModelDirtyProperties {
     }
     return dict;
 }
+- (BOOL)isIdentifierSet
+{
+    return _modelDirtyProperties.ModelDirtyPropertyIdentifier == 1;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {

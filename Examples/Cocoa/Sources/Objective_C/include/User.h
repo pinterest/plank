@@ -45,6 +45,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)mergeWithModel:(User *)modelObject;
 - (instancetype)mergeWithModel:(User *)modelObject initType:(PlankModelInitType)initType;
 - (NSDictionary *)dictionaryObjectRepresentation;
+- (BOOL)isBioSet;
+- (BOOL)isCountsSet;
+- (BOOL)isCreatedAtSet;
+- (BOOL)isEmailFrequencySet;
+- (BOOL)isFirstNameSet;
+- (BOOL)isIdentifierSet;
+- (BOOL)isImageSet;
+- (BOOL)isLastNameSet;
+- (BOOL)isTypeSet;
+- (BOOL)isUsernameSet;
 @end
 
 @interface UserBuilder : NSObject

@@ -68,6 +68,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)mergeWithModel:(Pin *)modelObject;
 - (instancetype)mergeWithModel:(Pin *)modelObject initType:(PlankModelInitType)initType;
 - (NSDictionary *)dictionaryObjectRepresentation;
+- (BOOL)isAttributionSet;
+- (BOOL)isAttributionObjectsSet;
+- (BOOL)isBoardSet;
+- (BOOL)isColorSet;
+- (BOOL)isCountsSet;
+- (BOOL)isCreatedAtSet;
+- (BOOL)isCreatorSet;
+- (BOOL)isDescriptionTextSet;
+- (BOOL)isIdentifierSet;
+- (BOOL)isImageSet;
+- (BOOL)isInStockSet;
+- (BOOL)isLinkSet;
+- (BOOL)isMediaSet;
+- (BOOL)isNoteSet;
+- (BOOL)isTagsSet;
+- (BOOL)isUrlSet;
+- (BOOL)isVisualSearchAttrsSet;
 @end
 
 @interface PinBuilder : NSObject

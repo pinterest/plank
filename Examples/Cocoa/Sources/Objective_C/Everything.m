@@ -1649,6 +1649,122 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     return dict;
 }
+- (BOOL)isArrayPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyArrayProp == 1;
+}
+- (BOOL)isBooleanPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyBooleanProp == 1;
+}
+- (BOOL)isDatePropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyDateProp == 1;
+}
+- (BOOL)isIntEnumSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyIntEnum == 1;
+}
+- (BOOL)isIntPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyIntProp == 1;
+}
+- (BOOL)isListPolymorphicValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues == 1;
+}
+- (BOOL)isListWithListAndOtherModelValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues == 1;
+}
+- (BOOL)isListWithMapAndOtherModelValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues == 1;
+}
+- (BOOL)isListWithObjectValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues == 1;
+}
+- (BOOL)isListWithOtherModelValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyListWithOtherModelValues == 1;
+}
+- (BOOL)isListWithPrimitiveValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyListWithPrimitiveValues == 1;
+}
+- (BOOL)isMapPolymorphicValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyMapPolymorphicValues == 1;
+}
+- (BOOL)isMapPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyMapProp == 1;
+}
+- (BOOL)isMapWithListAndOtherModelValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues == 1;
+}
+- (BOOL)isMapWithMapAndOtherModelValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues == 1;
+}
+- (BOOL)isMapWithObjectValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues == 1;
+}
+- (BOOL)isMapWithOtherModelValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues == 1;
+}
+- (BOOL)isMapWithPrimitiveValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues == 1;
+}
+- (BOOL)isNumberPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyNumberProp == 1;
+}
+- (BOOL)isOtherModelPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyOtherModelProp == 1;
+}
+- (BOOL)isPolymorphicPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp == 1;
+}
+- (BOOL)isSetPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertySetProp == 1;
+}
+- (BOOL)isSetPropWithOtherModelValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertySetPropWithOtherModelValues == 1;
+}
+- (BOOL)isSetPropWithPrimitiveValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertySetPropWithPrimitiveValues == 1;
+}
+- (BOOL)isSetPropWithValuesSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues == 1;
+}
+- (BOOL)isStringEnumSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyStringEnum == 1;
+}
+- (BOOL)isStringPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyStringProp == 1;
+}
+- (BOOL)isTypeSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyType == 1;
+}
+- (BOOL)isUriPropSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyUriProp == 1;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {

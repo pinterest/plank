@@ -49,6 +49,45 @@ class ObjcTestSuite: XCTestCase {
 
         XCTAssert(userModelDictionary == user.dictionaryObjectRepresentation(), "User dictionary representation should be the same as the model dictionary")
     }
+
+    func testIsSetWithSetProperty() {
+        // Test that properties which are set to values are reported as set
+        let imageModelDictionary: JSONDict = [
+            "height": 12,
+            "width": 11,
+            "url": "http://google.com"
+        ]
+        let image = Image(modelDictionary: imageModelDictionary)
+        // All properties should be set
+        XCTAssertTrue(image.isHeightSet())
+        XCTAssertTrue(image.isWidthSet())
+        XCTAssertTrue(image.isUrlSet())
+    }
+
+    func testIsSetWithUnsetProperty() {
+        // Test that properties which have not been set to a value are reported as unset
+        let imageModelDictionary: JSONDict = [
+            "height": 12,
+            "width": 11,
+        ]
+        let image = Image(modelDictionary: imageModelDictionary)
+        // Set properties
+        XCTAssertTrue(image.isHeightSet())
+        XCTAssertTrue(image.isWidthSet())
+        // Unset properties
+        XCTAssertFalse(image.isUrlSet())
+    }
+
+    func testIsSetWithNullValue() {
+        // Test that properties which are set to null values are reported as set
+        let imageModelDictionary: JSONDict = [
+            "height": 12,
+            "width": 11,
+            "url": NSNull()
+        ]
+        let image = Image(modelDictionary: imageModelDictionary)
+        XCTAssertTrue(image.isUrlSet())
+    }
 }
 
 class ObjcDictionaryRepresentationTestSuite: XCTestCase {

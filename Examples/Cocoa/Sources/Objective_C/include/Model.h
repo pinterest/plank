@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)mergeWithModel:(Model *)modelObject;
 - (instancetype)mergeWithModel:(Model *)modelObject initType:(PlankModelInitType)initType;
 - (NSDictionary *)dictionaryObjectRepresentation;
+- (BOOL)isIdentifierSet;
 @end
 
 @interface ModelBuilder : NSObject
