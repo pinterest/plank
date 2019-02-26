@@ -17,5 +17,6 @@ swift_library(
 
 swift_binary(
     name = "plank",
-    deps = [":PlankLib"]
+    deps = [":PlankLib"],
+    visibility = ["//visibility:public"],
 )
