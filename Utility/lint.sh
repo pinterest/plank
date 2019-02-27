@@ -1,8 +1,7 @@
 #!/bin/sh
 
 if which swiftlint >/dev/null; then
-    swiftlint autocorrect
-    LINT_ERRS=`swiftlint lint --reporter emoji --quiet`
+    LINT_ERRS=`swift run swiftlint lint --reporter emoji --quiet`
     if [[ $LINT_ERRS != "" ]]; then
         echo "Error: Fix lint errors from swiftlint"
         echo $LINT_ERRS

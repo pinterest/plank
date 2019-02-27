@@ -44,7 +44,7 @@ import Foundation
 prefix operator -->
 
 prefix func --> (strs: [String]) -> String {
-    return strs.flatMap { $0.components(separatedBy: "\n").map {$0.indent() } }
+    return strs.flatMap { $0.components(separatedBy: "\n").map { $0.indent() } }
         .joined(separator: "\n")
 }
 
@@ -57,7 +57,7 @@ prefix func --> (body: () -> [String]) -> String {
 // TODO: Find a way to separate this by language since the reserved keywords will differ.
 let objectiveCReservedWordReplacements = [
     "description": "description_text",
-    "id": "identifier"
+    "id": "identifier",
 ]
 
 let objectiveCReservedWords = Set<String>([
@@ -134,13 +134,13 @@ let objectiveCReservedWords = Set<String>([
     "unsigned",
     "void",
     "volatile",
-    "while"
+    "while",
 ])
 
 extension String {
     func indent() -> String {
         // We indent with tabs and in a post process the tabs are changed to a specific number of spaces
-        return "\t"  + self
+        return "\t" + self
     }
 
     /// All components separated by _ will be capitalized including the first one
@@ -152,7 +152,7 @@ extension String {
         }
 
         let components = str.components(separatedBy: "_")
-        let name = components.map { return $0.uppercaseFirst }
+        let name = components.map { $0.uppercaseFirst }
         let formattedName = name.joined(separator: "")
         if objectiveCReservedWords.contains(formattedName) {
             return "\(formattedName)Property"
@@ -174,13 +174,13 @@ extension String {
 
         for (idx, component) in components.enumerated() {
             // Hack: Force URL's to be uppercase if they appear
-            if idx != 0 && components.count > 1 && component == "url" {
+            if idx != 0, components.count > 1, component == "url" {
                 name += component.uppercased()
                 continue
             }
 
             if idx != 0 {
-                name +=	component.uppercaseFirst
+                name += component.uppercaseFirst
             } else {
                 name += component.lowercaseFirst
             }
@@ -194,14 +194,14 @@ extension String {
     }
 
     func snakeCaseToCapitalizedPropertyName() -> String {
-        let formattedPropName = self.snakeCaseToPropertyName()
+        let formattedPropName = snakeCaseToPropertyName()
         let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercased()
         return capitalizedFirstLetter + String(formattedPropName.dropFirst())
     }
 
     /// Get the last n characters of a string
     func suffixSubstring(_ length: Int) -> String {
-        let index = self.index(self.endIndex, offsetBy: -length)
+        let index = self.index(endIndex, offsetBy: -length)
         return String(self[index...])
     }
 

@@ -18,7 +18,7 @@ class FileSchemaLoader: SchemaLoader {
     var refs: [URL: Schema]
 
     init() {
-        self.refs = [URL: Schema]()
+        refs = [URL: Schema]()
     }
 
     func loadSchema(_ schemaUrl: URL) -> Schema {
@@ -27,7 +27,7 @@ class FileSchemaLoader: SchemaLoader {
         }
 
         // Load from local file
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: schemaUrl.path))  else {
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: schemaUrl.path)) else {
             fatalError("Error loading or parsing schema at URL: \(schemaUrl)")
         }
 

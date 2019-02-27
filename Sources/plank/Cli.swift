@@ -6,8 +6,8 @@
 //  Copyright © 2015 Rahul Malik. All rights reserved.
 //
 
-import Foundation
 import Core
+import Foundation
 
 protocol HelpCommandOutput {
     static func printHelp() -> String
@@ -21,10 +21,10 @@ enum FlagOptions: String {
     case noRecursive = "no_recursive"
     case noRuntime = "no_runtime"
     case onlyRuntime = "only_runtime"
-    case indent = "indent"
-    case lang = "lang"
-    case help = "help"
-    case version = "version"
+    case indent
+    case lang
+    case help
+    case version
 
     func needsArgument() -> Bool {
         switch self {
@@ -60,13 +60,12 @@ extension FlagOptions: HelpCommandOutput {
             "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names",
             "",
             "    Java:",
-            "    --\(FlagOptions.javaPackageName.rawValue) - The package name to associate with generated Java sources"
+            "    --\(FlagOptions.javaPackageName.rawValue) - The package name to associate with generated Java sources",
         ].joined(separator: "\n")
     }
 }
 
 func parseFlag(arguments: [String]) -> ([FlagOptions: String], [String])? {
-
     guard let someFlag = (arguments.first.map {
         $0.components(separatedBy: "=")[0]
     }.flatMap { arg in
@@ -86,19 +85,19 @@ func parseFlag(arguments: [String]) -> ([FlagOptions: String], [String])? {
             assert(flagComponents.count == 2, "Error: Invalid flag declaration: Too many = signs")
             return (
                 [nextFlag: flagComponents[1]],
-                Array(arguments[1..<arguments.count])
+                Array(arguments[1 ..< arguments.count])
             )
         } else {
             assert(arguments.count >= 2, "Error: Invalid flag declaration: No value for \(nextFlag.rawValue)")
             return (
                 [nextFlag: arguments[1]],
-                Array(arguments[2..<arguments.count])
+                Array(arguments[2 ..< arguments.count])
             )
         }
     } else {
         return (
             [nextFlag: ""],
-            Array(arguments[1..<arguments.count])
+            Array(arguments[1 ..< arguments.count])
         )
     }
 }
@@ -107,10 +106,10 @@ func parseFlags(fromArguments arguments: [String]) -> ([FlagOptions: String], [S
     guard !arguments.isEmpty else { return ([:], arguments) }
 
     if let (flagDict, remainingArgs) = parseFlag(arguments: arguments) {
-        if remainingArgs.count > 0 {
+        if !remainingArgs.isEmpty {
             // recursive
             let (remainingFlags, extraArgs) = parseFlags(fromArguments: remainingArgs)
-            if remainingFlags.count == 0 {
+            if remainingFlags.isEmpty {
                 return (flagDict, extraArgs)
             }
             var mutableFlags = flagDict
@@ -124,7 +123,6 @@ func parseFlags(fromArguments arguments: [String]) -> ([FlagOptions: String], [S
 }
 
 func handleGenerateCommand(withArguments arguments: [String]) {
-
     let (flags, args) = parseFlags(fromArguments: arguments)
 
     if flags[.help] != nil {
@@ -133,8 +131,8 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     }
 
     if flags[.version] != nil {
-	    handleVersionCommand()
-	    return
+        handleVersionCommand()
+        return
     }
 
     let outputDirectoryArg = flags[.outputDirectory] ?? ""
@@ -152,13 +150,13 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         (.classPrefix, classPrefix),
         (.includeRuntime, includeRuntime),
         (.indent, indent),
-        (.packageName, packageName)
+        (.packageName, packageName),
     ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
-            var mutableDict = dict
-            if let val = tuple.1 {
-                mutableDict[tuple.0] = val
-            }
-            return mutableDict
+        var mutableDict = dict
+        if let val = tuple.1 {
+            mutableDict[tuple.0] = val
+        }
+        return mutableDict
     }
 
     guard !args.isEmpty || flags[.onlyRuntime] != nil else {
@@ -172,7 +170,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     if let executionPath = ProcessInfo.processInfo.environment["PWD"] {
         // What directory path is the user in when invoke Plank
         outputDirectory = URL(string: executionPath)
-        if outputDirectoryArg.count > 0 {
+        if !outputDirectoryArg.isEmpty {
             if outputDirectoryArg.hasPrefix("/") {
                 // Absolute file URL
                 outputDirectory = URL(string: outputDirectoryArg)!
@@ -188,12 +186,12 @@ func handleGenerateCommand(withArguments arguments: [String]) {
 
     let urls = args.map { URL(string: $0)! }
     let languages: [Languages] = flags[.lang]?.trimmingCharacters(in: .whitespaces).components(separatedBy: ",").compactMap {
-        guard let lang = Languages.init(rawValue: $0) else {
+        guard let lang = Languages(rawValue: $0) else {
             fatalError("Invalid or unsupported language: \($0)")
         }
         return lang
-        } ?? [.objectiveC]
-    guard languages.count > 0 else {
+    } ?? [.objectiveC]
+    guard !languages.isEmpty else {
         fatalError("Unsupported value for lang: \"\(String(describing: flags[.lang]))\"")
     }
 
@@ -217,7 +215,7 @@ func handleHelpCommand() {
         "    $ plank [options] file1 file2 ...",
         "",
         "Options:",
-        "\(FlagOptions.printHelp())"
+        "\(FlagOptions.printHelp())",
     ].joined(separator: "\n")
 
     print(helpDocs)

@@ -11,12 +11,11 @@ public func == (lhs: JSONDict, rhs: JSONDict) -> Bool {
 }
 
 class ObjcTestSuite: XCTestCase {
-
     func testBasicObjectInitialization() {
         let imageModelDictionary: JSONDict = [
             "height": 12,
             "width": 11,
-            "url": "http://google.com"
+            "url": "http://google.com",
         ]
         let image = Image(modelDictionary: imageModelDictionary)
         XCTAssert(imageModelDictionary["height"] as! Int == image.height, "Image height should be the same")
@@ -29,7 +28,7 @@ class ObjcTestSuite: XCTestCase {
         let imageModelDictionary: JSONDict = [
             "height": 12,
             "width": 11,
-            "url": "http://google.com"
+            "url": "http://google.com",
         ]
         let image = Image(modelDictionary: imageModelDictionary)
         XCTAssert(imageModelDictionary == image.dictionaryObjectRepresentation(), "Image dictionary representation should be the same as the model dictionary.")
@@ -42,8 +41,8 @@ class ObjcTestSuite: XCTestCase {
             "email_frequency": "daily",
             "counts": [
                 "foo": 3,
-                "bar": 5
-            ]
+                "bar": 5,
+            ],
         ]
         let user = User(modelDictionary: userModelDictionary)
 
@@ -55,7 +54,7 @@ class ObjcTestSuite: XCTestCase {
         let imageModelDictionary: JSONDict = [
             "height": 12,
             "width": 11,
-            "url": "http://google.com"
+            "url": "http://google.com",
         ]
         let image = Image(modelDictionary: imageModelDictionary)
         // All properties should be set
@@ -83,7 +82,7 @@ class ObjcTestSuite: XCTestCase {
         let imageModelDictionary: JSONDict = [
             "height": 12,
             "width": 11,
-            "url": NSNull()
+            "url": NSNull(),
         ]
         let image = Image(modelDictionary: imageModelDictionary)
         XCTAssertTrue(image.isUrlSet())
@@ -91,21 +90,21 @@ class ObjcTestSuite: XCTestCase {
 }
 
 class ObjcDictionaryRepresentationTestSuite: XCTestCase {
-
     func assertDictionaryRepresentation(
         _ input: JSONDict,
-        cmp: ((JSONDict, JSONDict) -> Bool) = { (dict1: JSONDict, dict2: JSONDict) in dict1 == dict2 }) {
+        cmp: ((JSONDict, JSONDict) -> Bool) = { (dict1: JSONDict, dict2: JSONDict) in dict1 == dict2 }
+    ) {
         let everything = Everything(modelDictionary: input)
         let dictRepresentation = everything.dictionaryObjectRepresentation()
 
         XCTAssert(cmp(input, dictRepresentation), """
-                Dictionary representation should be the same as the model dictionary.
-                Expected:
-                \(input)
+            Dictionary representation should be the same as the model dictionary.
+            Expected:
+            \(input)
 
-                Actual:
-                \(dictRepresentation)
-            """)
+            Actual:
+            \(dictRepresentation)
+        """)
     }
 
     func testPropWithNilValue() {
@@ -114,72 +113,73 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         builder.stringProp = nil
         let modified_everything = builder.build()
         let dictRepresentation = modified_everything.dictionaryObjectRepresentation()
-        XCTAssert(dictRepresentation == ["string_prop": NSNull() ])
+        XCTAssert(dictRepresentation == ["string_prop": NSNull()])
     }
 
     func testStringProperty() {
         let dict: JSONDict = [
-            "string_prop": "some string"
+            "string_prop": "some string",
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testIntProperty() {
         let dict: JSONDict = [
-            "int_prop": 1
+            "int_prop": 1,
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testNumberProperty() {
         let dict: JSONDict = [
-            "number_prop": 1.2
+            "number_prop": 1.2,
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testBooleanProperty() {
         let dict: JSONDict = [
-            "boolean_prop": false
+            "boolean_prop": false,
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testURIProperty() {
         let dict: JSONDict = [
-            "uri_prop": "https://www.pinterest.com"
+            "uri_prop": "https://www.pinterest.com",
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testMapProperty() {
         let dict: JSONDict = [
-            "map_prop": ["foo": "bar"]
+            "map_prop": ["foo": "bar"],
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testSetProperty() {
         let dict: JSONDict = [
-            "set_prop": ["some_set_value", "some_set_value", "some_other_value"] // This could be flaky since we don't enforce ordering when the model is initialized which could break the equality check
+            "set_prop": ["some_set_value", "some_set_value", "some_other_value"], // This could be flaky since we don't enforce ordering when the model is initialized which could break the equality check
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testArrayProperty() {
         let dict: JSONDict = [
-            "array_prop": ["some_array_value", "another_array_value"]
+            "array_prop": ["some_array_value", "another_array_value"],
         ]
         assertDictionaryRepresentation(dict)
     }
+
     func testModelProperty() {
         let userModelDictionary: JSONDict = [
             "id": 123,
-            "email_frequency": "daily"
+            "email_frequency": "daily",
         ]
 
         let dict: JSONDict = [
-            "other_model_prop": userModelDictionary
+            "other_model_prop": userModelDictionary,
         ]
 
         assertDictionaryRepresentation(dict)
@@ -190,7 +190,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         // might be necessary if we expect to recreate a model from its dictionary
         // representation
         let dict: JSONDict = [
-            "set_prop_with_primitive_values": [1, 2, 3]
+            "set_prop_with_primitive_values": [1, 2, 3],
         ]
 
         assertDictionaryRepresentation(dict) { d1, d2 in
@@ -206,7 +206,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
 
     func testSetWithValuesProperty() {
         let dict: JSONDict = [
-            "set_prop_with_values": ["foo", "bar"]
+            "set_prop_with_values": ["foo", "bar"],
         ]
 
         assertDictionaryRepresentation(dict) { d1, d2 in
@@ -223,13 +223,13 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
     func disabled_testSetWithOtherModelsProperty() {
         let userModelDictionary: JSONDict = [
             "id": 123,
-            "email_frequency": "daily"
+            "email_frequency": "daily",
         ]
 
         let dict: JSONDict = [
             "set_prop_with_other_model_values": [
-                userModelDictionary
-            ]
+                userModelDictionary,
+            ],
         ]
 
         assertDictionaryRepresentation(dict)
@@ -237,7 +237,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
 
     func testArrayWithPrimitiveValuesProperty() {
         let dict: JSONDict = [
-            "list_with_primitive_values": [1, 2, 3]
+            "list_with_primitive_values": [1, 2, 3],
         ]
 
         assertDictionaryRepresentation(dict)
@@ -245,7 +245,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
 
     func testArrayWithObjectValuesProperty() {
         let dict: JSONDict = [
-            "list_with_object_values": ["foo", "bar"]
+            "list_with_object_values": ["foo", "bar"],
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -253,10 +253,10 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
     func testArrayWithOtherModelsProperty() {
         let userModelDictionary: JSONDict = [
             "id": 123,
-            "email_frequency": "daily"
+            "email_frequency": "daily",
         ]
         let dict: JSONDict = [
-            "list_with_other_model_values": [userModelDictionary]
+            "list_with_other_model_values": [userModelDictionary],
         ]
 
         assertDictionaryRepresentation(dict)
@@ -267,8 +267,8 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
             "map_with_primitive_values": [
                 "one": 1,
                 "two": 2,
-                "three": 3
-            ]
+                "three": 3,
+            ],
         ]
 
         assertDictionaryRepresentation(dict)
@@ -279,8 +279,8 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
             "map_with_object_values": [
                 "one": "one_val",
                 "two": "two_val",
-                "three": "three_val"
-            ]
+                "three": "three_val",
+            ],
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -288,26 +288,26 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
     func testMapWithOtherModelsProperty() {
         let userModelDictionary: JSONDict = [
             "id": 123,
-            "email_frequency": "daily"
+            "email_frequency": "daily",
         ]
         let dict: JSONDict = [
             "map_with_other_model_values": [
-                "user": userModelDictionary
-            ]
+                "user": userModelDictionary,
+            ],
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testStringEnum() {
         let dict: JSONDict = [
-            "string_enum": "case2"
+            "string_enum": "case2",
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testIntEnum() {
         let dict: JSONDict = [
-            "int_enum": 2
+            "int_enum": 2,
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -316,10 +316,10 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         let userModelDictionary: JSONDict = [
             "type": "user",
             "id": 123,
-            "email_frequency": "daily"
+            "email_frequency": "daily",
         ]
         let dict: JSONDict = [
-            "polymorphic_prop": userModelDictionary
+            "polymorphic_prop": userModelDictionary,
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -329,38 +329,38 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
             // Should we just add type to dictionaries if the property doesn't
             // exist?
             "type": "everything",
-            "int_prop": 123
+            "int_prop": 123,
         ]
         let dict: JSONDict = [
-            "polymorphic_prop": everythingModelDictionary
+            "polymorphic_prop": everythingModelDictionary,
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testPolymorphicPropWithString() {
         let dict: JSONDict = [
-            "polymorphic_prop": "some_value"
+            "polymorphic_prop": "some_value",
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testPolymorphicPropWithBool() {
         let dict: JSONDict = [
-            "polymorphic_prop": true
+            "polymorphic_prop": true,
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testPolymorphicPropWithInt() {
         let dict: JSONDict = [
-            "polymorphic_prop": 123
+            "polymorphic_prop": 123,
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testPolymorphicPropWithNumber() {
         let dict: JSONDict = [
-            "polymorphic_prop": 3.14
+            "polymorphic_prop": 3.14,
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -371,7 +371,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
 
     func testPolymorphicPropWithURI() {
         let dict: JSONDict = [
-            "polymorphic_prop": "https://www.pinterest.com"
+            "polymorphic_prop": "https://www.pinterest.com",
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -380,10 +380,10 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         let userModelDictionary: JSONDict = [
             "type": "user",
             "id": 123,
-            "email_frequency": "daily"
+            "email_frequency": "daily",
         ]
         let dict: JSONDict = [
-            "list_polymorphic_values": [userModelDictionary]
+            "list_polymorphic_values": [userModelDictionary],
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -392,12 +392,12 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         let userModelDictionary: JSONDict = [
             "type": "user",
             "id": 123,
-            "email_frequency": "daily"
+            "email_frequency": "daily",
         ]
         let dict: JSONDict = [
             "map_polymorphic_values": [
-                "user": userModelDictionary
-            ]
+                "user": userModelDictionary,
+            ],
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -405,7 +405,7 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
     func testNestedListPolymorphicProp() {
         let nestedList = [1, 2, 3]
         let dict: JSONDict = [
-            "list_polymorphic_values": [nestedList]
+            "list_polymorphic_values": [nestedList],
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -414,10 +414,10 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         let nestedMap = [
             "one": 1,
             "two": 2,
-            "three": 3
+            "three": 3,
         ]
         let dict: JSONDict = [
-            "list_polymorphic_values": [nestedMap]
+            "list_polymorphic_values": [nestedMap],
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -426,12 +426,12 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         let nestedMap = [
             "one": 1,
             "two": 2,
-            "three": 3
+            "three": 3,
         ]
         let dict: JSONDict = [
             "map_polymorphic_values": [
-                "key": nestedMap
-            ]
+                "key": nestedMap,
+            ],
         ]
         assertDictionaryRepresentation(dict)
     }
@@ -440,67 +440,70 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
         let nestedList = [1, 2, 3]
         let dict: JSONDict = [
             "map_polymorphic_values": [
-                "key": nestedList
-            ]
+                "key": nestedList,
+            ],
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testNestedMapWithMapAndModels() {
         let nestedList = [
-        "user1": [
-            "id": 123,
-            "first_name": "Rahul",
-            "last_name": "Malik"
-        ], 
-        "user2": [
-            "id": 456,
-            "first_name": "Michael",
-            "last_name": "Schneider"
-        ]]
+            "user1": [
+                "id": 123,
+                "first_name": "Rahul",
+                "last_name": "Malik",
+            ],
+            "user2": [
+                "id": 456,
+                "first_name": "Michael",
+                "last_name": "Schneider",
+            ],
+        ]
         let dict: JSONDict = [
             "map_with_map_and_other_model_values": [
-                "key": nestedList
-            ]
+                "key": nestedList,
+            ],
         ]
         assertDictionaryRepresentation(dict)
     }
 
     func testNestedMapWithListAndModels() {
         let nestedList = [
-        [
-            "id": 123,
-            "first_name": "Rahul",
-            "last_name": "Malik"
-        ], [
-            "id": 456,
-            "first_name": "Michael",
-            "last_name": "Schneider"
-        ]]
+            [
+                "id": 123,
+                "first_name": "Rahul",
+                "last_name": "Malik",
+            ], [
+                "id": 456,
+                "first_name": "Michael",
+                "last_name": "Schneider",
+            ],
+        ]
         let dict: JSONDict = [
             "map_with_list_and_other_model_values": [
-                "key": nestedList
-            ]
+                "key": nestedList,
+            ],
         ]
         assertDictionaryRepresentation(dict)
     }
+
     func testNestedListWithMapAndModels() {
         let nestedMap: JSONDict = [
             "user_one": [
                 "id": 123,
                 "type": "user",
                 "first_name": "Rahul",
-                "last_name": "Malik"
-            ], 
+                "last_name": "Malik",
+            ],
             "user_two": [
                 "id": 456,
                 "type": "user",
                 "first_name": "Michael",
-                "last_name": "Schneider"
-            ]
+                "last_name": "Schneider",
+            ],
         ]
         let list: JSONDict = [
-            "list_with_map_and_other_model_values": [nestedMap]
+            "list_with_map_and_other_model_values": [nestedMap],
         ]
         assertDictionaryRepresentation(list)
     }
@@ -511,17 +514,17 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
                 "id": 123,
                 "type": "user",
                 "first_name": "Rahul",
-                "last_name": "Malik"
-            ], 
+                "last_name": "Malik",
+            ],
             [
                 "id": 456,
                 "type": "user",
                 "first_name": "Michael",
-                "last_name": "Schneider"
-            ]
+                "last_name": "Schneider",
+            ],
         ]
         let list: JSONDict = [
-            "list_with_list_and_other_model_values": [nestedList]
+            "list_with_list_and_other_model_values": [nestedList],
         ]
         assertDictionaryRepresentation(list)
     }

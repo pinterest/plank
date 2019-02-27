@@ -17,40 +17,40 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
 
     func renderBuilder() -> JavaIR.Method {
-        return JavaIR.method([.public, .static], "Builder builder()") {[
-            "return new AutoValue_\(className).Builder();"
-        ]}
+        return JavaIR.method([.public, .static], "Builder builder()") { [
+            "return new AutoValue_\(className).Builder();",
+        ] }
     }
 
     func renderBuilderBuild() -> JavaIR.Method {
-        return JavaIR.method([.public, .abstract], "\(self.className) build()") {[]}
+        return JavaIR.method([.public, .abstract], "\(className) build()") { [] }
     }
 
     func renderToBuilder() -> JavaIR.Method {
-        return JavaIR.method([.abstract], "Builder toBuilder()") {[]}
+        return JavaIR.method([.abstract], "Builder toBuilder()") { [] }
     }
 
     func renderBuilderProperties(modifiers: JavaModifier = [.public, .abstract]) -> [JavaIR.Method] {
-        let props = self.transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, "Builder set\(param.snakeCaseToCamelCase())(\(self.typeFromSchema(param, schemaObj)) value)") {[]}
+        let props = transitiveProperties.map { param, schemaObj in
+            JavaIR.method(modifiers, "Builder set\(param.snakeCaseToCamelCase())(\(self.typeFromSchema(param, schemaObj)) value)") { [] }
         }
         return props
     }
 
     func renderModelProperties(modifiers: JavaModifier = [.public, .abstract]) -> [JavaIR.Method] {
-        return self.transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, "@SerializedName(\"\(param)\") \(self.typeFromSchema(param, schemaObj)) \(param.snakeCaseToPropertyName())()") {[]}
+        return transitiveProperties.map { param, schemaObj in
+            JavaIR.method(modifiers, "@SerializedName(\"\(param)\") \(self.typeFromSchema(param, schemaObj)) \(param.snakeCaseToPropertyName())()") { [] }
         }
     }
 
     func renderTypeClassAdapter() -> JavaIR.Method {
-        return JavaIR.method([.public, .static], "TypeAdapter<\(className)> jsonAdapter(Gson gson)") {[
-            "return new AutoValue_\(className).GsonTypeAdapter(gson);"
-        ]}
+        return JavaIR.method([.public, .static], "TypeAdapter<\(className)> jsonAdapter(Gson gson)") { [
+            "return new AutoValue_\(className).GsonTypeAdapter(gson);",
+        ] }
     }
 
-     func renderRoots() -> [JavaIR.Root] {
-        let packages = self.params[.packageName].flatMap {
+    func renderRoots() -> [JavaIR.Root] {
+        let packages = params[.packageName].flatMap {
             [JavaIR.Root.packages(names: [$0])]
         } ?? []
 
@@ -69,38 +69,38 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "android.support.annotation.IntDef",
                 "android.support.annotation.NonNull",
                 "android.support.annotation.Nullable",
-                "android.support.annotation.StringDef"
-            ])
+                "android.support.annotation.StringDef",
+            ]),
         ]
 
-        let enumProps = self.properties.flatMap { (param, prop) -> [JavaIR.Enum] in
+        let enumProps = properties.flatMap { (param, prop) -> [JavaIR.Enum] in
             switch prop.schema {
-            case .enumT(let enumValues):
+            case let .enumT(enumValues):
                 return [
                     JavaIR.Enum(
                         name: enumTypeName(propertyName: param, className: self.className),
                         values: enumValues
-                    )
+                    ),
                 ]
             default: return []
             }
         }
 
-        let adtRoots = self.properties.flatMap { (param, prop) -> [JavaIR.Root] in
+        let adtRoots = properties.flatMap { (param, prop) -> [JavaIR.Root] in
             switch prop.schema {
-            case .oneOf(types: let possibleTypes):
+            case let .oneOf(types: possibleTypes):
                 let objProps = possibleTypes.map { $0.nullableProperty() }
                 return adtRootsForSchema(property: param, schemas: objProps)
-            case .array(itemType: .some(let itemType)):
+            case let .array(itemType: .some(itemType)):
                 switch itemType {
-                case .oneOf(types: let possibleTypes):
-                let objProps = possibleTypes.map { $0.nullableProperty() }
-                return adtRootsForSchema(property: param, schemas: objProps)
+                case let .oneOf(types: possibleTypes):
+                    let objProps = possibleTypes.map { $0.nullableProperty() }
+                    return adtRootsForSchema(property: param, schemas: objProps)
                 default: return []
                 }
-            case .map(valueType: .some(let additionalProperties)):
+            case let .map(valueType: .some(additionalProperties)):
                 switch additionalProperties {
-                case .oneOf(types: let possibleTypes):
+                case let .oneOf(types: possibleTypes):
                     let objProps = possibleTypes.map { $0.nullableProperty() }
                     return adtRootsForSchema(property: param, schemas: objProps)
                 default: return []
@@ -115,8 +115,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
             extends: nil,
             implements: nil,
             name: "Builder",
-            methods: self.renderBuilderProperties() + [
-                self.renderBuilderBuild()
+            methods: renderBuilderProperties() + [
+                self.renderBuilderBuild(),
             ],
             enums: [],
             innerClasses: [],
@@ -129,15 +129,15 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 modifiers: [.public, .abstract],
                 extends: nil,
                 implements: nil,
-                name: self.className,
-                methods: self.renderModelProperties() + [
+                name: className,
+                methods: renderModelProperties() + [
                     self.renderBuilder(),
                     self.renderToBuilder(),
-                    self.renderTypeClassAdapter()
+                    self.renderTypeClassAdapter(),
                 ],
                 enums: enumProps,
                 innerClasses: [
-                    builderClass
+                    builderClass,
                 ],
                 properties: []
             )
@@ -147,7 +147,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             packages +
             imports +
             adtRoots +
-            [ modelClass ]
+            [modelClass]
 
         return roots
     }

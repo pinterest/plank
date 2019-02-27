@@ -18,15 +18,15 @@ public struct JSModelRenderer: JSFileRenderer {
     }
 
     func renderRoots() -> [JSIR.Root] {
-        let parentName = resolveClassName(self.parentDescriptor)
+        let parentName = resolveClassName(parentDescriptor)
         let props: [SimpleProperty] = properties.map { param, prop in
-            return (param, typeFromSchema(param, prop), prop, .readonly)
+            (param, typeFromSchema(param, prop), prop, .readonly)
         }
 
         return [JSIR.Root.imports(classNames: self.renderReferencedClasses(), myName: self.className, parentName: parentName)] +
-                self.renderAdtTypeRoots() +
-                self.renderEnumRoots() +
-                [JSIR.Root.typeDecl(name: self.className, extends: parentName, properties: props)]
+            renderAdtTypeRoots() +
+            renderEnumRoots() +
+            [JSIR.Root.typeDecl(name: self.className, extends: parentName, properties: props)]
     }
 
     static func enumTypeName(className: String, propertyName: String) -> String {
@@ -34,9 +34,9 @@ public struct JSModelRenderer: JSFileRenderer {
     }
 
     func renderEnumRoots() -> [JSIR.Root] {
-        return self.properties.flatMap { (param, prop) -> [JSIR.Root] in
+        return properties.flatMap { (param, prop) -> [JSIR.Root] in
             switch prop.schema {
-            case .enumT(let enumValues):
+            case let .enumT(enumValues):
                 return [JSIR.Root.enumDecl(name: JSModelRenderer.enumTypeName(className: self.className, propertyName: param), values: enumValues)]
             default: return []
             }

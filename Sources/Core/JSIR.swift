@@ -9,14 +9,13 @@
 import Foundation
 
 public struct JSIR {
-
     static func type(_ name: String, shape: () -> [String], body: () -> [String]) -> String {
         return [
             "export type \(name)Type = $Shape<{|",
             -->shape(),
             "|}> & {",
             -->body(),
-            "};\n"
+            "};\n",
         ].joined(separator: "\n")
     }
 
@@ -25,7 +24,7 @@ public struct JSIR {
         return [
             "export default class \(className)\(superclass) {",
             -->body,
-            "}"
+            "}",
         ].joined(separator: "\n")
     }
 
@@ -41,15 +40,15 @@ public struct JSIR {
         return [
             "if (\(condition)) {",
             -->body,
-            "}"
+            "}",
         ].joined(separator: "\n")
     }
 
-    static func elseIfStmt(_ condition: String, _ body:() -> [String]) -> String {
+    static func elseIfStmt(_ condition: String, _ body: () -> [String]) -> String {
         return [
             " else if (\(condition)) {",
             -->body,
-            "}"
+            "}",
         ].joined(separator: "\n")
     }
 
@@ -57,14 +56,14 @@ public struct JSIR {
         return [
             " else {",
             -->body,
-            "}"
-            ].joined(separator: "\n")
+            "}",
+        ].joined(separator: "\n")
     }
 
     static func ifElseStmt(_ condition: String, body: @escaping () -> [String]) -> (() -> [String]) -> String {
         return { elseBody in [
             ObjCIR.ifStmt(condition, body: body),
-            ObjCIR.elseStmt(elseBody)
+            ObjCIR.elseStmt(elseBody),
         ].joined(separator: "\n") }
     }
 
@@ -80,16 +79,16 @@ public struct JSIR {
         return [
             "export type \(enumName) = ",
             -->[body().joined(separator: "\n")],
-            ";"//,
-            ].joined(separator: "\n")
+            ";", // ,
+        ].joined(separator: "\n")
     }
 
     static func optionEnumStmt(_ enumName: String, body: () -> [String]) -> String {
         return [
             "export type \(enumName) = ",
             -->[body().joined(separator: ",\n")],
-            ";"//,
-            ].joined(separator: "\n")
+            ";", // ,
+        ].joined(separator: "\n")
     }
 
     public struct Method {
@@ -100,7 +99,7 @@ public struct JSIR {
             return [
                 signature + " {",
                 -->body,
-                "}"
+                "}",
             ]
         }
     }
@@ -121,7 +120,7 @@ public struct JSIR {
             extends: String?,
             methods: [JSIR.Method],
             properties: [SimpleProperty],
-            protocols: [String:[JSIR.Method]]
+            protocols: [String: [JSIR.Method]]
         )
         case enumDecl(name: String, values: EnumType)
 
@@ -130,16 +129,16 @@ public struct JSIR {
             case .structDecl(name: _, fields: _):
                 // Structs are not supported
                 return []
-            case .macro(let macro):
+            case let .macro(macro):
                 return [macro]
             case .imports(let classNames, let myName, _):
                 return [
                     JSRuntimeFile.runtimeImports(),
                     // TODO: JS: We should find a better way to remove a cyclic import as filtering it here
                     (classNames.filter { $0 != "\(myName)Type" } as [String])
-                               .sorted()
-                               .map { JSIR.fileImportStmt($0, $0) }
-                               .joined(separator: "\n")
+                        .sorted()
+                        .map { JSIR.fileImportStmt($0, $0) }
+                        .joined(separator: "\n"),
                 ]
             case .typeDecl(name: let className, extends: _, properties: let properties):
                 let nullability = { (prop: SchemaObjectProperty) -> String in
@@ -151,23 +150,23 @@ public struct JSIR {
                 return [
                     // Create flow type for class
                     JSIR.type(className, shape: { () -> [String] in
-                        properties.map { (param, typeName, prop, _) in
-                            return "+\(param): \(nullability(prop))\(typeName),"
+                        properties.map { param, typeName, prop, _ in
+                            "+\(param): \(nullability(prop))\(typeName),"
                         }
-                    }, body: {() -> [String] in [
+                    }, body: { () -> [String] in [
                         // TODO: JS: For now we have the id as hard property in every type
-                        "id: string"
-                    ]})
+                        "id: string",
+                    ] }),
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case .classDecl(name: _, extends: _, methods: _, properties: _, protocols: _):
                 return [] // Currently no class definitino supported
-            case .function(let method):
+            case let .function(method):
                 return method.render()
-            case .enumDecl(let name, let values):
+            case let .enumDecl(name, values):
                 return [JSIR.enumStmt(name) {
                     switch values {
-                    case .integer(let options):
-                        return options.map { "| \($0.defaultValue) /* \($0.description) */"  }
+                    case let .integer(options):
+                        return options.map { "| \($0.defaultValue) /* \($0.description) */" }
                     case .string(let options, _):
                         return options.map { "| '\($0.defaultValue)'" }
                     }

@@ -20,7 +20,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     }
 
     var dirtyPropertyOptionName: String {
-        return "\(self.className)DirtyProperties"
+        return "\(className)DirtyProperties"
     }
 
     var dirtyPropertiesIVarName: String {
@@ -42,81 +42,80 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     }
 
     func renderCopyWithBlock() -> ObjCIR.Method {
-        return ObjCIR.method("- (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(\(self.builderClassName) *builder))block") {
+        return ObjCIR.method("- (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(\(builderClassName) *builder))block") {
             [
                 "NSParameterAssert(block);",
                 "\(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
                 "block(builder);",
-                "return [builder build];"
+                "return [builder build];",
             ]
         }
     }
 
     func renderMergeWithModel() -> ObjCIR.Method {
-        return ObjCIR.method("- (instancetype)mergeWithModel:(\(self.className) *)modelObject") {
+        return ObjCIR.method("- (instancetype)mergeWithModel:(\(className) *)modelObject") {
             ["return [self mergeWithModel:modelObject initType:PlankModelInitTypeFromMerge];"]
         }
     }
 
     func renderMergeWithModelWithInitType() -> ObjCIR.Method {
-        return ObjCIR.method("- (instancetype)mergeWithModel:(\(self.className) *)modelObject initType:(PlankModelInitType)initType") {
+        return ObjCIR.method("- (instancetype)mergeWithModel:(\(className) *)modelObject initType:(PlankModelInitType)initType") {
             [
                 "NSParameterAssert(modelObject);",
                 "\(self.builderClassName) *builder = [[\(self.builderClassName) alloc] initWithModel:self];",
                 "[builder mergeWithModel:modelObject];",
-                "return [[\(self.className) alloc] initWithBuilder:builder initType:initType];"
+                "return [[\(self.className) alloc] initWithBuilder:builder initType:initType];",
             ]
         }
     }
 
     func renderStringEnumerationMethods() -> [ObjCIR.Method] {
-
         func renderToStringMethod(param: String, enumValues: [EnumValue<String>]) -> ObjCIR.Method {
-            let enumTypeString = enumTypeName(propertyName: param, className: self.className)
-            return ObjCIR.method("extern NSString * _Nonnull \(enumTypeString)ToString(\(enumTypeString) enumType)") {[
+            let enumTypeString = enumTypeName(propertyName: param, className: className)
+            return ObjCIR.method("extern NSString * _Nonnull \(enumTypeString)ToString(\(enumTypeString) enumType)") { [
                 ObjCIR.switchStmt("enumType") {
                     enumValues.map({ (val) -> ObjCIR.SwitchCase in
                         ObjCIR.caseStmt(val.objcOptionName(param: param, className: self.className)) {
                             ["return \(val.defaultValue.objcLiteral());"]
                         }
                     })
-                }
-            ]}
-          }
+                },
+            ] }
+        }
 
         func renderFromStringMethod(param: String, enumValues: [EnumValue<String>], defaultValue: EnumValue<String>) -> ObjCIR.Method {
-            let enumTypeString = enumTypeName(propertyName: param, className: self.className)
+            let enumTypeString = enumTypeName(propertyName: param, className: className)
 
             return ObjCIR.method("extern \(enumTypeString) \(enumTypeString)FromString(NSString * _Nonnull str)") {
-              enumValues.map { (val) -> String in
-                ObjCIR.ifStmt("[str isEqualToString:\(val.defaultValue.objcLiteral())]") {
-                  [
-                    "return \(val.objcOptionName(param: param, className: self.className));"
-                  ]
+                enumValues.map { (val) -> String in
+                    ObjCIR.ifStmt("[str isEqualToString:\(val.defaultValue.objcLiteral())]") {
+                        [
+                            "return \(val.objcOptionName(param: param, className: self.className));",
+                        ]
+                    }
                 }
-              }
-              + ["return \(defaultValue.objcOptionName(param: param, className: self.className));"]
+                    + ["return \(defaultValue.objcOptionName(param: param, className: self.className));"]
             }
         }
 
-      return self.properties.flatMap { (param, prop) -> [ObjCIR.Method] in
-        switch prop.schema {
-        case .enumT(.string(let enumValues, let defaultValue)):
-          return [
-            renderToStringMethod(param: param, enumValues: enumValues),
-            renderFromStringMethod(param: param, enumValues: enumValues, defaultValue: defaultValue)
-          ]
-        default:
-          return []
+        return properties.flatMap { (param, prop) -> [ObjCIR.Method] in
+            switch prop.schema {
+            case let .enumT(.string(enumValues, defaultValue)):
+                return [
+                    renderToStringMethod(param: param, enumValues: enumValues),
+                    renderFromStringMethod(param: param, enumValues: enumValues, defaultValue: defaultValue),
+                ]
+            default:
+                return []
+            }
         }
-      }
     }
 
     func renderIsSetMethods() -> [ObjCIR.Method] {
-        return self.properties.map { (param, prop)  in
-            ObjCIR.method("- (BOOL)is\(param.snakeCaseToCamelCase())Set") {[
-                "return _\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) == 1;"
-            ]}
+        return properties.map { param, _ in
+            ObjCIR.method("- (BOOL)is\(param.snakeCaseToCamelCase())Set") { [
+                "return _\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) == 1;",
+            ] }
         }
     }
 
@@ -125,20 +124,20 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
 
         let protocols: [String: [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
-            "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }]
+            "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }],
         ]
 
-        let parentName = resolveClassName(self.parentDescriptor)
+        let parentName = resolveClassName(parentDescriptor)
 
         func enumRoot(from prop: Schema, param: String) -> [ObjCIR.Root] {
             switch prop {
-            case .enumT(let enumValues):
+            case let .enumT(enumValues):
                 return [ObjCIR.Root.enumDecl(name: enumTypeName(propertyName: param, className: self.className), values: enumValues)]
-            case .oneOf(types: let possibleTypes):
+            case let .oneOf(types: possibleTypes):
                 return possibleTypes.flatMap { enumRoot(from: $0, param: param) }
-            case .array(itemType: .some(let itemType)):
+            case let .array(itemType: .some(itemType)):
                 return enumRoot(from: itemType, param: param)
-            case .map(valueType: .some(let additionalProperties)):
+            case let .map(valueType: .some(additionalProperties)):
                 return enumRoot(from: additionalProperties, param: param)
             default: return []
             }
@@ -149,23 +148,23 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
         }
 
         // TODO: Synthesize oneOf ADT Classes and Class Extension
-        // TODO (rmalik): Clean this up, too much copy / paste here to support oneOf cases
+        // TODO: (rmalik): Clean this up, too much copy / paste here to support oneOf cases
         let adtRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
             switch prop.schema {
-            case .oneOf(types: let possibleTypes):
-                let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable)}
+            case let .oneOf(types: possibleTypes):
+                let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable) }
                 return adtRootsForSchema(property: param, schemas: objProps)
-            case .array(itemType: .some(let itemType)):
+            case let .array(itemType: .some(itemType)):
                 switch itemType {
-                case .oneOf(types: let possibleTypes):
-                    let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable)}
+                case let .oneOf(types: possibleTypes):
+                    let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable) }
                     return adtRootsForSchema(property: param, schemas: objProps)
                 default: return []
                 }
-            case .map(valueType: .some(let additionalProperties)):
+            case let .map(valueType: .some(additionalProperties)):
                 switch additionalProperties {
-                case .oneOf(types: let possibleTypes):
-                    let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable)}
+                case let .oneOf(types: possibleTypes):
+                    let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable) }
                     return adtRootsForSchema(property: param, schemas: objProps)
                 default: return []
                 }
@@ -182,25 +181,25 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     $0.replacingOccurrences(of: "*", with: "")
                 }),
                 myName: self.className,
-                parentName: parentName)
+                parentName: parentName
+            ),
         ] + adtRoots + enumRoots + [
             ObjCIR.Root.structDecl(name: self.dirtyPropertyOptionName,
-                               fields: rootSchema.properties.keys
-                                .map { "unsigned int \(dirtyPropertyOption(propertyName: $0, className: self.className)):1;" }
-            ),
+                                   fields: rootSchema.properties.keys
+                                       .map { "unsigned int \(dirtyPropertyOption(propertyName: $0, className: self.className)):1;" }),
             ObjCIR.Root.category(className: self.className,
                                  categoryName: nil,
                                  methods: [],
                                  properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
-                                    SchemaObjectProperty(schema: .integer, nullability: nil),
-                                    .readwrite)]),
+                                               SchemaObjectProperty(schema: .integer, nullability: nil),
+                                               .readwrite)]),
             ObjCIR.Root.category(className: self.builderClassName,
                                  categoryName: nil,
                                  methods: [],
                                  properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
-                                    SchemaObjectProperty(schema: .integer, nullability: nil),
-                                    .readwrite)])
-        ] + self.renderStringEnumerationMethods().map { ObjCIR.Root.function($0) } + [
+                                               SchemaObjectProperty(schema: .integer, nullability: nil),
+                                               .readwrite)]),
+        ] + renderStringEnumerationMethods().map { ObjCIR.Root.function($0) } + [
             ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
             ObjCIR.Root.classDecl(
                 name: self.className,
@@ -220,24 +219,25 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     (.privateM, self.renderHash()),
                     (.publicM, self.renderMergeWithModel()),
                     (.publicM, self.renderMergeWithModelWithInitType()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary())
+                    (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary()),
                 ] + self.renderIsSetMethods().map { (.publicM, $0) },
                 properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
                 protocols: protocols
             ),
             ObjCIR.Root.classDecl(
                 name: self.builderClassName,
-                extends: resolveClassName(self.parentDescriptor).map { "\($0)Builder"},
+                extends: resolveClassName(self.parentDescriptor).map { "\($0)Builder" },
                 methods: [
                     (.publicM, self.renderBuilderInitWithModel()),
                     (.publicM, ObjCIR.method("- (\(self.className) *)build") {
                         ["return [[\(self.className) alloc] initWithBuilder:self];"]
                     }),
-                    (.publicM, self.renderBuilderMergeWithModel())
-                    ] + self.renderBuilderPropertySetters().map { (.privateM, $0) },
+                    (.publicM, self.renderBuilderMergeWithModel()),
+                ] + self.renderBuilderPropertySetters().map { (.privateM, $0) },
                 properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readwrite) },
-                protocols: [:]),
-            ObjCIR.Root.macro("NS_ASSUME_NONNULL_END")
+                protocols: [:]
+            ),
+            ObjCIR.Root.macro("NS_ASSUME_NONNULL_END"),
         ]
     }
 }

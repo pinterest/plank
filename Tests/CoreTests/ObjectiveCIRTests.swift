@@ -10,7 +10,6 @@ import XCTest
 @testable import Core
 
 class ObjectiveCIRTests: XCTestCase {
-
     func testDirtyPropertyOption() {
         let optionName = dirtyPropertyOption(propertyName: "prop", className: "class")
         XCTAssertEqual(optionName, "classDirtyPropertyProp")
@@ -49,13 +48,13 @@ class ObjectiveCIRTests: XCTestCase {
     func testBlockSyntax() {
         let actual = ObjCIR.block(["num1", "num2"]) {
             [
-                "return num1 + num2;"
+                "return num1 + num2;",
             ]
         }
         let expected = [
             "^(num1, num2){",
             "\treturn num1 + num2;",
-            "}"
+            "}",
         ].joined(separator: "\n")
         XCTAssertEqual(expected, actual)
     }
@@ -63,38 +62,38 @@ class ObjectiveCIRTests: XCTestCase {
     func testScopeSyntax() {
         let expected = [
             "{",
-                "int x = 1;".indent(),
-                "x--;".indent(),
-                "x++;".indent(),
-            "}"
+            "int x = 1;".indent(),
+            "x--;".indent(),
+            "x++;".indent(),
+            "}",
         ].joined(separator: "\n")
 
-        let actual = ObjCIR.scope {[
+        let actual = ObjCIR.scope { [
             "int x = 1;",
             "x--;",
-            "x++;"
-        ]}
+            "x++;",
+        ] }
         XCTAssertEqual(expected, actual)
     }
 
     func testNestedScopeSyntax() {
         let expected = [
             "{",
-                "int x = 1;".indent(),
-                "{".indent(),
-                    "x--;".indent().indent(),
-                "}".indent(),
-                "x++;".indent(),
-            "}"
+            "int x = 1;".indent(),
+            "{".indent(),
+            "x--;".indent().indent(),
+            "}".indent(),
+            "x++;".indent(),
+            "}",
         ].joined(separator: "\n")
 
-        let actual = ObjCIR.scope {[
+        let actual = ObjCIR.scope { [
             "int x = 1;",
-            ObjCIR.scope {[
-                "x--;"
-            ]},
-            "x++;"
-        ]}
+            ObjCIR.scope { [
+                "x--;",
+            ] },
+            "x++;",
+        ] }
 
         XCTAssertEqual(expected, actual)
     }
@@ -103,12 +102,12 @@ class ObjectiveCIRTests: XCTestCase {
         let expected = [
             "if (x > 0) {",
             "return true;".indent(),
-            "}"
+            "}",
         ].joined(separator: "\n")
 
-        let actual = ObjCIR.ifStmt("x > 0") {[
-            "return true;"
-        ]}
+        let actual = ObjCIR.ifStmt("x > 0") { [
+            "return true;",
+        ] }
 
         XCTAssertEqual(expected, actual)
     }
@@ -117,12 +116,12 @@ class ObjectiveCIRTests: XCTestCase {
         let expected = [
             " else if (x > 0) {",
             "return true;".indent(),
-            "}"
-            ].joined(separator: "\n")
+            "}",
+        ].joined(separator: "\n")
 
-        let actual = ObjCIR.elseIfStmt("x > 0") {[
-            "return true;"
-            ]}
+        let actual = ObjCIR.elseIfStmt("x > 0") { [
+            "return true;",
+        ] }
 
         XCTAssertEqual(expected, actual)
     }
@@ -130,13 +129,13 @@ class ObjectiveCIRTests: XCTestCase {
     func testElseStmt() {
         let expected = [
             " else {",
-                "return true;".indent(),
-            "}"
-            ].joined(separator: "\n")
+            "return true;".indent(),
+            "}",
+        ].joined(separator: "\n")
 
-        let actual = ObjCIR.elseStmt {[
-            "return true;"
-            ]}
+        let actual = ObjCIR.elseStmt { [
+            "return true;",
+        ] }
 
         XCTAssertEqual(expected, actual)
     }
@@ -144,17 +143,16 @@ class ObjectiveCIRTests: XCTestCase {
     func testIfElseStmt() {
         let expected = [
             "if (x > 0) {",
-                "return true;".indent(),
+            "return true;".indent(),
             "} else {",
-                "return false;".indent(),
-            "}"
-            ].joined(separator: "\n")
-        let actual = ObjCIR.ifElseStmt("x > 0") {[
-            "return true;"
-        ]} {[
-            "return false;"
-        ]}
+            "return false;".indent(),
+            "}",
+        ].joined(separator: "\n")
+        let actual = ObjCIR.ifElseStmt("x > 0") { [
+            "return true;",
+        ] } { [
+            "return false;",
+        ] }
         XCTAssertEqual(expected, actual)
-
     }
 }

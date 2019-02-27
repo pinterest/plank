@@ -9,8 +9,8 @@
 import Foundation
 
 extension ObjCFileRenderer {
-
     // MARK: Hash Method - Inspired from Mike Ash article on Equality / Hashing
+
     // https://www.mikeash.com/pyblog/friday-qa-2010-06-18-implementing-equality-and-hashing.html
     func renderHash() -> ObjCIR.Method {
         func schemaHashStatement(with param: Parameter, for schema: Schema) -> String {
@@ -25,9 +25,9 @@ extension ObjCFileRenderer {
                 // Values 1231 for true and 1237 for false are adopted from the Java hashCode specification
                 // http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html#hashCode
                 return "(_\(param) ? 1231 : 1237)"
-            case .reference(with: let ref):
+            case let .reference(with: ref):
                 switch ref.force() {
-                case .some(.object(let schemaRoot)):
+                case let .some(.object(schemaRoot)):
                     return schemaHashStatement(with: param, for: .object(schemaRoot))
                 default:
                     fatalError("Bad reference found for schema parameter: \(param)")
@@ -37,21 +37,22 @@ extension ObjCFileRenderer {
             }
         }
 
-        let rootHashStatement = self.isBaseClass ? ["17"] : ["[super hash]"]
-        let propReturnStatements = rootHashStatement + self.properties.map { param, prop -> String in
+        let rootHashStatement = isBaseClass ? ["17"] : ["[super hash]"]
+        let propReturnStatements = rootHashStatement + properties.map { param, prop -> String in
             let formattedParam = param.snakeCaseToPropertyName()
             return schemaHashStatement(with: formattedParam, for: prop.schema)
         }
 
-        return ObjCIR.method("- (NSUInteger)hash") {[
+        return ObjCIR.method("- (NSUInteger)hash") { [
             "NSUInteger subhashes[] = {",
             -->[propReturnStatements.joined(separator: ",\n")],
             "};",
-            "return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));"
-        ]}
+            "return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));",
+        ] }
     }
 
     // MARK: Equality Methods inspired from NSHipster article on Equality: http://nshipster.com/equality/
+
     func renderIsEqualToClass() -> ObjCIR.Method {
         func schemaIsEqualStatement(with param: Parameter, for schema: Schema) -> String {
             switch schema {
@@ -73,11 +74,11 @@ extension ObjCFileRenderer {
                  .string(format: .some(.ipv4)),
                  .string(format: .some(.ipv6)):
                 return ObjCIR.msg("_\(param)", ("isEqualToString", "anObject.\(param)"))
-            case .oneOf(types:_), .object, .string(format: .some(.uri)):
+            case .oneOf(types: _), .object, .string(format: .some(.uri)):
                 return ObjCIR.msg("_\(param)", ("isEqual", "anObject.\(param)"))
-            case .reference(with: let ref):
+            case let .reference(with: ref):
                 switch ref.force() {
-                case .some(.object(let schemaRoot)):
+                case let .some(.object(schemaRoot)):
                     return schemaIsEqualStatement(with: param, for: .object(schemaRoot))
                 default:
                     fatalError("Bad reference found for schema parameter: \(param)")
@@ -86,7 +87,7 @@ extension ObjCFileRenderer {
         }
 
         // Performance optimization - compare primitives before resorting to more expensive `isEqual` calls
-        let sortedProps = self.properties.sorted { (arg1, _) in
+        let sortedProps = properties.sorted { arg1, _ in
             arg1.1.schema.isObjCPrimitiveType
         }
 
@@ -99,22 +100,22 @@ extension ObjCFileRenderer {
 
         func parentName(_ schema: Schema?) -> String? {
             switch schema {
-            case .some(.object(let root)):
+            case let .some(.object(root)):
                 return root.className(with: GenerationParameters())
-            case .some(.reference(with: let ref)):
+            case let .some(.reference(with: ref)):
                 return parentName(ref.force())
             default:
                 return nil
             }
         }
 
-        let superInvocation = parentName(self.parentDescriptor).map { ["[super isEqualTo\($0):anObject]"] } ?? []
-        return ObjCIR.method("- (BOOL)isEqualTo\(self.rootSchema.name.snakeCaseToCamelCase()):(\(self.className) *)anObject") {
+        let superInvocation = parentName(parentDescriptor).map { ["[super isEqualTo\($0):anObject]"] } ?? []
+        return ObjCIR.method("- (BOOL)isEqualTo\(rootSchema.name.snakeCaseToCamelCase()):(\(className) *)anObject") {
             [
                 "return (",
                 -->[(["anObject != nil"] + superInvocation + propReturnStmts)
                     .map { "(\($0))" }.joined(separator: " &&\n")],
-                ");"
+                ");",
             ]
         }
     }
@@ -125,8 +126,8 @@ extension ObjCFileRenderer {
                 ObjCIR.ifStmt("self == anObject") { ["return YES;"] },
                 self.isBaseClass ? "" : ObjCIR.ifStmt("[super isEqual:anObject] == NO") { ["return NO;"] },
                 ObjCIR.ifStmt("[anObject isKindOfClass:[\(self.className) class]] == NO") { ["return NO;"] },
-                "return [self isEqualTo\(self.rootSchema.name.snakeCaseToCamelCase()):anObject];"
-                ].filter { $0 != "" }
+                "return [self isEqualTo\(self.rootSchema.name.snakeCaseToCamelCase()):anObject];",
+            ].filter { $0 != "" }
         }
     }
 }
