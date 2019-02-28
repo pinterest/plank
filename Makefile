@@ -14,7 +14,7 @@ lint:
 	./Utility/lint.sh
 
 format:
-	swift run swiftformat --swiftversion 4.2 --disable andOperator .
+	swift run swiftformat .
 
 build: 
 	swift build -v
