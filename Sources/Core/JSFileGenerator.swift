@@ -10,11 +10,10 @@ import Foundation
 
 struct JSFileGenerator: FileGeneratorManager {
     static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> [FileGenerator] {
-
         let rootsRenderer = JSModelRenderer(rootSchema: descriptor, params: generatorParameters)
 
         return [
-            JSModelFile(roots: rootsRenderer.renderRoots(), className: descriptor.className(with: generatorParameters))
+            JSModelFile(roots: rootsRenderer.renderRoots(), className: descriptor.className(with: generatorParameters)),
         ]
     }
 
@@ -38,7 +37,7 @@ struct JSModelFile: FileGenerator {
     func renderFile() -> String {
         return (
             [self.renderCommentHeader()] +
-            self.roots.map { $0.renderImplementation().joined(separator: "\n") }
+                roots.map { $0.renderImplementation().joined(separator: "\n") }
         )
         .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
         .filter { $0 != "" }
@@ -56,7 +55,7 @@ extension JSModelFile {
             "//",
             "//  DO NOT EDIT - EDITS WILL BE OVERWRITTEN",
             "//  @generated",
-            "//"
+            "//",
         ]
 
         return header.joined(separator: "\n")

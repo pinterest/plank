@@ -1,16 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
-if which swiftlint >/dev/null; then
-    swiftlint autocorrect
-    LINT_ERRS=`swiftlint lint --reporter emoji --quiet`
-    if [[ $LINT_ERRS != "" ]]; then
-        echo "Error: Fix lint errors from swiftlint"
-        echo $LINT_ERRS
-        exit 1
-    else
-        echo "SwiftLint finished: No errors or warnings found."
-    fi
-else
-    echo "Warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
-    exit 1
-fi
+set -eou pipefail
+
+echo "Checking for lint errors with SwiftLint"
+swift run swiftlint lint --reporter emoji
+
+echo "Checking for formatting errors with SwiftFormat"
+swift run swiftformat --lint .

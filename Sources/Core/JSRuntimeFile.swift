@@ -28,9 +28,9 @@ struct JSRuntimeFile: FileGenerator {
             "export type _$Values<V, O: $Object<V>> = V",
             "export type $Values<O: Object> = _$Values<*, O>",
             "export type PlankDate = string",
-            "export type PlankURI = string"
+            "export type PlankURI = string",
         ].map { $0 + ";" }
-        .joined(separator: "\n")
+            .joined(separator: "\n")
     }
 
     func renderFile() -> String {
@@ -54,7 +54,7 @@ extension JSRuntimeFile {
             "//",
             "//  DO NOT EDIT - EDITS WILL BE OVERWRITTEN",
             "//  @generated",
-            "//"
+            "//",
         ]
 
         return header.joined(separator: "\n")

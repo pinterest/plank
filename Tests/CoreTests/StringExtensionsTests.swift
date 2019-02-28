@@ -11,7 +11,6 @@ import XCTest
 @testable import Core
 
 class StringExtensionsTests: XCTestCase {
-
     func testUppercaseFirst() {
         XCTAssert("plank".uppercaseFirst == "Plank")
         XCTAssert("Plank".uppercaseFirst == "Plank")
@@ -42,7 +41,6 @@ class StringExtensionsTests: XCTestCase {
         XCTAssert("Created_At".snakeCaseToPropertyName() == "createdAt")
         XCTAssert("Test_url".snakeCaseToPropertyName() == "testURL")
         XCTAssert("url_test".snakeCaseToPropertyName() == "urlTest")
-
     }
 
     func testSnakeCaseToCapitalizedPropertyName() {

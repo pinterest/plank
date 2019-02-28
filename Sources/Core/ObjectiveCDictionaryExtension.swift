@@ -12,25 +12,25 @@ extension ObjCModelRenderer {
     func renderGenerateDictionary() -> ObjCIR.Method {
         let dictionary = "dict"
 
-        let props = self.properties.map { (param, schemaObj) -> String in
+        let props = properties.map { (param, schemaObj) -> String in
 
-            ObjCIR.ifStmt("_"+"\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {[
+            ObjCIR.ifStmt("_" + "\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") { [
                 schemaObj.schema.isObjCPrimitiveType ?
                     self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary) :
-                ObjCIR.ifElseStmt("_\(param.snakeCaseToPropertyName()) != nil") {[
-                    self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary)
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
-            ]}
+                    ObjCIR.ifElseStmt("_\(param.snakeCaseToPropertyName()) != nil") { [
+                        self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary),
+                    ] } { [
+                        "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];",
+                    ] },
+            ] }
         }.joined(separator: "\n")
-        return ObjCIR.method("- (NSDictionary *)dictionaryObjectRepresentation") {[
+        return ObjCIR.method("- (NSDictionary *)dictionaryObjectRepresentation") { [
             "NSMutableDictionary *\(dictionary) = " +
                 (self.isBaseClass ? "[[NSMutableDictionary alloc] initWithCapacity:\(self.properties.count)];" :
                     "[[super dictionaryObjectRepresentation] mutableCopy];"),
             props,
-            "return \(dictionary);"
-        ]}
+            "return \(dictionary);",
+        ] }
     }
 }
 
@@ -72,20 +72,20 @@ enum ParamType {
 
     func paramVariable() -> String {
         switch self {
-        case .ivar(let paramName):
+        case let .ivar(paramName):
             return "_\(paramName.snakeCaseToPropertyName())"
-        case .localVariable(let paramName)
-            :
+        case let .localVariable(paramName)
+             :
             return paramName.snakeCaseToPropertyName()
         }
     }
 
     func paramName() -> String {
         switch self {
-        case .ivar(let paramName):
+        case let .ivar(paramName):
             return paramName
-        case .localVariable(let paramName)
-            :
+        case let .localVariable(paramName)
+             :
             return paramName
         }
     }
@@ -113,17 +113,17 @@ extension ObjCFileRenderer {
         case .string(format: .some(.dateTime)):
             return [
                 "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
-                ObjCIR.ifElseStmt("[[valueTransformer class] allowsReverseTransformation]") {[
-                    "[\(dictionary) setObject:[valueTransformer reverseTransformedValue:\(propIVarName)] forKey:@\"\(param)\"];"
-                ]} {[
-                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];"
-                ]}
+                ObjCIR.ifElseStmt("[[valueTransformer class] allowsReverseTransformation]") { [
+                    "[\(dictionary) setObject:[valueTransformer reverseTransformedValue:\(propIVarName)] forKey:@\"\(param)\"];",
+                ] } { [
+                    "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];",
+                ] },
             ].joined(separator: "\n")
         case .enumT(.integer):
             return "[\(dictionary) setObject:@(\(propIVarName)) forKey:@\"\(param)\"];"
         case .enumT(.string):
-            return "[\(dictionary) setObject:"+enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))" + " forKey:@\"\(param)\"];"
-        case .array(itemType: let itemType?), .set(itemType: let itemType?):
+            return "[\(dictionary) setObject:" + enumToStringMethodName(propertyName: param, className: className) + "(\(propIVarName))" + " forKey:@\"\(param)\"];"
+        case let .array(itemType: itemType?), let .set(itemType: itemType?):
             func collectionClass(schema: Schema) -> CollectionClass {
                 if case .array = schema {
                     return .array
@@ -135,24 +135,24 @@ extension ObjCFileRenderer {
                 switch collectionSchema {
                 case .reference, .object, .oneOf(types: _):
                     return "[\(destCollection) addObject:[\(processObject) dictionaryObjectRepresentation]];"
-                case .array(itemType: let type), .set(itemType: let type):
+                case let .array(itemType: type), let .set(itemType: type):
                     let currentResult = "result\(collectionCounter)"
-                    let parentResult = "result\(collectionCounter-1)"
+                    let parentResult = "result\(collectionCounter - 1)"
                     let currentObj = "obj\(collectionCounter)"
                     let collectionItemClass = type.map { typeFromSchema("", $0.nonnullProperty()) } ?? "id"
                     return [
                         "\(collectionClass(schema: collectionSchema).name()) *items\(collectionCounter) = \(processObject);",
                         "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(collectionCounter).count];",
                         ObjCIR.forStmt("\(collectionItemClass) \(currentObj) in items\(collectionCounter)") { [
-                            createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: type!, collectionCounter: collectionCounter+1)
-                            ]},
-                        "[\(parentResult) addObject:\(currentResult)];"
+                            createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: type!, collectionCounter: collectionCounter + 1),
+                        ] },
+                        "[\(parentResult) addObject:\(currentResult)];",
                     ].joined(separator: "\n")
                 case .map(valueType: .none):
                     return "[\(destCollection) addObject:\(processObject)];"
-                case .map(valueType: .some(let type)):
+                case let .map(valueType: .some(type)):
                     let currentResult = "result\(collectionCounter)"
-                    let parentResult = "result\(collectionCounter-1)"
+                    let parentResult = "result\(collectionCounter - 1)"
                     let key = "key\(collectionCounter)"
                     return [
                         "\(typeFromSchema("", collectionSchema.nonnullProperty())) items\(collectionCounter) = \(processObject);",
@@ -160,11 +160,11 @@ extension ObjCFileRenderer {
                         ObjCIR.forStmt("NSString *\(key) in items\(collectionCounter)") { [
                             "\(typeFromSchema("", type.nonnullProperty())) tmp\(collectionCounter) = [items\(collectionCounter) objectForKey:\(key)];",
                             "NSMutableDictionary *tmpDict\(collectionCounter) = [NSMutableDictionary new];",
-                            self.renderAddToDictionaryStatement(.localVariable("tmp\(collectionCounter)"), type, "tmpDict\(collectionCounter)", counter: collectionCounter+1),
-                            "\(currentResult)[\(key)] = tmpDict\(collectionCounter)[@\"tmp\(collectionCounter)\"];"
-                        ]},
-                        "[\(parentResult) addObject:\(currentResult)];"
-                        ].joined(separator: "\n")
+                            self.renderAddToDictionaryStatement(.localVariable("tmp\(collectionCounter)"), type, "tmpDict\(collectionCounter)", counter: collectionCounter + 1),
+                            "\(currentResult)[\(key)] = tmpDict\(collectionCounter)[@\"tmp\(collectionCounter)\"];",
+                        ] },
+                        "[\(parentResult) addObject:\(currentResult)];",
+                    ].joined(separator: "\n")
                 case .integer, .float, .boolean:
                     return "[\(destCollection) addObject:\(processObject)];"
                 case .string(format: .none),
@@ -178,42 +178,42 @@ extension ObjCFileRenderer {
                 case .string(format: .some(.dateTime)):
                     return [
                         "NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:\(dateValueTransformerKey)];",
-                        ObjCIR.ifElseStmt("[[valueTransformer class] allowsReverseTransformation]") {[
-                            "[\(destCollection) addObject:[valueTransformer reverseTransformedValue:\(propIVarName)]];"
-                        ]} {[
-                            "[\(destCollection) addObject:[NSNull null]];"
-                        ]}
+                        ObjCIR.ifElseStmt("[[valueTransformer class] allowsReverseTransformation]") { [
+                            "[\(destCollection) addObject:[valueTransformer reverseTransformedValue:\(propIVarName)]];",
+                        ] } { [
+                            "[\(destCollection) addObject:[NSNull null]];",
+                        ] },
                     ].joined(separator: "\n")
                 case .enumT(.integer):
                     return "[\(destCollection) addObject:@(\(processObject))];"
                 case .enumT(.string):
-                    return "[\(destCollection) addObject:"+enumToStringMethodName(propertyName: param, className: self.className) + "(\(propIVarName))];"
+                    return "[\(destCollection) addObject:" + enumToStringMethodName(propertyName: param, className: className) + "(\(propIVarName))];"
                 }
             }
             let currentResult = "result\(counter)"
             let currentObj = "obj\(counter)"
             let itemClass = itemType.isObjCPrimitiveType ? "id" : typeFromSchema(param, itemType.nonnullProperty())
             return [
-                    "__auto_type items\(counter) = \(propIVarName);",
-                    "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(counter).count];",
-                    ObjCIR.forStmt("\(itemClass) \(currentObj) in items\(counter)") { [
-                        createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: itemType, collectionCounter: counter+1)
-                    ]},
-                    "[\(dictionary) setObject:\(currentResult) forKey:@\"\(param)\"];"
-                ].joined(separator: "\n")
-        case .map(valueType: .some(let valueType)):
+                "__auto_type items\(counter) = \(propIVarName);",
+                "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(counter).count];",
+                ObjCIR.forStmt("\(itemClass) \(currentObj) in items\(counter)") { [
+                    createCollection(destCollection: currentResult, processObject: currentObj, collectionSchema: itemType, collectionCounter: counter + 1),
+                ] },
+                "[\(dictionary) setObject:\(currentResult) forKey:@\"\(param)\"];",
+            ].joined(separator: "\n")
+        case let .map(valueType: .some(valueType)):
 
             switch valueType {
             case .map, .array, .reference(with: _), .oneOf(types: _), .object:
                 return [
                     "NSMutableDictionary *items\(counter) = [NSMutableDictionary new];",
-                    ObjCIR.forStmt("NSString *key\(counter) in \(propIVarName)") {[
+                    ObjCIR.forStmt("NSString *key\(counter) in \(propIVarName)") { [
                         "__auto_type dictValue\(counter) = \(propIVarName)[key\(counter)];",
                         "NSMutableDictionary *tmp\(counter) = [NSMutableDictionary new];",
-                        self.renderAddToDictionaryStatement(.localVariable("dictValue\(counter)"), valueType, "tmp\(counter)", counter: counter+1),
-                        "[items\(counter) setObject:tmp\(counter)[@\"dictValue\(counter)\"] forKey:key\(counter)];"
-                    ]},
-                    "[\(dictionary) setObject:items\(counter) forKey:@\"\(param)\"];"
+                        self.renderAddToDictionaryStatement(.localVariable("dictValue\(counter)"), valueType, "tmp\(counter)", counter: counter + 1),
+                        "[items\(counter) setObject:tmp\(counter)[@\"dictValue\(counter)\"] forKey:key\(counter)];",
+                    ] },
+                    "[\(dictionary) setObject:items\(counter) forKey:@\"\(param)\"];",
                 ].joined(separator: "\n")
             default:
                 return "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
@@ -221,13 +221,13 @@ extension ObjCFileRenderer {
         case .oneOf(types: _):
             // oneOf (ADT) types have a dictionaryObjectRepresentation method we will use here
             return "[\(dictionary) setObject:[\(propIVarName) dictionaryObjectRepresentation] forKey:@\"\(param)\"];"
-        case .reference(with: let ref):
+        case let .reference(with: ref):
             return ref.force().map {
                 renderAddToDictionaryStatement(paramWrapped, $0, dictionary)
-                } ?? {
-                    assert(false, "TODO: Forward optional across methods")
-                    return ""
-                }()
+            } ?? {
+                assert(false, "TODO: Forward optional across methods")
+                return ""
+            }()
         case .map(valueType: .none), .array(.none), .set(.none):
             return "[\(dictionary) setObject:\(propIVarName) forKey:@\"\(param)\"];"
         }

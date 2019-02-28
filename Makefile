@@ -13,6 +13,9 @@ clean:
 lint:
 	./Utility/lint.sh
 
+format:
+	swift run swiftformat .
+
 build: 
 	swift build -v
 

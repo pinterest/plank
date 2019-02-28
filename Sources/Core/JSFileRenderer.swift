@@ -15,22 +15,22 @@ extension JSFileRenderer {
         switch schema.schema {
         case .array(itemType: .none):
             return "Array<*>"
-        case .array(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
+        case let .array(itemType: .some(itemType)) where itemType.isObjCPrimitiveType:
             // JS primitive types are represented as number
             return "Array<number /* \(itemType.debugDescription) */>"
-        case .array(itemType: .some(let itemType)):
+        case let .array(itemType: .some(itemType)):
             return "Array<\(typeFromSchema(param, itemType.nonnullProperty()))>"
         case .set(itemType: .none):
             return "Array<*>"
-        case .set(itemType: .some(let itemType)) where itemType.isObjCPrimitiveType:
+        case let .set(itemType: .some(itemType)) where itemType.isObjCPrimitiveType:
             return "Array<number /* \(itemType.debugDescription)> */>"
-        case .set(itemType: .some(let itemType)):
+        case let .set(itemType: .some(itemType)):
             return "Array<\(typeFromSchema(param, itemType.nonnullProperty()))>"
         case .map(valueType: .none):
             return "{}"
-        case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
+        case let .map(valueType: .some(valueType)) where valueType.isObjCPrimitiveType:
             return "{ +[string]: number } /* \(valueType.debugDescription) */"
-        case .map(valueType: .some(let valueType)):
+        case let .map(valueType: .some(valueType)):
             return "{ +[string]: \(typeFromSchema(param, valueType.nonnullProperty())) }"
         case .string(format: .none),
              .string(format: .some(.email)),
@@ -50,16 +50,16 @@ extension JSFileRenderer {
             return "boolean"
         case .enumT:
             return JSModelRenderer.enumTypeName(className: className, propertyName: param)
-        case .object(let objSchemaRoot):
+        case let .object(objSchemaRoot):
             return "\(objSchemaRoot.typeName(with: params))"
-        case .reference(with: let ref):
+        case let .reference(with: ref):
             switch ref.force() {
-            case .some(.object(let schemaRoot)):
+            case let .some(.object(schemaRoot)):
                 return typeFromSchema(param, (.object(schemaRoot) as Schema).nonnullProperty())
             default:
                 fatalError("Bad reference found in schema for class: \(className)")
             }
-        case .oneOf(types:_):
+        case .oneOf(types: _):
             return JSModelRenderer.adtVariantTypeName(className: className, property: param)
         }
     }

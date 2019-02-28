@@ -9,55 +9,54 @@
 import Foundation
 
 extension JSModelRenderer {
-
     public static func adtVariantTypeName(className: String, property: String) -> String {
         return "\(className)\(property.snakeCaseToCamelCase())Type"
     }
 
     public static func adtCaseTypeName(_ aSchema: Schema) -> String {
         switch aSchema {
-        case .object(let objectRoot):
+        case let .object(objectRoot):
             // Intentionally drop prefix
             return "\(objectRoot.className(with: [:]))Type"
-        case .reference(with: let ref):
+        case let .reference(with: ref):
             return ref.force().map(adtCaseTypeName) ?? {
                 assert(false, "TODO: Forward optional across methods")
                 return ""
-                }()
+            }()
         case .float: return "number"
         case .integer: return "number"
-        case .enumT(.integer): return ""  // TODO: Not supported at the moment
+        case .enumT(.integer): return "" // TODO: Not supported at the moment
         case .boolean: return "boolean"
         case .array(itemType: _): return "Array<*>"
         case .set(itemType: _): return "Set<*>"
         case .map(valueType: .none): return "{}"
-        case .map(valueType: .some(let valueType)) where valueType.isObjCPrimitiveType:
+        case let .map(valueType: .some(valueType)) where valueType.isObjCPrimitiveType:
             return "{ +[string]: number } /* \(valueType.debugDescription) */"
-        case .map(valueType: .some(let valueType)):
+        case let .map(valueType: .some(valueType)):
             return "{ +[string]: \(adtCaseTypeName(valueType)) }"
         case .string(.some(.uri)): return "PlankURI"
         case .string(.some(.dateTime)): return "PlankDate"
         case .string(.some), .string(.none): return "string"
         case .enumT(.string): return "" // TODO: JS: Not supported yet
-        case .oneOf(types:_):
+        case .oneOf(types: _):
             fatalError("Nested oneOf types are unsupported at this time. Please file an issue if you require this. \(aSchema)")
         }
     }
 
     func renderAdtTypeRoots() -> [JSIR.Root] {
-        return self.properties.flatMap { (param, prop) -> [JSIR.Root] in
+        return properties.flatMap { (param, prop) -> [JSIR.Root] in
             switch prop.schema {
-            case .oneOf(types: let possibleTypes):
+            case let .oneOf(types: possibleTypes):
                 return [renderAdtTypeRoot(property: param, schemas: possibleTypes)]
-            case .array(itemType: .some(let itemType)):
+            case let .array(itemType: .some(itemType)):
                 switch itemType {
-                case .oneOf(types: let possibleTypes):
+                case let .oneOf(types: possibleTypes):
                     return [renderAdtTypeRoot(property: param, schemas: possibleTypes)]
                 default: return []
                 }
-            case .map(valueType: .some(let additionalProperties)):
+            case let .map(valueType: .some(additionalProperties)):
                 switch additionalProperties {
-                case .oneOf(types: let possibleTypes):
+                case let .oneOf(types: possibleTypes):
                     return [renderAdtTypeRoot(property: param, schemas: possibleTypes)]
                 default: return []
                 }
@@ -68,7 +67,7 @@ extension JSModelRenderer {
 
     func renderAdtTypeRoot(property: String, schemas: [Schema]) -> JSIR.Root {
         let types = schemas.map { (schema) -> String in
-            return JSModelRenderer.adtCaseTypeName(schema)
+            JSModelRenderer.adtCaseTypeName(schema)
         }.joined(separator: " | ")
 
         // Just return it as a string for now

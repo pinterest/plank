@@ -12,12 +12,11 @@ import Foundation
 
 struct ObjectiveCFileGenerator: FileGeneratorManager {
     static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> [FileGenerator] {
-
         let rootsRenderer = ObjCModelRenderer(rootSchema: descriptor, params: generatorParameters)
 
         return [
             ObjCHeaderFile(roots: rootsRenderer.renderRoots(), className: rootsRenderer.className),
-            ObjCImplementationFile(roots: rootsRenderer.renderRoots(), className: rootsRenderer.className)
+            ObjCImplementationFile(roots: rootsRenderer.renderRoots(), className: rootsRenderer.className),
         ]
     }
 
@@ -26,7 +25,7 @@ struct ObjectiveCFileGenerator: FileGeneratorManager {
     }
 }
 
-fileprivate extension FileGenerator {
+private extension FileGenerator {
     var objcDefaultIndent: Int {
         return 4
     }
@@ -46,12 +45,12 @@ struct ObjCHeaderFile: FileGenerator {
 
     func renderFile() -> String {
         let output = (
-                [self.renderCommentHeader()] +
-                self.roots.compactMap { $0.renderHeader().joined(separator: "\n") }
-            )
-            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
-            .filter { $0 != "" }
-            .joined(separator: "\n\n")
+            [self.renderCommentHeader()] +
+                roots.compactMap { $0.renderHeader().joined(separator: "\n") }
+        )
+        .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
+        .filter { $0 != "" }
+        .joined(separator: "\n\n")
         return output
     }
 }
@@ -70,12 +69,12 @@ struct ObjCImplementationFile: FileGenerator {
 
     func renderFile() -> String {
         let output = (
-                [self.renderCommentHeader()] +
-                self.roots.map { $0.renderImplementation().joined(separator: "\n") }
-            )
-            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
-            .filter { $0 != "" }
-            .joined(separator: "\n\n")
+            [self.renderCommentHeader()] +
+                roots.map { $0.renderImplementation().joined(separator: "\n") }
+        )
+        .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
+        .filter { $0 != "" }
+        .joined(separator: "\n\n")
         return output
     }
 }
@@ -88,45 +87,45 @@ struct ObjCRuntimeFile {
                 "   #define PLANK_NOESCAPE __attribute__((noescape))",
                 "#else",
                 "   #define PLANK_NOESCAPE",
-                "#endif"
-                ].joined(separator: "\n")),
+                "#endif",
+            ].joined(separator: "\n")),
 
             ObjCIR.Root.optionSetEnum(
                 name: "PlankModelInitType",
                 values: [
                     EnumValue<Int>(defaultValue: 0, description: "Default"),
                     EnumValue<Int>(defaultValue: 1, description: "FromMerge"),
-                    EnumValue<Int>(defaultValue: 2, description: "FromSubmerge")
+                    EnumValue<Int>(defaultValue: 2, description: "FromSubmerge"),
                 ]
             ),
-            // TODO Add another root for constant variables instead of using Macro
+            // TODO: Add another root for constant variables instead of using Macro
             ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
             ObjCIR.Root.macro("static NSValueTransformerName const kPlankDateValueTransformerKey = @\"kPlankDateValueTransformerKey\";"),
             ObjCIR.Root.macro("static NSNotificationName const kPlankDidInitializeNotification = @\"kPlankDidInitializeNotification\";"),
             ObjCIR.Root.macro("static NSString *const kPlankInitTypeKey = @\"kPlankInitTypeKey\";"),
             ObjCIR.Root.function(
-                ObjCIR.method("NSString *debugDescriptionForFields(NSArray *descriptionFields)") {[
+                ObjCIR.method("NSString *debugDescriptionForFields(NSArray *descriptionFields)") { [
                     "NSMutableString *stringBuf = [NSMutableString string];",
                     "NSString *newline = @\"\\n\";",
                     "NSString *format = @\"    %@\";",
-                    ObjCIR.forStmt("id obj in descriptionFields") {[
-                        ObjCIR.ifElseStmt("[obj isKindOfClass:[NSArray class]]") {[
+                    ObjCIR.forStmt("id obj in descriptionFields") { [
+                        ObjCIR.ifElseStmt("[obj isKindOfClass:[NSArray class]]") { [
                             "NSArray<NSString *> *objArray = (NSArray *)obj;",
-                            ObjCIR.forStmt("NSString *element in objArray") {[
+                            ObjCIR.forStmt("NSString *element in objArray") { [
                                 "[stringBuf appendFormat:format, element];",
-                                ObjCIR.ifStmt("element != [objArray lastObject]") {[
-                                    "[stringBuf appendString:newline];"
-                                    ]}
-                                ]}
-                            ]} {[
-                                "[stringBuf appendFormat:format, [obj description]];"
-                                ]},
+                                ObjCIR.ifStmt("element != [objArray lastObject]") { [
+                                    "[stringBuf appendString:newline];",
+                                ] },
+                            ] },
+                        ] } { [
+                            "[stringBuf appendFormat:format, [obj description]];",
+                        ] },
                         ObjCIR.ifStmt("obj != [descriptionFields lastObject]") {
                             ["[stringBuf appendString:newline];"]
-                        }
-                    ]},
-                    "return [stringBuf copy];"
-                ]}
+                        },
+                    ] },
+                    "return [stringBuf copy];",
+                ] }
             ),
             ObjCIR.Root.function(
                 ObjCIR.method("NSUInteger PINIntegerArrayHash(const NSUInteger *subhashes, NSUInteger count)") {
@@ -143,11 +142,11 @@ struct ObjCRuntimeFile {
                         "   b *= kMul;",
                         "   result = b;",
                         "}",
-                        "return (NSUInteger)result;"
+                        "return (NSUInteger)result;",
                     ]
                 }
             ),
-            ObjCIR.Root.macro("NS_ASSUME_NONNULL_END")
+            ObjCIR.Root.macro("NS_ASSUME_NONNULL_END"),
         ]
     }
 }
@@ -167,7 +166,7 @@ struct ObjCRuntimeHeaderFile: FileGenerator {
         return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", ""] + outputs)
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }
-            .joined(separator: "\n\n")    }
+            .joined(separator: "\n\n") }
 }
 
 struct ObjCRuntimeImplementationFile: FileGenerator {

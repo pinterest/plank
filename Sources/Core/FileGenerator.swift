@@ -24,7 +24,7 @@ public enum GenerationParameterType {
 public enum Languages: String {
     case objectiveC = "objc"
     case flowtype = "flow"
-    case java = "java"
+    case java
 }
 
 public protocol FileGeneratorManager {
@@ -52,14 +52,13 @@ protocol FileRenderer {
 
 extension SchemaObjectRoot {
     func sortedProperties(transitive: Bool = false) -> [(Parameter, SchemaObjectProperty)] {
-
-        let currentPairs = self.properties.map { $0 }.sorted(by: { (obj1, obj2) -> Bool in
-            return obj1.0 < obj2.0
+        let currentPairs = properties.map { $0 }.sorted(by: { (obj1, obj2) -> Bool in
+            obj1.0 < obj2.0
         })
 
         if transitive, let parentSchema = self.extends.flatMap({ $0.force() }) {
             switch parentSchema {
-            case .object(let root):
+            case let .object(root):
                 return root.sortedProperties(transitive: transitive) + currentPairs
             default:
                 // This state should be invalid but need to look into it.
@@ -73,19 +72,19 @@ extension SchemaObjectRoot {
 
 extension FileRenderer {
     var className: String {
-        return self.rootSchema.className(with: self.params)
+        return rootSchema.className(with: params)
     }
 
     var parentDescriptor: Schema? {
-        return self.rootSchema.extends.flatMap { $0.force() }
+        return rootSchema.extends.flatMap { $0.force() }
     }
 
     var transitiveProperties: [(Parameter, SchemaObjectProperty)] {
-        return self.rootSchema.sortedProperties(transitive: true)
+        return rootSchema.sortedProperties(transitive: true)
     }
 
     var properties: [(Parameter, SchemaObjectProperty)] {
-        return self.rootSchema.sortedProperties()
+        return rootSchema.sortedProperties()
     }
 
     var isBaseClass: Bool {
@@ -94,9 +93,9 @@ extension FileRenderer {
 
     func resolveClassName(_ schema: Schema?) -> String? {
         switch schema {
-        case .some(.object(let root)):
-            return root.className(with: self.params)
-        case .some(.reference(with: let ref)):
+        case let .some(.object(root)):
+            return root.className(with: params)
+        case let .some(.reference(with: ref)):
             return resolveClassName(ref.force())
         default:
             return nil
@@ -105,20 +104,20 @@ extension FileRenderer {
 
     fileprivate func referencedClassNames(schema: Schema) -> [String] {
         switch schema {
-        case .reference(with: let ref):
+        case let .reference(with: ref):
             switch ref.force() {
             case .some(.object):
                 return [typeFromSchema("", schema.nonnullProperty())]
             default:
-                fatalError("Bad reference found in schema for class: \(self.className)")
+                fatalError("Bad reference found in schema for class: \(className)")
             }
-        case .object(let schemaRoot):
+        case let .object(schemaRoot):
             return [schemaRoot.className(with: self.params)]
-        case .map(valueType: .some(let valueType)):
+        case let .map(valueType: .some(valueType)):
             return referencedClassNames(schema: valueType)
-        case .array(itemType: .some(let itemType)), .set(itemType: .some(let itemType)):
+        case let .array(itemType: .some(itemType)), let .set(itemType: .some(itemType)):
             return referencedClassNames(schema: itemType)
-        case .oneOf(types: let itemTypes):
+        case let .oneOf(types: itemTypes):
             return itemTypes.flatMap(referencedClassNames)
         default:
             return []
@@ -131,13 +130,13 @@ extension FileRenderer {
 }
 
 // Currently not usable until upgrading the Swift Toolchain on CI
-//extension Dictionary where Key == GenerationParameterType, Value == String {
+// extension Dictionary where Key == GenerationParameterType, Value == String {
 //    func indent(file: FileGenerator) -> Int {
 //        // Check if the GenerationParameters have an indentation set on it else just use the file indent
 //        let indent: Int? = self[.indent].flatMap { Int($0) }
 //        return indent ?? file.indent
 //    }
-//}
+// }
 
 // Workaround until we can use the version from above
 extension Dictionary where Value: ExpressibleByStringLiteral {
@@ -151,7 +150,6 @@ extension Dictionary where Value: ExpressibleByStringLiteral {
 }
 
 extension FileGenerator {
-
     func renderCommentHeader() -> String {
         formatter.dateStyle = DateFormatter.Style.long
         formatter.timeStyle = .medium
@@ -167,7 +165,7 @@ extension FileGenerator {
             "//",
             "// DO NOT EDIT - EDITS WILL BE OVERWRITTEN",
             "// @generated",
-            "//"
+            "//",
         ]
 
         return header.joined(separator: "\n")
@@ -211,13 +209,14 @@ public func writeFile(file: FileGenerator, outputDirectory: URL, generationParam
     let indent = generationParameters.indent(file: file)
     let indentSpaces = String(repeating: " ", count: indent)
     let fileContents = file.renderFile()
-                           .replacingOccurrences(of: "\t", with: indentSpaces)
-                           .appending("\n") // Ensure there is exactly one new line a the end of the file
+        .replacingOccurrences(of: "\t", with: indentSpaces)
+        .appending("\n") // Ensure there is exactly one new line a the end of the file
     do {
         try fileContents.write(
             to: URL(string: file.fileName, relativeTo: outputDirectory)!,
             atomically: true,
-            encoding: String.Encoding.utf8)
+            encoding: String.Encoding.utf8
+        )
     } catch {
         assert(false)
     }
@@ -248,19 +247,18 @@ public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParame
             }
             processedSchemas.insert(url)
             switch schema {
-            case .object(let rootObject):
+            case let .object(rootObject):
                 fileGenerators.forEach { generator in
                     generator.generateFile(rootObject,
                                            outputDirectory: outputDirectory,
                                            generationParameters: generationParameters)
                 }
             default:
-                assert(false, "Incorrect Schema for root.") // TODO Better error message.
+                assert(false, "Incorrect Schema for root.") // TODO: Better error message.
             }
         })
-    } while (
-        generationParameters[.recursive] != nil &&
-        processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count)
+    } while
+        generationParameters[.recursive] != nil && processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count
     if generationParameters[.includeRuntime] != nil {
         fileGenerators.forEach {
             $0.generateFileRuntime(outputDirectory: outputDirectory, generationParameters: generationParameters)

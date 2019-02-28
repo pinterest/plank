@@ -11,12 +11,12 @@ import Foundation
 typealias JSONObject = [String: Any]
 
 public enum JSONType: String {
-    case object = "object"
-    case array = "array"
-    case string = "string"
-    case integer = "integer"
-    case number = "number"
-    case boolean = "boolean"
+    case object
+    case array
+    case string
+    case integer
+    case number
+    case boolean
     case pointer = "$ref" // Used for combining schemas via references.
     case polymorphic = "oneOf" // JSONType composed of other JSONTypes
 
@@ -34,12 +34,12 @@ public enum JSONType: String {
 }
 
 public enum StringFormatType: String {
-    case dateTime = "date-time"  // Date representation, as defined by RFC 3339, section 5.6.
-    case email = "email"  // Internet email address, see RFC 5322, section 3.4.1.
-    case hostname = "hostname"  // Internet host name, see RFC 1034, section 3.1.
-    case ipv4 = "ipv4"  // IPv4 address, according to dotted-quad ABNF syntax as defined in RFC 2673, section 3.2.
-    case ipv6 = "ipv6"  // IPv6 address, as defined in RFC 2373, section 2.2.
-    case uri = "uri"  // A universal resource identifier (URI), according to RFC3986.
+    case dateTime = "date-time" // Date representation, as defined by RFC 3339, section 5.6.
+    case email // Internet email address, see RFC 5322, section 3.4.1.
+    case hostname // Internet host name, see RFC 1034, section 3.1.
+    case ipv4 // IPv4 address, according to dotted-quad ABNF syntax as defined in RFC 2673, section 3.2.
+    case ipv6 // IPv6 address, as defined in RFC 2373, section 2.2.
+    case uri // A universal resource identifier (URI), according to RFC3986.
 }
 
 public struct EnumValue<ValueType> {
@@ -56,7 +56,7 @@ public struct EnumValue<ValueType> {
             defaultValue = defaultVal
             description = descriptionVal
         } else {
-           fatalError("Invalid schema specification for enum: \(object)")
+            fatalError("Invalid schema specification for enum: \(object)")
         }
     }
 }
@@ -70,6 +70,7 @@ public struct URLSchemaReference: LazySchemaReference {
     let url: URL
     public let force: () -> Schema?
 }
+
 public protocol LazySchemaReference {
     var force: () -> Schema? { get }
 }
@@ -147,7 +148,7 @@ public func == (lhs: SchemaObjectRoot, rhs: SchemaObjectRoot) -> Bool {
 
 extension SchemaObjectRoot: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return (["\(name)\n extends from \(String(describing: extends.map { $0.force()?.debugDescription }))\n"] + properties.map { (key, value) in "\t\(key): \(value.schema.debugDescription)\n" }).reduce("", +)
+        return (["\(name)\n extends from \(String(describing: extends.map { $0.force()?.debugDescription }))\n"] + properties.map { key, value in "\t\(key): \(value.schema.debugDescription)\n" }).reduce("", +)
     }
 }
 
@@ -170,13 +171,13 @@ typealias Property = (Parameter, SchemaObjectProperty)
 extension Schema: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
-        case .array(itemType: let itemType):
+        case let .array(itemType: itemType):
             return "Array: \(itemType.debugDescription)"
-        case .set(itemType: let itemType):
+        case let .set(itemType: itemType):
             return "Set: \(itemType.debugDescription)"
-        case .object(let root):
+        case let .object(root):
             return "Object: \(root.debugDescription)"
-        case .map(valueType: let valueType):
+        case let .map(valueType: valueType):
             return "Map: \(valueType as Optional)"
         case .integer:
             return "Integer"
@@ -186,11 +187,11 @@ extension Schema: CustomDebugStringConvertible {
             return "Boolean"
         case .string:
             return "String"
-        case .oneOf(types: let types):
+        case let .oneOf(types: types):
             return (["OneOf"] + types.map { value in "\t\(value.debugDescription)\n" }).reduce("", +)
-        case .enumT(let enumType):
+        case let .enumT(enumType):
             return "Enum: \(enumType)"
-        case .reference(with: let ref):
+        case let .reference(with: ref):
             return "Reference to \(ref.url)"
         }
     }
@@ -200,7 +201,7 @@ extension Schema {
     // Computed Properties
     var title: String? {
         switch self {
-        case .object(let rootObject):
+        case let .object(rootObject):
             return rootObject.name
         default:
             return nil
@@ -209,7 +210,7 @@ extension Schema {
 
     func extends() -> Schema? {
         switch self {
-        case .object(let rootObject):
+        case let .object(rootObject):
             return rootObject.extends.flatMap { $0.force() }
         default:
             return nil
@@ -218,22 +219,24 @@ extension Schema {
 
     func deps() -> Set<URL> {
         switch self {
-        case .object(let rootObject):
+        case let .object(rootObject):
             let url: URL? = rootObject.extends?.url
             return (url.map { Set([$0]) } ?? Set()).union(
-                    Set(
-                        rootObject.properties.values.flatMap { (prop: SchemaObjectProperty) -> Set<URL> in
-                            return prop.schema.deps()
-                    }))
-        case .array(itemType: let itemType), .set(itemType: let itemType):
+                Set(
+                    rootObject.properties.values.flatMap { (prop: SchemaObjectProperty) -> Set<URL> in
+                        prop.schema.deps()
+                    }
+                )
+            )
+        case let .array(itemType: itemType), let .set(itemType: itemType):
             return itemType?.deps() ?? []
-        case .map(valueType: let valueType):
+        case let .map(valueType: valueType):
             return valueType?.deps() ?? []
         case .integer, .float, .boolean, .string, .enumT:
             return []
-        case .oneOf(types: let types):
+        case let .oneOf(types: types):
             return types.map { type in type.deps() }.reduce([]) { $0.union($1) }
-        case .reference(with: let ref):
+        case let .reference(with: ref):
             return [ref.url]
         }
     }
@@ -254,7 +257,7 @@ extension Schema {
                     let maybeEnumVals: [EnumValue<String>]? = .some(enumVals)
                     return maybeEnumVals
                         .flatMap { (values: [EnumValue<String>]) in defaultVal.map { ($0, values) } }
-                        .map { (defaultVal, enumVals) in
+                        .map { defaultVal, enumVals in
                             Schema.enumT(EnumType.string(enumVals, defaultValue: defaultVal))
                         }
                 } else {
@@ -263,11 +266,11 @@ extension Schema {
             case JSONType.array:
                 if let unique = propertyInfo["unique"] as? String, unique == "true" {
                     return .set(itemType: (propertyInfo["items"] as? JSONObject)
-                        .flatMap { propertyForType(propertyInfo: $0, source: source)})
+                        .flatMap { propertyForType(propertyInfo: $0, source: source) })
                 }
 
                 return .array(itemType: (propertyInfo["items"] as? JSONObject)
-                        .flatMap { propertyForType(propertyInfo: $0, source: source)})
+                    .flatMap { propertyForType(propertyInfo: $0, source: source) })
             case JSONType.integer:
                 if let enumValues = propertyInfo["enum"] as? [JSONObject] {
                     return Schema.enumT(EnumType.integer(enumValues.map { EnumValue<Int>(withObject: $0) }))
@@ -291,12 +294,12 @@ extension Schema {
                     // Class
                     let optTuples: [Property?] = propMap.map { (key, value) -> (String, Schema?) in
                         let schemaOpt = (value as? JSONObject).flatMap {
-                                propertyForType(propertyInfo: $0, source: source)
+                            propertyForType(propertyInfo: $0, source: source)
                         }
                         return (key, schemaOpt)
-                        }.map { (name, optSchema) in optSchema.map {
-                            (name, SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : requiredProps.contains(name) ? .nonnull : .nullable))
-                            }
+                    }.map { name, optSchema in optSchema.map {
+                        (name, SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : requiredProps.contains(name) ? .nonnull : .nullable))
+                    }
                     }
                     let lifted: [Property]? = optTuples.reduce([], { (build: [Property]?, tupleOption: Property?) -> [Property]? in
                         build.flatMap { (bld: [Property]) -> [Property]? in tupleOption.map { bld + [$0] } }
@@ -306,9 +309,9 @@ extension Schema {
                         .flatMap { (obj: JSONObject) in
                             let refStr = obj["$ref"] as? String
                             return refStr.map { refStr in
-                            let refUrl = decodeRef(from: source, with: refStr)
-                            return URLSchemaReference(url: refUrl, force: {
-                            loader.loadSchema(refUrl) })
+                                let refUrl = decodeRef(from: source, with: refStr)
+                                return URLSchemaReference(url: refUrl, force: {
+                                    loader.loadSchema(refUrl) })
                             }
                         }
                     return lifted.map { Schema.object(SchemaObjectRoot(name: objectTitle,
@@ -328,7 +331,6 @@ extension Schema {
                     }) }
                     .map { Schema.oneOf(types: $0) }
             }
-
         }
         return propertyForType
     }

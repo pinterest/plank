@@ -11,7 +11,6 @@ import XCTest
 @testable import Core
 
 class ObjectiveCInitTests: XCTestCase {
-
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -26,15 +25,14 @@ class ObjectiveCInitTests: XCTestCase {
         let properties = [
             "oneOf": [
                 ["type": "object"],
-                ["type": "number"]
-            ]
+                ["type": "number"],
+            ],
         ] as JSONObject
 
         let schemaLoader = MockSchemaLoader(schema: .oneOf(types: [.map(valueType: nil), .float]), url: URL(string: "http://google.com/")!)
         let propSchemaFn = Schema.propertyFunctionForType(loader: schemaLoader)
 
         if let prop = propSchemaFn(properties, URL(string: "http://google.com/")!) {
-
             let schema = SchemaObjectRoot(
                 name: "request",
                 properties: ["response_data": SchemaObjectProperty(schema: prop, nullability: .nullable)],
@@ -44,7 +42,7 @@ class ObjectiveCInitTests: XCTestCase {
 
             let renderer = ObjCModelRenderer(rootSchema: schema, params: [:])
             let output = renderer.renderInitWithModelDictionary()
-            XCTAssert(output.render().count > 0)
+            XCTAssert(!output.render().isEmpty)
         }
     }
 }

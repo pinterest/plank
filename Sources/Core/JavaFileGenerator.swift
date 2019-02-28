@@ -8,12 +8,10 @@
 import Foundation
 
 struct JavaGeneratorManager: FileGeneratorManager {
-
     static func filesToGenerate(descriptor: SchemaObjectRoot, generatorParameters: GenerationParameters) -> [FileGenerator] {
         let modelRenderer = JavaModelRenderer(rootSchema: descriptor, params: generatorParameters)
         return [
-
-            JavaFileGenerator(roots: modelRenderer.renderRoots(), className: descriptor.className(with: generatorParameters))
+            JavaFileGenerator(roots: modelRenderer.renderRoots(), className: descriptor.className(with: generatorParameters)),
         ]
     }
 
@@ -33,12 +31,12 @@ struct JavaFileGenerator: FileGenerator {
     func renderFile() -> String {
         return (
             [self.renderCommentHeader()] +
-                self.roots.map { $0.renderImplementation().joined(separator: "\n") }
-            )
-            .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
-            .map { $0.replacingOccurrences(of: "  ", with: " ") }
-            .filter { $0 != "" }
-            .joined(separator: "\n\n")
+                roots.map { $0.renderImplementation().joined(separator: "\n") }
+        )
+        .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
+        .map { $0.replacingOccurrences(of: "  ", with: " ") }
+        .filter { $0 != "" }
+        .joined(separator: "\n\n")
     }
 
     var indent: Int {

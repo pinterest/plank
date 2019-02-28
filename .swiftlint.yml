@@ -4,6 +4,7 @@ disabled_rules: # rule identifiers to exclude from running
   - line_length
   - cyclomatic_complexity
   - file_length
+  - trailing_comma
 included: # paths to include during linting. `--path` is ignored if present.
   - Sources
   - Tests
@@ -18,4 +19,3 @@ type_body_length:
   - 500 # error
 
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
-

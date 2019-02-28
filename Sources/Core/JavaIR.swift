@@ -17,17 +17,16 @@ struct JavaModifier: OptionSet {
 
     func render() -> String {
         return [
-            self.contains(.`public`) ? "public" : "",
+            self.contains(.public) ? "public" : "",
             self.contains(.abstract) ? "abstract" : "",
-            self.contains(.`static`) ? "static" : "",
+            self.contains(.static) ? "static" : "",
             self.contains(.final) ? "final" : "",
-            self.contains(.`private`) ? "private" : ""
+            self.contains(.private) ? "private" : "",
         ].filter { $0 != "" }.joined(separator: " ")
     }
 }
 
 public struct JavaIR {
-
     public struct Method {
         let annotations: Set<String>
         let modifiers: JavaModifier
@@ -44,7 +43,7 @@ public struct JavaIR {
             return annotationLines + [
                 "\(modifiers.render()) \(signature) {",
                 -->body,
-                "}"
+                "}",
             ]
         }
     }
@@ -80,7 +79,7 @@ public struct JavaIR {
                     "@IntDef({\(defAnnotationNames)})",
                     "public @interface \(name) {",
                     -->names,
-                    "}"
+                    "}",
                 ]
             case let .string(values, defaultValue: _):
                 // TODO: Use default value in builder method to specify what our default value should be
@@ -95,7 +94,7 @@ public struct JavaIR {
                     "@StringDef({\(defAnnotationNames)})",
                     "public @interface \(name) {",
                     -->names,
-                    "}"
+                    "}",
                 ]
             }
         }
@@ -121,7 +120,7 @@ public struct JavaIR {
                 -->properties.map { $0.render() },
                 -->methods.flatMap { $0.render() },
                 -->innerClasses.flatMap { $0.render() },
-                "}"
+                "}",
             ]
         }
     }
@@ -137,7 +136,7 @@ public struct JavaIR {
             return [
                 "\(modifiers.render()) interface \(name) \(extendsStmt){",
                 -->methods.compactMap { "\($0.signature);" },
-                "}"
+                "}",
             ]
         }
     }
