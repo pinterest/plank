@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Model : NSObject<NSCopying, NSSecureCoding>
 @property (nullable, nonatomic, copy, readonly) NSString * identifier;
+
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
@@ -30,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ModelBuilder : NSObject
 @property (nullable, nonatomic, copy, readwrite) NSString * identifier;
+
 - (instancetype)initWithModel:(Model *)modelObject;
 - (Model *)build;
 - (void)mergeWithModel:(Model *)modelObject;

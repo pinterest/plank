@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) NSInteger height;
 @property (nullable, nonatomic, copy, readonly) NSURL * url;
 @property (nonatomic, assign, readonly) NSInteger width;
+
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
@@ -36,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readwrite) NSInteger height;
 @property (nullable, nonatomic, copy, readwrite) NSURL * url;
 @property (nonatomic, assign, readwrite) NSInteger width;
+
 - (instancetype)initWithModel:(Image *)modelObject;
 - (Image *)build;
 - (void)mergeWithModel:(Image *)modelObject;

@@ -29,6 +29,7 @@ typedef NS_ENUM(NSInteger, EverythingMapPolymorphicValuesInternalType) {
 
 @interface EverythingMapPolymorphicValues : NSObject<NSCopying, NSSecureCoding>
 
+
 + (instancetype)objectWithUser:(User *)user;
 + (instancetype)objectWithBoard:(Board *)board;
 + (instancetype)objectWithImage:(Image *)image;
@@ -60,6 +61,7 @@ typedef NS_ENUM(NSInteger, EverythingPolymorphicPropInternalType) {
 };
 
 @interface EverythingPolymorphicProp : NSObject<NSCopying, NSSecureCoding>
+
 
 + (instancetype)objectWithUser:(User *)user;
 + (instancetype)objectWithBoard:(Board *)board;
@@ -127,6 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy, readonly) NSString * stringProp;
 @property (nullable, nonatomic, copy, readonly) NSString * type;
 @property (nullable, nonatomic, copy, readonly) NSURL * uriProp;
+
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
@@ -199,6 +202,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy, readwrite) NSString * stringProp;
 @property (nullable, nonatomic, copy, readwrite) NSString * type;
 @property (nullable, nonatomic, copy, readwrite) NSURL * uriProp;
+
 - (instancetype)initWithModel:(Everything *)modelObject;
 - (Everything *)build;
 - (void)mergeWithModel:(Everything *)modelObject;
