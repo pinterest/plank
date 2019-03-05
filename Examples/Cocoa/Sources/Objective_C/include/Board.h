@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonnull, nonatomic, strong, readonly) Image * image;
 @property (nullable, nonatomic, copy, readonly) NSString * name;
 @property (nullable, nonatomic, copy, readonly) NSURL * url;
+
 - (instancetype)initWithBuilder:(BoardBuilder *)builder;
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(BoardBuilder *builder))block;
 - (BOOL)isEqualToBoard:(Board *)anObject;
@@ -48,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonnull, nonatomic, strong, readwrite) Image * image;
 @property (nullable, nonatomic, copy, readwrite) NSString * name;
 @property (nullable, nonatomic, copy, readwrite) NSURL * url;
+
 - (instancetype)initWithModel:(Board *)modelObject;
 - (Board *)build;
 - (void)mergeWithModel:(Board *)modelObject;

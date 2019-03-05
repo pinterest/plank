@@ -320,6 +320,14 @@ public struct ObjCIR {
                     properties.sorted { $0.0 < $1.0 }.map { param, typeName, propSchema, access in
                         "@property (\(nullability(propSchema))nonatomic, \(propSchema.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
                     }.joined(separator: "\n"),
+                    properties.sorted { $0.0 < $1.0 }.filter { param, _, _, _ in
+                        param.lowercased().hasPrefix("new_") ||
+                            param.lowercased().hasPrefix("alloc_") ||
+                            param.lowercased().hasPrefix("copy_") ||
+                            param.lowercased().hasPrefix("mutable_copy_")
+                    }.map { param, typeName, _, _ in
+                        "- (\(typeName))\(param.snakeCaseToPropertyName()) __attribute__((objc_method_family(none)));"
+                    }.joined(separator: "\n"),
                     methods.filter { visibility, _ in visibility == .publicM }
                         .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end",

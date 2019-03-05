@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy, readonly) NSString * lastName;
 @property (nullable, nonatomic, copy, readonly) NSString * type;
 @property (nullable, nonatomic, copy, readonly) NSString * username;
+
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
@@ -68,6 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy, readwrite) NSString * lastName;
 @property (nullable, nonatomic, copy, readwrite) NSString * type;
 @property (nullable, nonatomic, copy, readwrite) NSString * username;
+
 - (instancetype)initWithModel:(User *)modelObject;
 - (User *)build;
 - (void)mergeWithModel:(User *)modelObject;

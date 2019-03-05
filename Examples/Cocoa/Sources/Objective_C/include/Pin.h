@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, PinAttributionObjectsInternalType) {
 
 @interface PinAttributionObjects : NSObject<NSCopying, NSSecureCoding>
 
+
 + (instancetype)objectWithBoard:(Board *)board;
 + (instancetype)objectWithUser:(User *)user;
 - (void)matchBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler;
@@ -57,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readonly) NSArray<NSDictionary *> * tags;
 @property (nullable, nonatomic, copy, readonly) NSURL * url;
 @property (nullable, nonatomic, strong, readonly) NSDictionary * visualSearchAttrs;
+
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
@@ -105,6 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readwrite) NSArray<NSDictionary *> * tags;
 @property (nullable, nonatomic, copy, readwrite) NSURL * url;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary * visualSearchAttrs;
+
 - (instancetype)initWithModel:(Pin *)modelObject;
 - (Pin *)build;
 - (void)mergeWithModel:(Pin *)modelObject;
