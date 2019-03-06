@@ -47,9 +47,9 @@ public class Image {
     public Image.Builder toBuilder() {
         return new Image.Builder(this);
     }
-    public Image mergeWith(Image model) {
+    public Image mergeFrom(Image model) {
         Image.Builder builder = this.toBuilder();
-        builder.mergeWith(model);
+        builder.mergeFrom(model);
         return builder.build();
     }
     @Override
@@ -136,7 +136,7 @@ public class Image {
             this._bits
             );
         }
-        public void mergeWith(Image model) {
+        public void mergeFrom(Image model) {
             if (model.getHeightIsSet()) {
                 this.height = model.height;
             }

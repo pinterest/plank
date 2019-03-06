@@ -254,9 +254,9 @@ public class Everything {
     public Everything.Builder toBuilder() {
         return new Everything.Builder(this);
     }
-    public Everything mergeWith(Everything model) {
+    public Everything mergeFrom(Everything model) {
         Everything.Builder builder = this.toBuilder();
-        builder.mergeWith(model);
+        builder.mergeFrom(model);
         return builder.build();
     }
     @Override
@@ -837,7 +837,7 @@ public class Everything {
             this._bits
             );
         }
-        public void mergeWith(Everything model) {
+        public void mergeFrom(Everything model) {
             if (model.getArrayPropIsSet()) {
                 this.arrayProp = model.arrayProp;
             }

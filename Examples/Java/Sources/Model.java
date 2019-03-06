@@ -39,9 +39,9 @@ public class Model {
     public Model.Builder toBuilder() {
         return new Model.Builder(this);
     }
-    public Model mergeWith(Model model) {
+    public Model mergeFrom(Model model) {
         Model.Builder builder = this.toBuilder();
-        builder.mergeWith(model);
+        builder.mergeFrom(model);
         return builder.build();
     }
     @Override
@@ -90,7 +90,7 @@ public class Model {
             this._bits
             );
         }
-        public void mergeWith(Model model) {
+        public void mergeFrom(Model model) {
             if (model.getIdentifierIsSet()) {
                 this.identifier = model.identifier;
             }

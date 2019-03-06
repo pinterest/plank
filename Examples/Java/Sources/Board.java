@@ -71,9 +71,9 @@ public class Board {
     public Board.Builder toBuilder() {
         return new Board.Builder(this);
     }
-    public Board mergeWith(Board model) {
+    public Board mergeFrom(Board model) {
         Board.Builder builder = this.toBuilder();
-        builder.mergeWith(model);
+        builder.mergeFrom(model);
         return builder.build();
     }
     @Override
@@ -274,7 +274,7 @@ public class Board {
             this._bits
             );
         }
-        public void mergeWith(Board model) {
+        public void mergeFrom(Board model) {
             if (model.getIdentifierIsSet()) {
                 this.identifier = model.identifier;
             }

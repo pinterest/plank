@@ -133,9 +133,9 @@ public class Pin {
     public Pin.Builder toBuilder() {
         return new Pin.Builder(this);
     }
-    public Pin mergeWith(Pin model) {
+    public Pin mergeFrom(Pin model) {
         Pin.Builder builder = this.toBuilder();
-        builder.mergeWith(model);
+        builder.mergeFrom(model);
         return builder.build();
     }
     @Override
@@ -488,7 +488,7 @@ public class Pin {
             this._bits
             );
         }
-        public void mergeWith(Pin model) {
+        public void mergeFrom(Pin model) {
             if (model.getAttributionIsSet()) {
                 this.attribution = model.attribution;
             }

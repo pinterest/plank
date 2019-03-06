@@ -88,10 +88,10 @@ public struct JavaModelRenderer: JavaFileRenderer {
         return getters
     }
 
-    func renderModelMergeWith() -> JavaIR.Method {
-        return JavaIR.method([.public], self.className + " mergeWith(" + self.className + " model)") {[
+    func renderModelMergeFrom() -> JavaIR.Method {
+        return JavaIR.method([.public], self.className + " mergeFrom(" + self.className + " model)") {[
             self.className + ".Builder builder = this.toBuilder();",
-            "builder.mergeWith(model);",
+            "builder.mergeFrom(model);",
             "return builder.build();"
         ]}
     }
@@ -149,7 +149,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let body = (self.transitiveProperties.map { param, _ in
             JavaIR.ifBlock(condition: "model.get" + param.snakeCaseToCapitalizedPropertyName() + "IsSet()", body: ["this." + param.snakeCaseToPropertyName() + " = model." + param.snakeCaseToPropertyName() + ";"])
         })
-        return JavaIR.method([.public], "void mergeWith(" + self.className + " model)") { body }
+        return JavaIR.method([.public], "void mergeFrom(" + self.className + " model)") { body }
     }
 
     func renderBuilderProperties(modifiers: JavaModifier = [.private]) -> [JavaIR.Property] {
@@ -248,7 +248,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                     self.renderModelConstructor(),
                     self.renderModelBuilder(),
                     self.renderModelToBuilder(),
-                    self.renderModelMergeWith(),
+                    self.renderModelMergeFrom(),
                     self.renderModelEquals(),
                     self.renderModelHashCode()] +
                     self.renderModelGetters() +

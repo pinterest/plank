@@ -81,9 +81,9 @@ public class User {
     public User.Builder toBuilder() {
         return new User.Builder(this);
     }
-    public User mergeWith(User model) {
+    public User mergeFrom(User model) {
         User.Builder builder = this.toBuilder();
-        builder.mergeWith(model);
+        builder.mergeFrom(model);
         return builder.build();
     }
     @Override
@@ -303,7 +303,7 @@ public class User {
             this._bits
             );
         }
-        public void mergeWith(User model) {
+        public void mergeFrom(User model) {
             if (model.getBioIsSet()) {
                 this.bio = model.bio;
             }
