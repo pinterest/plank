@@ -45,8 +45,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
             }.joined(separator: " &&\n")
 
         return JavaIR.method(annotations: ["Override"], [.public], "boolean equals(Object o)") {[
-            "if (this == o) return true;",
-            "if (o == null || getClass() != o.getClass()) return false;",
+            JavaIR.ifBlock(condition: "this == o", body: ["return true;"]),
+            JavaIR.ifBlock(condition: "o == null || getClass() != o.getClass()", body: ["return false;"]),
             self.className + " that = (" + self.className + ") o;",
             "return " + bodyEquals + ";"
             ]
@@ -147,11 +147,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderMerge() -> JavaIR.Method {
         let body = (self.transitiveProperties.map { param, _ in
-            "if (model.get" + param.snakeCaseToCapitalizedPropertyName() + "IsSet()) {\n" +
-                "    this." + param.snakeCaseToPropertyName() + " = model." + param.snakeCaseToPropertyName() + ";\n" +
-            "}"
+            JavaIR.ifBlock(condition: "model.get" + param.snakeCaseToCapitalizedPropertyName() + "IsSet()", body: ["this." + param.snakeCaseToPropertyName() + " = model." + param.snakeCaseToPropertyName() + ";"])
         })
-
         return JavaIR.method([.public], "void mergeWith(" + self.className + " model)") { body }
     }
 

@@ -12,7 +12,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
-import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -21,26 +20,81 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
-@AutoValue
-public abstract class Model {
+public class Model {
 
-
-    public abstract @SerializedName("id") @Nullable String identifier();
-    public static Builder builder() {
-        return new AutoValue_Model.Builder();
+    @SerializedName("id") private @Nullable String identifier;
+     static final private int ID_SET = 1 << 0;
+     private int _bits = 0;
+    private Model(@Nullable String identifier,
+    int _bits) {
+        this.identifier = identifier;
+        this._bits = _bits;
     }
-    abstract Builder toBuilder();
-    public static TypeAdapter<Model> jsonAdapter(Gson gson) {
-        return new AutoValue_Model.GsonTypeAdapter(gson);
+    public static Model.Builder builder() {
+        return new Model.Builder();
     }
-    @AutoValue.Builder
-    public abstract static class Builder {
+    public Model.Builder toBuilder() {
+        return new Model.Builder(this);
+    }
+    public Model mergeWith(Model model) {
+        Model.Builder builder = this.toBuilder();
+        builder.mergeWith(model);
+        return builder.build();
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Model that = (Model) o;
+        return Objects.equals(this.identifier, that.identifier);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier);
+    }
+    public @Nullable String getIdentifier() {
+        return this.identifier;
+    }
+    public boolean getIdentifierIsSet() {
+        return (this._bits & ID_SET) == ID_SET;
+    }
+    public static class Builder {
     
-    
-        public abstract Builder setIdentifier(@Nullable String value);
-        public abstract Model build();
+        @SerializedName("id") private @Nullable String identifier;
+         private int _bits = 0;
+        private Builder() {
+        
+        }
+        private Builder(@NonNull Model model) {
+            this.identifier = model.identifier;
+            this._bits = model._bits;
+        }
+        public Builder setIdentifier(@Nullable String value) {
+            this.identifier = value;
+            this._bits |= ID_SET;
+            return this;
+        }
+        public @Nullable String getIdentifier() {
+            return this.identifier;
+        }
+        public Model build() {
+            return new Model(
+            this.identifier,
+            this._bits
+            );
+        }
+        public void mergeWith(Model model) {
+            if (model.getIdentifierIsSet()) {
+                this.identifier = model.identifier;
+            }
+        }
     
     }
 }

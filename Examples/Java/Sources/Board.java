@@ -12,7 +12,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
-import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -21,42 +20,289 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
-@AutoValue
-public abstract class Board {
+public class Board {
 
-
-    public abstract @SerializedName("id") @Nullable String identifier();
-    public abstract @SerializedName("contributors") @Nullable Set<User> contributors();
-    public abstract @SerializedName("counts") @Nullable Map<String, Integer> counts();
-    public abstract @SerializedName("created_at") @Nullable Date createdAt();
-    public abstract @SerializedName("creator") @Nullable Map<String, String> creator();
-    public abstract @SerializedName("description") @Nullable String descriptionText();
-    public abstract @SerializedName("image") @NonNull Image image();
-    public abstract @SerializedName("name") @Nullable String name();
-    public abstract @SerializedName("url") @Nullable String url();
-    public static Builder builder() {
-        return new AutoValue_Board.Builder();
+    @SerializedName("id") private @Nullable String identifier;
+    @SerializedName("contributors") private @Nullable Set<User> contributors;
+    @SerializedName("counts") private @Nullable Map<String, Integer> counts;
+    @SerializedName("created_at") private @Nullable Date createdAt;
+    @SerializedName("creator") private @Nullable Map<String, String> creator;
+    @SerializedName("description") private @Nullable String descriptionText;
+    @SerializedName("image") private @NonNull Image image;
+    @SerializedName("name") private @Nullable String name;
+    @SerializedName("url") private @Nullable String url;
+     static final private int ID_SET = 1 << 0;
+     static final private int CONTRIBUTORS_SET = 1 << 1;
+     static final private int COUNTS_SET = 1 << 2;
+     static final private int CREATED_AT_SET = 1 << 3;
+     static final private int CREATOR_SET = 1 << 4;
+     static final private int DESCRIPTION_SET = 1 << 5;
+     static final private int IMAGE_SET = 1 << 6;
+     static final private int NAME_SET = 1 << 7;
+     static final private int URL_SET = 1 << 8;
+     private int _bits = 0;
+    private Board(@Nullable String identifier,
+    @Nullable Set<User> contributors,
+    @Nullable Map<String, Integer> counts,
+    @Nullable Date createdAt,
+    @Nullable Map<String, String> creator,
+    @Nullable String descriptionText,
+    @NonNull Image image,
+    @Nullable String name,
+    @Nullable String url,
+    int _bits) {
+        this.identifier = identifier;
+        this.contributors = contributors;
+        this.counts = counts;
+        this.createdAt = createdAt;
+        this.creator = creator;
+        this.descriptionText = descriptionText;
+        this.image = image;
+        this.name = name;
+        this.url = url;
+        this._bits = _bits;
     }
-    abstract Builder toBuilder();
-    public static TypeAdapter<Board> jsonAdapter(Gson gson) {
-        return new AutoValue_Board.GsonTypeAdapter(gson);
+    public static Board.Builder builder() {
+        return new Board.Builder();
     }
-    @AutoValue.Builder
-    public abstract static class Builder {
+    public Board.Builder toBuilder() {
+        return new Board.Builder(this);
+    }
+    public Board mergeWith(Board model) {
+        Board.Builder builder = this.toBuilder();
+        builder.mergeWith(model);
+        return builder.build();
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Board that = (Board) o;
+        return Objects.equals(this.identifier, that.identifier) &&
+        Objects.equals(this.contributors, that.contributors) &&
+        Objects.equals(this.counts, that.counts) &&
+        Objects.equals(this.createdAt, that.createdAt) &&
+        Objects.equals(this.creator, that.creator) &&
+        Objects.equals(this.descriptionText, that.descriptionText) &&
+        Objects.equals(this.image, that.image) &&
+        Objects.equals(this.name, that.name) &&
+        Objects.equals(this.url, that.url);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier,
+        contributors,
+        counts,
+        createdAt,
+        creator,
+        descriptionText,
+        image,
+        name,
+        url);
+    }
+    public @Nullable String getIdentifier() {
+        return this.identifier;
+    }
+    public @Nullable Set<User> getContributors() {
+        return this.contributors;
+    }
+    public @Nullable Map<String, Integer> getCounts() {
+        return this.counts;
+    }
+    public @Nullable Date getCreatedAt() {
+        return this.createdAt;
+    }
+    public @Nullable Map<String, String> getCreator() {
+        return this.creator;
+    }
+    public @Nullable String getDescriptionText() {
+        return this.descriptionText;
+    }
+    public @NonNull Image getImage() {
+        return this.image;
+    }
+    public @Nullable String getName() {
+        return this.name;
+    }
+    public @Nullable String getUrl() {
+        return this.url;
+    }
+    public boolean getIdentifierIsSet() {
+        return (this._bits & ID_SET) == ID_SET;
+    }
+    public boolean getContributorsIsSet() {
+        return (this._bits & CONTRIBUTORS_SET) == CONTRIBUTORS_SET;
+    }
+    public boolean getCountsIsSet() {
+        return (this._bits & COUNTS_SET) == COUNTS_SET;
+    }
+    public boolean getCreatedAtIsSet() {
+        return (this._bits & CREATED_AT_SET) == CREATED_AT_SET;
+    }
+    public boolean getCreatorIsSet() {
+        return (this._bits & CREATOR_SET) == CREATOR_SET;
+    }
+    public boolean getDescriptionTextIsSet() {
+        return (this._bits & DESCRIPTION_SET) == DESCRIPTION_SET;
+    }
+    public boolean getImageIsSet() {
+        return (this._bits & IMAGE_SET) == IMAGE_SET;
+    }
+    public boolean getNameIsSet() {
+        return (this._bits & NAME_SET) == NAME_SET;
+    }
+    public boolean getUrlIsSet() {
+        return (this._bits & URL_SET) == URL_SET;
+    }
+    public static class Builder {
     
-    
-        public abstract Builder setIdentifier(@Nullable String value);
-        public abstract Builder setContributors(@Nullable Set<User> value);
-        public abstract Builder setCounts(@Nullable Map<String, Integer> value);
-        public abstract Builder setCreatedAt(@Nullable Date value);
-        public abstract Builder setCreator(@Nullable Map<String, String> value);
-        public abstract Builder setDescriptionText(@Nullable String value);
-        public abstract Builder setImage(@NonNull Image value);
-        public abstract Builder setName(@Nullable String value);
-        public abstract Builder setUrl(@Nullable String value);
-        public abstract Board build();
+        @SerializedName("id") private @Nullable String identifier;
+        @SerializedName("contributors") private @Nullable Set<User> contributors;
+        @SerializedName("counts") private @Nullable Map<String, Integer> counts;
+        @SerializedName("created_at") private @Nullable Date createdAt;
+        @SerializedName("creator") private @Nullable Map<String, String> creator;
+        @SerializedName("description") private @Nullable String descriptionText;
+        @SerializedName("image") private @NonNull Image image;
+        @SerializedName("name") private @Nullable String name;
+        @SerializedName("url") private @Nullable String url;
+         private int _bits = 0;
+        private Builder() {
+        
+        }
+        private Builder(@NonNull Board model) {
+            this.identifier = model.identifier;
+            this.contributors = model.contributors;
+            this.counts = model.counts;
+            this.createdAt = model.createdAt;
+            this.creator = model.creator;
+            this.descriptionText = model.descriptionText;
+            this.image = model.image;
+            this.name = model.name;
+            this.url = model.url;
+            this._bits = model._bits;
+        }
+        public Builder setIdentifier(@Nullable String value) {
+            this.identifier = value;
+            this._bits |= ID_SET;
+            return this;
+        }
+        public Builder setContributors(@Nullable Set<User> value) {
+            this.contributors = value;
+            this._bits |= CONTRIBUTORS_SET;
+            return this;
+        }
+        public Builder setCounts(@Nullable Map<String, Integer> value) {
+            this.counts = value;
+            this._bits |= COUNTS_SET;
+            return this;
+        }
+        public Builder setCreatedAt(@Nullable Date value) {
+            this.createdAt = value;
+            this._bits |= CREATED_AT_SET;
+            return this;
+        }
+        public Builder setCreator(@Nullable Map<String, String> value) {
+            this.creator = value;
+            this._bits |= CREATOR_SET;
+            return this;
+        }
+        public Builder setDescriptionText(@Nullable String value) {
+            this.descriptionText = value;
+            this._bits |= DESCRIPTION_SET;
+            return this;
+        }
+        public Builder setImage(@NonNull Image value) {
+            this.image = value;
+            this._bits |= IMAGE_SET;
+            return this;
+        }
+        public Builder setName(@Nullable String value) {
+            this.name = value;
+            this._bits |= NAME_SET;
+            return this;
+        }
+        public Builder setUrl(@Nullable String value) {
+            this.url = value;
+            this._bits |= URL_SET;
+            return this;
+        }
+        public @Nullable String getIdentifier() {
+            return this.identifier;
+        }
+        public @Nullable Set<User> getContributors() {
+            return this.contributors;
+        }
+        public @Nullable Map<String, Integer> getCounts() {
+            return this.counts;
+        }
+        public @Nullable Date getCreatedAt() {
+            return this.createdAt;
+        }
+        public @Nullable Map<String, String> getCreator() {
+            return this.creator;
+        }
+        public @Nullable String getDescriptionText() {
+            return this.descriptionText;
+        }
+        public @NonNull Image getImage() {
+            return this.image;
+        }
+        public @Nullable String getName() {
+            return this.name;
+        }
+        public @Nullable String getUrl() {
+            return this.url;
+        }
+        public Board build() {
+            return new Board(
+            this.identifier,
+            this.contributors,
+            this.counts,
+            this.createdAt,
+            this.creator,
+            this.descriptionText,
+            this.image,
+            this.name,
+            this.url,
+            this._bits
+            );
+        }
+        public void mergeWith(Board model) {
+            if (model.getIdentifierIsSet()) {
+                this.identifier = model.identifier;
+            }
+            if (model.getContributorsIsSet()) {
+                this.contributors = model.contributors;
+            }
+            if (model.getCountsIsSet()) {
+                this.counts = model.counts;
+            }
+            if (model.getCreatedAtIsSet()) {
+                this.createdAt = model.createdAt;
+            }
+            if (model.getCreatorIsSet()) {
+                this.creator = model.creator;
+            }
+            if (model.getDescriptionTextIsSet()) {
+                this.descriptionText = model.descriptionText;
+            }
+            if (model.getImageIsSet()) {
+                this.image = model.image;
+            }
+            if (model.getNameIsSet()) {
+                this.name = model.name;
+            }
+            if (model.getUrlIsSet()) {
+                this.url = model.url;
+            }
+        }
     
     }
 }

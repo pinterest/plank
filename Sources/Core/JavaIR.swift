@@ -68,6 +68,14 @@ public struct JavaIR {
     static func method(annotations: Set<String> = [], _ modifiers: JavaModifier, _ signature: String, body: () -> [String]) -> JavaIR.Method {
         return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature)
     }
+    
+    static func ifBlock(condition: String, body: [String]) -> String {
+        return [
+            "if (" + condition + ") {",
+            -->body,
+            "}"
+        ].joined(separator: "\n")
+    }
 
     struct Enum {
         let name: String
