@@ -57,7 +57,7 @@ public struct JavaIR {
 
         func render() -> String {
             var prop = "\(annotations.map { "@\($0)" }.joined(separator: " ")) \(modifiers.render()) \(type) \(name)"
-            if initialValue.count > 0 {
+            if !initialValue.isEmpty {
                 prop.append(" = " + initialValue)
             }
             prop.append(";")
@@ -68,12 +68,12 @@ public struct JavaIR {
     static func method(annotations: Set<String> = [], _ modifiers: JavaModifier, _ signature: String, body: () -> [String]) -> JavaIR.Method {
         return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature)
     }
-    
+
     static func ifBlock(condition: String, body: [String]) -> String {
         return [
             "if (" + condition + ") {",
             -->body,
-            "}"
+            "}",
         ].joined(separator: "\n")
     }
 
