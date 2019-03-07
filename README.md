@@ -3,7 +3,12 @@
 # Plank
 [![Build Status](https://travis-ci.com/pinterest/plank.svg?branch=master)](https://travis-ci.com/pinterest/plank)
 
-Plank is a command-line tool for generating robust immutable Objective-C models from JSON Schemas. It will save you time writing boilerplate and eliminate model errors as your application scales in complexity.
+Plank is a command-line tool for generating robust immutable models from JSON Schemas. It will save you time writing boilerplate and eliminate model errors as your application scales in complexity.
+
+We currently support the following languages:
+- [Objective-C](https://pinterest.github.io/plank/docs/objc-reference/objc-overview.html)
+- [Javascript (Flow)](https://pinterest.github.io/plank/docs/flow-reference/flow-overview.html)
+- [Java](https://pinterest.github.io/plank/docs/java-reference/java-overview.html)
 
 #### Schema-defined
 Models are defined in JSON, a well-defined, extensible and language-independent specification.
@@ -40,7 +45,7 @@ $ make archive
 
 ## Getting Started
 
-Keep reading to learn about Plank’s features or get your feet wet with the [tutorial](https://pinterest.github.io/plank/docs/getting-started/tutorial.html).
+Keep reading to learn about Plank’s features or get your try it yourself with the [tutorial](https://pinterest.github.io/plank/docs/getting-started/tutorial.html).
 
 ## Defining a schema
 
@@ -248,7 +253,7 @@ Pull requests for bug fixes and features welcomed.
 
 ## License
 
-Copyright 2017 Pinterest, Inc.
+Copyright 2019 Pinterest, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
