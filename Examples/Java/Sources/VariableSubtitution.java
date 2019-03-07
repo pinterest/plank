@@ -12,7 +12,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
-import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -21,32 +20,166 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
-@AutoValue
-public abstract class VariableSubtitution {
+public class VariableSubtitution {
 
-
-    public abstract @SerializedName("alloc_prop") @Nullable Integer allocProp();
-    public abstract @SerializedName("copy_prop") @Nullable Integer copyProp();
-    public abstract @SerializedName("mutable_copy_prop") @Nullable Integer mutableCopyProp();
-    public abstract @SerializedName("new_prop") @Nullable Integer newProp();
-    public static Builder builder() {
-        return new AutoValue_VariableSubtitution.Builder();
-    }
-    abstract Builder toBuilder();
-    public static TypeAdapter<VariableSubtitution> jsonAdapter(Gson gson) {
-        return new AutoValue_VariableSubtitution.GsonTypeAdapter(gson);
-    }
-    @AutoValue.Builder
-    public abstract static class Builder {
+    @SerializedName("alloc_prop") private @Nullable Integer allocProp;
+    @SerializedName("copy_prop") private @Nullable Integer copyProp;
+    @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
+    @SerializedName("new_prop") private @Nullable Integer newProp;
     
+    static final private int ALLOC_PROP_SET = 1 << 0;
+    static final private int COPY_PROP_SET = 1 << 1;
+    static final private int MUTABLE_COPY_PROP_SET = 1 << 2;
+    static final private int NEW_PROP_SET = 1 << 3;
     
-        public abstract Builder setAllocProp(@Nullable Integer value);
-        public abstract Builder setCopyProp(@Nullable Integer value);
-        public abstract Builder setMutableCopyProp(@Nullable Integer value);
-        public abstract Builder setNewProp(@Nullable Integer value);
-        public abstract VariableSubtitution build();
+    private int _bits = 0;
+    
+    private VariableSubtitution(
+        @Nullable Integer allocProp
+        @Nullable Integer copyProp
+        @Nullable Integer mutableCopyProp
+        @Nullable Integer newProp
+        int _bits
+    ) {
+        this.allocProp = allocProp;
+        this.copyProp = copyProp;
+        this.mutableCopyProp = mutableCopyProp;
+        this.newProp = newProp;
+        this._bits = _bits;
+    }
+    public static VariableSubtitution.Builder builder() {
+        return new VariableSubtitution.Builder();
+    }
+    public VariableSubtitution.Builder toBuilder() {
+        return new VariableSubtitution.Builder(this);
+    }
+    public VariableSubtitution mergeFrom(VariableSubtitution model) {
+        VariableSubtitution.Builder builder = this.toBuilder();
+        builder.mergeFrom(model);
+        return builder.build();
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        VariableSubtitution that = (VariableSubtitution) o;
+        return Objects.equals(this.allocProp, that.allocProp) &&
+        Objects.equals(this.copyProp, that.copyProp) &&
+        Objects.equals(this.mutableCopyProp, that.mutableCopyProp) &&
+        Objects.equals(this.newProp, that.newProp);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(allocProp,
+        copyProp,
+        mutableCopyProp,
+        newProp);
+    }
+    public @Nullable Integer getAllocProp() {
+        return this.allocProp;
+    }
+    public @Nullable Integer getCopyProp() {
+        return this.copyProp;
+    }
+    public @Nullable Integer getMutableCopyProp() {
+        return this.mutableCopyProp;
+    }
+    public @Nullable Integer getNewProp() {
+        return this.newProp;
+    }
+    public boolean getAllocPropIsSet() {
+        return (this._bits & ALLOC_PROP_SET) == ALLOC_PROP_SET;
+    }
+    public boolean getCopyPropIsSet() {
+        return (this._bits & COPY_PROP_SET) == COPY_PROP_SET;
+    }
+    public boolean getMutableCopyPropIsSet() {
+        return (this._bits & MUTABLE_COPY_PROP_SET) == MUTABLE_COPY_PROP_SET;
+    }
+    public boolean getNewPropIsSet() {
+        return (this._bits & NEW_PROP_SET) == NEW_PROP_SET;
+    }
+    public static class Builder {
+    
+        @SerializedName("alloc_prop") private @Nullable Integer allocProp;
+        @SerializedName("copy_prop") private @Nullable Integer copyProp;
+        @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
+        @SerializedName("new_prop") private @Nullable Integer newProp;
+        
+        private int _bits = 0;
+        
+        private Builder() {
+        
+        }
+        private Builder(@NonNull VariableSubtitution model) {
+            this.allocProp = model.allocProp;
+            this.copyProp = model.copyProp;
+            this.mutableCopyProp = model.mutableCopyProp;
+            this.newProp = model.newProp;
+            this._bits = model._bits;
+        }
+        public Builder setAllocProp(@Nullable Integer value) {
+            this.allocProp = value;
+            this._bits |= ALLOC_PROP_SET;
+            return this;
+        }
+        public Builder setCopyProp(@Nullable Integer value) {
+            this.copyProp = value;
+            this._bits |= COPY_PROP_SET;
+            return this;
+        }
+        public Builder setMutableCopyProp(@Nullable Integer value) {
+            this.mutableCopyProp = value;
+            this._bits |= MUTABLE_COPY_PROP_SET;
+            return this;
+        }
+        public Builder setNewProp(@Nullable Integer value) {
+            this.newProp = value;
+            this._bits |= NEW_PROP_SET;
+            return this;
+        }
+        public @Nullable Integer getAllocProp() {
+            return this.allocProp;
+        }
+        public @Nullable Integer getCopyProp() {
+            return this.copyProp;
+        }
+        public @Nullable Integer getMutableCopyProp() {
+            return this.mutableCopyProp;
+        }
+        public @Nullable Integer getNewProp() {
+            return this.newProp;
+        }
+        public VariableSubtitution build() {
+            return new VariableSubtitution(
+            this.allocProp,
+            this.copyProp,
+            this.mutableCopyProp,
+            this.newProp,
+            this._bits
+            );
+        }
+        public void mergeFrom(VariableSubtitution model) {
+            if (model.getAllocPropIsSet()) {
+                this.allocProp = model.allocProp;
+            }
+            if (model.getCopyPropIsSet()) {
+                this.copyProp = model.copyProp;
+            }
+            if (model.getMutableCopyPropIsSet()) {
+                this.mutableCopyProp = model.mutableCopyProp;
+            }
+            if (model.getNewPropIsSet()) {
+                this.newProp = model.newProp;
+            }
+        }
     
     }
 }

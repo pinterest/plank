@@ -12,7 +12,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
-import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -21,10 +20,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
-@AutoValue
-public abstract class User {
+public class User {
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({UserEmailFrequency.UNSET, UserEmailFrequency.IMMEDIATE, UserEmailFrequency.DAILY})
     public @interface UserEmailFrequency {
@@ -32,39 +31,317 @@ public abstract class User {
         String IMMEDIATE = "immediate";
         String DAILY = "daily";
     }
-
-    public abstract @SerializedName("bio") @Nullable String bio();
-    public abstract @SerializedName("counts") @Nullable Map<String, Integer> counts();
-    public abstract @SerializedName("created_at") @Nullable Date createdAt();
-    public abstract @SerializedName("email_frequency") @Nullable @UserEmailFrequency String emailFrequency();
-    public abstract @SerializedName("first_name") @Nullable String firstName();
-    public abstract @SerializedName("id") @Nullable String identifier();
-    public abstract @SerializedName("image") @Nullable Image image();
-    public abstract @SerializedName("last_name") @Nullable String lastName();
-    public abstract @SerializedName("type") @Nullable String type();
-    public abstract @SerializedName("username") @Nullable String username();
-    public static Builder builder() {
-        return new AutoValue_User.Builder();
-    }
-    abstract Builder toBuilder();
-    public static TypeAdapter<User> jsonAdapter(Gson gson) {
-        return new AutoValue_User.GsonTypeAdapter(gson);
-    }
-    @AutoValue.Builder
-    public abstract static class Builder {
+    @SerializedName("bio") private @Nullable String bio;
+    @SerializedName("counts") private @Nullable Map<String, Integer> counts;
+    @SerializedName("created_at") private @Nullable Date createdAt;
+    @SerializedName("email_frequency") private @Nullable @UserEmailFrequency String emailFrequency;
+    @SerializedName("first_name") private @Nullable String firstName;
+    @SerializedName("id") private @Nullable String identifier;
+    @SerializedName("image") private @Nullable Image image;
+    @SerializedName("last_name") private @Nullable String lastName;
+    @SerializedName("type") private @Nullable String type;
+    @SerializedName("username") private @Nullable String username;
     
+    static final private int BIO_SET = 1 << 0;
+    static final private int COUNTS_SET = 1 << 1;
+    static final private int CREATED_AT_SET = 1 << 2;
+    static final private int EMAIL_FREQUENCY_SET = 1 << 3;
+    static final private int FIRST_NAME_SET = 1 << 4;
+    static final private int ID_SET = 1 << 5;
+    static final private int IMAGE_SET = 1 << 6;
+    static final private int LAST_NAME_SET = 1 << 7;
+    static final private int TYPE_SET = 1 << 8;
+    static final private int USERNAME_SET = 1 << 9;
     
-        public abstract Builder setBio(@Nullable String value);
-        public abstract Builder setCounts(@Nullable Map<String, Integer> value);
-        public abstract Builder setCreatedAt(@Nullable Date value);
-        public abstract Builder setEmailFrequency(@Nullable @UserEmailFrequency String value);
-        public abstract Builder setFirstName(@Nullable String value);
-        public abstract Builder setIdentifier(@Nullable String value);
-        public abstract Builder setImage(@Nullable Image value);
-        public abstract Builder setLastName(@Nullable String value);
-        public abstract Builder setType(@Nullable String value);
-        public abstract Builder setUsername(@Nullable String value);
-        public abstract User build();
+    private int _bits = 0;
+    
+    private User(
+        @Nullable String bio
+        @Nullable Map<String, Integer> counts
+        @Nullable Date createdAt
+        @Nullable @UserEmailFrequency String emailFrequency
+        @Nullable String firstName
+        @Nullable String identifier
+        @Nullable Image image
+        @Nullable String lastName
+        @Nullable String type
+        @Nullable String username
+        int _bits
+    ) {
+        this.bio = bio;
+        this.counts = counts;
+        this.createdAt = createdAt;
+        this.emailFrequency = emailFrequency;
+        this.firstName = firstName;
+        this.identifier = identifier;
+        this.image = image;
+        this.lastName = lastName;
+        this.type = type;
+        this.username = username;
+        this._bits = _bits;
+    }
+    public static User.Builder builder() {
+        return new User.Builder();
+    }
+    public User.Builder toBuilder() {
+        return new User.Builder(this);
+    }
+    public User mergeFrom(User model) {
+        User.Builder builder = this.toBuilder();
+        builder.mergeFrom(model);
+        return builder.build();
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User that = (User) o;
+        return Objects.equals(this.bio, that.bio) &&
+        Objects.equals(this.counts, that.counts) &&
+        Objects.equals(this.createdAt, that.createdAt) &&
+        Objects.equals(this.emailFrequency, that.emailFrequency) &&
+        Objects.equals(this.firstName, that.firstName) &&
+        Objects.equals(this.identifier, that.identifier) &&
+        Objects.equals(this.image, that.image) &&
+        Objects.equals(this.lastName, that.lastName) &&
+        Objects.equals(this.type, that.type) &&
+        Objects.equals(this.username, that.username);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(bio,
+        counts,
+        createdAt,
+        emailFrequency,
+        firstName,
+        identifier,
+        image,
+        lastName,
+        type,
+        username);
+    }
+    public @Nullable String getBio() {
+        return this.bio;
+    }
+    public @Nullable Map<String, Integer> getCounts() {
+        return this.counts;
+    }
+    public @Nullable Date getCreatedAt() {
+        return this.createdAt;
+    }
+    public @Nullable @UserEmailFrequency String getEmailFrequency() {
+        return this.emailFrequency;
+    }
+    public @Nullable String getFirstName() {
+        return this.firstName;
+    }
+    public @Nullable String getIdentifier() {
+        return this.identifier;
+    }
+    public @Nullable Image getImage() {
+        return this.image;
+    }
+    public @Nullable String getLastName() {
+        return this.lastName;
+    }
+    public @Nullable String getType() {
+        return this.type;
+    }
+    public @Nullable String getUsername() {
+        return this.username;
+    }
+    public boolean getBioIsSet() {
+        return (this._bits & BIO_SET) == BIO_SET;
+    }
+    public boolean getCountsIsSet() {
+        return (this._bits & COUNTS_SET) == COUNTS_SET;
+    }
+    public boolean getCreatedAtIsSet() {
+        return (this._bits & CREATED_AT_SET) == CREATED_AT_SET;
+    }
+    public boolean getEmailFrequencyIsSet() {
+        return (this._bits & EMAIL_FREQUENCY_SET) == EMAIL_FREQUENCY_SET;
+    }
+    public boolean getFirstNameIsSet() {
+        return (this._bits & FIRST_NAME_SET) == FIRST_NAME_SET;
+    }
+    public boolean getIdentifierIsSet() {
+        return (this._bits & ID_SET) == ID_SET;
+    }
+    public boolean getImageIsSet() {
+        return (this._bits & IMAGE_SET) == IMAGE_SET;
+    }
+    public boolean getLastNameIsSet() {
+        return (this._bits & LAST_NAME_SET) == LAST_NAME_SET;
+    }
+    public boolean getTypeIsSet() {
+        return (this._bits & TYPE_SET) == TYPE_SET;
+    }
+    public boolean getUsernameIsSet() {
+        return (this._bits & USERNAME_SET) == USERNAME_SET;
+    }
+    public static class Builder {
+    
+        @SerializedName("bio") private @Nullable String bio;
+        @SerializedName("counts") private @Nullable Map<String, Integer> counts;
+        @SerializedName("created_at") private @Nullable Date createdAt;
+        @SerializedName("email_frequency") private @Nullable @UserEmailFrequency String emailFrequency;
+        @SerializedName("first_name") private @Nullable String firstName;
+        @SerializedName("id") private @Nullable String identifier;
+        @SerializedName("image") private @Nullable Image image;
+        @SerializedName("last_name") private @Nullable String lastName;
+        @SerializedName("type") private @Nullable String type;
+        @SerializedName("username") private @Nullable String username;
+        
+        private int _bits = 0;
+        
+        private Builder() {
+        
+        }
+        private Builder(@NonNull User model) {
+            this.bio = model.bio;
+            this.counts = model.counts;
+            this.createdAt = model.createdAt;
+            this.emailFrequency = model.emailFrequency;
+            this.firstName = model.firstName;
+            this.identifier = model.identifier;
+            this.image = model.image;
+            this.lastName = model.lastName;
+            this.type = model.type;
+            this.username = model.username;
+            this._bits = model._bits;
+        }
+        public Builder setBio(@Nullable String value) {
+            this.bio = value;
+            this._bits |= BIO_SET;
+            return this;
+        }
+        public Builder setCounts(@Nullable Map<String, Integer> value) {
+            this.counts = value;
+            this._bits |= COUNTS_SET;
+            return this;
+        }
+        public Builder setCreatedAt(@Nullable Date value) {
+            this.createdAt = value;
+            this._bits |= CREATED_AT_SET;
+            return this;
+        }
+        public Builder setEmailFrequency(@Nullable @UserEmailFrequency String value) {
+            this.emailFrequency = value;
+            this._bits |= EMAIL_FREQUENCY_SET;
+            return this;
+        }
+        public Builder setFirstName(@Nullable String value) {
+            this.firstName = value;
+            this._bits |= FIRST_NAME_SET;
+            return this;
+        }
+        public Builder setIdentifier(@Nullable String value) {
+            this.identifier = value;
+            this._bits |= ID_SET;
+            return this;
+        }
+        public Builder setImage(@Nullable Image value) {
+            this.image = value;
+            this._bits |= IMAGE_SET;
+            return this;
+        }
+        public Builder setLastName(@Nullable String value) {
+            this.lastName = value;
+            this._bits |= LAST_NAME_SET;
+            return this;
+        }
+        public Builder setType(@Nullable String value) {
+            this.type = value;
+            this._bits |= TYPE_SET;
+            return this;
+        }
+        public Builder setUsername(@Nullable String value) {
+            this.username = value;
+            this._bits |= USERNAME_SET;
+            return this;
+        }
+        public @Nullable String getBio() {
+            return this.bio;
+        }
+        public @Nullable Map<String, Integer> getCounts() {
+            return this.counts;
+        }
+        public @Nullable Date getCreatedAt() {
+            return this.createdAt;
+        }
+        public @Nullable @UserEmailFrequency String getEmailFrequency() {
+            return this.emailFrequency;
+        }
+        public @Nullable String getFirstName() {
+            return this.firstName;
+        }
+        public @Nullable String getIdentifier() {
+            return this.identifier;
+        }
+        public @Nullable Image getImage() {
+            return this.image;
+        }
+        public @Nullable String getLastName() {
+            return this.lastName;
+        }
+        public @Nullable String getType() {
+            return this.type;
+        }
+        public @Nullable String getUsername() {
+            return this.username;
+        }
+        public User build() {
+            return new User(
+            this.bio,
+            this.counts,
+            this.createdAt,
+            this.emailFrequency,
+            this.firstName,
+            this.identifier,
+            this.image,
+            this.lastName,
+            this.type,
+            this.username,
+            this._bits
+            );
+        }
+        public void mergeFrom(User model) {
+            if (model.getBioIsSet()) {
+                this.bio = model.bio;
+            }
+            if (model.getCountsIsSet()) {
+                this.counts = model.counts;
+            }
+            if (model.getCreatedAtIsSet()) {
+                this.createdAt = model.createdAt;
+            }
+            if (model.getEmailFrequencyIsSet()) {
+                this.emailFrequency = model.emailFrequency;
+            }
+            if (model.getFirstNameIsSet()) {
+                this.firstName = model.firstName;
+            }
+            if (model.getIdentifierIsSet()) {
+                this.identifier = model.identifier;
+            }
+            if (model.getImageIsSet()) {
+                this.image = model.image;
+            }
+            if (model.getLastNameIsSet()) {
+                this.lastName = model.lastName;
+            }
+            if (model.getTypeIsSet()) {
+                this.type = model.type;
+            }
+            if (model.getUsernameIsSet()) {
+                this.username = model.username;
+            }
+        }
     
     }
 }

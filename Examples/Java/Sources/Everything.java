@@ -12,7 +12,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
-import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -21,6 +20,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 interface EverythingMapPolymorphicValuesMatcher<R> {
@@ -52,7 +52,9 @@ public final class EverythingMapPolymorphicValues<R> {
     private @Nullable Everything value4;
     private @Nullable List<Object> value5;
     private @Nullable Map<String, Object> value6;
+    
     private @InternalStorage int internalStorage;
+    
     private EverythingMapPolymorphicValues() {
     
     }
@@ -103,7 +105,9 @@ public final class EverythingPolymorphicProp<R> {
     private @Nullable Double value8;
     private @Nullable Date value9;
     private @Nullable String value10;
+    
     private @InternalStorage int internalStorage;
+    
     private EverythingPolymorphicProp() {
     
     }
@@ -113,8 +117,7 @@ public final class EverythingPolymorphicProp<R> {
 
 }
 
-@AutoValue
-public abstract class Everything {
+public class Everything {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({EverythingIntEnum.INT_CASE_1, EverythingIntEnum.INT_CASE_2, EverythingIntEnum.INT_CASE_3})
     public @interface EverythingIntEnum {
@@ -129,77 +132,811 @@ public abstract class Everything {
         String CASE2 = "case2";
         String CASE3 = "case3";
     }
-
-    public abstract @SerializedName("array_prop") @Nullable List<Object> arrayProp();
-    public abstract @SerializedName("boolean_prop") @Nullable Boolean booleanProp();
-    public abstract @SerializedName("date_prop") @Nullable Date dateProp();
-    public abstract @SerializedName("int_enum") @Nullable @EverythingIntEnum int intEnum();
-    public abstract @SerializedName("int_prop") @Nullable Integer intProp();
-    public abstract @SerializedName("list_polymorphic_values") @Nullable List<Object> listPolymorphicValues();
-    public abstract @SerializedName("list_with_list_and_other_model_values") @Nullable List<List<User>> listWithListAndOtherModelValues();
-    public abstract @SerializedName("list_with_map_and_other_model_values") @Nullable List<Map<String, User>> listWithMapAndOtherModelValues();
-    public abstract @SerializedName("list_with_object_values") @Nullable List<String> listWithObjectValues();
-    public abstract @SerializedName("list_with_other_model_values") @Nullable List<User> listWithOtherModelValues();
-    public abstract @SerializedName("list_with_primitive_values") @Nullable List<Integer> listWithPrimitiveValues();
-    public abstract @SerializedName("map_polymorphic_values") @Nullable Map<String, EverythingMapPolymorphicValues> mapPolymorphicValues();
-    public abstract @SerializedName("map_prop") @Nullable Map<String, Object> mapProp();
-    public abstract @SerializedName("map_with_list_and_other_model_values") @Nullable Map<String, List<User>> mapWithListAndOtherModelValues();
-    public abstract @SerializedName("map_with_map_and_other_model_values") @Nullable Map<String, Map<String, Object>> mapWithMapAndOtherModelValues();
-    public abstract @SerializedName("map_with_object_values") @Nullable Map<String, String> mapWithObjectValues();
-    public abstract @SerializedName("map_with_other_model_values") @Nullable Map<String, User> mapWithOtherModelValues();
-    public abstract @SerializedName("map_with_primitive_values") @Nullable Map<String, Integer> mapWithPrimitiveValues();
-    public abstract @SerializedName("number_prop") @Nullable Double numberProp();
-    public abstract @SerializedName("other_model_prop") @Nullable User otherModelProp();
-    public abstract @SerializedName("polymorphic_prop") @Nullable EverythingPolymorphicProp polymorphicProp();
-    public abstract @SerializedName("set_prop") @Nullable Set<Object> setProp();
-    public abstract @SerializedName("set_prop_with_other_model_values") @Nullable Set<User> setPropWithOtherModelValues();
-    public abstract @SerializedName("set_prop_with_primitive_values") @Nullable Set<Integer> setPropWithPrimitiveValues();
-    public abstract @SerializedName("set_prop_with_values") @Nullable Set<String> setPropWithValues();
-    public abstract @SerializedName("string_enum") @Nullable @EverythingStringEnum String stringEnum();
-    public abstract @SerializedName("string_prop") @Nullable String stringProp();
-    public abstract @SerializedName("type") @Nullable String type();
-    public abstract @SerializedName("uri_prop") @Nullable String uriProp();
-    public static Builder builder() {
-        return new AutoValue_Everything.Builder();
-    }
-    abstract Builder toBuilder();
-    public static TypeAdapter<Everything> jsonAdapter(Gson gson) {
-        return new AutoValue_Everything.GsonTypeAdapter(gson);
-    }
-    @AutoValue.Builder
-    public abstract static class Builder {
+    @SerializedName("array_prop") private @Nullable List<Object> arrayProp;
+    @SerializedName("boolean_prop") private @Nullable Boolean booleanProp;
+    @SerializedName("date_prop") private @Nullable Date dateProp;
+    @SerializedName("int_enum") private @Nullable @EverythingIntEnum int intEnum;
+    @SerializedName("int_prop") private @Nullable Integer intProp;
+    @SerializedName("list_polymorphic_values") private @Nullable List<Object> listPolymorphicValues;
+    @SerializedName("list_with_list_and_other_model_values") private @Nullable List<List<User>> listWithListAndOtherModelValues;
+    @SerializedName("list_with_map_and_other_model_values") private @Nullable List<Map<String, User>> listWithMapAndOtherModelValues;
+    @SerializedName("list_with_object_values") private @Nullable List<String> listWithObjectValues;
+    @SerializedName("list_with_other_model_values") private @Nullable List<User> listWithOtherModelValues;
+    @SerializedName("list_with_primitive_values") private @Nullable List<Integer> listWithPrimitiveValues;
+    @SerializedName("map_polymorphic_values") private @Nullable Map<String, EverythingMapPolymorphicValues> mapPolymorphicValues;
+    @SerializedName("map_prop") private @Nullable Map<String, Object> mapProp;
+    @SerializedName("map_with_list_and_other_model_values") private @Nullable Map<String, List<User>> mapWithListAndOtherModelValues;
+    @SerializedName("map_with_map_and_other_model_values") private @Nullable Map<String, Map<String, Object>> mapWithMapAndOtherModelValues;
+    @SerializedName("map_with_object_values") private @Nullable Map<String, String> mapWithObjectValues;
+    @SerializedName("map_with_other_model_values") private @Nullable Map<String, User> mapWithOtherModelValues;
+    @SerializedName("map_with_primitive_values") private @Nullable Map<String, Integer> mapWithPrimitiveValues;
+    @SerializedName("number_prop") private @Nullable Double numberProp;
+    @SerializedName("other_model_prop") private @Nullable User otherModelProp;
+    @SerializedName("polymorphic_prop") private @Nullable EverythingPolymorphicProp polymorphicProp;
+    @SerializedName("set_prop") private @Nullable Set<Object> setProp;
+    @SerializedName("set_prop_with_other_model_values") private @Nullable Set<User> setPropWithOtherModelValues;
+    @SerializedName("set_prop_with_primitive_values") private @Nullable Set<Integer> setPropWithPrimitiveValues;
+    @SerializedName("set_prop_with_values") private @Nullable Set<String> setPropWithValues;
+    @SerializedName("string_enum") private @Nullable @EverythingStringEnum String stringEnum;
+    @SerializedName("string_prop") private @Nullable String stringProp;
+    @SerializedName("type") private @Nullable String type;
+    @SerializedName("uri_prop") private @Nullable String uriProp;
     
+    static final private int ARRAY_PROP_SET = 1 << 0;
+    static final private int BOOLEAN_PROP_SET = 1 << 1;
+    static final private int DATE_PROP_SET = 1 << 2;
+    static final private int INT_ENUM_SET = 1 << 3;
+    static final private int INT_PROP_SET = 1 << 4;
+    static final private int LIST_POLYMORPHIC_VALUES_SET = 1 << 5;
+    static final private int LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET = 1 << 6;
+    static final private int LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET = 1 << 7;
+    static final private int LIST_WITH_OBJECT_VALUES_SET = 1 << 8;
+    static final private int LIST_WITH_OTHER_MODEL_VALUES_SET = 1 << 9;
+    static final private int LIST_WITH_PRIMITIVE_VALUES_SET = 1 << 10;
+    static final private int MAP_POLYMORPHIC_VALUES_SET = 1 << 11;
+    static final private int MAP_PROP_SET = 1 << 12;
+    static final private int MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET = 1 << 13;
+    static final private int MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET = 1 << 14;
+    static final private int MAP_WITH_OBJECT_VALUES_SET = 1 << 15;
+    static final private int MAP_WITH_OTHER_MODEL_VALUES_SET = 1 << 16;
+    static final private int MAP_WITH_PRIMITIVE_VALUES_SET = 1 << 17;
+    static final private int NUMBER_PROP_SET = 1 << 18;
+    static final private int OTHER_MODEL_PROP_SET = 1 << 19;
+    static final private int POLYMORPHIC_PROP_SET = 1 << 20;
+    static final private int SET_PROP_SET = 1 << 21;
+    static final private int SET_PROP_WITH_OTHER_MODEL_VALUES_SET = 1 << 22;
+    static final private int SET_PROP_WITH_PRIMITIVE_VALUES_SET = 1 << 23;
+    static final private int SET_PROP_WITH_VALUES_SET = 1 << 24;
+    static final private int STRING_ENUM_SET = 1 << 25;
+    static final private int STRING_PROP_SET = 1 << 26;
+    static final private int TYPE_SET = 1 << 27;
+    static final private int URI_PROP_SET = 1 << 28;
     
-        public abstract Builder setArrayProp(@Nullable List<Object> value);
-        public abstract Builder setBooleanProp(@Nullable Boolean value);
-        public abstract Builder setDateProp(@Nullable Date value);
-        public abstract Builder setIntEnum(@Nullable @EverythingIntEnum int value);
-        public abstract Builder setIntProp(@Nullable Integer value);
-        public abstract Builder setListPolymorphicValues(@Nullable List<Object> value);
-        public abstract Builder setListWithListAndOtherModelValues(@Nullable List<List<User>> value);
-        public abstract Builder setListWithMapAndOtherModelValues(@Nullable List<Map<String, User>> value);
-        public abstract Builder setListWithObjectValues(@Nullable List<String> value);
-        public abstract Builder setListWithOtherModelValues(@Nullable List<User> value);
-        public abstract Builder setListWithPrimitiveValues(@Nullable List<Integer> value);
-        public abstract Builder setMapPolymorphicValues(@Nullable Map<String, EverythingMapPolymorphicValues> value);
-        public abstract Builder setMapProp(@Nullable Map<String, Object> value);
-        public abstract Builder setMapWithListAndOtherModelValues(@Nullable Map<String, List<User>> value);
-        public abstract Builder setMapWithMapAndOtherModelValues(@Nullable Map<String, Map<String, Object>> value);
-        public abstract Builder setMapWithObjectValues(@Nullable Map<String, String> value);
-        public abstract Builder setMapWithOtherModelValues(@Nullable Map<String, User> value);
-        public abstract Builder setMapWithPrimitiveValues(@Nullable Map<String, Integer> value);
-        public abstract Builder setNumberProp(@Nullable Double value);
-        public abstract Builder setOtherModelProp(@Nullable User value);
-        public abstract Builder setPolymorphicProp(@Nullable EverythingPolymorphicProp value);
-        public abstract Builder setSetProp(@Nullable Set<Object> value);
-        public abstract Builder setSetPropWithOtherModelValues(@Nullable Set<User> value);
-        public abstract Builder setSetPropWithPrimitiveValues(@Nullable Set<Integer> value);
-        public abstract Builder setSetPropWithValues(@Nullable Set<String> value);
-        public abstract Builder setStringEnum(@Nullable @EverythingStringEnum String value);
-        public abstract Builder setStringProp(@Nullable String value);
-        public abstract Builder setType(@Nullable String value);
-        public abstract Builder setUriProp(@Nullable String value);
-        public abstract Everything build();
+    private int _bits = 0;
+    
+    private Everything(
+        @Nullable List<Object> arrayProp
+        @Nullable Boolean booleanProp
+        @Nullable Date dateProp
+        @Nullable @EverythingIntEnum int intEnum
+        @Nullable Integer intProp
+        @Nullable List<Object> listPolymorphicValues
+        @Nullable List<List<User>> listWithListAndOtherModelValues
+        @Nullable List<Map<String, User>> listWithMapAndOtherModelValues
+        @Nullable List<String> listWithObjectValues
+        @Nullable List<User> listWithOtherModelValues
+        @Nullable List<Integer> listWithPrimitiveValues
+        @Nullable Map<String, EverythingMapPolymorphicValues> mapPolymorphicValues
+        @Nullable Map<String, Object> mapProp
+        @Nullable Map<String, List<User>> mapWithListAndOtherModelValues
+        @Nullable Map<String, Map<String, Object>> mapWithMapAndOtherModelValues
+        @Nullable Map<String, String> mapWithObjectValues
+        @Nullable Map<String, User> mapWithOtherModelValues
+        @Nullable Map<String, Integer> mapWithPrimitiveValues
+        @Nullable Double numberProp
+        @Nullable User otherModelProp
+        @Nullable EverythingPolymorphicProp polymorphicProp
+        @Nullable Set<Object> setProp
+        @Nullable Set<User> setPropWithOtherModelValues
+        @Nullable Set<Integer> setPropWithPrimitiveValues
+        @Nullable Set<String> setPropWithValues
+        @Nullable @EverythingStringEnum String stringEnum
+        @Nullable String stringProp
+        @Nullable String type
+        @Nullable String uriProp
+        int _bits
+    ) {
+        this.arrayProp = arrayProp;
+        this.booleanProp = booleanProp;
+        this.dateProp = dateProp;
+        this.intEnum = intEnum;
+        this.intProp = intProp;
+        this.listPolymorphicValues = listPolymorphicValues;
+        this.listWithListAndOtherModelValues = listWithListAndOtherModelValues;
+        this.listWithMapAndOtherModelValues = listWithMapAndOtherModelValues;
+        this.listWithObjectValues = listWithObjectValues;
+        this.listWithOtherModelValues = listWithOtherModelValues;
+        this.listWithPrimitiveValues = listWithPrimitiveValues;
+        this.mapPolymorphicValues = mapPolymorphicValues;
+        this.mapProp = mapProp;
+        this.mapWithListAndOtherModelValues = mapWithListAndOtherModelValues;
+        this.mapWithMapAndOtherModelValues = mapWithMapAndOtherModelValues;
+        this.mapWithObjectValues = mapWithObjectValues;
+        this.mapWithOtherModelValues = mapWithOtherModelValues;
+        this.mapWithPrimitiveValues = mapWithPrimitiveValues;
+        this.numberProp = numberProp;
+        this.otherModelProp = otherModelProp;
+        this.polymorphicProp = polymorphicProp;
+        this.setProp = setProp;
+        this.setPropWithOtherModelValues = setPropWithOtherModelValues;
+        this.setPropWithPrimitiveValues = setPropWithPrimitiveValues;
+        this.setPropWithValues = setPropWithValues;
+        this.stringEnum = stringEnum;
+        this.stringProp = stringProp;
+        this.type = type;
+        this.uriProp = uriProp;
+        this._bits = _bits;
+    }
+    public static Everything.Builder builder() {
+        return new Everything.Builder();
+    }
+    public Everything.Builder toBuilder() {
+        return new Everything.Builder(this);
+    }
+    public Everything mergeFrom(Everything model) {
+        Everything.Builder builder = this.toBuilder();
+        builder.mergeFrom(model);
+        return builder.build();
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Everything that = (Everything) o;
+        return Objects.equals(this.arrayProp, that.arrayProp) &&
+        Objects.equals(this.booleanProp, that.booleanProp) &&
+        Objects.equals(this.dateProp, that.dateProp) &&
+        Objects.equals(this.intEnum, that.intEnum) &&
+        Objects.equals(this.intProp, that.intProp) &&
+        Objects.equals(this.listPolymorphicValues, that.listPolymorphicValues) &&
+        Objects.equals(this.listWithListAndOtherModelValues, that.listWithListAndOtherModelValues) &&
+        Objects.equals(this.listWithMapAndOtherModelValues, that.listWithMapAndOtherModelValues) &&
+        Objects.equals(this.listWithObjectValues, that.listWithObjectValues) &&
+        Objects.equals(this.listWithOtherModelValues, that.listWithOtherModelValues) &&
+        Objects.equals(this.listWithPrimitiveValues, that.listWithPrimitiveValues) &&
+        Objects.equals(this.mapPolymorphicValues, that.mapPolymorphicValues) &&
+        Objects.equals(this.mapProp, that.mapProp) &&
+        Objects.equals(this.mapWithListAndOtherModelValues, that.mapWithListAndOtherModelValues) &&
+        Objects.equals(this.mapWithMapAndOtherModelValues, that.mapWithMapAndOtherModelValues) &&
+        Objects.equals(this.mapWithObjectValues, that.mapWithObjectValues) &&
+        Objects.equals(this.mapWithOtherModelValues, that.mapWithOtherModelValues) &&
+        Objects.equals(this.mapWithPrimitiveValues, that.mapWithPrimitiveValues) &&
+        Objects.equals(this.numberProp, that.numberProp) &&
+        Objects.equals(this.otherModelProp, that.otherModelProp) &&
+        Objects.equals(this.polymorphicProp, that.polymorphicProp) &&
+        Objects.equals(this.setProp, that.setProp) &&
+        Objects.equals(this.setPropWithOtherModelValues, that.setPropWithOtherModelValues) &&
+        Objects.equals(this.setPropWithPrimitiveValues, that.setPropWithPrimitiveValues) &&
+        Objects.equals(this.setPropWithValues, that.setPropWithValues) &&
+        Objects.equals(this.stringEnum, that.stringEnum) &&
+        Objects.equals(this.stringProp, that.stringProp) &&
+        Objects.equals(this.type, that.type) &&
+        Objects.equals(this.uriProp, that.uriProp);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(arrayProp,
+        booleanProp,
+        dateProp,
+        intEnum,
+        intProp,
+        listPolymorphicValues,
+        listWithListAndOtherModelValues,
+        listWithMapAndOtherModelValues,
+        listWithObjectValues,
+        listWithOtherModelValues,
+        listWithPrimitiveValues,
+        mapPolymorphicValues,
+        mapProp,
+        mapWithListAndOtherModelValues,
+        mapWithMapAndOtherModelValues,
+        mapWithObjectValues,
+        mapWithOtherModelValues,
+        mapWithPrimitiveValues,
+        numberProp,
+        otherModelProp,
+        polymorphicProp,
+        setProp,
+        setPropWithOtherModelValues,
+        setPropWithPrimitiveValues,
+        setPropWithValues,
+        stringEnum,
+        stringProp,
+        type,
+        uriProp);
+    }
+    public @Nullable List<Object> getArrayProp() {
+        return this.arrayProp;
+    }
+    public @Nullable Boolean getBooleanProp() {
+        return this.booleanProp;
+    }
+    public @Nullable Date getDateProp() {
+        return this.dateProp;
+    }
+    public @Nullable @EverythingIntEnum int getIntEnum() {
+        return this.intEnum;
+    }
+    public @Nullable Integer getIntProp() {
+        return this.intProp;
+    }
+    public @Nullable List<Object> getListPolymorphicValues() {
+        return this.listPolymorphicValues;
+    }
+    public @Nullable List<List<User>> getListWithListAndOtherModelValues() {
+        return this.listWithListAndOtherModelValues;
+    }
+    public @Nullable List<Map<String, User>> getListWithMapAndOtherModelValues() {
+        return this.listWithMapAndOtherModelValues;
+    }
+    public @Nullable List<String> getListWithObjectValues() {
+        return this.listWithObjectValues;
+    }
+    public @Nullable List<User> getListWithOtherModelValues() {
+        return this.listWithOtherModelValues;
+    }
+    public @Nullable List<Integer> getListWithPrimitiveValues() {
+        return this.listWithPrimitiveValues;
+    }
+    public @Nullable Map<String, EverythingMapPolymorphicValues> getMapPolymorphicValues() {
+        return this.mapPolymorphicValues;
+    }
+    public @Nullable Map<String, Object> getMapProp() {
+        return this.mapProp;
+    }
+    public @Nullable Map<String, List<User>> getMapWithListAndOtherModelValues() {
+        return this.mapWithListAndOtherModelValues;
+    }
+    public @Nullable Map<String, Map<String, Object>> getMapWithMapAndOtherModelValues() {
+        return this.mapWithMapAndOtherModelValues;
+    }
+    public @Nullable Map<String, String> getMapWithObjectValues() {
+        return this.mapWithObjectValues;
+    }
+    public @Nullable Map<String, User> getMapWithOtherModelValues() {
+        return this.mapWithOtherModelValues;
+    }
+    public @Nullable Map<String, Integer> getMapWithPrimitiveValues() {
+        return this.mapWithPrimitiveValues;
+    }
+    public @Nullable Double getNumberProp() {
+        return this.numberProp;
+    }
+    public @Nullable User getOtherModelProp() {
+        return this.otherModelProp;
+    }
+    public @Nullable EverythingPolymorphicProp getPolymorphicProp() {
+        return this.polymorphicProp;
+    }
+    public @Nullable Set<Object> getSetProp() {
+        return this.setProp;
+    }
+    public @Nullable Set<User> getSetPropWithOtherModelValues() {
+        return this.setPropWithOtherModelValues;
+    }
+    public @Nullable Set<Integer> getSetPropWithPrimitiveValues() {
+        return this.setPropWithPrimitiveValues;
+    }
+    public @Nullable Set<String> getSetPropWithValues() {
+        return this.setPropWithValues;
+    }
+    public @Nullable @EverythingStringEnum String getStringEnum() {
+        return this.stringEnum;
+    }
+    public @Nullable String getStringProp() {
+        return this.stringProp;
+    }
+    public @Nullable String getType() {
+        return this.type;
+    }
+    public @Nullable String getUriProp() {
+        return this.uriProp;
+    }
+    public boolean getArrayPropIsSet() {
+        return (this._bits & ARRAY_PROP_SET) == ARRAY_PROP_SET;
+    }
+    public boolean getBooleanPropIsSet() {
+        return (this._bits & BOOLEAN_PROP_SET) == BOOLEAN_PROP_SET;
+    }
+    public boolean getDatePropIsSet() {
+        return (this._bits & DATE_PROP_SET) == DATE_PROP_SET;
+    }
+    public boolean getIntEnumIsSet() {
+        return (this._bits & INT_ENUM_SET) == INT_ENUM_SET;
+    }
+    public boolean getIntPropIsSet() {
+        return (this._bits & INT_PROP_SET) == INT_PROP_SET;
+    }
+    public boolean getListPolymorphicValuesIsSet() {
+        return (this._bits & LIST_POLYMORPHIC_VALUES_SET) == LIST_POLYMORPHIC_VALUES_SET;
+    }
+    public boolean getListWithListAndOtherModelValuesIsSet() {
+        return (this._bits & LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET) == LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+    }
+    public boolean getListWithMapAndOtherModelValuesIsSet() {
+        return (this._bits & LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET) == LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+    }
+    public boolean getListWithObjectValuesIsSet() {
+        return (this._bits & LIST_WITH_OBJECT_VALUES_SET) == LIST_WITH_OBJECT_VALUES_SET;
+    }
+    public boolean getListWithOtherModelValuesIsSet() {
+        return (this._bits & LIST_WITH_OTHER_MODEL_VALUES_SET) == LIST_WITH_OTHER_MODEL_VALUES_SET;
+    }
+    public boolean getListWithPrimitiveValuesIsSet() {
+        return (this._bits & LIST_WITH_PRIMITIVE_VALUES_SET) == LIST_WITH_PRIMITIVE_VALUES_SET;
+    }
+    public boolean getMapPolymorphicValuesIsSet() {
+        return (this._bits & MAP_POLYMORPHIC_VALUES_SET) == MAP_POLYMORPHIC_VALUES_SET;
+    }
+    public boolean getMapPropIsSet() {
+        return (this._bits & MAP_PROP_SET) == MAP_PROP_SET;
+    }
+    public boolean getMapWithListAndOtherModelValuesIsSet() {
+        return (this._bits & MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET) == MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+    }
+    public boolean getMapWithMapAndOtherModelValuesIsSet() {
+        return (this._bits & MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET) == MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+    }
+    public boolean getMapWithObjectValuesIsSet() {
+        return (this._bits & MAP_WITH_OBJECT_VALUES_SET) == MAP_WITH_OBJECT_VALUES_SET;
+    }
+    public boolean getMapWithOtherModelValuesIsSet() {
+        return (this._bits & MAP_WITH_OTHER_MODEL_VALUES_SET) == MAP_WITH_OTHER_MODEL_VALUES_SET;
+    }
+    public boolean getMapWithPrimitiveValuesIsSet() {
+        return (this._bits & MAP_WITH_PRIMITIVE_VALUES_SET) == MAP_WITH_PRIMITIVE_VALUES_SET;
+    }
+    public boolean getNumberPropIsSet() {
+        return (this._bits & NUMBER_PROP_SET) == NUMBER_PROP_SET;
+    }
+    public boolean getOtherModelPropIsSet() {
+        return (this._bits & OTHER_MODEL_PROP_SET) == OTHER_MODEL_PROP_SET;
+    }
+    public boolean getPolymorphicPropIsSet() {
+        return (this._bits & POLYMORPHIC_PROP_SET) == POLYMORPHIC_PROP_SET;
+    }
+    public boolean getSetPropIsSet() {
+        return (this._bits & SET_PROP_SET) == SET_PROP_SET;
+    }
+    public boolean getSetPropWithOtherModelValuesIsSet() {
+        return (this._bits & SET_PROP_WITH_OTHER_MODEL_VALUES_SET) == SET_PROP_WITH_OTHER_MODEL_VALUES_SET;
+    }
+    public boolean getSetPropWithPrimitiveValuesIsSet() {
+        return (this._bits & SET_PROP_WITH_PRIMITIVE_VALUES_SET) == SET_PROP_WITH_PRIMITIVE_VALUES_SET;
+    }
+    public boolean getSetPropWithValuesIsSet() {
+        return (this._bits & SET_PROP_WITH_VALUES_SET) == SET_PROP_WITH_VALUES_SET;
+    }
+    public boolean getStringEnumIsSet() {
+        return (this._bits & STRING_ENUM_SET) == STRING_ENUM_SET;
+    }
+    public boolean getStringPropIsSet() {
+        return (this._bits & STRING_PROP_SET) == STRING_PROP_SET;
+    }
+    public boolean getTypeIsSet() {
+        return (this._bits & TYPE_SET) == TYPE_SET;
+    }
+    public boolean getUriPropIsSet() {
+        return (this._bits & URI_PROP_SET) == URI_PROP_SET;
+    }
+    public static class Builder {
+    
+        @SerializedName("array_prop") private @Nullable List<Object> arrayProp;
+        @SerializedName("boolean_prop") private @Nullable Boolean booleanProp;
+        @SerializedName("date_prop") private @Nullable Date dateProp;
+        @SerializedName("int_enum") private @Nullable @EverythingIntEnum int intEnum;
+        @SerializedName("int_prop") private @Nullable Integer intProp;
+        @SerializedName("list_polymorphic_values") private @Nullable List<Object> listPolymorphicValues;
+        @SerializedName("list_with_list_and_other_model_values") private @Nullable List<List<User>> listWithListAndOtherModelValues;
+        @SerializedName("list_with_map_and_other_model_values") private @Nullable List<Map<String, User>> listWithMapAndOtherModelValues;
+        @SerializedName("list_with_object_values") private @Nullable List<String> listWithObjectValues;
+        @SerializedName("list_with_other_model_values") private @Nullable List<User> listWithOtherModelValues;
+        @SerializedName("list_with_primitive_values") private @Nullable List<Integer> listWithPrimitiveValues;
+        @SerializedName("map_polymorphic_values") private @Nullable Map<String, EverythingMapPolymorphicValues> mapPolymorphicValues;
+        @SerializedName("map_prop") private @Nullable Map<String, Object> mapProp;
+        @SerializedName("map_with_list_and_other_model_values") private @Nullable Map<String, List<User>> mapWithListAndOtherModelValues;
+        @SerializedName("map_with_map_and_other_model_values") private @Nullable Map<String, Map<String, Object>> mapWithMapAndOtherModelValues;
+        @SerializedName("map_with_object_values") private @Nullable Map<String, String> mapWithObjectValues;
+        @SerializedName("map_with_other_model_values") private @Nullable Map<String, User> mapWithOtherModelValues;
+        @SerializedName("map_with_primitive_values") private @Nullable Map<String, Integer> mapWithPrimitiveValues;
+        @SerializedName("number_prop") private @Nullable Double numberProp;
+        @SerializedName("other_model_prop") private @Nullable User otherModelProp;
+        @SerializedName("polymorphic_prop") private @Nullable EverythingPolymorphicProp polymorphicProp;
+        @SerializedName("set_prop") private @Nullable Set<Object> setProp;
+        @SerializedName("set_prop_with_other_model_values") private @Nullable Set<User> setPropWithOtherModelValues;
+        @SerializedName("set_prop_with_primitive_values") private @Nullable Set<Integer> setPropWithPrimitiveValues;
+        @SerializedName("set_prop_with_values") private @Nullable Set<String> setPropWithValues;
+        @SerializedName("string_enum") private @Nullable @EverythingStringEnum String stringEnum;
+        @SerializedName("string_prop") private @Nullable String stringProp;
+        @SerializedName("type") private @Nullable String type;
+        @SerializedName("uri_prop") private @Nullable String uriProp;
+        
+        private int _bits = 0;
+        
+        private Builder() {
+        
+        }
+        private Builder(@NonNull Everything model) {
+            this.arrayProp = model.arrayProp;
+            this.booleanProp = model.booleanProp;
+            this.dateProp = model.dateProp;
+            this.intEnum = model.intEnum;
+            this.intProp = model.intProp;
+            this.listPolymorphicValues = model.listPolymorphicValues;
+            this.listWithListAndOtherModelValues = model.listWithListAndOtherModelValues;
+            this.listWithMapAndOtherModelValues = model.listWithMapAndOtherModelValues;
+            this.listWithObjectValues = model.listWithObjectValues;
+            this.listWithOtherModelValues = model.listWithOtherModelValues;
+            this.listWithPrimitiveValues = model.listWithPrimitiveValues;
+            this.mapPolymorphicValues = model.mapPolymorphicValues;
+            this.mapProp = model.mapProp;
+            this.mapWithListAndOtherModelValues = model.mapWithListAndOtherModelValues;
+            this.mapWithMapAndOtherModelValues = model.mapWithMapAndOtherModelValues;
+            this.mapWithObjectValues = model.mapWithObjectValues;
+            this.mapWithOtherModelValues = model.mapWithOtherModelValues;
+            this.mapWithPrimitiveValues = model.mapWithPrimitiveValues;
+            this.numberProp = model.numberProp;
+            this.otherModelProp = model.otherModelProp;
+            this.polymorphicProp = model.polymorphicProp;
+            this.setProp = model.setProp;
+            this.setPropWithOtherModelValues = model.setPropWithOtherModelValues;
+            this.setPropWithPrimitiveValues = model.setPropWithPrimitiveValues;
+            this.setPropWithValues = model.setPropWithValues;
+            this.stringEnum = model.stringEnum;
+            this.stringProp = model.stringProp;
+            this.type = model.type;
+            this.uriProp = model.uriProp;
+            this._bits = model._bits;
+        }
+        public Builder setArrayProp(@Nullable List<Object> value) {
+            this.arrayProp = value;
+            this._bits |= ARRAY_PROP_SET;
+            return this;
+        }
+        public Builder setBooleanProp(@Nullable Boolean value) {
+            this.booleanProp = value;
+            this._bits |= BOOLEAN_PROP_SET;
+            return this;
+        }
+        public Builder setDateProp(@Nullable Date value) {
+            this.dateProp = value;
+            this._bits |= DATE_PROP_SET;
+            return this;
+        }
+        public Builder setIntEnum(@Nullable @EverythingIntEnum int value) {
+            this.intEnum = value;
+            this._bits |= INT_ENUM_SET;
+            return this;
+        }
+        public Builder setIntProp(@Nullable Integer value) {
+            this.intProp = value;
+            this._bits |= INT_PROP_SET;
+            return this;
+        }
+        public Builder setListPolymorphicValues(@Nullable List<Object> value) {
+            this.listPolymorphicValues = value;
+            this._bits |= LIST_POLYMORPHIC_VALUES_SET;
+            return this;
+        }
+        public Builder setListWithListAndOtherModelValues(@Nullable List<List<User>> value) {
+            this.listWithListAndOtherModelValues = value;
+            this._bits |= LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+            return this;
+        }
+        public Builder setListWithMapAndOtherModelValues(@Nullable List<Map<String, User>> value) {
+            this.listWithMapAndOtherModelValues = value;
+            this._bits |= LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+            return this;
+        }
+        public Builder setListWithObjectValues(@Nullable List<String> value) {
+            this.listWithObjectValues = value;
+            this._bits |= LIST_WITH_OBJECT_VALUES_SET;
+            return this;
+        }
+        public Builder setListWithOtherModelValues(@Nullable List<User> value) {
+            this.listWithOtherModelValues = value;
+            this._bits |= LIST_WITH_OTHER_MODEL_VALUES_SET;
+            return this;
+        }
+        public Builder setListWithPrimitiveValues(@Nullable List<Integer> value) {
+            this.listWithPrimitiveValues = value;
+            this._bits |= LIST_WITH_PRIMITIVE_VALUES_SET;
+            return this;
+        }
+        public Builder setMapPolymorphicValues(@Nullable Map<String, EverythingMapPolymorphicValues> value) {
+            this.mapPolymorphicValues = value;
+            this._bits |= MAP_POLYMORPHIC_VALUES_SET;
+            return this;
+        }
+        public Builder setMapProp(@Nullable Map<String, Object> value) {
+            this.mapProp = value;
+            this._bits |= MAP_PROP_SET;
+            return this;
+        }
+        public Builder setMapWithListAndOtherModelValues(@Nullable Map<String, List<User>> value) {
+            this.mapWithListAndOtherModelValues = value;
+            this._bits |= MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+            return this;
+        }
+        public Builder setMapWithMapAndOtherModelValues(@Nullable Map<String, Map<String, Object>> value) {
+            this.mapWithMapAndOtherModelValues = value;
+            this._bits |= MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+            return this;
+        }
+        public Builder setMapWithObjectValues(@Nullable Map<String, String> value) {
+            this.mapWithObjectValues = value;
+            this._bits |= MAP_WITH_OBJECT_VALUES_SET;
+            return this;
+        }
+        public Builder setMapWithOtherModelValues(@Nullable Map<String, User> value) {
+            this.mapWithOtherModelValues = value;
+            this._bits |= MAP_WITH_OTHER_MODEL_VALUES_SET;
+            return this;
+        }
+        public Builder setMapWithPrimitiveValues(@Nullable Map<String, Integer> value) {
+            this.mapWithPrimitiveValues = value;
+            this._bits |= MAP_WITH_PRIMITIVE_VALUES_SET;
+            return this;
+        }
+        public Builder setNumberProp(@Nullable Double value) {
+            this.numberProp = value;
+            this._bits |= NUMBER_PROP_SET;
+            return this;
+        }
+        public Builder setOtherModelProp(@Nullable User value) {
+            this.otherModelProp = value;
+            this._bits |= OTHER_MODEL_PROP_SET;
+            return this;
+        }
+        public Builder setPolymorphicProp(@Nullable EverythingPolymorphicProp value) {
+            this.polymorphicProp = value;
+            this._bits |= POLYMORPHIC_PROP_SET;
+            return this;
+        }
+        public Builder setSetProp(@Nullable Set<Object> value) {
+            this.setProp = value;
+            this._bits |= SET_PROP_SET;
+            return this;
+        }
+        public Builder setSetPropWithOtherModelValues(@Nullable Set<User> value) {
+            this.setPropWithOtherModelValues = value;
+            this._bits |= SET_PROP_WITH_OTHER_MODEL_VALUES_SET;
+            return this;
+        }
+        public Builder setSetPropWithPrimitiveValues(@Nullable Set<Integer> value) {
+            this.setPropWithPrimitiveValues = value;
+            this._bits |= SET_PROP_WITH_PRIMITIVE_VALUES_SET;
+            return this;
+        }
+        public Builder setSetPropWithValues(@Nullable Set<String> value) {
+            this.setPropWithValues = value;
+            this._bits |= SET_PROP_WITH_VALUES_SET;
+            return this;
+        }
+        public Builder setStringEnum(@Nullable @EverythingStringEnum String value) {
+            this.stringEnum = value;
+            this._bits |= STRING_ENUM_SET;
+            return this;
+        }
+        public Builder setStringProp(@Nullable String value) {
+            this.stringProp = value;
+            this._bits |= STRING_PROP_SET;
+            return this;
+        }
+        public Builder setType(@Nullable String value) {
+            this.type = value;
+            this._bits |= TYPE_SET;
+            return this;
+        }
+        public Builder setUriProp(@Nullable String value) {
+            this.uriProp = value;
+            this._bits |= URI_PROP_SET;
+            return this;
+        }
+        public @Nullable List<Object> getArrayProp() {
+            return this.arrayProp;
+        }
+        public @Nullable Boolean getBooleanProp() {
+            return this.booleanProp;
+        }
+        public @Nullable Date getDateProp() {
+            return this.dateProp;
+        }
+        public @Nullable @EverythingIntEnum int getIntEnum() {
+            return this.intEnum;
+        }
+        public @Nullable Integer getIntProp() {
+            return this.intProp;
+        }
+        public @Nullable List<Object> getListPolymorphicValues() {
+            return this.listPolymorphicValues;
+        }
+        public @Nullable List<List<User>> getListWithListAndOtherModelValues() {
+            return this.listWithListAndOtherModelValues;
+        }
+        public @Nullable List<Map<String, User>> getListWithMapAndOtherModelValues() {
+            return this.listWithMapAndOtherModelValues;
+        }
+        public @Nullable List<String> getListWithObjectValues() {
+            return this.listWithObjectValues;
+        }
+        public @Nullable List<User> getListWithOtherModelValues() {
+            return this.listWithOtherModelValues;
+        }
+        public @Nullable List<Integer> getListWithPrimitiveValues() {
+            return this.listWithPrimitiveValues;
+        }
+        public @Nullable Map<String, EverythingMapPolymorphicValues> getMapPolymorphicValues() {
+            return this.mapPolymorphicValues;
+        }
+        public @Nullable Map<String, Object> getMapProp() {
+            return this.mapProp;
+        }
+        public @Nullable Map<String, List<User>> getMapWithListAndOtherModelValues() {
+            return this.mapWithListAndOtherModelValues;
+        }
+        public @Nullable Map<String, Map<String, Object>> getMapWithMapAndOtherModelValues() {
+            return this.mapWithMapAndOtherModelValues;
+        }
+        public @Nullable Map<String, String> getMapWithObjectValues() {
+            return this.mapWithObjectValues;
+        }
+        public @Nullable Map<String, User> getMapWithOtherModelValues() {
+            return this.mapWithOtherModelValues;
+        }
+        public @Nullable Map<String, Integer> getMapWithPrimitiveValues() {
+            return this.mapWithPrimitiveValues;
+        }
+        public @Nullable Double getNumberProp() {
+            return this.numberProp;
+        }
+        public @Nullable User getOtherModelProp() {
+            return this.otherModelProp;
+        }
+        public @Nullable EverythingPolymorphicProp getPolymorphicProp() {
+            return this.polymorphicProp;
+        }
+        public @Nullable Set<Object> getSetProp() {
+            return this.setProp;
+        }
+        public @Nullable Set<User> getSetPropWithOtherModelValues() {
+            return this.setPropWithOtherModelValues;
+        }
+        public @Nullable Set<Integer> getSetPropWithPrimitiveValues() {
+            return this.setPropWithPrimitiveValues;
+        }
+        public @Nullable Set<String> getSetPropWithValues() {
+            return this.setPropWithValues;
+        }
+        public @Nullable @EverythingStringEnum String getStringEnum() {
+            return this.stringEnum;
+        }
+        public @Nullable String getStringProp() {
+            return this.stringProp;
+        }
+        public @Nullable String getType() {
+            return this.type;
+        }
+        public @Nullable String getUriProp() {
+            return this.uriProp;
+        }
+        public Everything build() {
+            return new Everything(
+            this.arrayProp,
+            this.booleanProp,
+            this.dateProp,
+            this.intEnum,
+            this.intProp,
+            this.listPolymorphicValues,
+            this.listWithListAndOtherModelValues,
+            this.listWithMapAndOtherModelValues,
+            this.listWithObjectValues,
+            this.listWithOtherModelValues,
+            this.listWithPrimitiveValues,
+            this.mapPolymorphicValues,
+            this.mapProp,
+            this.mapWithListAndOtherModelValues,
+            this.mapWithMapAndOtherModelValues,
+            this.mapWithObjectValues,
+            this.mapWithOtherModelValues,
+            this.mapWithPrimitiveValues,
+            this.numberProp,
+            this.otherModelProp,
+            this.polymorphicProp,
+            this.setProp,
+            this.setPropWithOtherModelValues,
+            this.setPropWithPrimitiveValues,
+            this.setPropWithValues,
+            this.stringEnum,
+            this.stringProp,
+            this.type,
+            this.uriProp,
+            this._bits
+            );
+        }
+        public void mergeFrom(Everything model) {
+            if (model.getArrayPropIsSet()) {
+                this.arrayProp = model.arrayProp;
+            }
+            if (model.getBooleanPropIsSet()) {
+                this.booleanProp = model.booleanProp;
+            }
+            if (model.getDatePropIsSet()) {
+                this.dateProp = model.dateProp;
+            }
+            if (model.getIntEnumIsSet()) {
+                this.intEnum = model.intEnum;
+            }
+            if (model.getIntPropIsSet()) {
+                this.intProp = model.intProp;
+            }
+            if (model.getListPolymorphicValuesIsSet()) {
+                this.listPolymorphicValues = model.listPolymorphicValues;
+            }
+            if (model.getListWithListAndOtherModelValuesIsSet()) {
+                this.listWithListAndOtherModelValues = model.listWithListAndOtherModelValues;
+            }
+            if (model.getListWithMapAndOtherModelValuesIsSet()) {
+                this.listWithMapAndOtherModelValues = model.listWithMapAndOtherModelValues;
+            }
+            if (model.getListWithObjectValuesIsSet()) {
+                this.listWithObjectValues = model.listWithObjectValues;
+            }
+            if (model.getListWithOtherModelValuesIsSet()) {
+                this.listWithOtherModelValues = model.listWithOtherModelValues;
+            }
+            if (model.getListWithPrimitiveValuesIsSet()) {
+                this.listWithPrimitiveValues = model.listWithPrimitiveValues;
+            }
+            if (model.getMapPolymorphicValuesIsSet()) {
+                this.mapPolymorphicValues = model.mapPolymorphicValues;
+            }
+            if (model.getMapPropIsSet()) {
+                this.mapProp = model.mapProp;
+            }
+            if (model.getMapWithListAndOtherModelValuesIsSet()) {
+                this.mapWithListAndOtherModelValues = model.mapWithListAndOtherModelValues;
+            }
+            if (model.getMapWithMapAndOtherModelValuesIsSet()) {
+                this.mapWithMapAndOtherModelValues = model.mapWithMapAndOtherModelValues;
+            }
+            if (model.getMapWithObjectValuesIsSet()) {
+                this.mapWithObjectValues = model.mapWithObjectValues;
+            }
+            if (model.getMapWithOtherModelValuesIsSet()) {
+                this.mapWithOtherModelValues = model.mapWithOtherModelValues;
+            }
+            if (model.getMapWithPrimitiveValuesIsSet()) {
+                this.mapWithPrimitiveValues = model.mapWithPrimitiveValues;
+            }
+            if (model.getNumberPropIsSet()) {
+                this.numberProp = model.numberProp;
+            }
+            if (model.getOtherModelPropIsSet()) {
+                this.otherModelProp = model.otherModelProp;
+            }
+            if (model.getPolymorphicPropIsSet()) {
+                this.polymorphicProp = model.polymorphicProp;
+            }
+            if (model.getSetPropIsSet()) {
+                this.setProp = model.setProp;
+            }
+            if (model.getSetPropWithOtherModelValuesIsSet()) {
+                this.setPropWithOtherModelValues = model.setPropWithOtherModelValues;
+            }
+            if (model.getSetPropWithPrimitiveValuesIsSet()) {
+                this.setPropWithPrimitiveValues = model.setPropWithPrimitiveValues;
+            }
+            if (model.getSetPropWithValuesIsSet()) {
+                this.setPropWithValues = model.setPropWithValues;
+            }
+            if (model.getStringEnumIsSet()) {
+                this.stringEnum = model.stringEnum;
+            }
+            if (model.getStringPropIsSet()) {
+                this.stringProp = model.stringProp;
+            }
+            if (model.getTypeIsSet()) {
+                this.type = model.type;
+            }
+            if (model.getUriPropIsSet()) {
+                this.uriProp = model.uriProp;
+            }
+        }
     
     }
 }

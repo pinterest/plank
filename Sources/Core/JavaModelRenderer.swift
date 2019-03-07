@@ -16,37 +16,156 @@ public struct JavaModelRenderer: JavaFileRenderer {
         self.params = params
     }
 
-    func renderBuilder() -> JavaIR.Method {
-        return JavaIR.method([.public, .static], "Builder builder()") { [
-            "return new AutoValue_\(className).Builder();",
+    func renderModelConstructor() -> JavaIR.Method {
+        let args = -->(transitiveProperties.map { param, schemaObj in
+            self.typeFromSchema(param, schemaObj) + " " + param.snakeCaseToPropertyName()
+        } + ["int _bits"])
+
+        return JavaIR.method([.private], className + "(\n" + args + "\n)") {
+            self.transitiveProperties.map { param, _ in
+                "this." + param.snakeCaseToPropertyName() + " = " + param.snakeCaseToPropertyName() + ";"
+            } + ["this._bits = _bits;"]
+        }
+    }
+
+    func renderModelHashCode() -> JavaIR.Method {
+        let bodyHashCode = transitiveProperties.map { param, _ in
+            param.snakeCaseToPropertyName()
+        }.joined(separator: ",\n")
+
+        return JavaIR.method(annotations: ["Override"], [.public], "int hashCode()") { [
+            "return Objects.hash(" + bodyHashCode + ");",
+        ]
+        }
+    }
+
+    func renderModelEquals() -> JavaIR.Method {
+        let bodyEquals = transitiveProperties.map { param, _ in
+            "Objects.equals(this." + param.snakeCaseToPropertyName() + ", that." + param.snakeCaseToPropertyName() + ")"
+        }.joined(separator: " &&\n")
+
+        return JavaIR.method(annotations: ["Override"], [.public], "boolean equals(Object o)") { [
+            JavaIR.ifBlock(condition: "this == o") { [
+                "return true;",
+            ] },
+            JavaIR.ifBlock(condition: "o == null || getClass() != o.getClass()") { [
+                "return false;",
+            ] },
+            self.className + " that = (" + self.className + ") o;",
+            "return " + bodyEquals + ";",
+        ]
+        }
+    }
+
+    func renderModelProperties(modifiers _: JavaModifier = [.private]) -> [[JavaIR.Property]] {
+        let props = transitiveProperties.map { param, schemaObj in
+            JavaIR.Property(annotations: ["SerializedName(\"\(param)\")"], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName(), initialValue: "")
+        }
+
+        let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "int", name: "_bits", initialValue: "0")
+
+        var bitmasks: [JavaIR.Property] = []
+        var index = 0
+        transitiveProperties.forEach { param, _ in
+            bitmasks.append(JavaIR.Property(annotations: [], modifiers: [.private, .static, .final], type: "int", name: param.uppercased() + "_SET", initialValue: "1 << " + String(index)))
+            index += 1
+        }
+
+        return [props, bitmasks, [bits]]
+    }
+
+    func renderModelGetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
+        let getters = transitiveProperties.map { param, schemaObj in
+            JavaIR.method(modifiers, self.typeFromSchema(param, schemaObj) + " get" + param.snakeCaseToCapitalizedPropertyName() + "()") { [
+                "return this." + param.snakeCaseToPropertyName() + ";",
+            ] }
+        }
+        return getters
+    }
+
+    func renderModelIsSetCheckers(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
+        let getters = transitiveProperties.map { param, _ in
+            JavaIR.method(modifiers, "boolean get" + param.snakeCaseToCapitalizedPropertyName() + "IsSet()") { [
+                "return (this._bits & " + param.uppercased() + "_SET) == " + param.uppercased() + "_SET;",
+            ] }
+        }
+        return getters
+    }
+
+    func renderModelMergeFrom() -> JavaIR.Method {
+        return JavaIR.method([.public], className + " mergeFrom(" + className + " model)") { [
+            self.className + ".Builder builder = this.toBuilder();",
+            "builder.mergeFrom(model);",
+            "return builder.build();",
         ] }
+    }
+
+    func renderModelToBuilder() -> JavaIR.Method {
+        return JavaIR.method([.public], className + ".Builder toBuilder()") { ["return new " + self.className + ".Builder(this);"] }
+    }
+
+    func renderModelBuilder() -> JavaIR.Method {
+        return JavaIR.method([.public, .static], className + ".Builder builder()") { [
+            "return new \(className).Builder();",
+        ] }
+    }
+
+    func renderBuilderConstructors() -> [JavaIR.Method] {
+        let emptyConstructor = JavaIR.method([.private], "Builder()") { [] }
+
+        let privateConstructor = JavaIR.method([.private], "Builder(@NonNull " + className + " model)") {
+            self.transitiveProperties.map { param, _ in
+                "this." + param.snakeCaseToPropertyName() + " = model." + param.snakeCaseToPropertyName() + ";"
+            } + ["this._bits = model._bits;"]
+        }
+
+        return [emptyConstructor, privateConstructor]
     }
 
     func renderBuilderBuild() -> JavaIR.Method {
-        return JavaIR.method([.public, .abstract], "\(className) build()") { [] }
+        let params = (transitiveProperties.map { param, _ in
+            "this." + param.snakeCaseToPropertyName()
+        } + ["this._bits"]).joined(separator: ",\n")
+        return JavaIR.method([.public], "\(className) build()") { ["return new " + self.className + "(", params, ");"] }
     }
 
-    func renderToBuilder() -> JavaIR.Method {
-        return JavaIR.method([.abstract], "Builder toBuilder()") { [] }
+    func renderBuilderGetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
+        let getters = transitiveProperties.map { param, schemaObj in
+            JavaIR.method(modifiers, self.typeFromSchema(param, schemaObj) + " get" + param.snakeCaseToCapitalizedPropertyName() + "()") { [
+                "return this." + param.snakeCaseToPropertyName() + ";",
+            ] }
+        }
+        return getters
     }
 
-    func renderBuilderProperties(modifiers: JavaModifier = [.public, .abstract]) -> [JavaIR.Method] {
+    func renderBuilderSetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
+        let setters = transitiveProperties.map { param, schemaObj in
+            JavaIR.method(modifiers, "Builder set\(param.snakeCaseToCamelCase())(\(self.typeFromSchema(param, schemaObj)) value)") { [
+                "this." + param.snakeCaseToPropertyName() + " = value;",
+                "this._bits |= " + param.uppercased() + "_SET;",
+                "return this;",
+            ] }
+        }
+        return setters
+    }
+
+    func renderBuilderMerge() -> JavaIR.Method {
+        let body = (transitiveProperties.map { param, _ in
+            JavaIR.ifBlock(condition: "model.get" + param.snakeCaseToCapitalizedPropertyName() + "IsSet()") {
+                ["this." + param.snakeCaseToPropertyName() + " = model." + param.snakeCaseToPropertyName() + ";"]
+            }
+        })
+        return JavaIR.method([.public], "void mergeFrom(" + className + " model)") { body }
+    }
+
+    func renderBuilderProperties(modifiers _: JavaModifier = [.private]) -> [[JavaIR.Property]] {
         let props = transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, "Builder set\(param.snakeCaseToCamelCase())(\(self.typeFromSchema(param, schemaObj)) value)") { [] }
+            JavaIR.Property(annotations: ["SerializedName(\"\(param)\")"], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName(), initialValue: "")
         }
-        return props
-    }
 
-    func renderModelProperties(modifiers: JavaModifier = [.public, .abstract]) -> [JavaIR.Method] {
-        return transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, "@SerializedName(\"\(param)\") \(self.typeFromSchema(param, schemaObj)) \(param.snakeCaseToPropertyName())()") { [] }
-        }
-    }
+        let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "int", name: "_bits", initialValue: "0")
 
-    func renderTypeClassAdapter() -> JavaIR.Method {
-        return JavaIR.method([.public, .static], "TypeAdapter<\(className)> jsonAdapter(Gson gson)") { [
-            "return new AutoValue_\(className).GsonTypeAdapter(gson);",
-        ] }
+        return [props, [bits]]
     }
 
     func renderRoots() -> [JavaIR.Root] {
@@ -56,7 +175,6 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
         let imports = [
             JavaIR.Root.imports(names: [
-                "com.google.auto.value.AutoValue",
                 "com.google.gson.Gson",
                 "com.google.gson.annotations.SerializedName",
                 "com.google.gson.TypeAdapter",
@@ -64,6 +182,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "java.util.Map",
                 "java.util.Set",
                 "java.util.List",
+                "java.util.Objects",
                 "java.lang.annotation.Retention",
                 "java.lang.annotation.RetentionPolicy",
                 "android.support.annotation.IntDef",
@@ -110,36 +229,42 @@ public struct JavaModelRenderer: JavaFileRenderer {
         }
 
         let builderClass = JavaIR.Class(
-            annotations: ["AutoValue.Builder"],
-            modifiers: [.public, .abstract, .static],
+            annotations: [],
+            modifiers: [.public, .static],
             extends: nil,
             implements: nil,
             name: "Builder",
-            methods: renderBuilderProperties() + [
+            methods: renderBuilderConstructors() + renderBuilderSetters() + renderBuilderGetters() + [
                 self.renderBuilderBuild(),
+                self.renderBuilderMerge(),
             ],
             enums: [],
             innerClasses: [],
-            properties: []
+            properties: renderBuilderProperties()
         )
 
         let modelClass = JavaIR.Root.classDecl(
             aClass: JavaIR.Class(
-                annotations: ["AutoValue"],
-                modifiers: [.public, .abstract],
+                annotations: [],
+                modifiers: [.public],
                 extends: nil,
                 implements: nil,
                 name: className,
-                methods: renderModelProperties() + [
-                    self.renderBuilder(),
-                    self.renderToBuilder(),
-                    self.renderTypeClassAdapter(),
-                ],
+                methods: [
+                    self.renderModelConstructor(),
+                    self.renderModelBuilder(),
+                    self.renderModelToBuilder(),
+                    self.renderModelMergeFrom(),
+                    self.renderModelEquals(),
+                    self.renderModelHashCode(),
+                ] +
+                    renderModelGetters() +
+                    renderModelIsSetCheckers(),
                 enums: enumProps,
                 innerClasses: [
                     builderClass,
                 ],
-                properties: []
+                properties: renderModelProperties()
             )
         )
 
