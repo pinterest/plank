@@ -56,7 +56,11 @@ public struct JavaIR {
         let initialValue: String
 
         func render() -> String {
-            var prop = "\(annotations.map { "@\($0)" }.joined(separator: " ")) \(modifiers.render()) \(type) \(name)"
+            var prop = ""
+            if !annotations.isEmpty {
+                prop.append(annotations.map { "@\($0)" }.joined(separator: " ") + " ")
+            }
+            prop.append("\(modifiers.render()) \(type) \(name)")
             if !initialValue.isEmpty {
                 prop.append(" = " + initialValue)
             }
@@ -69,10 +73,10 @@ public struct JavaIR {
         return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature)
     }
 
-    static func ifBlock(condition: String, body: [String]) -> String {
+    static func ifBlock(condition: String, body: () -> [String]) -> String {
         return [
             "if (" + condition + ") {",
-            -->body,
+            -->body(),
             "}",
         ].joined(separator: "\n")
     }
@@ -125,15 +129,24 @@ public struct JavaIR {
         let methods: [JavaIR.Method]
         let enums: [Enum]
         let innerClasses: [JavaIR.Class]
-        let properties: [JavaIR.Property]
+        let properties: [[JavaIR.Property]]
 
         func render() -> [String] {
             let implementsList = implements?.joined(separator: ", ") ?? ""
             let implementsStmt = implementsList == "" ? "" : "implements \(implementsList)"
+
+            var propertiesStrings = [String]()
+            for propertyBatch in properties {
+                for property in propertyBatch {
+                    propertiesStrings.append(property.render())
+                }
+                propertiesStrings.append("") // Add an empty line between each batch
+            }
+
             return annotations.map { "@\($0)" } + [
                 "\(modifiers.render()) class \(name) \(implementsStmt) {",
                 -->enums.flatMap { $0.render() },
-                -->properties.map { $0.render() },
+                -->propertiesStrings,
                 -->methods.flatMap { $0.render() },
                 -->innerClasses.flatMap { $0.render() },
                 "}",

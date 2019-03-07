@@ -45,14 +45,16 @@ public final class EverythingMapPolymorphicValues<R> {
         int LISTOBJECT = 5;
         int MAPSTRING_OBJECT = 6;
     }
-     private @Nullable User value0;
-     private @Nullable Board value1;
-     private @Nullable Image value2;
-     private @Nullable Pin value3;
-     private @Nullable Everything value4;
-     private @Nullable List<Object> value5;
-     private @Nullable Map<String, Object> value6;
-     private @InternalStorage int internalStorage;
+    private @Nullable User value0;
+    private @Nullable Board value1;
+    private @Nullable Image value2;
+    private @Nullable Pin value3;
+    private @Nullable Everything value4;
+    private @Nullable List<Object> value5;
+    private @Nullable Map<String, Object> value6;
+    
+    private @InternalStorage int internalStorage;
+    
     private EverythingMapPolymorphicValues() {
     
     }
@@ -92,18 +94,20 @@ public final class EverythingPolymorphicProp<R> {
         int DATE = 9;
         int STRING = 10;
     }
-     private @Nullable User value0;
-     private @Nullable Board value1;
-     private @Nullable Image value2;
-     private @Nullable Pin value3;
-     private @Nullable Everything value4;
-     private @Nullable String value5;
-     private @Nullable Boolean value6;
-     private @Nullable Integer value7;
-     private @Nullable Double value8;
-     private @Nullable Date value9;
-     private @Nullable String value10;
-     private @InternalStorage int internalStorage;
+    private @Nullable User value0;
+    private @Nullable Board value1;
+    private @Nullable Image value2;
+    private @Nullable Pin value3;
+    private @Nullable Everything value4;
+    private @Nullable String value5;
+    private @Nullable Boolean value6;
+    private @Nullable Integer value7;
+    private @Nullable Double value8;
+    private @Nullable Date value9;
+    private @Nullable String value10;
+    
+    private @InternalStorage int internalStorage;
+    
     private EverythingPolymorphicProp() {
     
     }
@@ -157,66 +161,71 @@ public class Everything {
     @SerializedName("string_prop") private @Nullable String stringProp;
     @SerializedName("type") private @Nullable String type;
     @SerializedName("uri_prop") private @Nullable String uriProp;
-     static final private int ARRAY_PROP_SET = 1 << 0;
-     static final private int BOOLEAN_PROP_SET = 1 << 1;
-     static final private int DATE_PROP_SET = 1 << 2;
-     static final private int INT_ENUM_SET = 1 << 3;
-     static final private int INT_PROP_SET = 1 << 4;
-     static final private int LIST_POLYMORPHIC_VALUES_SET = 1 << 5;
-     static final private int LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET = 1 << 6;
-     static final private int LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET = 1 << 7;
-     static final private int LIST_WITH_OBJECT_VALUES_SET = 1 << 8;
-     static final private int LIST_WITH_OTHER_MODEL_VALUES_SET = 1 << 9;
-     static final private int LIST_WITH_PRIMITIVE_VALUES_SET = 1 << 10;
-     static final private int MAP_POLYMORPHIC_VALUES_SET = 1 << 11;
-     static final private int MAP_PROP_SET = 1 << 12;
-     static final private int MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET = 1 << 13;
-     static final private int MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET = 1 << 14;
-     static final private int MAP_WITH_OBJECT_VALUES_SET = 1 << 15;
-     static final private int MAP_WITH_OTHER_MODEL_VALUES_SET = 1 << 16;
-     static final private int MAP_WITH_PRIMITIVE_VALUES_SET = 1 << 17;
-     static final private int NUMBER_PROP_SET = 1 << 18;
-     static final private int OTHER_MODEL_PROP_SET = 1 << 19;
-     static final private int POLYMORPHIC_PROP_SET = 1 << 20;
-     static final private int SET_PROP_SET = 1 << 21;
-     static final private int SET_PROP_WITH_OTHER_MODEL_VALUES_SET = 1 << 22;
-     static final private int SET_PROP_WITH_PRIMITIVE_VALUES_SET = 1 << 23;
-     static final private int SET_PROP_WITH_VALUES_SET = 1 << 24;
-     static final private int STRING_ENUM_SET = 1 << 25;
-     static final private int STRING_PROP_SET = 1 << 26;
-     static final private int TYPE_SET = 1 << 27;
-     static final private int URI_PROP_SET = 1 << 28;
-     private int _bits = 0;
-    private Everything(@Nullable List<Object> arrayProp,
-    @Nullable Boolean booleanProp,
-    @Nullable Date dateProp,
-    @Nullable @EverythingIntEnum int intEnum,
-    @Nullable Integer intProp,
-    @Nullable List<Object> listPolymorphicValues,
-    @Nullable List<List<User>> listWithListAndOtherModelValues,
-    @Nullable List<Map<String, User>> listWithMapAndOtherModelValues,
-    @Nullable List<String> listWithObjectValues,
-    @Nullable List<User> listWithOtherModelValues,
-    @Nullable List<Integer> listWithPrimitiveValues,
-    @Nullable Map<String, EverythingMapPolymorphicValues> mapPolymorphicValues,
-    @Nullable Map<String, Object> mapProp,
-    @Nullable Map<String, List<User>> mapWithListAndOtherModelValues,
-    @Nullable Map<String, Map<String, Object>> mapWithMapAndOtherModelValues,
-    @Nullable Map<String, String> mapWithObjectValues,
-    @Nullable Map<String, User> mapWithOtherModelValues,
-    @Nullable Map<String, Integer> mapWithPrimitiveValues,
-    @Nullable Double numberProp,
-    @Nullable User otherModelProp,
-    @Nullable EverythingPolymorphicProp polymorphicProp,
-    @Nullable Set<Object> setProp,
-    @Nullable Set<User> setPropWithOtherModelValues,
-    @Nullable Set<Integer> setPropWithPrimitiveValues,
-    @Nullable Set<String> setPropWithValues,
-    @Nullable @EverythingStringEnum String stringEnum,
-    @Nullable String stringProp,
-    @Nullable String type,
-    @Nullable String uriProp,
-    int _bits) {
+    
+    static final private int ARRAY_PROP_SET = 1 << 0;
+    static final private int BOOLEAN_PROP_SET = 1 << 1;
+    static final private int DATE_PROP_SET = 1 << 2;
+    static final private int INT_ENUM_SET = 1 << 3;
+    static final private int INT_PROP_SET = 1 << 4;
+    static final private int LIST_POLYMORPHIC_VALUES_SET = 1 << 5;
+    static final private int LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET = 1 << 6;
+    static final private int LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET = 1 << 7;
+    static final private int LIST_WITH_OBJECT_VALUES_SET = 1 << 8;
+    static final private int LIST_WITH_OTHER_MODEL_VALUES_SET = 1 << 9;
+    static final private int LIST_WITH_PRIMITIVE_VALUES_SET = 1 << 10;
+    static final private int MAP_POLYMORPHIC_VALUES_SET = 1 << 11;
+    static final private int MAP_PROP_SET = 1 << 12;
+    static final private int MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET = 1 << 13;
+    static final private int MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET = 1 << 14;
+    static final private int MAP_WITH_OBJECT_VALUES_SET = 1 << 15;
+    static final private int MAP_WITH_OTHER_MODEL_VALUES_SET = 1 << 16;
+    static final private int MAP_WITH_PRIMITIVE_VALUES_SET = 1 << 17;
+    static final private int NUMBER_PROP_SET = 1 << 18;
+    static final private int OTHER_MODEL_PROP_SET = 1 << 19;
+    static final private int POLYMORPHIC_PROP_SET = 1 << 20;
+    static final private int SET_PROP_SET = 1 << 21;
+    static final private int SET_PROP_WITH_OTHER_MODEL_VALUES_SET = 1 << 22;
+    static final private int SET_PROP_WITH_PRIMITIVE_VALUES_SET = 1 << 23;
+    static final private int SET_PROP_WITH_VALUES_SET = 1 << 24;
+    static final private int STRING_ENUM_SET = 1 << 25;
+    static final private int STRING_PROP_SET = 1 << 26;
+    static final private int TYPE_SET = 1 << 27;
+    static final private int URI_PROP_SET = 1 << 28;
+    
+    private int _bits = 0;
+    
+    private Everything(
+        @Nullable List<Object> arrayProp
+        @Nullable Boolean booleanProp
+        @Nullable Date dateProp
+        @Nullable @EverythingIntEnum int intEnum
+        @Nullable Integer intProp
+        @Nullable List<Object> listPolymorphicValues
+        @Nullable List<List<User>> listWithListAndOtherModelValues
+        @Nullable List<Map<String, User>> listWithMapAndOtherModelValues
+        @Nullable List<String> listWithObjectValues
+        @Nullable List<User> listWithOtherModelValues
+        @Nullable List<Integer> listWithPrimitiveValues
+        @Nullable Map<String, EverythingMapPolymorphicValues> mapPolymorphicValues
+        @Nullable Map<String, Object> mapProp
+        @Nullable Map<String, List<User>> mapWithListAndOtherModelValues
+        @Nullable Map<String, Map<String, Object>> mapWithMapAndOtherModelValues
+        @Nullable Map<String, String> mapWithObjectValues
+        @Nullable Map<String, User> mapWithOtherModelValues
+        @Nullable Map<String, Integer> mapWithPrimitiveValues
+        @Nullable Double numberProp
+        @Nullable User otherModelProp
+        @Nullable EverythingPolymorphicProp polymorphicProp
+        @Nullable Set<Object> setProp
+        @Nullable Set<User> setPropWithOtherModelValues
+        @Nullable Set<Integer> setPropWithPrimitiveValues
+        @Nullable Set<String> setPropWithValues
+        @Nullable @EverythingStringEnum String stringEnum
+        @Nullable String stringProp
+        @Nullable String type
+        @Nullable String uriProp
+        int _bits
+    ) {
         this.arrayProp = arrayProp;
         this.booleanProp = booleanProp;
         this.dateProp = dateProp;
@@ -535,7 +544,9 @@ public class Everything {
         @SerializedName("string_prop") private @Nullable String stringProp;
         @SerializedName("type") private @Nullable String type;
         @SerializedName("uri_prop") private @Nullable String uriProp;
-         private int _bits = 0;
+        
+        private int _bits = 0;
+        
         private Builder() {
         
         }

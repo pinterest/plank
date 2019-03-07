@@ -34,26 +34,31 @@ public class Board {
     @SerializedName("image") private @NonNull Image image;
     @SerializedName("name") private @Nullable String name;
     @SerializedName("url") private @Nullable String url;
-     static final private int ID_SET = 1 << 0;
-     static final private int CONTRIBUTORS_SET = 1 << 1;
-     static final private int COUNTS_SET = 1 << 2;
-     static final private int CREATED_AT_SET = 1 << 3;
-     static final private int CREATOR_SET = 1 << 4;
-     static final private int DESCRIPTION_SET = 1 << 5;
-     static final private int IMAGE_SET = 1 << 6;
-     static final private int NAME_SET = 1 << 7;
-     static final private int URL_SET = 1 << 8;
-     private int _bits = 0;
-    private Board(@Nullable String identifier,
-    @Nullable Set<User> contributors,
-    @Nullable Map<String, Integer> counts,
-    @Nullable Date createdAt,
-    @Nullable Map<String, String> creator,
-    @Nullable String descriptionText,
-    @NonNull Image image,
-    @Nullable String name,
-    @Nullable String url,
-    int _bits) {
+    
+    static final private int ID_SET = 1 << 0;
+    static final private int CONTRIBUTORS_SET = 1 << 1;
+    static final private int COUNTS_SET = 1 << 2;
+    static final private int CREATED_AT_SET = 1 << 3;
+    static final private int CREATOR_SET = 1 << 4;
+    static final private int DESCRIPTION_SET = 1 << 5;
+    static final private int IMAGE_SET = 1 << 6;
+    static final private int NAME_SET = 1 << 7;
+    static final private int URL_SET = 1 << 8;
+    
+    private int _bits = 0;
+    
+    private Board(
+        @Nullable String identifier
+        @Nullable Set<User> contributors
+        @Nullable Map<String, Integer> counts
+        @Nullable Date createdAt
+        @Nullable Map<String, String> creator
+        @Nullable String descriptionText
+        @NonNull Image image
+        @Nullable String name
+        @Nullable String url
+        int _bits
+    ) {
         this.identifier = identifier;
         this.contributors = contributors;
         this.counts = counts;
@@ -172,7 +177,9 @@ public class Board {
         @SerializedName("image") private @NonNull Image image;
         @SerializedName("name") private @Nullable String name;
         @SerializedName("url") private @Nullable String url;
-         private int _bits = 0;
+        
+        private int _bits = 0;
+        
         private Builder() {
         
         }

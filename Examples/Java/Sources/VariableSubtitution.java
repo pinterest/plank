@@ -29,16 +29,21 @@ public class VariableSubtitution {
     @SerializedName("copy_prop") private @Nullable Integer copyProp;
     @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
     @SerializedName("new_prop") private @Nullable Integer newProp;
-     static final private int ALLOC_PROP_SET = 1 << 0;
-     static final private int COPY_PROP_SET = 1 << 1;
-     static final private int MUTABLE_COPY_PROP_SET = 1 << 2;
-     static final private int NEW_PROP_SET = 1 << 3;
-     private int _bits = 0;
-    private VariableSubtitution(@Nullable Integer allocProp,
-    @Nullable Integer copyProp,
-    @Nullable Integer mutableCopyProp,
-    @Nullable Integer newProp,
-    int _bits) {
+    
+    static final private int ALLOC_PROP_SET = 1 << 0;
+    static final private int COPY_PROP_SET = 1 << 1;
+    static final private int MUTABLE_COPY_PROP_SET = 1 << 2;
+    static final private int NEW_PROP_SET = 1 << 3;
+    
+    private int _bits = 0;
+    
+    private VariableSubtitution(
+        @Nullable Integer allocProp
+        @Nullable Integer copyProp
+        @Nullable Integer mutableCopyProp
+        @Nullable Integer newProp
+        int _bits
+    ) {
         this.allocProp = allocProp;
         this.copyProp = copyProp;
         this.mutableCopyProp = mutableCopyProp;
@@ -107,7 +112,9 @@ public class VariableSubtitution {
         @SerializedName("copy_prop") private @Nullable Integer copyProp;
         @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
         @SerializedName("new_prop") private @Nullable Integer newProp;
-         private int _bits = 0;
+        
+        private int _bits = 0;
+        
         private Builder() {
         
         }

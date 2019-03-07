@@ -28,14 +28,19 @@ public class Image {
     @SerializedName("height") private @Nullable Integer height;
     @SerializedName("url") private @Nullable String url;
     @SerializedName("width") private @Nullable Integer width;
-     static final private int HEIGHT_SET = 1 << 0;
-     static final private int URL_SET = 1 << 1;
-     static final private int WIDTH_SET = 1 << 2;
-     private int _bits = 0;
-    private Image(@Nullable Integer height,
-    @Nullable String url,
-    @Nullable Integer width,
-    int _bits) {
+    
+    static final private int HEIGHT_SET = 1 << 0;
+    static final private int URL_SET = 1 << 1;
+    static final private int WIDTH_SET = 1 << 2;
+    
+    private int _bits = 0;
+    
+    private Image(
+        @Nullable Integer height
+        @Nullable String url
+        @Nullable Integer width
+        int _bits
+    ) {
         this.height = height;
         this.url = url;
         this.width = width;
@@ -94,7 +99,9 @@ public class Image {
         @SerializedName("height") private @Nullable Integer height;
         @SerializedName("url") private @Nullable String url;
         @SerializedName("width") private @Nullable Integer width;
-         private int _bits = 0;
+        
+        private int _bits = 0;
+        
         private Builder() {
         
         }

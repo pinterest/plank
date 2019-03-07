@@ -26,10 +26,15 @@ import java.util.Set;
 public class Model {
 
     @SerializedName("id") private @Nullable String identifier;
-     static final private int ID_SET = 1 << 0;
-     private int _bits = 0;
-    private Model(@Nullable String identifier,
-    int _bits) {
+    
+    static final private int ID_SET = 1 << 0;
+    
+    private int _bits = 0;
+    
+    private Model(
+        @Nullable String identifier
+        int _bits
+    ) {
         this.identifier = identifier;
         this._bits = _bits;
     }
@@ -68,7 +73,9 @@ public class Model {
     public static class Builder {
     
         @SerializedName("id") private @Nullable String identifier;
-         private int _bits = 0;
+        
+        private int _bits = 0;
+        
         private Builder() {
         
         }

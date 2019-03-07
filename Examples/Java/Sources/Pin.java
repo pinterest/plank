@@ -35,9 +35,11 @@ public final class PinAttributionObjects<R> {
         int BOARD = 0;
         int USER = 1;
     }
-     private @Nullable Board value0;
-     private @Nullable User value1;
-     private @InternalStorage int internalStorage;
+    private @Nullable Board value0;
+    private @Nullable User value1;
+    
+    private @InternalStorage int internalStorage;
+    
     private PinAttributionObjects() {
     
     }
@@ -72,42 +74,47 @@ public class Pin {
     @SerializedName("tags") private @Nullable List<Map<String, Object>> tags;
     @SerializedName("url") private @Nullable String url;
     @SerializedName("visual_search_attrs") private @Nullable Map<String, Object> visualSearchAttrs;
-     static final private int ATTRIBUTION_SET = 1 << 0;
-     static final private int ATTRIBUTION_OBJECTS_SET = 1 << 1;
-     static final private int BOARD_SET = 1 << 2;
-     static final private int COLOR_SET = 1 << 3;
-     static final private int COUNTS_SET = 1 << 4;
-     static final private int CREATED_AT_SET = 1 << 5;
-     static final private int CREATOR_SET = 1 << 6;
-     static final private int DESCRIPTION_SET = 1 << 7;
-     static final private int ID_SET = 1 << 8;
-     static final private int IMAGE_SET = 1 << 9;
-     static final private int IN_STOCK_SET = 1 << 10;
-     static final private int LINK_SET = 1 << 11;
-     static final private int MEDIA_SET = 1 << 12;
-     static final private int NOTE_SET = 1 << 13;
-     static final private int TAGS_SET = 1 << 14;
-     static final private int URL_SET = 1 << 15;
-     static final private int VISUAL_SEARCH_ATTRS_SET = 1 << 16;
-     private int _bits = 0;
-    private Pin(@Nullable Map<String, String> attribution,
-    @Nullable List<PinAttributionObjects> attributionObjects,
-    @Nullable Board board,
-    @Nullable String color,
-    @Nullable Map<String, Integer> counts,
-    @NonNull Date createdAt,
-    @NonNull Map<String, User> creator,
-    @Nullable String descriptionText,
-    @NonNull String identifier,
-    @Nullable Image image,
-    @Nullable @PinInStock int inStock,
-    @Nullable String link,
-    @Nullable Map<String, String> media,
-    @Nullable String note,
-    @Nullable List<Map<String, Object>> tags,
-    @Nullable String url,
-    @Nullable Map<String, Object> visualSearchAttrs,
-    int _bits) {
+    
+    static final private int ATTRIBUTION_SET = 1 << 0;
+    static final private int ATTRIBUTION_OBJECTS_SET = 1 << 1;
+    static final private int BOARD_SET = 1 << 2;
+    static final private int COLOR_SET = 1 << 3;
+    static final private int COUNTS_SET = 1 << 4;
+    static final private int CREATED_AT_SET = 1 << 5;
+    static final private int CREATOR_SET = 1 << 6;
+    static final private int DESCRIPTION_SET = 1 << 7;
+    static final private int ID_SET = 1 << 8;
+    static final private int IMAGE_SET = 1 << 9;
+    static final private int IN_STOCK_SET = 1 << 10;
+    static final private int LINK_SET = 1 << 11;
+    static final private int MEDIA_SET = 1 << 12;
+    static final private int NOTE_SET = 1 << 13;
+    static final private int TAGS_SET = 1 << 14;
+    static final private int URL_SET = 1 << 15;
+    static final private int VISUAL_SEARCH_ATTRS_SET = 1 << 16;
+    
+    private int _bits = 0;
+    
+    private Pin(
+        @Nullable Map<String, String> attribution
+        @Nullable List<PinAttributionObjects> attributionObjects
+        @Nullable Board board
+        @Nullable String color
+        @Nullable Map<String, Integer> counts
+        @NonNull Date createdAt
+        @NonNull Map<String, User> creator
+        @Nullable String descriptionText
+        @NonNull String identifier
+        @Nullable Image image
+        @Nullable @PinInStock int inStock
+        @Nullable String link
+        @Nullable Map<String, String> media
+        @Nullable String note
+        @Nullable List<Map<String, Object>> tags
+        @Nullable String url
+        @Nullable Map<String, Object> visualSearchAttrs
+        int _bits
+    ) {
         this.attribution = attribution;
         this.attributionObjects = attributionObjects;
         this.board = board;
@@ -306,7 +313,9 @@ public class Pin {
         @SerializedName("tags") private @Nullable List<Map<String, Object>> tags;
         @SerializedName("url") private @Nullable String url;
         @SerializedName("visual_search_attrs") private @Nullable Map<String, Object> visualSearchAttrs;
-         private int _bits = 0;
+        
+        private int _bits = 0;
+        
         private Builder() {
         
         }

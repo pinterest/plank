@@ -70,7 +70,7 @@ extension JavaModelRenderer {
                                ],
                                enums: [internalStorageEnum],
                                innerClasses: [],
-                               properties: internalProperties + [internalStorageProp])
+                               properties: [internalProperties, [internalStorageProp]])
         return [
             // Interface
             JavaIR.Root.interfaceDecl(aInterface: matcherInterface),

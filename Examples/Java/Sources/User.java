@@ -41,28 +41,33 @@ public class User {
     @SerializedName("last_name") private @Nullable String lastName;
     @SerializedName("type") private @Nullable String type;
     @SerializedName("username") private @Nullable String username;
-     static final private int BIO_SET = 1 << 0;
-     static final private int COUNTS_SET = 1 << 1;
-     static final private int CREATED_AT_SET = 1 << 2;
-     static final private int EMAIL_FREQUENCY_SET = 1 << 3;
-     static final private int FIRST_NAME_SET = 1 << 4;
-     static final private int ID_SET = 1 << 5;
-     static final private int IMAGE_SET = 1 << 6;
-     static final private int LAST_NAME_SET = 1 << 7;
-     static final private int TYPE_SET = 1 << 8;
-     static final private int USERNAME_SET = 1 << 9;
-     private int _bits = 0;
-    private User(@Nullable String bio,
-    @Nullable Map<String, Integer> counts,
-    @Nullable Date createdAt,
-    @Nullable @UserEmailFrequency String emailFrequency,
-    @Nullable String firstName,
-    @Nullable String identifier,
-    @Nullable Image image,
-    @Nullable String lastName,
-    @Nullable String type,
-    @Nullable String username,
-    int _bits) {
+    
+    static final private int BIO_SET = 1 << 0;
+    static final private int COUNTS_SET = 1 << 1;
+    static final private int CREATED_AT_SET = 1 << 2;
+    static final private int EMAIL_FREQUENCY_SET = 1 << 3;
+    static final private int FIRST_NAME_SET = 1 << 4;
+    static final private int ID_SET = 1 << 5;
+    static final private int IMAGE_SET = 1 << 6;
+    static final private int LAST_NAME_SET = 1 << 7;
+    static final private int TYPE_SET = 1 << 8;
+    static final private int USERNAME_SET = 1 << 9;
+    
+    private int _bits = 0;
+    
+    private User(
+        @Nullable String bio
+        @Nullable Map<String, Integer> counts
+        @Nullable Date createdAt
+        @Nullable @UserEmailFrequency String emailFrequency
+        @Nullable String firstName
+        @Nullable String identifier
+        @Nullable Image image
+        @Nullable String lastName
+        @Nullable String type
+        @Nullable String username
+        int _bits
+    ) {
         this.bio = bio;
         this.counts = counts;
         this.createdAt = createdAt;
@@ -191,7 +196,9 @@ public class User {
         @SerializedName("last_name") private @Nullable String lastName;
         @SerializedName("type") private @Nullable String type;
         @SerializedName("username") private @Nullable String username;
-         private int _bits = 0;
+        
+        private int _bits = 0;
+        
         private Builder() {
         
         }
