@@ -1,0 +1,8 @@
+android_library(
+    name = "JavaExample",
+    srcs = glob(["Sources/*.java"], exclude=["Sources/Everything.java"]),
+    deps = [
+      "@gson_maven//jar",
+      "@android_support_annotations//jar",
+    ]
+)

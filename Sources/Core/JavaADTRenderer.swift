@@ -21,16 +21,15 @@ extension JavaModelRenderer {
      }
      */
     func adtRootsForSchema(property: String, schemas: [SchemaObjectProperty]) -> [JavaIR.Root] {
-        // Open Q: How should AutoValue/GSON work with this?
         // Do we need to create a custom runtime type adapter factory?
         let adtName = "\(rootSchema.name)_\(property)"
         let formattedADTName = adtName.snakeCaseToCamelCase()
         let privateInit = JavaIR.method([.private], "\(formattedADTName)()") { [] }
 
         func interfaceMethods() -> [JavaIR.Method] {
-            return schemas
-                .map { typeFromSchema("", $0) }
-                .map { JavaIR.method([], "R match(\($0))") { [] } }
+            return schemas.enumerated()
+                .map { (typeFromSchema("", $0.element), $0.offset) }
+                .map { JavaIR.method([], "R match(\($0.0) value\($0.1))") { [] } }
         }
 
         let matcherInterface = JavaIR.Interface(modifiers: [],
@@ -38,7 +37,10 @@ extension JavaModelRenderer {
                                                 name: "\(formattedADTName)Matcher<R>",
                                                 methods: interfaceMethods())
 
-        let matcherMethod = JavaIR.method([.public], "R match \(formattedADTName)(\(formattedADTName)Matcher<R>)") { [] }
+        let matcherMethod = JavaIR.method([.public], "R match\(formattedADTName)(\(formattedADTName)Matcher<R> matcher)") { [
+            "// TODO: Implement this!",
+            "return null;",
+        ] }
 
         let internalProperties = schemas.enumerated()
             .map { (typeFromSchema("", $0.element), $0.offset) }
@@ -58,9 +60,9 @@ extension JavaModelRenderer {
 
         let internalStorageEnum = JavaIR.Enum(name: "InternalStorage", values: .integer(enumOptions))
 
-        let internalStorageProp = JavaIR.Property(annotations: [], modifiers: [.private], type: "@InternalStorage int", name: "internalStorage", initialValue: "")
+        let internalStorageProp = JavaIR.Property(annotations: [], modifiers: [.private, .static], type: "@InternalStorage int", name: "internalStorage", initialValue: "")
         let cls = JavaIR.Class(annotations: [],
-                               modifiers: [.public, .final],
+                               modifiers: [.public, .static, .final],
                                extends: nil,
                                implements: nil,
                                name: "\(formattedADTName)<R>",

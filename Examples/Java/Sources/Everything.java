@@ -30,97 +30,27 @@ import java.util.Objects;
 import java.util.Set;
 
 interface EverythingMapPolymorphicValuesMatcher<R> {
-    R match(@Nullable User);
-    R match(@Nullable Board);
-    R match(@Nullable Image);
-    R match(@Nullable Pin);
-    R match(@Nullable Everything);
-    R match(@Nullable List<Object>);
-    R match(@Nullable Map<String, Object>);
-}
-
-public final class EverythingMapPolymorphicValues<R> {
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({InternalStorage.USER, InternalStorage.BOARD, InternalStorage.IMAGE, InternalStorage.PIN, InternalStorage.EVERYTHING, InternalStorage.LISTOBJECT, InternalStorage.MAPSTRING_OBJECT})
-    public @interface InternalStorage {
-        int USER = 0;
-        int BOARD = 1;
-        int IMAGE = 2;
-        int PIN = 3;
-        int EVERYTHING = 4;
-        int LISTOBJECT = 5;
-        int MAPSTRING_OBJECT = 6;
-    }
-
-    private @Nullable User value0;
-    private @Nullable Board value1;
-    private @Nullable Image value2;
-    private @Nullable Pin value3;
-    private @Nullable Everything value4;
-    private @Nullable List<Object> value5;
-    private @Nullable Map<String, Object> value6;
-
-    private @InternalStorage int internalStorage;
-
-    private EverythingMapPolymorphicValues() {
-    }
-
-    public R match EverythingMapPolymorphicValues(EverythingMapPolymorphicValuesMatcher<R>) {
-    }
+    R match(@Nullable User value0);
+    R match(@Nullable Board value1);
+    R match(@Nullable Image value2);
+    R match(@Nullable Pin value3);
+    R match(@Nullable Everything value4);
+    R match(@Nullable List<Object> value5);
+    R match(@Nullable Map<String, Object> value6);
 }
 
 interface EverythingPolymorphicPropMatcher<R> {
-    R match(@Nullable User);
-    R match(@Nullable Board);
-    R match(@Nullable Image);
-    R match(@Nullable Pin);
-    R match(@Nullable Everything);
-    R match(@Nullable String);
-    R match(@Nullable Boolean);
-    R match(@Nullable Integer);
-    R match(@Nullable Double);
-    R match(@Nullable Date);
-    R match(@Nullable String);
-}
-
-public final class EverythingPolymorphicProp<R> {
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({InternalStorage.USER, InternalStorage.BOARD, InternalStorage.IMAGE, InternalStorage.PIN, InternalStorage.EVERYTHING, InternalStorage.STRING, InternalStorage.BOOLEAN, InternalStorage.INTEGER, InternalStorage.DOUBLE, InternalStorage.DATE, InternalStorage.STRING})
-    public @interface InternalStorage {
-        int USER = 0;
-        int BOARD = 1;
-        int IMAGE = 2;
-        int PIN = 3;
-        int EVERYTHING = 4;
-        int STRING = 5;
-        int BOOLEAN = 6;
-        int INTEGER = 7;
-        int DOUBLE = 8;
-        int DATE = 9;
-        int STRING = 10;
-    }
-
-    private @Nullable User value0;
-    private @Nullable Board value1;
-    private @Nullable Image value2;
-    private @Nullable Pin value3;
-    private @Nullable Everything value4;
-    private @Nullable String value5;
-    private @Nullable Boolean value6;
-    private @Nullable Integer value7;
-    private @Nullable Double value8;
-    private @Nullable Date value9;
-    private @Nullable String value10;
-
-    private @InternalStorage int internalStorage;
-
-    private EverythingPolymorphicProp() {
-    }
-
-    public R match EverythingPolymorphicProp(EverythingPolymorphicPropMatcher<R>) {
-    }
+    R match(@Nullable User value0);
+    R match(@Nullable Board value1);
+    R match(@Nullable Image value2);
+    R match(@Nullable Pin value3);
+    R match(@Nullable Everything value4);
+    R match(@Nullable String value5);
+    R match(@Nullable Boolean value6);
+    R match(@Nullable Integer value7);
+    R match(@Nullable Double value8);
+    R match(@Nullable Date value9);
+    R match(@Nullable String value10);
 }
 
 public class Everything {
@@ -1197,6 +1127,80 @@ public class Everything {
                 }
             }
             return model;
+        }
+    }
+
+    public static final class EverythingMapPolymorphicValues<R> {
+
+        @Retention(RetentionPolicy.SOURCE)
+        @IntDef({InternalStorage.USER, InternalStorage.BOARD, InternalStorage.IMAGE, InternalStorage.PIN, InternalStorage.EVERYTHING, InternalStorage.LISTOBJECT, InternalStorage.MAPSTRING_OBJECT})
+        public @interface InternalStorage {
+            int USER = 0;
+            int BOARD = 1;
+            int IMAGE = 2;
+            int PIN = 3;
+            int EVERYTHING = 4;
+            int LISTOBJECT = 5;
+            int MAPSTRING_OBJECT = 6;
+        }
+
+        private @Nullable User value0;
+        private @Nullable Board value1;
+        private @Nullable Image value2;
+        private @Nullable Pin value3;
+        private @Nullable Everything value4;
+        private @Nullable List<Object> value5;
+        private @Nullable Map<String, Object> value6;
+
+        static private @InternalStorage int internalStorage;
+
+        private EverythingMapPolymorphicValues() {
+        }
+
+        public R matchEverythingMapPolymorphicValues(EverythingMapPolymorphicValuesMatcher<R> matcher) {
+            // TODO: Implement this!
+            return null;
+        }
+    }
+
+    public static final class EverythingPolymorphicProp<R> {
+
+        @Retention(RetentionPolicy.SOURCE)
+        @IntDef({InternalStorage.USER, InternalStorage.BOARD, InternalStorage.IMAGE, InternalStorage.PIN, InternalStorage.EVERYTHING, InternalStorage.STRING, InternalStorage.BOOLEAN, InternalStorage.INTEGER, InternalStorage.DOUBLE, InternalStorage.DATE, InternalStorage.STRING})
+        public @interface InternalStorage {
+            int USER = 0;
+            int BOARD = 1;
+            int IMAGE = 2;
+            int PIN = 3;
+            int EVERYTHING = 4;
+            int STRING = 5;
+            int BOOLEAN = 6;
+            int INTEGER = 7;
+            int DOUBLE = 8;
+            int DATE = 9;
+            int STRING = 10;
+        }
+
+        private @Nullable User value0;
+        private @Nullable Board value1;
+        private @Nullable Image value2;
+        private @Nullable Pin value3;
+        private @Nullable Everything value4;
+        private @Nullable String value5;
+        private @Nullable Boolean value6;
+        private @Nullable Integer value7;
+        private @Nullable Double value8;
+        private @Nullable Date value9;
+        private @Nullable String value10;
+
+        static private @InternalStorage int internalStorage;
+
+        private EverythingPolymorphicProp() {
+        }
+
+        public R matchEverythingPolymorphicProp(EverythingPolymorphicPropMatcher<R> matcher) {
+            // TODO: Implement this!
+            return null;
         }
     }
 }

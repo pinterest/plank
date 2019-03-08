@@ -4,7 +4,7 @@ set -eo pipefail
 
 PLANK_BIN=.build/debug/plank
 # Generate Objective-C files
-JSON_FILES=`ls -d Examples/PDK/*.json`
+JSON_FILES=$(ls -d Examples/PDK/*.json)
 
 # Generate Objective-C models
 $PLANK_BIN --output_dir=Examples/Cocoa/Sources/Objective_C/ $JSON_FILES
@@ -20,12 +20,14 @@ $PLANK_BIN --lang java --java_package_name com.pinterest.models --output_dir=Exa
 
 ROOT_DIR="${PWD}"
 
-# Build the ObjC library
-cd Examples/Cocoa
-swift package clean
-swift build
-swift test
-cd "${ROOT_DIR}"
+# Build the ObjC library (macOS only)
+if [[ $OSTYPE == darwin* ]]; then
+  cd Examples/Cocoa
+  swift package clean
+  swift build
+  swift test
+  cd "${ROOT_DIR}"
+fi
 
 # Verify flow types
 if [ -x "$(command -v flow)" ]; then
@@ -33,4 +35,8 @@ if [ -x "$(command -v flow)" ]; then
   cd Examples/JS/flow
   flow
   cd "${ROOT_DIR}"
+fi
+
+if [ -n "${ANDROID_HOME}" ]; then
+  python tools/bazel build //Examples/Java:JavaExample --verbose_failures
 fi
