@@ -211,6 +211,7 @@ public class VariableSubtitution {
             }
         }
     }
+
     public static class VariableSubtitutionTypeAdapterFactory implements TypeAdapterFactory {
     
         @Override
@@ -221,6 +222,7 @@ public class VariableSubtitution {
             return (TypeAdapter<T>) new VariableSubtitutionTypeAdapter(gson, this, typeToken);
         }
     }
+
     public static class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution>  {
     
         final private TypeAdapter<VariableSubtitution> delegateTypeAdapter;

@@ -121,6 +121,7 @@ public class Model {
             }
         }
     }
+
     public static class ModelTypeAdapterFactory implements TypeAdapterFactory {
     
         @Override
@@ -131,6 +132,7 @@ public class Model {
             return (TypeAdapter<T>) new ModelTypeAdapter(gson, this, typeToken);
         }
     }
+
     public static class ModelTypeAdapter extends TypeAdapter<Model>  {
     
         final private TypeAdapter<Model> delegateTypeAdapter;

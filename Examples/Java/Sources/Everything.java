@@ -1070,6 +1070,7 @@ public class Everything {
             }
         }
     }
+
     public static class EverythingTypeAdapterFactory implements TypeAdapterFactory {
     
         @Override
@@ -1080,6 +1081,7 @@ public class Everything {
             return (TypeAdapter<T>) new EverythingTypeAdapter(gson, this, typeToken);
         }
     }
+
     public static class EverythingTypeAdapter extends TypeAdapter<Everything>  {
     
         final private TypeAdapter<Everything> delegateTypeAdapter;

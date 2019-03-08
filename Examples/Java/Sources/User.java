@@ -399,6 +399,7 @@ public class User {
             }
         }
     }
+
     public static class UserTypeAdapterFactory implements TypeAdapterFactory {
     
         @Override
@@ -409,6 +410,7 @@ public class User {
             return (TypeAdapter<T>) new UserTypeAdapter(gson, this, typeToken);
         }
     }
+
     public static class UserTypeAdapter extends TypeAdapter<User>  {
     
         final private TypeAdapter<User> delegateTypeAdapter;

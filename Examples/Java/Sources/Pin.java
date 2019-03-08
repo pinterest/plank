@@ -635,6 +635,7 @@ public class Pin {
             }
         }
     }
+
     public static class PinTypeAdapterFactory implements TypeAdapterFactory {
     
         @Override
@@ -645,6 +646,7 @@ public class Pin {
             return (TypeAdapter<T>) new PinTypeAdapter(gson, this, typeToken);
         }
     }
+
     public static class PinTypeAdapter extends TypeAdapter<Pin>  {
     
         final private TypeAdapter<Pin> delegateTypeAdapter;

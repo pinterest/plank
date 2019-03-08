@@ -361,6 +361,7 @@ public class Board {
             }
         }
     }
+
     public static class BoardTypeAdapterFactory implements TypeAdapterFactory {
     
         @Override
@@ -371,6 +372,7 @@ public class Board {
             return (TypeAdapter<T>) new BoardTypeAdapter(gson, this, typeToken);
         }
     }
+
     public static class BoardTypeAdapter extends TypeAdapter<Board>  {
     
         final private TypeAdapter<Board> delegateTypeAdapter;

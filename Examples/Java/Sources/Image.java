@@ -181,6 +181,7 @@ public class Image {
             }
         }
     }
+
     public static class ImageTypeAdapterFactory implements TypeAdapterFactory {
     
         @Override
@@ -191,6 +192,7 @@ public class Image {
             return (TypeAdapter<T>) new ImageTypeAdapter(gson, this, typeToken);
         }
     }
+
     public static class ImageTypeAdapter extends TypeAdapter<Image>  {
     
         final private TypeAdapter<Image> delegateTypeAdapter;

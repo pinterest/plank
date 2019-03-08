@@ -199,8 +199,9 @@ public struct JavaIR {
             }
 
             if !innerClasses.isEmpty {
-                toRender.append("")
-                toRender.append(-->innerClasses.flatMap { $0.render() })
+                toRender += (innerClasses.reduce([String]()) { result, innerClass in
+                    result + [""] + [-->innerClass.render()]
+                })
             }
 
             toRender.append("}")
