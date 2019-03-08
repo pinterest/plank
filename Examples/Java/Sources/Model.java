@@ -32,7 +32,7 @@ public class Model {
     private int _bits = 0;
     
     private Model(
-        @Nullable String identifier
+        @Nullable String identifier,
         int _bits
     ) {
         this.identifier = identifier;

@@ -38,10 +38,10 @@ public class VariableSubtitution {
     private int _bits = 0;
     
     private VariableSubtitution(
-        @Nullable Integer allocProp
-        @Nullable Integer copyProp
-        @Nullable Integer mutableCopyProp
-        @Nullable Integer newProp
+        @Nullable Integer allocProp,
+        @Nullable Integer copyProp,
+        @Nullable Integer mutableCopyProp,
+        @Nullable Integer newProp,
         int _bits
     ) {
         this.allocProp = allocProp;

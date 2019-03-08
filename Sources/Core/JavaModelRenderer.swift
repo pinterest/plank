@@ -18,7 +18,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderModelConstructor() -> JavaIR.Method {
         let args = -->(transitiveProperties.map { param, schemaObj in
-            self.typeFromSchema(param, schemaObj) + " " + param.snakeCaseToPropertyName()
+            self.typeFromSchema(param, schemaObj) + " " + param.snakeCaseToPropertyName() + ","
         } + ["int _bits"])
 
         return JavaIR.method([.private], className + "(\n" + args + "\n)") {

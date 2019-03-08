@@ -36,9 +36,9 @@ public class Image {
     private int _bits = 0;
     
     private Image(
-        @Nullable Integer height
-        @Nullable String url
-        @Nullable Integer width
+        @Nullable Integer height,
+        @Nullable String url,
+        @Nullable Integer width,
         int _bits
     ) {
         this.height = height;

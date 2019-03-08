@@ -195,35 +195,35 @@ public class Everything {
     private int _bits = 0;
     
     private Everything(
-        @Nullable List<Object> arrayProp
-        @Nullable Boolean booleanProp
-        @Nullable Date dateProp
-        @Nullable @EverythingIntEnum int intEnum
-        @Nullable Integer intProp
-        @Nullable List<Object> listPolymorphicValues
-        @Nullable List<List<User>> listWithListAndOtherModelValues
-        @Nullable List<Map<String, User>> listWithMapAndOtherModelValues
-        @Nullable List<String> listWithObjectValues
-        @Nullable List<User> listWithOtherModelValues
-        @Nullable List<Integer> listWithPrimitiveValues
-        @Nullable Map<String, EverythingMapPolymorphicValues> mapPolymorphicValues
-        @Nullable Map<String, Object> mapProp
-        @Nullable Map<String, List<User>> mapWithListAndOtherModelValues
-        @Nullable Map<String, Map<String, Object>> mapWithMapAndOtherModelValues
-        @Nullable Map<String, String> mapWithObjectValues
-        @Nullable Map<String, User> mapWithOtherModelValues
-        @Nullable Map<String, Integer> mapWithPrimitiveValues
-        @Nullable Double numberProp
-        @Nullable User otherModelProp
-        @Nullable EverythingPolymorphicProp polymorphicProp
-        @Nullable Set<Object> setProp
-        @Nullable Set<User> setPropWithOtherModelValues
-        @Nullable Set<Integer> setPropWithPrimitiveValues
-        @Nullable Set<String> setPropWithValues
-        @Nullable @EverythingStringEnum String stringEnum
-        @Nullable String stringProp
-        @Nullable String type
-        @Nullable String uriProp
+        @Nullable List<Object> arrayProp,
+        @Nullable Boolean booleanProp,
+        @Nullable Date dateProp,
+        @Nullable @EverythingIntEnum int intEnum,
+        @Nullable Integer intProp,
+        @Nullable List<Object> listPolymorphicValues,
+        @Nullable List<List<User>> listWithListAndOtherModelValues,
+        @Nullable List<Map<String, User>> listWithMapAndOtherModelValues,
+        @Nullable List<String> listWithObjectValues,
+        @Nullable List<User> listWithOtherModelValues,
+        @Nullable List<Integer> listWithPrimitiveValues,
+        @Nullable Map<String, EverythingMapPolymorphicValues> mapPolymorphicValues,
+        @Nullable Map<String, Object> mapProp,
+        @Nullable Map<String, List<User>> mapWithListAndOtherModelValues,
+        @Nullable Map<String, Map<String, Object>> mapWithMapAndOtherModelValues,
+        @Nullable Map<String, String> mapWithObjectValues,
+        @Nullable Map<String, User> mapWithOtherModelValues,
+        @Nullable Map<String, Integer> mapWithPrimitiveValues,
+        @Nullable Double numberProp,
+        @Nullable User otherModelProp,
+        @Nullable EverythingPolymorphicProp polymorphicProp,
+        @Nullable Set<Object> setProp,
+        @Nullable Set<User> setPropWithOtherModelValues,
+        @Nullable Set<Integer> setPropWithPrimitiveValues,
+        @Nullable Set<String> setPropWithValues,
+        @Nullable @EverythingStringEnum String stringEnum,
+        @Nullable String stringProp,
+        @Nullable String type,
+        @Nullable String uriProp,
         int _bits
     ) {
         this.arrayProp = arrayProp;
