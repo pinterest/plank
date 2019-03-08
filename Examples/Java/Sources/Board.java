@@ -48,15 +48,15 @@ public class Board {
     private int _bits = 0;
     
     private Board(
-        @Nullable String identifier
-        @Nullable Set<User> contributors
-        @Nullable Map<String, Integer> counts
-        @Nullable Date createdAt
-        @Nullable Map<String, String> creator
-        @Nullable String descriptionText
-        @NonNull Image image
-        @Nullable String name
-        @Nullable String url
+        @Nullable String identifier,
+        @Nullable Set<User> contributors,
+        @Nullable Map<String, Integer> counts,
+        @Nullable Date createdAt,
+        @Nullable Map<String, String> creator,
+        @Nullable String descriptionText,
+        @NonNull Image image,
+        @Nullable String name,
+        @Nullable String url,
         int _bits
     ) {
         this.identifier = identifier;

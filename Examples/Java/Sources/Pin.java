@@ -96,23 +96,23 @@ public class Pin {
     private int _bits = 0;
     
     private Pin(
-        @Nullable Map<String, String> attribution
-        @Nullable List<PinAttributionObjects> attributionObjects
-        @Nullable Board board
-        @Nullable String color
-        @Nullable Map<String, Integer> counts
-        @NonNull Date createdAt
-        @NonNull Map<String, User> creator
-        @Nullable String descriptionText
-        @NonNull String identifier
-        @Nullable Image image
-        @Nullable @PinInStock int inStock
-        @Nullable String link
-        @Nullable Map<String, String> media
-        @Nullable String note
-        @Nullable List<Map<String, Object>> tags
-        @Nullable String url
-        @Nullable Map<String, Object> visualSearchAttrs
+        @Nullable Map<String, String> attribution,
+        @Nullable List<PinAttributionObjects> attributionObjects,
+        @Nullable Board board,
+        @Nullable String color,
+        @Nullable Map<String, Integer> counts,
+        @NonNull Date createdAt,
+        @NonNull Map<String, User> creator,
+        @Nullable String descriptionText,
+        @NonNull String identifier,
+        @Nullable Image image,
+        @Nullable @PinInStock int inStock,
+        @Nullable String link,
+        @Nullable Map<String, String> media,
+        @Nullable String note,
+        @Nullable List<Map<String, Object>> tags,
+        @Nullable String url,
+        @Nullable Map<String, Object> visualSearchAttrs,
         int _bits
     ) {
         this.attribution = attribution;

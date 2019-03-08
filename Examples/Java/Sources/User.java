@@ -56,16 +56,16 @@ public class User {
     private int _bits = 0;
     
     private User(
-        @Nullable String bio
-        @Nullable Map<String, Integer> counts
-        @Nullable Date createdAt
-        @Nullable @UserEmailFrequency String emailFrequency
-        @Nullable String firstName
-        @Nullable String identifier
-        @Nullable Image image
-        @Nullable String lastName
-        @Nullable String type
-        @Nullable String username
+        @Nullable String bio,
+        @Nullable Map<String, Integer> counts,
+        @Nullable Date createdAt,
+        @Nullable @UserEmailFrequency String emailFrequency,
+        @Nullable String firstName,
+        @Nullable String identifier,
+        @Nullable Image image,
+        @Nullable String lastName,
+        @Nullable String type,
+        @Nullable String username,
         int _bits
     ) {
         this.bio = bio;
