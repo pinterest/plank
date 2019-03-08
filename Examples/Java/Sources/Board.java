@@ -40,7 +40,7 @@ public class Board {
     @SerializedName("image") private @NonNull Image image;
     @SerializedName("name") private @Nullable String name;
     @SerializedName("url") private @Nullable String url;
-    
+
     static final private int ID_SET = 1 << 0;
     static final private int CONTRIBUTORS_SET = 1 << 1;
     static final private int COUNTS_SET = 1 << 2;
@@ -50,9 +50,9 @@ public class Board {
     static final private int IMAGE_SET = 1 << 6;
     static final private int NAME_SET = 1 << 7;
     static final private int URL_SET = 1 << 8;
-    
+
     private int _bits = 0;
-    
+
     private Board(
         @Nullable String identifier,
         @Nullable Set<User> contributors,
@@ -76,17 +76,21 @@ public class Board {
         this.url = url;
         this._bits = _bits;
     }
+
     public static Board.Builder builder() {
         return new Board.Builder();
     }
+
     public Board.Builder toBuilder() {
         return new Board.Builder(this);
     }
+
     public Board mergeFrom(Board model) {
         Board.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -106,6 +110,7 @@ public class Board {
         Objects.equals(this.name, that.name) &&
         Objects.equals(this.url, that.url);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(identifier,
@@ -118,60 +123,79 @@ public class Board {
         name,
         url);
     }
+
     public @Nullable String getIdentifier() {
         return this.identifier;
     }
+
     public @Nullable Set<User> getContributors() {
         return this.contributors;
     }
+
     public @Nullable Map<String, Integer> getCounts() {
         return this.counts;
     }
+
     public @Nullable Date getCreatedAt() {
         return this.createdAt;
     }
+
     public @Nullable Map<String, String> getCreator() {
         return this.creator;
     }
+
     public @Nullable String getDescriptionText() {
         return this.descriptionText;
     }
+
     public @NonNull Image getImage() {
         return this.image;
     }
+
     public @Nullable String getName() {
         return this.name;
     }
+
     public @Nullable String getUrl() {
         return this.url;
     }
+
     public boolean getIdentifierIsSet() {
         return (this._bits & ID_SET) == ID_SET;
     }
+
     public boolean getContributorsIsSet() {
         return (this._bits & CONTRIBUTORS_SET) == CONTRIBUTORS_SET;
     }
+
     public boolean getCountsIsSet() {
         return (this._bits & COUNTS_SET) == COUNTS_SET;
     }
+
     public boolean getCreatedAtIsSet() {
         return (this._bits & CREATED_AT_SET) == CREATED_AT_SET;
     }
+
     public boolean getCreatorIsSet() {
         return (this._bits & CREATOR_SET) == CREATOR_SET;
     }
+
     public boolean getDescriptionTextIsSet() {
         return (this._bits & DESCRIPTION_SET) == DESCRIPTION_SET;
     }
+
     public boolean getImageIsSet() {
         return (this._bits & IMAGE_SET) == IMAGE_SET;
     }
+
     public boolean getNameIsSet() {
         return (this._bits & NAME_SET) == NAME_SET;
     }
+
     public boolean getUrlIsSet() {
         return (this._bits & URL_SET) == URL_SET;
     }
+
     public static class Builder {
     
         @SerializedName("id") private @Nullable String identifier;
@@ -183,12 +207,12 @@ public class Board {
         @SerializedName("image") private @NonNull Image image;
         @SerializedName("name") private @Nullable String name;
         @SerializedName("url") private @Nullable String url;
-        
+    
         private int _bits = 0;
-        
+    
         private Builder() {
-        
         }
+    
         private Builder(@NonNull Board model) {
             this.identifier = model.identifier;
             this.contributors = model.contributors;
@@ -201,78 +225,97 @@ public class Board {
             this.url = model.url;
             this._bits = model._bits;
         }
+    
         public Builder setIdentifier(@Nullable String value) {
             this.identifier = value;
             this._bits |= ID_SET;
             return this;
         }
+    
         public Builder setContributors(@Nullable Set<User> value) {
             this.contributors = value;
             this._bits |= CONTRIBUTORS_SET;
             return this;
         }
+    
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
             this._bits |= COUNTS_SET;
             return this;
         }
+    
         public Builder setCreatedAt(@Nullable Date value) {
             this.createdAt = value;
             this._bits |= CREATED_AT_SET;
             return this;
         }
+    
         public Builder setCreator(@Nullable Map<String, String> value) {
             this.creator = value;
             this._bits |= CREATOR_SET;
             return this;
         }
+    
         public Builder setDescriptionText(@Nullable String value) {
             this.descriptionText = value;
             this._bits |= DESCRIPTION_SET;
             return this;
         }
+    
         public Builder setImage(@NonNull Image value) {
             this.image = value;
             this._bits |= IMAGE_SET;
             return this;
         }
+    
         public Builder setName(@Nullable String value) {
             this.name = value;
             this._bits |= NAME_SET;
             return this;
         }
+    
         public Builder setUrl(@Nullable String value) {
             this.url = value;
             this._bits |= URL_SET;
             return this;
         }
+    
         public @Nullable String getIdentifier() {
             return this.identifier;
         }
+    
         public @Nullable Set<User> getContributors() {
             return this.contributors;
         }
+    
         public @Nullable Map<String, Integer> getCounts() {
             return this.counts;
         }
+    
         public @Nullable Date getCreatedAt() {
             return this.createdAt;
         }
+    
         public @Nullable Map<String, String> getCreator() {
             return this.creator;
         }
+    
         public @Nullable String getDescriptionText() {
             return this.descriptionText;
         }
+    
         public @NonNull Image getImage() {
             return this.image;
         }
+    
         public @Nullable String getName() {
             return this.name;
         }
+    
         public @Nullable String getUrl() {
             return this.url;
         }
+    
         public Board build() {
             return new Board(
             this.identifier,
@@ -287,6 +330,7 @@ public class Board {
             this._bits
             );
         }
+    
         public void mergeFrom(Board model) {
             if (model.getIdentifierIsSet()) {
                 this.identifier = model.identifier;
@@ -316,10 +360,8 @@ public class Board {
                 this.url = model.url;
             }
         }
-    
     }
     public static class BoardTypeAdapterFactory implements TypeAdapterFactory {
-    
     
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
@@ -328,21 +370,22 @@ public class Board {
             }
             return (TypeAdapter<T>) new BoardTypeAdapter(gson, this, typeToken);
         }
-    
     }
     public static class BoardTypeAdapter extends TypeAdapter<Board>  {
     
         final private TypeAdapter<Board> delegateTypeAdapter;
         final private TypeAdapter<JsonElement> elementTypeAdapter;
-        
+    
         public BoardTypeAdapter(Gson gson, BoardTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
             this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
         }
+    
         @Override
         public void write(JsonWriter writer, Board value) throws IOException {
             this.delegateTypeAdapter.write(writer, value);
         }
+    
         @Override
         public Board read(JsonReader reader) throws IOException {
             JsonElement tree = this.elementTypeAdapter.read(reader);
@@ -383,6 +426,5 @@ public class Board {
             }
             return model;
         }
-    
     }
 }

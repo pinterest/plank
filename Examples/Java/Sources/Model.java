@@ -32,11 +32,11 @@ import java.util.Set;
 public class Model {
 
     @SerializedName("id") private @Nullable String identifier;
-    
+
     static final private int ID_SET = 1 << 0;
-    
+
     private int _bits = 0;
-    
+
     private Model(
         @Nullable String identifier,
         int _bits
@@ -44,17 +44,21 @@ public class Model {
         this.identifier = identifier;
         this._bits = _bits;
     }
+
     public static Model.Builder builder() {
         return new Model.Builder();
     }
+
     public Model.Builder toBuilder() {
         return new Model.Builder(this);
     }
+
     public Model mergeFrom(Model model) {
         Model.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -66,52 +70,58 @@ public class Model {
         Model that = (Model) o;
         return Objects.equals(this.identifier, that.identifier);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(identifier);
     }
+
     public @Nullable String getIdentifier() {
         return this.identifier;
     }
+
     public boolean getIdentifierIsSet() {
         return (this._bits & ID_SET) == ID_SET;
     }
+
     public static class Builder {
     
         @SerializedName("id") private @Nullable String identifier;
-        
+    
         private int _bits = 0;
-        
+    
         private Builder() {
-        
         }
+    
         private Builder(@NonNull Model model) {
             this.identifier = model.identifier;
             this._bits = model._bits;
         }
+    
         public Builder setIdentifier(@Nullable String value) {
             this.identifier = value;
             this._bits |= ID_SET;
             return this;
         }
+    
         public @Nullable String getIdentifier() {
             return this.identifier;
         }
+    
         public Model build() {
             return new Model(
             this.identifier,
             this._bits
             );
         }
+    
         public void mergeFrom(Model model) {
             if (model.getIdentifierIsSet()) {
                 this.identifier = model.identifier;
             }
         }
-    
     }
     public static class ModelTypeAdapterFactory implements TypeAdapterFactory {
-    
     
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
@@ -120,21 +130,22 @@ public class Model {
             }
             return (TypeAdapter<T>) new ModelTypeAdapter(gson, this, typeToken);
         }
-    
     }
     public static class ModelTypeAdapter extends TypeAdapter<Model>  {
     
         final private TypeAdapter<Model> delegateTypeAdapter;
         final private TypeAdapter<JsonElement> elementTypeAdapter;
-        
+    
         public ModelTypeAdapter(Gson gson, ModelTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
             this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
         }
+    
         @Override
         public void write(JsonWriter writer, Model value) throws IOException {
             this.delegateTypeAdapter.write(writer, value);
         }
+    
         @Override
         public Model read(JsonReader reader) throws IOException {
             JsonElement tree = this.elementTypeAdapter.read(reader);
@@ -151,6 +162,5 @@ public class Model {
             }
             return model;
         }
-    
     }
 }

@@ -35,27 +35,28 @@ interface PinAttributionObjectsMatcher<R> {
 }
 
 public final class PinAttributionObjects<R> {
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({InternalStorage.BOARD, InternalStorage.USER})
     public @interface InternalStorage {
         int BOARD = 0;
         int USER = 1;
     }
+
     private @Nullable Board value0;
     private @Nullable User value1;
-    
+
     private @InternalStorage int internalStorage;
-    
+
     private PinAttributionObjects() {
-    
-    }
-    public R match PinAttributionObjects(PinAttributionObjectsMatcher<R>) {
-    
     }
 
+    public R match PinAttributionObjects(PinAttributionObjectsMatcher<R>) {
+    }
 }
 
 public class Pin {
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({PinInStock.UNKNOWN, PinInStock.OUT_OF_STOCK, PinInStock.IN_STOCK})
     public @interface PinInStock {
@@ -63,6 +64,7 @@ public class Pin {
         int OUT_OF_STOCK = 0;
         int IN_STOCK = 1;
     }
+
     @SerializedName("attribution") private @Nullable Map<String, String> attribution;
     @SerializedName("attribution_objects") private @Nullable List<PinAttributionObjects> attributionObjects;
     @SerializedName("board") private @Nullable Board board;
@@ -80,7 +82,7 @@ public class Pin {
     @SerializedName("tags") private @Nullable List<Map<String, Object>> tags;
     @SerializedName("url") private @Nullable String url;
     @SerializedName("visual_search_attrs") private @Nullable Map<String, Object> visualSearchAttrs;
-    
+
     static final private int ATTRIBUTION_SET = 1 << 0;
     static final private int ATTRIBUTION_OBJECTS_SET = 1 << 1;
     static final private int BOARD_SET = 1 << 2;
@@ -98,9 +100,9 @@ public class Pin {
     static final private int TAGS_SET = 1 << 14;
     static final private int URL_SET = 1 << 15;
     static final private int VISUAL_SEARCH_ATTRS_SET = 1 << 16;
-    
+
     private int _bits = 0;
-    
+
     private Pin(
         @Nullable Map<String, String> attribution,
         @Nullable List<PinAttributionObjects> attributionObjects,
@@ -140,17 +142,21 @@ public class Pin {
         this.visualSearchAttrs = visualSearchAttrs;
         this._bits = _bits;
     }
+
     public static Pin.Builder builder() {
         return new Pin.Builder();
     }
+
     public Pin.Builder toBuilder() {
         return new Pin.Builder(this);
     }
+
     public Pin mergeFrom(Pin model) {
         Pin.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -178,6 +184,7 @@ public class Pin {
         Objects.equals(this.url, that.url) &&
         Objects.equals(this.visualSearchAttrs, that.visualSearchAttrs);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(attribution,
@@ -198,108 +205,143 @@ public class Pin {
         url,
         visualSearchAttrs);
     }
+
     public @Nullable Map<String, String> getAttribution() {
         return this.attribution;
     }
+
     public @Nullable List<PinAttributionObjects> getAttributionObjects() {
         return this.attributionObjects;
     }
+
     public @Nullable Board getBoard() {
         return this.board;
     }
+
     public @Nullable String getColor() {
         return this.color;
     }
+
     public @Nullable Map<String, Integer> getCounts() {
         return this.counts;
     }
+
     public @NonNull Date getCreatedAt() {
         return this.createdAt;
     }
+
     public @NonNull Map<String, User> getCreator() {
         return this.creator;
     }
+
     public @Nullable String getDescriptionText() {
         return this.descriptionText;
     }
+
     public @NonNull String getIdentifier() {
         return this.identifier;
     }
+
     public @Nullable Image getImage() {
         return this.image;
     }
+
     public @Nullable @PinInStock int getInStock() {
         return this.inStock;
     }
+
     public @Nullable String getLink() {
         return this.link;
     }
+
     public @Nullable Map<String, String> getMedia() {
         return this.media;
     }
+
     public @Nullable String getNote() {
         return this.note;
     }
+
     public @Nullable List<Map<String, Object>> getTags() {
         return this.tags;
     }
+
     public @Nullable String getUrl() {
         return this.url;
     }
+
     public @Nullable Map<String, Object> getVisualSearchAttrs() {
         return this.visualSearchAttrs;
     }
+
     public boolean getAttributionIsSet() {
         return (this._bits & ATTRIBUTION_SET) == ATTRIBUTION_SET;
     }
+
     public boolean getAttributionObjectsIsSet() {
         return (this._bits & ATTRIBUTION_OBJECTS_SET) == ATTRIBUTION_OBJECTS_SET;
     }
+
     public boolean getBoardIsSet() {
         return (this._bits & BOARD_SET) == BOARD_SET;
     }
+
     public boolean getColorIsSet() {
         return (this._bits & COLOR_SET) == COLOR_SET;
     }
+
     public boolean getCountsIsSet() {
         return (this._bits & COUNTS_SET) == COUNTS_SET;
     }
+
     public boolean getCreatedAtIsSet() {
         return (this._bits & CREATED_AT_SET) == CREATED_AT_SET;
     }
+
     public boolean getCreatorIsSet() {
         return (this._bits & CREATOR_SET) == CREATOR_SET;
     }
+
     public boolean getDescriptionTextIsSet() {
         return (this._bits & DESCRIPTION_SET) == DESCRIPTION_SET;
     }
+
     public boolean getIdentifierIsSet() {
         return (this._bits & ID_SET) == ID_SET;
     }
+
     public boolean getImageIsSet() {
         return (this._bits & IMAGE_SET) == IMAGE_SET;
     }
+
     public boolean getInStockIsSet() {
         return (this._bits & IN_STOCK_SET) == IN_STOCK_SET;
     }
+
     public boolean getLinkIsSet() {
         return (this._bits & LINK_SET) == LINK_SET;
     }
+
     public boolean getMediaIsSet() {
         return (this._bits & MEDIA_SET) == MEDIA_SET;
     }
+
     public boolean getNoteIsSet() {
         return (this._bits & NOTE_SET) == NOTE_SET;
     }
+
     public boolean getTagsIsSet() {
         return (this._bits & TAGS_SET) == TAGS_SET;
     }
+
     public boolean getUrlIsSet() {
         return (this._bits & URL_SET) == URL_SET;
     }
+
     public boolean getVisualSearchAttrsIsSet() {
         return (this._bits & VISUAL_SEARCH_ATTRS_SET) == VISUAL_SEARCH_ATTRS_SET;
     }
+
     public static class Builder {
     
         @SerializedName("attribution") private @Nullable Map<String, String> attribution;
@@ -319,12 +361,12 @@ public class Pin {
         @SerializedName("tags") private @Nullable List<Map<String, Object>> tags;
         @SerializedName("url") private @Nullable String url;
         @SerializedName("visual_search_attrs") private @Nullable Map<String, Object> visualSearchAttrs;
-        
+    
         private int _bits = 0;
-        
+    
         private Builder() {
-        
         }
+    
         private Builder(@NonNull Pin model) {
             this.attribution = model.attribution;
             this.attributionObjects = model.attributionObjects;
@@ -345,142 +387,177 @@ public class Pin {
             this.visualSearchAttrs = model.visualSearchAttrs;
             this._bits = model._bits;
         }
+    
         public Builder setAttribution(@Nullable Map<String, String> value) {
             this.attribution = value;
             this._bits |= ATTRIBUTION_SET;
             return this;
         }
+    
         public Builder setAttributionObjects(@Nullable List<PinAttributionObjects> value) {
             this.attributionObjects = value;
             this._bits |= ATTRIBUTION_OBJECTS_SET;
             return this;
         }
+    
         public Builder setBoard(@Nullable Board value) {
             this.board = value;
             this._bits |= BOARD_SET;
             return this;
         }
+    
         public Builder setColor(@Nullable String value) {
             this.color = value;
             this._bits |= COLOR_SET;
             return this;
         }
+    
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
             this._bits |= COUNTS_SET;
             return this;
         }
+    
         public Builder setCreatedAt(@NonNull Date value) {
             this.createdAt = value;
             this._bits |= CREATED_AT_SET;
             return this;
         }
+    
         public Builder setCreator(@NonNull Map<String, User> value) {
             this.creator = value;
             this._bits |= CREATOR_SET;
             return this;
         }
+    
         public Builder setDescriptionText(@Nullable String value) {
             this.descriptionText = value;
             this._bits |= DESCRIPTION_SET;
             return this;
         }
+    
         public Builder setIdentifier(@NonNull String value) {
             this.identifier = value;
             this._bits |= ID_SET;
             return this;
         }
+    
         public Builder setImage(@Nullable Image value) {
             this.image = value;
             this._bits |= IMAGE_SET;
             return this;
         }
+    
         public Builder setInStock(@Nullable @PinInStock int value) {
             this.inStock = value;
             this._bits |= IN_STOCK_SET;
             return this;
         }
+    
         public Builder setLink(@Nullable String value) {
             this.link = value;
             this._bits |= LINK_SET;
             return this;
         }
+    
         public Builder setMedia(@Nullable Map<String, String> value) {
             this.media = value;
             this._bits |= MEDIA_SET;
             return this;
         }
+    
         public Builder setNote(@Nullable String value) {
             this.note = value;
             this._bits |= NOTE_SET;
             return this;
         }
+    
         public Builder setTags(@Nullable List<Map<String, Object>> value) {
             this.tags = value;
             this._bits |= TAGS_SET;
             return this;
         }
+    
         public Builder setUrl(@Nullable String value) {
             this.url = value;
             this._bits |= URL_SET;
             return this;
         }
+    
         public Builder setVisualSearchAttrs(@Nullable Map<String, Object> value) {
             this.visualSearchAttrs = value;
             this._bits |= VISUAL_SEARCH_ATTRS_SET;
             return this;
         }
+    
         public @Nullable Map<String, String> getAttribution() {
             return this.attribution;
         }
+    
         public @Nullable List<PinAttributionObjects> getAttributionObjects() {
             return this.attributionObjects;
         }
+    
         public @Nullable Board getBoard() {
             return this.board;
         }
+    
         public @Nullable String getColor() {
             return this.color;
         }
+    
         public @Nullable Map<String, Integer> getCounts() {
             return this.counts;
         }
+    
         public @NonNull Date getCreatedAt() {
             return this.createdAt;
         }
+    
         public @NonNull Map<String, User> getCreator() {
             return this.creator;
         }
+    
         public @Nullable String getDescriptionText() {
             return this.descriptionText;
         }
+    
         public @NonNull String getIdentifier() {
             return this.identifier;
         }
+    
         public @Nullable Image getImage() {
             return this.image;
         }
+    
         public @Nullable @PinInStock int getInStock() {
             return this.inStock;
         }
+    
         public @Nullable String getLink() {
             return this.link;
         }
+    
         public @Nullable Map<String, String> getMedia() {
             return this.media;
         }
+    
         public @Nullable String getNote() {
             return this.note;
         }
+    
         public @Nullable List<Map<String, Object>> getTags() {
             return this.tags;
         }
+    
         public @Nullable String getUrl() {
             return this.url;
         }
+    
         public @Nullable Map<String, Object> getVisualSearchAttrs() {
             return this.visualSearchAttrs;
         }
+    
         public Pin build() {
             return new Pin(
             this.attribution,
@@ -503,6 +580,7 @@ public class Pin {
             this._bits
             );
         }
+    
         public void mergeFrom(Pin model) {
             if (model.getAttributionIsSet()) {
                 this.attribution = model.attribution;
@@ -556,10 +634,8 @@ public class Pin {
                 this.visualSearchAttrs = model.visualSearchAttrs;
             }
         }
-    
     }
     public static class PinTypeAdapterFactory implements TypeAdapterFactory {
-    
     
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
@@ -568,21 +644,22 @@ public class Pin {
             }
             return (TypeAdapter<T>) new PinTypeAdapter(gson, this, typeToken);
         }
-    
     }
     public static class PinTypeAdapter extends TypeAdapter<Pin>  {
     
         final private TypeAdapter<Pin> delegateTypeAdapter;
         final private TypeAdapter<JsonElement> elementTypeAdapter;
-        
+    
         public PinTypeAdapter(Gson gson, PinTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
             this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
         }
+    
         @Override
         public void write(JsonWriter writer, Pin value) throws IOException {
             this.delegateTypeAdapter.write(writer, value);
         }
+    
         @Override
         public Pin read(JsonReader reader) throws IOException {
             JsonElement tree = this.elementTypeAdapter.read(reader);
@@ -647,6 +724,5 @@ public class Pin {
             }
             return model;
         }
-    
     }
 }

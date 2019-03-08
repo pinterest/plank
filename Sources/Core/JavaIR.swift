@@ -40,11 +40,15 @@ public struct JavaIR {
             if modifiers.contains(.abstract) {
                 return annotationLines + ["\(modifiers.render()) \(signature);"]
             }
-            return annotationLines + [
-                "\(modifiers.render()) \(signature) {",
-                -->body,
-                "}",
-            ]
+
+            var toRender = annotationLines + ["\(modifiers.render()) \(signature) {"]
+
+            if !body.isEmpty {
+                toRender.append(-->body)
+            }
+
+            toRender.append("}")
+            return toRender
         }
     }
 
@@ -171,22 +175,37 @@ public struct JavaIR {
 
             let extendsStmt = extends.map { " extends \($0) " } ?? ""
 
-            var propertiesStrings = [String]()
-            for propertyBatch in properties {
-                for property in propertyBatch {
-                    propertiesStrings.append(property.render())
-                }
-                propertiesStrings.append("") // Add an empty line between each batch
+            var toRender = annotations.map { "@\($0)" } + [
+                "\(modifiers.render()) class \(name)\(extendsStmt) \(implementsStmt) {",
+            ]
+
+            if !enums.isEmpty {
+                toRender.append("")
+                toRender.append(-->enums.flatMap { $0.render() })
             }
 
-            return annotations.map { "@\($0)" } + [
-                "\(modifiers.render()) class \(name)\(extendsStmt) \(implementsStmt) {",
-                -->enums.flatMap { $0.render() },
-                -->propertiesStrings,
-                -->methods.flatMap { $0.render() },
-                -->innerClasses.flatMap { $0.render() },
-                "}",
-            ]
+            if !properties.isEmpty {
+                toRender += properties.reduce([String]()) { result, propertyBatch in
+                    result + [""] + propertyBatch.map { property in
+                        -->[property.render()]
+                    }
+                }
+            }
+
+            if !methods.isEmpty {
+                toRender += (methods.reduce([String]()) { result, method in
+                    result + [""] + [-->method.render()]
+                })
+            }
+
+            if !innerClasses.isEmpty {
+                toRender.append("")
+                toRender.append(-->innerClasses.flatMap { $0.render() })
+            }
+
+            toRender.append("}")
+
+            return toRender
         }
     }
 

@@ -35,14 +35,14 @@ public class VariableSubtitution {
     @SerializedName("copy_prop") private @Nullable Integer copyProp;
     @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
     @SerializedName("new_prop") private @Nullable Integer newProp;
-    
+
     static final private int ALLOC_PROP_SET = 1 << 0;
     static final private int COPY_PROP_SET = 1 << 1;
     static final private int MUTABLE_COPY_PROP_SET = 1 << 2;
     static final private int NEW_PROP_SET = 1 << 3;
-    
+
     private int _bits = 0;
-    
+
     private VariableSubtitution(
         @Nullable Integer allocProp,
         @Nullable Integer copyProp,
@@ -56,17 +56,21 @@ public class VariableSubtitution {
         this.newProp = newProp;
         this._bits = _bits;
     }
+
     public static VariableSubtitution.Builder builder() {
         return new VariableSubtitution.Builder();
     }
+
     public VariableSubtitution.Builder toBuilder() {
         return new VariableSubtitution.Builder(this);
     }
+
     public VariableSubtitution mergeFrom(VariableSubtitution model) {
         VariableSubtitution.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -81,6 +85,7 @@ public class VariableSubtitution {
         Objects.equals(this.mutableCopyProp, that.mutableCopyProp) &&
         Objects.equals(this.newProp, that.newProp);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(allocProp,
@@ -88,42 +93,51 @@ public class VariableSubtitution {
         mutableCopyProp,
         newProp);
     }
+
     public @Nullable Integer getAllocProp() {
         return this.allocProp;
     }
+
     public @Nullable Integer getCopyProp() {
         return this.copyProp;
     }
+
     public @Nullable Integer getMutableCopyProp() {
         return this.mutableCopyProp;
     }
+
     public @Nullable Integer getNewProp() {
         return this.newProp;
     }
+
     public boolean getAllocPropIsSet() {
         return (this._bits & ALLOC_PROP_SET) == ALLOC_PROP_SET;
     }
+
     public boolean getCopyPropIsSet() {
         return (this._bits & COPY_PROP_SET) == COPY_PROP_SET;
     }
+
     public boolean getMutableCopyPropIsSet() {
         return (this._bits & MUTABLE_COPY_PROP_SET) == MUTABLE_COPY_PROP_SET;
     }
+
     public boolean getNewPropIsSet() {
         return (this._bits & NEW_PROP_SET) == NEW_PROP_SET;
     }
+
     public static class Builder {
     
         @SerializedName("alloc_prop") private @Nullable Integer allocProp;
         @SerializedName("copy_prop") private @Nullable Integer copyProp;
         @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
         @SerializedName("new_prop") private @Nullable Integer newProp;
-        
+    
         private int _bits = 0;
-        
+    
         private Builder() {
-        
         }
+    
         private Builder(@NonNull VariableSubtitution model) {
             this.allocProp = model.allocProp;
             this.copyProp = model.copyProp;
@@ -131,38 +145,47 @@ public class VariableSubtitution {
             this.newProp = model.newProp;
             this._bits = model._bits;
         }
+    
         public Builder setAllocProp(@Nullable Integer value) {
             this.allocProp = value;
             this._bits |= ALLOC_PROP_SET;
             return this;
         }
+    
         public Builder setCopyProp(@Nullable Integer value) {
             this.copyProp = value;
             this._bits |= COPY_PROP_SET;
             return this;
         }
+    
         public Builder setMutableCopyProp(@Nullable Integer value) {
             this.mutableCopyProp = value;
             this._bits |= MUTABLE_COPY_PROP_SET;
             return this;
         }
+    
         public Builder setNewProp(@Nullable Integer value) {
             this.newProp = value;
             this._bits |= NEW_PROP_SET;
             return this;
         }
+    
         public @Nullable Integer getAllocProp() {
             return this.allocProp;
         }
+    
         public @Nullable Integer getCopyProp() {
             return this.copyProp;
         }
+    
         public @Nullable Integer getMutableCopyProp() {
             return this.mutableCopyProp;
         }
+    
         public @Nullable Integer getNewProp() {
             return this.newProp;
         }
+    
         public VariableSubtitution build() {
             return new VariableSubtitution(
             this.allocProp,
@@ -172,6 +195,7 @@ public class VariableSubtitution {
             this._bits
             );
         }
+    
         public void mergeFrom(VariableSubtitution model) {
             if (model.getAllocPropIsSet()) {
                 this.allocProp = model.allocProp;
@@ -186,10 +210,8 @@ public class VariableSubtitution {
                 this.newProp = model.newProp;
             }
         }
-    
     }
     public static class VariableSubtitutionTypeAdapterFactory implements TypeAdapterFactory {
-    
     
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
@@ -198,21 +220,22 @@ public class VariableSubtitution {
             }
             return (TypeAdapter<T>) new VariableSubtitutionTypeAdapter(gson, this, typeToken);
         }
-    
     }
     public static class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution>  {
     
         final private TypeAdapter<VariableSubtitution> delegateTypeAdapter;
         final private TypeAdapter<JsonElement> elementTypeAdapter;
-        
+    
         public VariableSubtitutionTypeAdapter(Gson gson, VariableSubtitutionTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
             this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
         }
+    
         @Override
         public void write(JsonWriter writer, VariableSubtitution value) throws IOException {
             this.delegateTypeAdapter.write(writer, value);
         }
+    
         @Override
         public VariableSubtitution read(JsonReader reader) throws IOException {
             JsonElement tree = this.elementTypeAdapter.read(reader);
@@ -238,6 +261,5 @@ public class VariableSubtitution {
             }
             return model;
         }
-    
     }
 }
