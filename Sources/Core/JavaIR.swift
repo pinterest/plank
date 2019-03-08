@@ -81,6 +81,40 @@ public struct JavaIR {
         ].joined(separator: "\n")
     }
 
+    static func forBlock(condition: String, body: () -> [String]) -> String {
+        return [
+            "for (" + condition + ") {",
+            -->body(),
+            "}",
+        ].joined(separator: "\n")
+    }
+
+    static func switchBlock(variableToCheck: String, defaultBody: [String], cases: () -> [Case]) -> String {
+        return [
+            "switch (" + variableToCheck + ") {",
+            -->cases().flatMap { $0.render() },
+            -->["default:", -->defaultBody],
+            "}",
+        ].joined(separator: "\n")
+    }
+
+    struct Case {
+        let variableEquals: String
+        let body: [String]
+        let shouldBreak: Bool = true
+
+        func render() -> [String] {
+            var lines = [
+                "case (" + variableEquals + "):",
+                -->body,
+            ]
+            if shouldBreak {
+                lines.append(-->["break;"])
+            }
+            return lines
+        }
+    }
+
     struct Enum {
         let name: String
         let values: EnumType
@@ -135,6 +169,8 @@ public struct JavaIR {
             let implementsList = implements?.joined(separator: ", ") ?? ""
             let implementsStmt = implementsList == "" ? "" : "implements \(implementsList)"
 
+            let extendsStmt = extends.map { " extends \($0) " } ?? ""
+
             var propertiesStrings = [String]()
             for propertyBatch in properties {
                 for property in propertyBatch {
@@ -144,7 +180,7 @@ public struct JavaIR {
             }
 
             return annotations.map { "@\($0)" } + [
-                "\(modifiers.render()) class \(name) \(implementsStmt) {",
+                "\(modifiers.render()) class \(name)\(extendsStmt) \(implementsStmt) {",
                 -->enums.flatMap { $0.render() },
                 -->propertiesStrings,
                 -->methods.flatMap { $0.render() },

@@ -13,8 +13,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
@@ -341,6 +347,76 @@ public class User {
             if (model.getUsernameIsSet()) {
                 this.username = model.username;
             }
+        }
+    
+    }
+    public static class UserTypeAdapterFactory implements TypeAdapterFactory {
+    
+    
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+            if (!User.class.isAssignableFrom(typeToken.getRawType())) {
+                return null;
+            }
+            return (TypeAdapter<T>) new UserTypeAdapter(gson, this, typeToken);
+        }
+    
+    }
+    public static class UserTypeAdapter extends TypeAdapter<User>  {
+    
+        final private TypeAdapter<User> delegateTypeAdapter;
+        final private TypeAdapter<JsonElement> elementTypeAdapter;
+        
+        public UserTypeAdapter(Gson gson, UserTypeAdapterFactory factory, TypeToken typeToken) {
+            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
+            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+        }
+        @Override
+        public void write(JsonWriter writer, User value) throws IOException {
+            this.delegateTypeAdapter.write(writer, value);
+        }
+        @Override
+        public User read(JsonReader reader) throws IOException {
+            JsonElement tree = this.elementTypeAdapter.read(reader);
+            User model = this.delegateTypeAdapter.fromJsonTree(tree);
+            Set<String> keys = tree.getAsJsonObject().keySet();
+            for (String key : keys) {
+                switch (key) {
+                    case ("bio"):
+                        model._bits |= BIO_SET;
+                        break;
+                    case ("counts"):
+                        model._bits |= COUNTS_SET;
+                        break;
+                    case ("created_at"):
+                        model._bits |= CREATED_AT_SET;
+                        break;
+                    case ("email_frequency"):
+                        model._bits |= EMAIL_FREQUENCY_SET;
+                        break;
+                    case ("first_name"):
+                        model._bits |= FIRST_NAME_SET;
+                        break;
+                    case ("id"):
+                        model._bits |= ID_SET;
+                        break;
+                    case ("image"):
+                        model._bits |= IMAGE_SET;
+                        break;
+                    case ("last_name"):
+                        model._bits |= LAST_NAME_SET;
+                        break;
+                    case ("type"):
+                        model._bits |= TYPE_SET;
+                        break;
+                    case ("username"):
+                        model._bits |= USERNAME_SET;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return model;
         }
     
     }

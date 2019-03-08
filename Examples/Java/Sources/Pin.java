@@ -13,8 +13,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
@@ -549,6 +555,97 @@ public class Pin {
             if (model.getVisualSearchAttrsIsSet()) {
                 this.visualSearchAttrs = model.visualSearchAttrs;
             }
+        }
+    
+    }
+    public static class PinTypeAdapterFactory implements TypeAdapterFactory {
+    
+    
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+            if (!Pin.class.isAssignableFrom(typeToken.getRawType())) {
+                return null;
+            }
+            return (TypeAdapter<T>) new PinTypeAdapter(gson, this, typeToken);
+        }
+    
+    }
+    public static class PinTypeAdapter extends TypeAdapter<Pin>  {
+    
+        final private TypeAdapter<Pin> delegateTypeAdapter;
+        final private TypeAdapter<JsonElement> elementTypeAdapter;
+        
+        public PinTypeAdapter(Gson gson, PinTypeAdapterFactory factory, TypeToken typeToken) {
+            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
+            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+        }
+        @Override
+        public void write(JsonWriter writer, Pin value) throws IOException {
+            this.delegateTypeAdapter.write(writer, value);
+        }
+        @Override
+        public Pin read(JsonReader reader) throws IOException {
+            JsonElement tree = this.elementTypeAdapter.read(reader);
+            Pin model = this.delegateTypeAdapter.fromJsonTree(tree);
+            Set<String> keys = tree.getAsJsonObject().keySet();
+            for (String key : keys) {
+                switch (key) {
+                    case ("attribution"):
+                        model._bits |= ATTRIBUTION_SET;
+                        break;
+                    case ("attribution_objects"):
+                        model._bits |= ATTRIBUTION_OBJECTS_SET;
+                        break;
+                    case ("board"):
+                        model._bits |= BOARD_SET;
+                        break;
+                    case ("color"):
+                        model._bits |= COLOR_SET;
+                        break;
+                    case ("counts"):
+                        model._bits |= COUNTS_SET;
+                        break;
+                    case ("created_at"):
+                        model._bits |= CREATED_AT_SET;
+                        break;
+                    case ("creator"):
+                        model._bits |= CREATOR_SET;
+                        break;
+                    case ("description"):
+                        model._bits |= DESCRIPTION_SET;
+                        break;
+                    case ("id"):
+                        model._bits |= ID_SET;
+                        break;
+                    case ("image"):
+                        model._bits |= IMAGE_SET;
+                        break;
+                    case ("in_stock"):
+                        model._bits |= IN_STOCK_SET;
+                        break;
+                    case ("link"):
+                        model._bits |= LINK_SET;
+                        break;
+                    case ("media"):
+                        model._bits |= MEDIA_SET;
+                        break;
+                    case ("note"):
+                        model._bits |= NOTE_SET;
+                        break;
+                    case ("tags"):
+                        model._bits |= TAGS_SET;
+                        break;
+                    case ("url"):
+                        model._bits |= URL_SET;
+                        break;
+                    case ("visual_search_attrs"):
+                        model._bits |= VISUAL_SEARCH_ATTRS_SET;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return model;
         }
     
     }

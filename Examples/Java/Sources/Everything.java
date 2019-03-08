@@ -13,8 +13,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
@@ -936,6 +942,133 @@ public class Everything {
             if (model.getUriPropIsSet()) {
                 this.uriProp = model.uriProp;
             }
+        }
+    
+    }
+    public static class EverythingTypeAdapterFactory implements TypeAdapterFactory {
+    
+    
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+            if (!Everything.class.isAssignableFrom(typeToken.getRawType())) {
+                return null;
+            }
+            return (TypeAdapter<T>) new EverythingTypeAdapter(gson, this, typeToken);
+        }
+    
+    }
+    public static class EverythingTypeAdapter extends TypeAdapter<Everything>  {
+    
+        final private TypeAdapter<Everything> delegateTypeAdapter;
+        final private TypeAdapter<JsonElement> elementTypeAdapter;
+        
+        public EverythingTypeAdapter(Gson gson, EverythingTypeAdapterFactory factory, TypeToken typeToken) {
+            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
+            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+        }
+        @Override
+        public void write(JsonWriter writer, Everything value) throws IOException {
+            this.delegateTypeAdapter.write(writer, value);
+        }
+        @Override
+        public Everything read(JsonReader reader) throws IOException {
+            JsonElement tree = this.elementTypeAdapter.read(reader);
+            Everything model = this.delegateTypeAdapter.fromJsonTree(tree);
+            Set<String> keys = tree.getAsJsonObject().keySet();
+            for (String key : keys) {
+                switch (key) {
+                    case ("array_prop"):
+                        model._bits |= ARRAY_PROP_SET;
+                        break;
+                    case ("boolean_prop"):
+                        model._bits |= BOOLEAN_PROP_SET;
+                        break;
+                    case ("date_prop"):
+                        model._bits |= DATE_PROP_SET;
+                        break;
+                    case ("int_enum"):
+                        model._bits |= INT_ENUM_SET;
+                        break;
+                    case ("int_prop"):
+                        model._bits |= INT_PROP_SET;
+                        break;
+                    case ("list_polymorphic_values"):
+                        model._bits |= LIST_POLYMORPHIC_VALUES_SET;
+                        break;
+                    case ("list_with_list_and_other_model_values"):
+                        model._bits |= LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+                        break;
+                    case ("list_with_map_and_other_model_values"):
+                        model._bits |= LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+                        break;
+                    case ("list_with_object_values"):
+                        model._bits |= LIST_WITH_OBJECT_VALUES_SET;
+                        break;
+                    case ("list_with_other_model_values"):
+                        model._bits |= LIST_WITH_OTHER_MODEL_VALUES_SET;
+                        break;
+                    case ("list_with_primitive_values"):
+                        model._bits |= LIST_WITH_PRIMITIVE_VALUES_SET;
+                        break;
+                    case ("map_polymorphic_values"):
+                        model._bits |= MAP_POLYMORPHIC_VALUES_SET;
+                        break;
+                    case ("map_prop"):
+                        model._bits |= MAP_PROP_SET;
+                        break;
+                    case ("map_with_list_and_other_model_values"):
+                        model._bits |= MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+                        break;
+                    case ("map_with_map_and_other_model_values"):
+                        model._bits |= MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+                        break;
+                    case ("map_with_object_values"):
+                        model._bits |= MAP_WITH_OBJECT_VALUES_SET;
+                        break;
+                    case ("map_with_other_model_values"):
+                        model._bits |= MAP_WITH_OTHER_MODEL_VALUES_SET;
+                        break;
+                    case ("map_with_primitive_values"):
+                        model._bits |= MAP_WITH_PRIMITIVE_VALUES_SET;
+                        break;
+                    case ("number_prop"):
+                        model._bits |= NUMBER_PROP_SET;
+                        break;
+                    case ("other_model_prop"):
+                        model._bits |= OTHER_MODEL_PROP_SET;
+                        break;
+                    case ("polymorphic_prop"):
+                        model._bits |= POLYMORPHIC_PROP_SET;
+                        break;
+                    case ("set_prop"):
+                        model._bits |= SET_PROP_SET;
+                        break;
+                    case ("set_prop_with_other_model_values"):
+                        model._bits |= SET_PROP_WITH_OTHER_MODEL_VALUES_SET;
+                        break;
+                    case ("set_prop_with_primitive_values"):
+                        model._bits |= SET_PROP_WITH_PRIMITIVE_VALUES_SET;
+                        break;
+                    case ("set_prop_with_values"):
+                        model._bits |= SET_PROP_WITH_VALUES_SET;
+                        break;
+                    case ("string_enum"):
+                        model._bits |= STRING_ENUM_SET;
+                        break;
+                    case ("string_prop"):
+                        model._bits |= STRING_PROP_SET;
+                        break;
+                    case ("type"):
+                        model._bits |= TYPE_SET;
+                        break;
+                    case ("uri_prop"):
+                        model._bits |= URI_PROP_SET;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return model;
         }
     
     }

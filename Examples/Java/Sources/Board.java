@@ -13,8 +13,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
@@ -309,6 +315,73 @@ public class Board {
             if (model.getUrlIsSet()) {
                 this.url = model.url;
             }
+        }
+    
+    }
+    public static class BoardTypeAdapterFactory implements TypeAdapterFactory {
+    
+    
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+            if (!Board.class.isAssignableFrom(typeToken.getRawType())) {
+                return null;
+            }
+            return (TypeAdapter<T>) new BoardTypeAdapter(gson, this, typeToken);
+        }
+    
+    }
+    public static class BoardTypeAdapter extends TypeAdapter<Board>  {
+    
+        final private TypeAdapter<Board> delegateTypeAdapter;
+        final private TypeAdapter<JsonElement> elementTypeAdapter;
+        
+        public BoardTypeAdapter(Gson gson, BoardTypeAdapterFactory factory, TypeToken typeToken) {
+            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
+            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+        }
+        @Override
+        public void write(JsonWriter writer, Board value) throws IOException {
+            this.delegateTypeAdapter.write(writer, value);
+        }
+        @Override
+        public Board read(JsonReader reader) throws IOException {
+            JsonElement tree = this.elementTypeAdapter.read(reader);
+            Board model = this.delegateTypeAdapter.fromJsonTree(tree);
+            Set<String> keys = tree.getAsJsonObject().keySet();
+            for (String key : keys) {
+                switch (key) {
+                    case ("id"):
+                        model._bits |= ID_SET;
+                        break;
+                    case ("contributors"):
+                        model._bits |= CONTRIBUTORS_SET;
+                        break;
+                    case ("counts"):
+                        model._bits |= COUNTS_SET;
+                        break;
+                    case ("created_at"):
+                        model._bits |= CREATED_AT_SET;
+                        break;
+                    case ("creator"):
+                        model._bits |= CREATOR_SET;
+                        break;
+                    case ("description"):
+                        model._bits |= DESCRIPTION_SET;
+                        break;
+                    case ("image"):
+                        model._bits |= IMAGE_SET;
+                        break;
+                    case ("name"):
+                        model._bits |= NAME_SET;
+                        break;
+                    case ("url"):
+                        model._bits |= URL_SET;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return model;
         }
     
     }

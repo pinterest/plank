@@ -49,6 +49,56 @@ extension JavaFileRenderer {
         }
     }
 
+    func wrappedClassNameFromSchema(_ param: String, _ schema: Schema) -> String {
+        switch schema {
+        case .array(itemType: .none):
+            return "Object"
+        case let .array(itemType: .some(itemType)):
+            return wrappedClassNameFromSchema(param, itemType)
+        case .set(itemType: .none):
+            return "Object"
+        case let .set(itemType: .some(itemType)):
+            return wrappedClassNameFromSchema(param, itemType)
+        case .map(valueType: .none):
+            return "Object"
+        case let .map(valueType: .some(valueType)):
+            return wrappedClassNameFromSchema(param, valueType)
+        case .string(format: .none),
+             .string(format: .some(.email)),
+             .string(format: .some(.hostname)),
+             .string(format: .some(.ipv4)),
+             .string(format: .some(.ipv6)),
+             .string(format: .some(.uri)):
+            return "String"
+        case .string(format: .some(.dateTime)):
+            return "Date"
+        case .integer:
+            return "Integer"
+        case .float:
+            return "Double"
+        case .boolean:
+            return "Boolean"
+        case let .enumT(enumObj):
+            switch enumObj {
+            case .integer:
+                return "Integer"
+            case .string(_, defaultValue: _):
+                return "String"
+            }
+        case let .object(objSchemaRoot):
+            return "\(objSchemaRoot.className(with: params))"
+        case let .reference(with: ref):
+            switch ref.force() {
+            case let .some(.object(schemaRoot)):
+                return wrappedClassNameFromSchema(param, .object(schemaRoot) as Schema)
+            default:
+                fatalError("Bad reference found in schema for class: \(className)")
+            }
+        case .oneOf(types: _):
+            return "\(className)\(param.snakeCaseToCamelCase())"
+        }
+    }
+
     fileprivate func unwrappedTypeFromSchema(_ param: String, _ schema: Schema) -> String {
         switch schema {
         case .array(itemType: .none):

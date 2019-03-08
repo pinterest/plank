@@ -13,8 +13,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
@@ -179,6 +185,58 @@ public class VariableSubtitution {
             if (model.getNewPropIsSet()) {
                 this.newProp = model.newProp;
             }
+        }
+    
+    }
+    public static class VariableSubtitutionTypeAdapterFactory implements TypeAdapterFactory {
+    
+    
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+            if (!VariableSubtitution.class.isAssignableFrom(typeToken.getRawType())) {
+                return null;
+            }
+            return (TypeAdapter<T>) new VariableSubtitutionTypeAdapter(gson, this, typeToken);
+        }
+    
+    }
+    public static class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution>  {
+    
+        final private TypeAdapter<VariableSubtitution> delegateTypeAdapter;
+        final private TypeAdapter<JsonElement> elementTypeAdapter;
+        
+        public VariableSubtitutionTypeAdapter(Gson gson, VariableSubtitutionTypeAdapterFactory factory, TypeToken typeToken) {
+            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
+            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+        }
+        @Override
+        public void write(JsonWriter writer, VariableSubtitution value) throws IOException {
+            this.delegateTypeAdapter.write(writer, value);
+        }
+        @Override
+        public VariableSubtitution read(JsonReader reader) throws IOException {
+            JsonElement tree = this.elementTypeAdapter.read(reader);
+            VariableSubtitution model = this.delegateTypeAdapter.fromJsonTree(tree);
+            Set<String> keys = tree.getAsJsonObject().keySet();
+            for (String key : keys) {
+                switch (key) {
+                    case ("alloc_prop"):
+                        model._bits |= ALLOC_PROP_SET;
+                        break;
+                    case ("copy_prop"):
+                        model._bits |= COPY_PROP_SET;
+                        break;
+                    case ("mutable_copy_prop"):
+                        model._bits |= MUTABLE_COPY_PROP_SET;
+                        break;
+                    case ("new_prop"):
+                        model._bits |= NEW_PROP_SET;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return model;
         }
     
     }
