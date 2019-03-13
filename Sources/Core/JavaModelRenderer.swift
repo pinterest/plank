@@ -16,6 +16,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
         self.params = params
     }
 
+    // MARK: - Top-level Model
+
     func renderModelConstructor() -> JavaIR.Method {
         let args = -->(transitiveProperties.map { param, schemaObj in
             self.typeFromSchema(param, schemaObj) + " " + param.snakeCaseToPropertyName() + ","
@@ -33,7 +35,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             param.snakeCaseToPropertyName()
         }.joined(separator: ",\n")
 
-        return JavaIR.method(annotations: ["Override"], [.public], "int hashCode()") { [
+        return JavaIR.method(annotations: [JavaAnnotation.override], [.public], "int hashCode()") { [
             "return Objects.hash(" + bodyHashCode + ");",
         ]
         }
@@ -44,7 +46,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             "Objects.equals(this." + param.snakeCaseToPropertyName() + ", that." + param.snakeCaseToPropertyName() + ")"
         }.joined(separator: " &&\n")
 
-        return JavaIR.method(annotations: ["Override"], [.public], "boolean equals(Object o)") { [
+        return JavaIR.method(annotations: [JavaAnnotation.override], [.public], "boolean equals(Object o)") { [
             JavaIR.ifBlock(condition: "this == o") { [
                 "return true;",
             ] },
@@ -110,6 +112,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
         ] }
     }
 
+    // MARK: - Model.Builder
+
     func renderBuilderConstructors() -> [JavaIR.Method] {
         let emptyConstructor = JavaIR.method([.private], "Builder()") { [] }
 
@@ -168,6 +172,83 @@ public struct JavaModelRenderer: JavaFileRenderer {
         return [props, [bits]]
     }
 
+    // MARK: - TypeAdapterFactory
+
+    func renderTypeAdapterFactoryMethods() -> [JavaIR.Method] {
+        return [JavaIR.method(annotations: [JavaAnnotation.override], [.public], "<T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken)") { [
+            JavaIR.ifBlock(condition: "!" + className + ".class.isAssignableFrom(typeToken.getRawType())") { [
+                "return null;",
+            ] },
+            "return (TypeAdapter<T>) new " + className + "TypeAdapter(gson, this, typeToken);",
+        ] }]
+    }
+
+    // MARK: - TypeAdapter
+
+    func renderTypeAdapterProperties() -> [[JavaIR.Property]] {
+        let delegate = JavaIR.Property(
+            annotations: [],
+            modifiers: [.final, .private],
+            type: "TypeAdapter<" + className + ">",
+            name: "delegateTypeAdapter",
+            initialValue: ""
+        )
+
+        let elementTypeAdapter = JavaIR.Property(
+            annotations: [],
+            modifiers: [.final, .private],
+            type: "TypeAdapter<JsonElement>",
+            name: "elementTypeAdapter",
+            initialValue: ""
+        )
+
+        return [[delegate, elementTypeAdapter]]
+    }
+
+    func renderTypeAdapterMethods() -> [JavaIR.Method] {
+        let constructor = JavaIR.method(
+            annotations: [],
+            [.public],
+            className + "TypeAdapter(Gson gson, " + className + "TypeAdapterFactory factory, TypeToken typeToken)"
+        ) { [
+            "this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);",
+            "this.elementTypeAdapter = gson.getAdapter(JsonElement.class);",
+        ] }
+
+        let write = JavaIR.method(
+            annotations: [JavaAnnotation.override],
+            [.public],
+            "void write(JsonWriter writer, " + className + " value) throws IOException"
+        ) { [
+            "this.delegateTypeAdapter.write(writer, value);",
+        ] }
+
+        let read = JavaIR.method(
+            annotations: [JavaAnnotation.override],
+            [.public],
+            className + " read(JsonReader reader) throws IOException"
+        ) { [
+            "JsonElement tree = this.elementTypeAdapter.read(reader);",
+            className + " model = this.delegateTypeAdapter.fromJsonTree(tree);",
+            "Set<String> keys = tree.getAsJsonObject().keySet();",
+            JavaIR.forBlock(condition: "String key : keys") { [
+                JavaIR.switchBlock(variableToCheck: "key", defaultBody: ["break;"]) {
+                    transitiveProperties.map { param, _ in
+                        JavaIR.Case(
+                            variableEquals: "\"" + param + "\"",
+                            body: ["model._bits |= " + param.uppercased() + "_SET;"]
+                        )
+                    }
+                },
+            ] },
+            "return model;",
+        ] }
+
+        return [constructor, write, read]
+    }
+
+    // MARK: - Render from root
+
     func renderRoots() -> [JavaIR.Root] {
         let packages = params[.packageName].flatMap {
             [JavaIR.Root.packages(names: [$0])]
@@ -177,7 +258,13 @@ public struct JavaModelRenderer: JavaFileRenderer {
             JavaIR.Root.imports(names: [
                 "com.google.gson.Gson",
                 "com.google.gson.annotations.SerializedName",
+                "com.google.gson.JsonElement",
                 "com.google.gson.TypeAdapter",
+                "com.google.gson.TypeAdapterFactory",
+                "com.google.gson.reflect.TypeToken",
+                "com.google.gson.stream.JsonReader",
+                "com.google.gson.stream.JsonWriter",
+                "java.io.IOException",
                 "java.util.Date",
                 "java.util.Map",
                 "java.util.Set",
@@ -243,6 +330,30 @@ public struct JavaModelRenderer: JavaFileRenderer {
             properties: renderBuilderProperties()
         )
 
+        let typeAdapterFactoryClass = JavaIR.Class(
+            annotations: [],
+            modifiers: [.public, .static],
+            extends: nil,
+            implements: ["TypeAdapterFactory"],
+            name: className + "TypeAdapterFactory",
+            methods: renderTypeAdapterFactoryMethods(),
+            enums: [],
+            innerClasses: [],
+            properties: []
+        )
+
+        let typeAdapterClass = JavaIR.Class(
+            annotations: [],
+            modifiers: [.public, .static],
+            extends: "TypeAdapter<" + className + ">",
+            implements: nil,
+            name: className + "TypeAdapter",
+            methods: renderTypeAdapterMethods(),
+            enums: [],
+            innerClasses: [],
+            properties: renderTypeAdapterProperties()
+        )
+
         let modelClass = JavaIR.Root.classDecl(
             aClass: JavaIR.Class(
                 annotations: [],
@@ -263,6 +374,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 enums: enumProps,
                 innerClasses: [
                     builderClass,
+                    typeAdapterFactoryClass,
+                    typeAdapterClass,
                 ],
                 properties: renderModelProperties()
             )

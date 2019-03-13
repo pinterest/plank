@@ -26,25 +26,35 @@ struct JavaModifier: OptionSet {
     }
 }
 
+enum JavaAnnotation: String {
+    case override = "Override"
+    case nullable = "Nullable"
+    case nonnull = "NonNull"
+}
+
 public struct JavaIR {
     public struct Method {
-        let annotations: Set<String>
+        let annotations: Set<JavaAnnotation>
         let modifiers: JavaModifier
         let body: [String]
         let signature: String
 
         func render() -> [String] {
             // HACK: We should actually have an enum / optionset that we can check for abstract, static, ...
-            let annotationLines = annotations.map { "@\($0)" }
+            let annotationLines = annotations.map { "@\($0.rawValue)" }
 
             if modifiers.contains(.abstract) {
                 return annotationLines + ["\(modifiers.render()) \(signature);"]
             }
-            return annotationLines + [
-                "\(modifiers.render()) \(signature) {",
-                -->body,
-                "}",
-            ]
+
+            var toRender = annotationLines + ["\(modifiers.render()) \(signature) {"]
+
+            if !body.isEmpty {
+                toRender.append(-->body)
+            }
+
+            toRender.append("}")
+            return toRender
         }
     }
 
@@ -69,7 +79,7 @@ public struct JavaIR {
         }
     }
 
-    static func method(annotations: Set<String> = [], _ modifiers: JavaModifier, _ signature: String, body: () -> [String]) -> JavaIR.Method {
+    static func method(annotations: Set<JavaAnnotation> = [], _ modifiers: JavaModifier, _ signature: String, body: () -> [String]) -> JavaIR.Method {
         return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature)
     }
 
@@ -79,6 +89,40 @@ public struct JavaIR {
             -->body(),
             "}",
         ].joined(separator: "\n")
+    }
+
+    static func forBlock(condition: String, body: () -> [String]) -> String {
+        return [
+            "for (" + condition + ") {",
+            -->body(),
+            "}",
+        ].joined(separator: "\n")
+    }
+
+    static func switchBlock(variableToCheck: String, defaultBody: [String], cases: () -> [Case]) -> String {
+        return [
+            "switch (" + variableToCheck + ") {",
+            -->cases().flatMap { $0.render() },
+            -->["default:", -->defaultBody],
+            "}",
+        ].joined(separator: "\n")
+    }
+
+    struct Case {
+        let variableEquals: String
+        let body: [String]
+        let shouldBreak: Bool = true
+
+        func render() -> [String] {
+            var lines = [
+                "case (" + variableEquals + "):",
+                -->body,
+            ]
+            if shouldBreak {
+                lines.append(-->["break;"])
+            }
+            return lines
+        }
     }
 
     struct Enum {
@@ -121,7 +165,7 @@ public struct JavaIR {
     }
 
     struct Class {
-        let annotations: Set<String>
+        let annotations: Set<JavaAnnotation>
         let modifiers: JavaModifier
         let extends: String?
         let implements: [String]? // Should this be JavaIR.Interface?
@@ -133,24 +177,33 @@ public struct JavaIR {
 
         func render() -> [String] {
             let implementsList = implements?.joined(separator: ", ") ?? ""
-            let implementsStmt = implementsList == "" ? "" : "implements \(implementsList)"
+            let implementsStmt = implementsList.isEmpty ? "" : " implements \(implementsList)"
 
-            var propertiesStrings = [String]()
-            for propertyBatch in properties {
-                for property in propertyBatch {
-                    propertiesStrings.append(property.render())
-                }
-                propertiesStrings.append("") // Add an empty line between each batch
+            let extendsStmt = extends.map { " extends \($0) " } ?? ""
+
+            var lines = annotations.map { "@\($0.rawValue)" } + [
+                "\(modifiers.render()) class \(name)\(extendsStmt)\(implementsStmt) {",
+            ]
+
+            if !enums.isEmpty {
+                lines.append(-->enums.flatMap { [""] + $0.render() })
             }
 
-            return annotations.map { "@\($0)" } + [
-                "\(modifiers.render()) class \(name) \(implementsStmt) {",
-                -->enums.flatMap { $0.render() },
-                -->propertiesStrings,
-                -->methods.flatMap { $0.render() },
-                -->innerClasses.flatMap { $0.render() },
-                "}",
-            ]
+            if !properties.isEmpty {
+                lines.append(-->properties.flatMap { [""] + $0.compactMap { $0.render() } })
+            }
+
+            if !methods.isEmpty {
+                lines.append(-->methods.flatMap { [""] + $0.render() })
+            }
+
+            if !innerClasses.isEmpty {
+                lines.append(-->innerClasses.flatMap { [""] + $0.render() })
+            }
+
+            lines.append("}")
+
+            return lines
         }
     }
 

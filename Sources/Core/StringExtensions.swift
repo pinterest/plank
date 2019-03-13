@@ -44,7 +44,7 @@ import Foundation
 prefix operator -->
 
 prefix func --> (strs: [String]) -> String {
-    return strs.flatMap { $0.components(separatedBy: "\n").map { $0.indent() } }
+    return strs.flatMap { $0.components(separatedBy: "\n").map { $0.isEmpty ? $0 : $0.indent() } }
         .joined(separator: "\n")
 }
 
