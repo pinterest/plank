@@ -26,16 +26,22 @@ struct JavaModifier: OptionSet {
     }
 }
 
+enum JavaAnnotation: String {
+    case override = "Override"
+    case nullable = "Nullable"
+    case nonnull = "NonNull"
+}
+
 public struct JavaIR {
     public struct Method {
-        let annotations: Set<String>
+        let annotations: Set<JavaAnnotation>
         let modifiers: JavaModifier
         let body: [String]
         let signature: String
 
         func render() -> [String] {
             // HACK: We should actually have an enum / optionset that we can check for abstract, static, ...
-            let annotationLines = annotations.map { "@\($0)" }
+            let annotationLines = annotations.map { "@\($0.rawValue)" }
 
             if modifiers.contains(.abstract) {
                 return annotationLines + ["\(modifiers.render()) \(signature);"]
@@ -73,7 +79,7 @@ public struct JavaIR {
         }
     }
 
-    static func method(annotations: Set<String> = [], _ modifiers: JavaModifier, _ signature: String, body: () -> [String]) -> JavaIR.Method {
+    static func method(annotations: Set<JavaAnnotation> = [], _ modifiers: JavaModifier, _ signature: String, body: () -> [String]) -> JavaIR.Method {
         return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature)
     }
 
@@ -159,7 +165,7 @@ public struct JavaIR {
     }
 
     struct Class {
-        let annotations: Set<String>
+        let annotations: Set<JavaAnnotation>
         let modifiers: JavaModifier
         let extends: String?
         let implements: [String]? // Should this be JavaIR.Interface?
@@ -175,7 +181,7 @@ public struct JavaIR {
 
             let extendsStmt = extends.map { " extends \($0) " } ?? ""
 
-            var lines = annotations.map { "@\($0)" } + [
+            var lines = annotations.map { "@\($0.rawValue)" } + [
                 "\(modifiers.render()) class \(name)\(extendsStmt)\(implementsStmt) {",
             ]
 

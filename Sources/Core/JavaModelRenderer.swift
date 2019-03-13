@@ -35,7 +35,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             param.snakeCaseToPropertyName()
         }.joined(separator: ",\n")
 
-        return JavaIR.method(annotations: ["Override"], [.public], "int hashCode()") { [
+        return JavaIR.method(annotations: [JavaAnnotation.override], [.public], "int hashCode()") { [
             "return Objects.hash(" + bodyHashCode + ");",
         ]
         }
@@ -46,7 +46,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             "Objects.equals(this." + param.snakeCaseToPropertyName() + ", that." + param.snakeCaseToPropertyName() + ")"
         }.joined(separator: " &&\n")
 
-        return JavaIR.method(annotations: ["Override"], [.public], "boolean equals(Object o)") { [
+        return JavaIR.method(annotations: [JavaAnnotation.override], [.public], "boolean equals(Object o)") { [
             JavaIR.ifBlock(condition: "this == o") { [
                 "return true;",
             ] },
@@ -175,7 +175,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     // MARK: - TypeAdapterFactory
 
     func renderTypeAdapterFactoryMethods() -> [JavaIR.Method] {
-        return [JavaIR.method(annotations: ["Override"], [.public], "<T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken)") { [
+        return [JavaIR.method(annotations: [JavaAnnotation.override], [.public], "<T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken)") { [
             JavaIR.ifBlock(condition: "!" + className + ".class.isAssignableFrom(typeToken.getRawType())") { [
                 "return null;",
             ] },
@@ -216,7 +216,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         ] }
 
         let write = JavaIR.method(
-            annotations: ["Override"],
+            annotations: [JavaAnnotation.override],
             [.public],
             "void write(JsonWriter writer, " + className + " value) throws IOException"
         ) { [
@@ -224,7 +224,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         ] }
 
         let read = JavaIR.method(
-            annotations: ["Override"],
+            annotations: [JavaAnnotation.override],
             [.public],
             className + " read(JsonReader reader) throws IOException"
         ) { [
