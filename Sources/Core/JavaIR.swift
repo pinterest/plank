@@ -178,26 +178,26 @@ public struct JavaIR {
             var lines = annotations.map { "@\($0)" } + [
                 "\(modifiers.render()) class \(name)\(extendsStmt)\(implementsStmt) {",
             ]
-        
+
             if !enums.isEmpty {
                 lines.append("")
                 lines.append(-->enums.flatMap { $0.render() })
             }
-            
+
             if !properties.isEmpty {
-                lines.append(-->properties.flatMap{ [""] + $0.compactMap { $0.render() } })
+                lines.append(-->properties.flatMap { [""] + $0.compactMap { $0.render() } })
             }
-            
+
             if !methods.isEmpty {
                 lines.append(-->methods.flatMap { [""] + $0.render() })
             }
-            
+
             if !innerClasses.isEmpty {
                 lines.append(-->innerClasses.flatMap { [""] + $0.render() })
             }
-            
+
             lines.append("}")
-            
+
             return lines
         }
     }
