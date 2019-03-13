@@ -31,7 +31,7 @@ enum JavaAnnotation: Hashable {
     case nullable
     case nonnull
     case serializedName(name: String)
-    
+
     var rendered: String {
         switch self {
         case .override:
@@ -59,7 +59,7 @@ public struct JavaIR {
             let annotationLines = annotations.map { "@\($0.rendered)" }
 
             let throwsString = throwableExceptions.isEmpty ? "" : " throws " + throwableExceptions.joined(separator: ", ")
-            
+
             if modifiers.contains(.abstract) {
                 return annotationLines + ["\(modifiers.render()) \(signature)\(throwsString);"]
             }
@@ -99,7 +99,7 @@ public struct JavaIR {
     static func method(annotations: Set<JavaAnnotation> = [], _ modifiers: JavaModifier, _ signature: String, body: () -> [String]) -> JavaIR.Method {
         return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature, throwableExceptions: [])
     }
-    
+
     static func methodThatThrows(annotations: Set<JavaAnnotation> = [], _ modifiers: JavaModifier, _ signature: String, _ throwableExceptions: [String], body: () -> [String]) -> JavaIR.Method {
         return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature, throwableExceptions: throwableExceptions)
     }

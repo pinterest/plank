@@ -77,10 +77,9 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
 
     func propertyGetterForParam(param: String, schemaObj: SchemaObjectProperty) -> JavaIR.Method {
-        
         let propertyName = param.snakeCaseToPropertyName()
         let capitalizedPropertyName = param.snakeCaseToCapitalizedPropertyName()
-        
+
         // For Booleans, Integers and Doubles, make the getter method @NonNull and squash to a default value if necessary.
         // This makes callers less susceptible to null pointer exceptions.
         switch schemaObj.schema {
