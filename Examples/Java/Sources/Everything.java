@@ -288,8 +288,8 @@ public class Everything {
         return this.arrayProp;
     }
 
-    public @Nullable Boolean getBooleanProp() {
-        return this.booleanProp;
+    public @NonNull Boolean getBooleanProp() {
+        return this.booleanProp == null ? Boolean.FALSE : this.booleanProp;
     }
 
     public @Nullable Date getDateProp() {
@@ -300,8 +300,8 @@ public class Everything {
         return this.intEnum;
     }
 
-    public @Nullable Integer getIntProp() {
-        return this.intProp;
+    public @NonNull Integer getIntProp() {
+        return this.intProp == null ? 0 : this.intProp;
     }
 
     public @Nullable List<Object> getListPolymorphicValues() {
@@ -356,8 +356,8 @@ public class Everything {
         return this.mapWithPrimitiveValues;
     }
 
-    public @Nullable Double getNumberProp() {
-        return this.numberProp;
+    public @NonNull Double getNumberProp() {
+        return this.numberProp == null ? 0 : this.numberProp;
     }
 
     public @Nullable User getOtherModelProp() {
