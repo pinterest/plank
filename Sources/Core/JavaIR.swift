@@ -171,7 +171,7 @@ public struct JavaIR {
 
         func render() -> [String] {
             let implementsList = implements?.joined(separator: ", ") ?? ""
-            let implementsStmt = implementsList == "" ? "" : " implements \(implementsList)"
+            let implementsStmt = implementsList.isEmpty ? "" : " implements \(implementsList)"
 
             let extendsStmt = extends.map { " extends \($0) " } ?? ""
 
@@ -180,8 +180,7 @@ public struct JavaIR {
             ]
 
             if !enums.isEmpty {
-                lines.append("")
-                lines.append(-->enums.flatMap { $0.render() })
+                lines.append(-->enums.flatMap { [""] + $0.render() })
             }
 
             if !properties.isEmpty {

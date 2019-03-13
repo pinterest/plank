@@ -132,6 +132,7 @@ public class Everything {
         int INT_CASE_2 = 2;
         int INT_CASE_3 = 3;
     }
+
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({EverythingStringEnum.CASE1, EverythingStringEnum.CASE2, EverythingStringEnum.CASE3})
     public @interface EverythingStringEnum {
