@@ -8,10 +8,8 @@
 
 package com.pinterest.models;
 
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
@@ -31,18 +29,14 @@ import java.util.Set;
 
 public class User {
 
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({UserEmailFrequency.UNSET, UserEmailFrequency.IMMEDIATE, UserEmailFrequency.DAILY})
-    public @interface UserEmailFrequency {
-        String UNSET = "unset";
-        String IMMEDIATE = "immediate";
-        String DAILY = "daily";
+    public enum UserEmailFrequency {
+        @SerializedName("unset") UNSET, @SerializedName("immediate") IMMEDIATE, @SerializedName("daily") DAILY;
     }
 
     @SerializedName("bio") private @Nullable String bio;
     @SerializedName("counts") private @Nullable Map<String, Integer> counts;
     @SerializedName("created_at") private @Nullable Date createdAt;
-    @SerializedName("email_frequency") private @Nullable @UserEmailFrequency String emailFrequency;
+    @SerializedName("email_frequency") private @Nullable UserEmailFrequency emailFrequency;
     @SerializedName("first_name") private @Nullable String firstName;
     @SerializedName("id") private @Nullable String identifier;
     @SerializedName("image") private @Nullable Image image;
@@ -67,7 +61,7 @@ public class User {
         @Nullable String bio,
         @Nullable Map<String, Integer> counts,
         @Nullable Date createdAt,
-        @Nullable @UserEmailFrequency String emailFrequency,
+        @Nullable UserEmailFrequency emailFrequency,
         @Nullable String firstName,
         @Nullable String identifier,
         @Nullable Image image,
@@ -150,7 +144,7 @@ public class User {
         return this.createdAt;
     }
 
-    public @Nullable @UserEmailFrequency String getEmailFrequency() {
+    public @Nullable UserEmailFrequency getEmailFrequency() {
         return this.emailFrequency;
     }
 
@@ -223,7 +217,7 @@ public class User {
         @SerializedName("bio") private @Nullable String bio;
         @SerializedName("counts") private @Nullable Map<String, Integer> counts;
         @SerializedName("created_at") private @Nullable Date createdAt;
-        @SerializedName("email_frequency") private @Nullable @UserEmailFrequency String emailFrequency;
+        @SerializedName("email_frequency") private @Nullable UserEmailFrequency emailFrequency;
         @SerializedName("first_name") private @Nullable String firstName;
         @SerializedName("id") private @Nullable String identifier;
         @SerializedName("image") private @Nullable Image image;
@@ -268,7 +262,7 @@ public class User {
             return this;
         }
 
-        public Builder setEmailFrequency(@Nullable @UserEmailFrequency String value) {
+        public Builder setEmailFrequency(@Nullable UserEmailFrequency value) {
             this.emailFrequency = value;
             this._bits |= EMAIL_FREQUENCY_SET;
             return this;
@@ -322,7 +316,7 @@ public class User {
             return this.createdAt;
         }
 
-        public @Nullable @UserEmailFrequency String getEmailFrequency() {
+        public @Nullable UserEmailFrequency getEmailFrequency() {
             return this.emailFrequency;
         }
 

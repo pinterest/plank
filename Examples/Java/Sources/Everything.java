@@ -8,10 +8,8 @@
 
 package com.pinterest.models;
 
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
@@ -55,26 +53,27 @@ interface EverythingPolymorphicPropMatcher<R> {
 
 public class Everything {
 
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({EverythingIntEnum.INT_CASE_1, EverythingIntEnum.INT_CASE_2, EverythingIntEnum.INT_CASE_3})
-    public @interface EverythingIntEnum {
-        int INT_CASE_1 = 1;
-        int INT_CASE_2 = 2;
-        int INT_CASE_3 = 3;
+    public enum EverythingIntEnum {
+        INT_CASE_1(1), 
+        INT_CASE_2(2), 
+        INT_CASE_3(3);
+        private final int value;
+        EverythingIntEnum(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
     }
 
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({EverythingStringEnum.CASE1, EverythingStringEnum.CASE2, EverythingStringEnum.CASE3})
-    public @interface EverythingStringEnum {
-        String CASE1 = "case1";
-        String CASE2 = "case2";
-        String CASE3 = "case3";
+    public enum EverythingStringEnum {
+        @SerializedName("case1") CASE1, @SerializedName("case2") CASE2, @SerializedName("case3") CASE3;
     }
 
     @SerializedName("array_prop") private @Nullable List<Object> arrayProp;
     @SerializedName("boolean_prop") private @Nullable Boolean booleanProp;
     @SerializedName("date_prop") private @Nullable Date dateProp;
-    @SerializedName("int_enum") private @Nullable @EverythingIntEnum int intEnum;
+    @SerializedName("int_enum") private @Nullable EverythingIntEnum intEnum;
     @SerializedName("int_prop") private @Nullable Integer intProp;
     @SerializedName("list_polymorphic_values") private @Nullable List<Object> listPolymorphicValues;
     @SerializedName("list_with_list_and_other_model_values") private @Nullable List<List<User>> listWithListAndOtherModelValues;
@@ -96,7 +95,7 @@ public class Everything {
     @SerializedName("set_prop_with_other_model_values") private @Nullable Set<User> setPropWithOtherModelValues;
     @SerializedName("set_prop_with_primitive_values") private @Nullable Set<Integer> setPropWithPrimitiveValues;
     @SerializedName("set_prop_with_values") private @Nullable Set<String> setPropWithValues;
-    @SerializedName("string_enum") private @Nullable @EverythingStringEnum String stringEnum;
+    @SerializedName("string_enum") private @Nullable EverythingStringEnum stringEnum;
     @SerializedName("string_prop") private @Nullable String stringProp;
     @SerializedName("type") private @Nullable String type;
     @SerializedName("uri_prop") private @Nullable String uriProp;
@@ -137,7 +136,7 @@ public class Everything {
         @Nullable List<Object> arrayProp,
         @Nullable Boolean booleanProp,
         @Nullable Date dateProp,
-        @Nullable @EverythingIntEnum int intEnum,
+        @Nullable EverythingIntEnum intEnum,
         @Nullable Integer intProp,
         @Nullable List<Object> listPolymorphicValues,
         @Nullable List<List<User>> listWithListAndOtherModelValues,
@@ -159,7 +158,7 @@ public class Everything {
         @Nullable Set<User> setPropWithOtherModelValues,
         @Nullable Set<Integer> setPropWithPrimitiveValues,
         @Nullable Set<String> setPropWithValues,
-        @Nullable @EverythingStringEnum String stringEnum,
+        @Nullable EverythingStringEnum stringEnum,
         @Nullable String stringProp,
         @Nullable String type,
         @Nullable String uriProp,
@@ -296,7 +295,7 @@ public class Everything {
         return this.dateProp;
     }
 
-    public @Nullable @EverythingIntEnum int getIntEnum() {
+    public @Nullable EverythingIntEnum getIntEnum() {
         return this.intEnum;
     }
 
@@ -384,7 +383,7 @@ public class Everything {
         return this.setPropWithValues;
     }
 
-    public @Nullable @EverythingStringEnum String getStringEnum() {
+    public @Nullable EverythingStringEnum getStringEnum() {
         return this.stringEnum;
     }
 
@@ -521,7 +520,7 @@ public class Everything {
         @SerializedName("array_prop") private @Nullable List<Object> arrayProp;
         @SerializedName("boolean_prop") private @Nullable Boolean booleanProp;
         @SerializedName("date_prop") private @Nullable Date dateProp;
-        @SerializedName("int_enum") private @Nullable @EverythingIntEnum int intEnum;
+        @SerializedName("int_enum") private @Nullable EverythingIntEnum intEnum;
         @SerializedName("int_prop") private @Nullable Integer intProp;
         @SerializedName("list_polymorphic_values") private @Nullable List<Object> listPolymorphicValues;
         @SerializedName("list_with_list_and_other_model_values") private @Nullable List<List<User>> listWithListAndOtherModelValues;
@@ -543,7 +542,7 @@ public class Everything {
         @SerializedName("set_prop_with_other_model_values") private @Nullable Set<User> setPropWithOtherModelValues;
         @SerializedName("set_prop_with_primitive_values") private @Nullable Set<Integer> setPropWithPrimitiveValues;
         @SerializedName("set_prop_with_values") private @Nullable Set<String> setPropWithValues;
-        @SerializedName("string_enum") private @Nullable @EverythingStringEnum String stringEnum;
+        @SerializedName("string_enum") private @Nullable EverythingStringEnum stringEnum;
         @SerializedName("string_prop") private @Nullable String stringProp;
         @SerializedName("type") private @Nullable String type;
         @SerializedName("uri_prop") private @Nullable String uriProp;
@@ -604,7 +603,7 @@ public class Everything {
             return this;
         }
 
-        public Builder setIntEnum(@Nullable @EverythingIntEnum int value) {
+        public Builder setIntEnum(@Nullable EverythingIntEnum value) {
             this.intEnum = value;
             this._bits |= INT_ENUM_SET;
             return this;
@@ -736,7 +735,7 @@ public class Everything {
             return this;
         }
 
-        public Builder setStringEnum(@Nullable @EverythingStringEnum String value) {
+        public Builder setStringEnum(@Nullable EverythingStringEnum value) {
             this.stringEnum = value;
             this._bits |= STRING_ENUM_SET;
             return this;
@@ -772,7 +771,7 @@ public class Everything {
             return this.dateProp;
         }
 
-        public @Nullable @EverythingIntEnum int getIntEnum() {
+        public @Nullable EverythingIntEnum getIntEnum() {
             return this.intEnum;
         }
 
@@ -860,7 +859,7 @@ public class Everything {
             return this.setPropWithValues;
         }
 
-        public @Nullable @EverythingStringEnum String getStringEnum() {
+        public @Nullable EverythingStringEnum getStringEnum() {
             return this.stringEnum;
         }
 
@@ -1132,16 +1131,21 @@ public class Everything {
 
     public static final class EverythingMapPolymorphicValues<R> {
 
-        @Retention(RetentionPolicy.SOURCE)
-        @IntDef({InternalStorage.USER, InternalStorage.BOARD, InternalStorage.IMAGE, InternalStorage.PIN, InternalStorage.EVERYTHING, InternalStorage.LISTOBJECT, InternalStorage.MAPSTRING_OBJECT})
-        public @interface InternalStorage {
-            int USER = 0;
-            int BOARD = 1;
-            int IMAGE = 2;
-            int PIN = 3;
-            int EVERYTHING = 4;
-            int LISTOBJECT = 5;
-            int MAPSTRING_OBJECT = 6;
+        public enum InternalStorage {
+            USER(0), 
+            BOARD(1), 
+            IMAGE(2), 
+            PIN(3), 
+            EVERYTHING(4), 
+            LISTOBJECT(5), 
+            MAPSTRING_OBJECT(6);
+            private final int value;
+            InternalStorage(int value) {
+                this.value = value;
+            }
+            public int getValue() {
+                return this.value;
+            }
         }
 
         private @Nullable User value0;
@@ -1152,7 +1156,7 @@ public class Everything {
         private @Nullable List<Object> value5;
         private @Nullable Map<String, Object> value6;
 
-        static private @InternalStorage int internalStorage;
+        static private InternalStorage internalStorage;
 
         private EverythingMapPolymorphicValues() {
         }
@@ -1165,20 +1169,25 @@ public class Everything {
 
     public static final class EverythingPolymorphicProp<R> {
 
-        @Retention(RetentionPolicy.SOURCE)
-        @IntDef({InternalStorage.USER, InternalStorage.BOARD, InternalStorage.IMAGE, InternalStorage.PIN, InternalStorage.EVERYTHING, InternalStorage.STRING, InternalStorage.BOOLEAN, InternalStorage.INTEGER, InternalStorage.DOUBLE, InternalStorage.DATE, InternalStorage.STRING})
-        public @interface InternalStorage {
-            int USER = 0;
-            int BOARD = 1;
-            int IMAGE = 2;
-            int PIN = 3;
-            int EVERYTHING = 4;
-            int STRING = 5;
-            int BOOLEAN = 6;
-            int INTEGER = 7;
-            int DOUBLE = 8;
-            int DATE = 9;
-            int STRING = 10;
+        public enum InternalStorage {
+            USER(0), 
+            BOARD(1), 
+            IMAGE(2), 
+            PIN(3), 
+            EVERYTHING(4), 
+            STRING(5), 
+            BOOLEAN(6), 
+            INTEGER(7), 
+            DOUBLE(8), 
+            DATE(9), 
+            STRING(10);
+            private final int value;
+            InternalStorage(int value) {
+                this.value = value;
+            }
+            public int getValue() {
+                return this.value;
+            }
         }
 
         private @Nullable User value0;
@@ -1193,7 +1202,7 @@ public class Everything {
         private @Nullable Date value9;
         private @Nullable String value10;
 
-        static private @InternalStorage int internalStorage;
+        static private InternalStorage internalStorage;
 
         private EverythingPolymorphicProp() {
         }

@@ -78,14 +78,8 @@ extension JavaFileRenderer {
             return "Double"
         case .boolean:
             return "Boolean"
-        case let .enumT(enumObj):
-            let enumName = enumTypeName(propertyName: param, className: className)
-            switch enumObj {
-            case .integer:
-                return "@\(enumName) int"
-            case .string(_, defaultValue: _):
-                return "@\(enumName) String"
-            }
+        case .enumT:
+            return enumTypeName(propertyName: param, className: className)
         case let .object(objSchemaRoot):
             return "\(objSchemaRoot.className(with: params))"
         case let .reference(with: ref):

@@ -61,11 +61,10 @@ public struct JavaIR {
             let throwsString = throwableExceptions.isEmpty ? "" : " throws " + throwableExceptions.joined(separator: ", ")
 
             if modifiers.contains(.abstract) {
-                return annotationLines + ["\(modifiers.render()) \(signature)\(throwsString);"]
+                return annotationLines + ["\(modifiers.render()) \(signature)\(throwsString);"].map { $0.trimmingCharacters(in: .whitespaces) }
             }
 
-            var toRender = annotationLines + ["\(modifiers.render()) \(signature)\(throwsString) {"]
-
+            var toRender = annotationLines + ["\(modifiers.render()) \(signature)\(throwsString) {"].map { $0.trimmingCharacters(in: .whitespaces) }
             if !body.isEmpty {
                 toRender.append(-->body)
             }
@@ -154,31 +153,30 @@ public struct JavaIR {
             switch values {
             case let .integer(values):
                 let names = values
-                    .map { ($0.description.uppercased(), $0.defaultValue) }
-                    .map { "int \($0.0) = \($0.1);" }
-                let defAnnotationNames = values
-                    .map { "\(name).\($0.description.uppercased())" }
-                    .joined(separator: ", ")
+                    .map { ($0.description, $0.defaultValue) }
+                    .map { "\($0.0.uppercased())(\($0.1))" }.joined(separator: ", \n")
+                let enumInitializer = JavaIR.method([], "\(name)(int value)") {[
+                    "this.value = value;"
+                ]}
+
+                let getterMethod = JavaIR.method([.public], "int getValue()") {[
+                    "return this.value;"
+                ]}
                 return [
-                    "@Retention(RetentionPolicy.SOURCE)",
-                    "@IntDef({\(defAnnotationNames)})",
-                    "public @interface \(name) {",
-                    -->names,
+                    "public enum \(name) {",
+                        -->["\(names);", "private final int value;",],
+                        -->enumInitializer.render(),
+                        -->getterMethod.render(),
                     "}",
                 ]
             case let .string(values, defaultValue: _):
-                // TODO: Use default value in builder method to specify what our default value should be
                 let names = values
-                    .map { ($0.description.uppercased(), $0.defaultValue) }
-                    .map { "String \($0.0) = \"\($0.1)\";" }
-                let defAnnotationNames = values
-                    .map { "\(name).\($0.description.uppercased())" }
-                    .joined(separator: ", ")
+                    .map { ($0.description, $0.defaultValue) }
+                    .map { "@\(JavaAnnotation.serializedName(name: "\($0.1)").rendered) \($0.0.uppercased())" }.joined(separator: ", ")
+                
                 return [
-                    "@Retention(RetentionPolicy.SOURCE)",
-                    "@StringDef({\(defAnnotationNames)})",
-                    "public @interface \(name) {",
-                    -->names,
+                    "public enum \(name) {",
+                    -->["\(names);"],
                     "}",
                 ]
             }
