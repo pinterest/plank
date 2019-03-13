@@ -26,10 +26,24 @@ struct JavaModifier: OptionSet {
     }
 }
 
-enum JavaAnnotation: String {
-    case override = "Override"
-    case nullable = "Nullable"
-    case nonnull = "NonNull"
+enum JavaAnnotation: Hashable {
+    case override
+    case nullable
+    case nonnull
+    case serializedName(name: String)
+    
+    var rendered: String {
+        switch self {
+        case .override:
+            return "Override"
+        case .nullable:
+            return "Nullable"
+        case .nonnull:
+            return "NonNull"
+        case let .serializedName(name):
+            return "SerializedName(\"\(name)\")"
+        }
+    }
 }
 
 public struct JavaIR {
@@ -38,16 +52,19 @@ public struct JavaIR {
         let modifiers: JavaModifier
         let body: [String]
         let signature: String
+        let throwableExceptions: [String]
 
         func render() -> [String] {
             // HACK: We should actually have an enum / optionset that we can check for abstract, static, ...
-            let annotationLines = annotations.map { "@\($0.rawValue)" }
+            let annotationLines = annotations.map { "@\($0.rendered)" }
 
+            let throwsString = throwableExceptions.isEmpty ? "" : " throws " + throwableExceptions.joined(separator: ", ")
+            
             if modifiers.contains(.abstract) {
-                return annotationLines + ["\(modifiers.render()) \(signature);"]
+                return annotationLines + ["\(modifiers.render()) \(signature)\(throwsString);"]
             }
 
-            var toRender = annotationLines + ["\(modifiers.render()) \(signature) {"]
+            var toRender = annotationLines + ["\(modifiers.render()) \(signature)\(throwsString) {"]
 
             if !body.isEmpty {
                 toRender.append(-->body)
@@ -59,7 +76,7 @@ public struct JavaIR {
     }
 
     public struct Property {
-        let annotations: Set<String>
+        let annotations: Set<JavaAnnotation>
         let modifiers: JavaModifier
         let type: String
         let name: String
@@ -68,7 +85,7 @@ public struct JavaIR {
         func render() -> String {
             var prop = ""
             if !annotations.isEmpty {
-                prop.append(annotations.map { "@\($0)" }.joined(separator: " ") + " ")
+                prop.append(annotations.map { "@\($0.rendered)" }.joined(separator: " ") + " ")
             }
             prop.append("\(modifiers.render()) \(type) \(name)")
             if !initialValue.isEmpty {
@@ -80,7 +97,11 @@ public struct JavaIR {
     }
 
     static func method(annotations: Set<JavaAnnotation> = [], _ modifiers: JavaModifier, _ signature: String, body: () -> [String]) -> JavaIR.Method {
-        return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature)
+        return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature, throwableExceptions: [])
+    }
+    
+    static func methodThatThrows(annotations: Set<JavaAnnotation> = [], _ modifiers: JavaModifier, _ signature: String, _ throwableExceptions: [String], body: () -> [String]) -> JavaIR.Method {
+        return JavaIR.Method(annotations: annotations, modifiers: modifiers, body: body(), signature: signature, throwableExceptions: throwableExceptions)
     }
 
     static func ifBlock(condition: String, body: () -> [String]) -> String {
@@ -181,7 +202,7 @@ public struct JavaIR {
 
             let extendsStmt = extends.map { " extends \($0) " } ?? ""
 
-            var lines = annotations.map { "@\($0.rawValue)" } + [
+            var lines = annotations.map { "@\($0.rendered)" } + [
                 "\(modifiers.render()) class \(name)\(extendsStmt)\(implementsStmt) {",
             ]
 

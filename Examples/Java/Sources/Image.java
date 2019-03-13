@@ -88,16 +88,16 @@ public class Image {
         width);
     }
 
-    public @Nullable Integer getHeight() {
-        return this.height;
+    public @NonNull Integer getHeight() {
+        return this.height == null ? 0 : this.height;
     }
 
     public @Nullable String getUrl() {
         return this.url;
     }
 
-    public @Nullable Integer getWidth() {
-        return this.width;
+    public @NonNull Integer getWidth() {
+        return this.width == null ? 0 : this.width;
     }
 
     public boolean getHeightIsSet() {

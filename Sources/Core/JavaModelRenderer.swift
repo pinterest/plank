@@ -61,7 +61,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderModelProperties(modifiers _: JavaModifier = [.private]) -> [[JavaIR.Property]] {
         let props = transitiveProperties.map { param, schemaObj in
-            JavaIR.Property(annotations: ["SerializedName(\"\(param)\")"], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName(), initialValue: "")
+            JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName(), initialValue: "")
         }
 
         let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "int", name: "_bits", initialValue: "0")
@@ -76,11 +76,40 @@ public struct JavaModelRenderer: JavaFileRenderer {
         return [props, bitmasks, [bits]]
     }
 
-    func renderModelGetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
+    func propertyGetterForParam(param: String, schemaObj: SchemaObjectProperty) -> JavaIR.Method {
+        
+        let propertyName = param.snakeCaseToPropertyName()
+        let capitalizedPropertyName = param.snakeCaseToCapitalizedPropertyName()
+        
+        // For Booleans, Integers and Doubles, make the getter method @NonNull and squash to a default value if necessary.
+        // This makes callers less susceptible to null pointer exceptions.
+        switch schemaObj.schema {
+        case .boolean:
+            return JavaIR.method([.public], "@NonNull Boolean get" + capitalizedPropertyName + "()") { [
+                "return this." + propertyName + " == null ? Boolean.FALSE : this." + propertyName + ";",
+            ]
+            }
+        case .integer:
+            return JavaIR.method([.public], "@NonNull Integer get" + capitalizedPropertyName + "()") { [
+                "return this." + propertyName + " == null ? 0 : this." + propertyName + ";",
+            ]
+            }
+        case .float:
+            return JavaIR.method([.public], "@NonNull Double get" + capitalizedPropertyName + "()") { [
+                "return this." + propertyName + " == null ? 0 : this." + propertyName + ";",
+            ]
+            }
+        default:
+            return JavaIR.method([.public], typeFromSchema(param, schemaObj) + " get" + capitalizedPropertyName + "()") { [
+                "return this." + propertyName + ";",
+            ]
+            }
+        }
+    }
+
+    func renderModelPropertyGetters() -> [JavaIR.Method] {
         let getters = transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, self.typeFromSchema(param, schemaObj) + " get" + param.snakeCaseToCapitalizedPropertyName() + "()") { [
-                "return this." + param.snakeCaseToPropertyName() + ";",
-            ] }
+            propertyGetterForParam(param: param, schemaObj: schemaObj)
         }
         return getters
     }
@@ -164,7 +193,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderProperties(modifiers _: JavaModifier = [.private]) -> [[JavaIR.Property]] {
         let props = transitiveProperties.map { param, schemaObj in
-            JavaIR.Property(annotations: ["SerializedName(\"\(param)\")"], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName(), initialValue: "")
+            JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName(), initialValue: "")
         }
 
         let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "int", name: "_bits", initialValue: "0")
@@ -215,18 +244,20 @@ public struct JavaModelRenderer: JavaFileRenderer {
             "this.elementTypeAdapter = gson.getAdapter(JsonElement.class);",
         ] }
 
-        let write = JavaIR.method(
+        let write = JavaIR.methodThatThrows(
             annotations: [JavaAnnotation.override],
             [.public],
-            "void write(JsonWriter writer, " + className + " value) throws IOException"
+            "void write(JsonWriter writer, " + className + " value)",
+            ["IOException"]
         ) { [
             "this.delegateTypeAdapter.write(writer, value);",
         ] }
 
-        let read = JavaIR.method(
+        let read = JavaIR.methodThatThrows(
             annotations: [JavaAnnotation.override],
             [.public],
-            className + " read(JsonReader reader) throws IOException"
+            className + " read(JsonReader reader)",
+            ["IOException"]
         ) { [
             "JsonElement tree = this.elementTypeAdapter.read(reader);",
             className + " model = this.delegateTypeAdapter.fromJsonTree(tree);",
@@ -378,7 +409,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                     self.renderModelEquals(),
                     self.renderModelHashCode(),
                 ] +
-                    renderModelGetters() +
+                    renderModelPropertyGetters() +
                     renderModelIsSetCheckers(),
                 enums: enumProps,
                 innerClasses: [
