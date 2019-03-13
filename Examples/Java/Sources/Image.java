@@ -113,53 +113,53 @@ public class Image {
     }
 
     public static class Builder {
-    
+
         @SerializedName("height") private @Nullable Integer height;
         @SerializedName("url") private @Nullable String url;
         @SerializedName("width") private @Nullable Integer width;
-    
+
         private int _bits = 0;
-    
+
         private Builder() {
         }
-    
+
         private Builder(@NonNull Image model) {
             this.height = model.height;
             this.url = model.url;
             this.width = model.width;
             this._bits = model._bits;
         }
-    
+
         public Builder setHeight(@Nullable Integer value) {
             this.height = value;
             this._bits |= HEIGHT_SET;
             return this;
         }
-    
+
         public Builder setUrl(@Nullable String value) {
             this.url = value;
             this._bits |= URL_SET;
             return this;
         }
-    
+
         public Builder setWidth(@Nullable Integer value) {
             this.width = value;
             this._bits |= WIDTH_SET;
             return this;
         }
-    
+
         public @Nullable Integer getHeight() {
             return this.height;
         }
-    
+
         public @Nullable String getUrl() {
             return this.url;
         }
-    
+
         public @Nullable Integer getWidth() {
             return this.width;
         }
-    
+
         public Image build() {
             return new Image(
             this.height,
@@ -168,7 +168,7 @@ public class Image {
             this._bits
             );
         }
-    
+
         public void mergeFrom(Image model) {
             if (model.getHeightIsSet()) {
                 this.height = model.height;
@@ -183,7 +183,7 @@ public class Image {
     }
 
     public static class ImageTypeAdapterFactory implements TypeAdapterFactory {
-    
+
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
             if (!Image.class.isAssignableFrom(typeToken.getRawType())) {
@@ -193,21 +193,21 @@ public class Image {
         }
     }
 
-    public static class ImageTypeAdapter extends TypeAdapter<Image>  {
-    
+    public static class ImageTypeAdapter extends TypeAdapter<Image> {
+
         final private TypeAdapter<Image> delegateTypeAdapter;
         final private TypeAdapter<JsonElement> elementTypeAdapter;
-    
+
         public ImageTypeAdapter(Gson gson, ImageTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
             this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
         }
-    
+
         @Override
         public void write(JsonWriter writer, Image value) throws IOException {
             this.delegateTypeAdapter.write(writer, value);
         }
-    
+
         @Override
         public Image read(JsonReader reader) throws IOException {
             JsonElement tree = this.elementTypeAdapter.read(reader);

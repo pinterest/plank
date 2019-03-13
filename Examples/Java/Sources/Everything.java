@@ -586,7 +586,7 @@ public class Everything {
     }
 
     public static class Builder {
-    
+
         @SerializedName("array_prop") private @Nullable List<Object> arrayProp;
         @SerializedName("boolean_prop") private @Nullable Boolean booleanProp;
         @SerializedName("date_prop") private @Nullable Date dateProp;
@@ -616,12 +616,12 @@ public class Everything {
         @SerializedName("string_prop") private @Nullable String stringProp;
         @SerializedName("type") private @Nullable String type;
         @SerializedName("uri_prop") private @Nullable String uriProp;
-    
+
         private int _bits = 0;
-    
+
         private Builder() {
         }
-    
+
         private Builder(@NonNull Everything model) {
             this.arrayProp = model.arrayProp;
             this.booleanProp = model.booleanProp;
@@ -654,297 +654,297 @@ public class Everything {
             this.uriProp = model.uriProp;
             this._bits = model._bits;
         }
-    
+
         public Builder setArrayProp(@Nullable List<Object> value) {
             this.arrayProp = value;
             this._bits |= ARRAY_PROP_SET;
             return this;
         }
-    
+
         public Builder setBooleanProp(@Nullable Boolean value) {
             this.booleanProp = value;
             this._bits |= BOOLEAN_PROP_SET;
             return this;
         }
-    
+
         public Builder setDateProp(@Nullable Date value) {
             this.dateProp = value;
             this._bits |= DATE_PROP_SET;
             return this;
         }
-    
+
         public Builder setIntEnum(@Nullable @EverythingIntEnum int value) {
             this.intEnum = value;
             this._bits |= INT_ENUM_SET;
             return this;
         }
-    
+
         public Builder setIntProp(@Nullable Integer value) {
             this.intProp = value;
             this._bits |= INT_PROP_SET;
             return this;
         }
-    
+
         public Builder setListPolymorphicValues(@Nullable List<Object> value) {
             this.listPolymorphicValues = value;
             this._bits |= LIST_POLYMORPHIC_VALUES_SET;
             return this;
         }
-    
+
         public Builder setListWithListAndOtherModelValues(@Nullable List<List<User>> value) {
             this.listWithListAndOtherModelValues = value;
             this._bits |= LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
             return this;
         }
-    
+
         public Builder setListWithMapAndOtherModelValues(@Nullable List<Map<String, User>> value) {
             this.listWithMapAndOtherModelValues = value;
             this._bits |= LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
             return this;
         }
-    
+
         public Builder setListWithObjectValues(@Nullable List<String> value) {
             this.listWithObjectValues = value;
             this._bits |= LIST_WITH_OBJECT_VALUES_SET;
             return this;
         }
-    
+
         public Builder setListWithOtherModelValues(@Nullable List<User> value) {
             this.listWithOtherModelValues = value;
             this._bits |= LIST_WITH_OTHER_MODEL_VALUES_SET;
             return this;
         }
-    
+
         public Builder setListWithPrimitiveValues(@Nullable List<Integer> value) {
             this.listWithPrimitiveValues = value;
             this._bits |= LIST_WITH_PRIMITIVE_VALUES_SET;
             return this;
         }
-    
+
         public Builder setMapPolymorphicValues(@Nullable Map<String, EverythingMapPolymorphicValues> value) {
             this.mapPolymorphicValues = value;
             this._bits |= MAP_POLYMORPHIC_VALUES_SET;
             return this;
         }
-    
+
         public Builder setMapProp(@Nullable Map<String, Object> value) {
             this.mapProp = value;
             this._bits |= MAP_PROP_SET;
             return this;
         }
-    
+
         public Builder setMapWithListAndOtherModelValues(@Nullable Map<String, List<User>> value) {
             this.mapWithListAndOtherModelValues = value;
             this._bits |= MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
             return this;
         }
-    
+
         public Builder setMapWithMapAndOtherModelValues(@Nullable Map<String, Map<String, Object>> value) {
             this.mapWithMapAndOtherModelValues = value;
             this._bits |= MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
             return this;
         }
-    
+
         public Builder setMapWithObjectValues(@Nullable Map<String, String> value) {
             this.mapWithObjectValues = value;
             this._bits |= MAP_WITH_OBJECT_VALUES_SET;
             return this;
         }
-    
+
         public Builder setMapWithOtherModelValues(@Nullable Map<String, User> value) {
             this.mapWithOtherModelValues = value;
             this._bits |= MAP_WITH_OTHER_MODEL_VALUES_SET;
             return this;
         }
-    
+
         public Builder setMapWithPrimitiveValues(@Nullable Map<String, Integer> value) {
             this.mapWithPrimitiveValues = value;
             this._bits |= MAP_WITH_PRIMITIVE_VALUES_SET;
             return this;
         }
-    
+
         public Builder setNumberProp(@Nullable Double value) {
             this.numberProp = value;
             this._bits |= NUMBER_PROP_SET;
             return this;
         }
-    
+
         public Builder setOtherModelProp(@Nullable User value) {
             this.otherModelProp = value;
             this._bits |= OTHER_MODEL_PROP_SET;
             return this;
         }
-    
+
         public Builder setPolymorphicProp(@Nullable EverythingPolymorphicProp value) {
             this.polymorphicProp = value;
             this._bits |= POLYMORPHIC_PROP_SET;
             return this;
         }
-    
+
         public Builder setSetProp(@Nullable Set<Object> value) {
             this.setProp = value;
             this._bits |= SET_PROP_SET;
             return this;
         }
-    
+
         public Builder setSetPropWithOtherModelValues(@Nullable Set<User> value) {
             this.setPropWithOtherModelValues = value;
             this._bits |= SET_PROP_WITH_OTHER_MODEL_VALUES_SET;
             return this;
         }
-    
+
         public Builder setSetPropWithPrimitiveValues(@Nullable Set<Integer> value) {
             this.setPropWithPrimitiveValues = value;
             this._bits |= SET_PROP_WITH_PRIMITIVE_VALUES_SET;
             return this;
         }
-    
+
         public Builder setSetPropWithValues(@Nullable Set<String> value) {
             this.setPropWithValues = value;
             this._bits |= SET_PROP_WITH_VALUES_SET;
             return this;
         }
-    
+
         public Builder setStringEnum(@Nullable @EverythingStringEnum String value) {
             this.stringEnum = value;
             this._bits |= STRING_ENUM_SET;
             return this;
         }
-    
+
         public Builder setStringProp(@Nullable String value) {
             this.stringProp = value;
             this._bits |= STRING_PROP_SET;
             return this;
         }
-    
+
         public Builder setType(@Nullable String value) {
             this.type = value;
             this._bits |= TYPE_SET;
             return this;
         }
-    
+
         public Builder setUriProp(@Nullable String value) {
             this.uriProp = value;
             this._bits |= URI_PROP_SET;
             return this;
         }
-    
+
         public @Nullable List<Object> getArrayProp() {
             return this.arrayProp;
         }
-    
+
         public @Nullable Boolean getBooleanProp() {
             return this.booleanProp;
         }
-    
+
         public @Nullable Date getDateProp() {
             return this.dateProp;
         }
-    
+
         public @Nullable @EverythingIntEnum int getIntEnum() {
             return this.intEnum;
         }
-    
+
         public @Nullable Integer getIntProp() {
             return this.intProp;
         }
-    
+
         public @Nullable List<Object> getListPolymorphicValues() {
             return this.listPolymorphicValues;
         }
-    
+
         public @Nullable List<List<User>> getListWithListAndOtherModelValues() {
             return this.listWithListAndOtherModelValues;
         }
-    
+
         public @Nullable List<Map<String, User>> getListWithMapAndOtherModelValues() {
             return this.listWithMapAndOtherModelValues;
         }
-    
+
         public @Nullable List<String> getListWithObjectValues() {
             return this.listWithObjectValues;
         }
-    
+
         public @Nullable List<User> getListWithOtherModelValues() {
             return this.listWithOtherModelValues;
         }
-    
+
         public @Nullable List<Integer> getListWithPrimitiveValues() {
             return this.listWithPrimitiveValues;
         }
-    
+
         public @Nullable Map<String, EverythingMapPolymorphicValues> getMapPolymorphicValues() {
             return this.mapPolymorphicValues;
         }
-    
+
         public @Nullable Map<String, Object> getMapProp() {
             return this.mapProp;
         }
-    
+
         public @Nullable Map<String, List<User>> getMapWithListAndOtherModelValues() {
             return this.mapWithListAndOtherModelValues;
         }
-    
+
         public @Nullable Map<String, Map<String, Object>> getMapWithMapAndOtherModelValues() {
             return this.mapWithMapAndOtherModelValues;
         }
-    
+
         public @Nullable Map<String, String> getMapWithObjectValues() {
             return this.mapWithObjectValues;
         }
-    
+
         public @Nullable Map<String, User> getMapWithOtherModelValues() {
             return this.mapWithOtherModelValues;
         }
-    
+
         public @Nullable Map<String, Integer> getMapWithPrimitiveValues() {
             return this.mapWithPrimitiveValues;
         }
-    
+
         public @Nullable Double getNumberProp() {
             return this.numberProp;
         }
-    
+
         public @Nullable User getOtherModelProp() {
             return this.otherModelProp;
         }
-    
+
         public @Nullable EverythingPolymorphicProp getPolymorphicProp() {
             return this.polymorphicProp;
         }
-    
+
         public @Nullable Set<Object> getSetProp() {
             return this.setProp;
         }
-    
+
         public @Nullable Set<User> getSetPropWithOtherModelValues() {
             return this.setPropWithOtherModelValues;
         }
-    
+
         public @Nullable Set<Integer> getSetPropWithPrimitiveValues() {
             return this.setPropWithPrimitiveValues;
         }
-    
+
         public @Nullable Set<String> getSetPropWithValues() {
             return this.setPropWithValues;
         }
-    
+
         public @Nullable @EverythingStringEnum String getStringEnum() {
             return this.stringEnum;
         }
-    
+
         public @Nullable String getStringProp() {
             return this.stringProp;
         }
-    
+
         public @Nullable String getType() {
             return this.type;
         }
-    
+
         public @Nullable String getUriProp() {
             return this.uriProp;
         }
-    
+
         public Everything build() {
             return new Everything(
             this.arrayProp,
@@ -979,7 +979,7 @@ public class Everything {
             this._bits
             );
         }
-    
+
         public void mergeFrom(Everything model) {
             if (model.getArrayPropIsSet()) {
                 this.arrayProp = model.arrayProp;
@@ -1072,7 +1072,7 @@ public class Everything {
     }
 
     public static class EverythingTypeAdapterFactory implements TypeAdapterFactory {
-    
+
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
             if (!Everything.class.isAssignableFrom(typeToken.getRawType())) {
@@ -1082,21 +1082,21 @@ public class Everything {
         }
     }
 
-    public static class EverythingTypeAdapter extends TypeAdapter<Everything>  {
-    
+    public static class EverythingTypeAdapter extends TypeAdapter<Everything> {
+
         final private TypeAdapter<Everything> delegateTypeAdapter;
         final private TypeAdapter<JsonElement> elementTypeAdapter;
-    
+
         public EverythingTypeAdapter(Gson gson, EverythingTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
             this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
         }
-    
+
         @Override
         public void write(JsonWriter writer, Everything value) throws IOException {
             this.delegateTypeAdapter.write(writer, value);
         }
-    
+
         @Override
         public Everything read(JsonReader reader) throws IOException {
             JsonElement tree = this.elementTypeAdapter.read(reader);

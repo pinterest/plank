@@ -219,7 +219,7 @@ public class User {
     }
 
     public static class Builder {
-    
+
         @SerializedName("bio") private @Nullable String bio;
         @SerializedName("counts") private @Nullable Map<String, Integer> counts;
         @SerializedName("created_at") private @Nullable Date createdAt;
@@ -230,12 +230,12 @@ public class User {
         @SerializedName("last_name") private @Nullable String lastName;
         @SerializedName("type") private @Nullable String type;
         @SerializedName("username") private @Nullable String username;
-    
+
         private int _bits = 0;
-    
+
         private Builder() {
         }
-    
+
         private Builder(@NonNull User model) {
             this.bio = model.bio;
             this.counts = model.counts;
@@ -249,107 +249,107 @@ public class User {
             this.username = model.username;
             this._bits = model._bits;
         }
-    
+
         public Builder setBio(@Nullable String value) {
             this.bio = value;
             this._bits |= BIO_SET;
             return this;
         }
-    
+
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
             this._bits |= COUNTS_SET;
             return this;
         }
-    
+
         public Builder setCreatedAt(@Nullable Date value) {
             this.createdAt = value;
             this._bits |= CREATED_AT_SET;
             return this;
         }
-    
+
         public Builder setEmailFrequency(@Nullable @UserEmailFrequency String value) {
             this.emailFrequency = value;
             this._bits |= EMAIL_FREQUENCY_SET;
             return this;
         }
-    
+
         public Builder setFirstName(@Nullable String value) {
             this.firstName = value;
             this._bits |= FIRST_NAME_SET;
             return this;
         }
-    
+
         public Builder setIdentifier(@Nullable String value) {
             this.identifier = value;
             this._bits |= ID_SET;
             return this;
         }
-    
+
         public Builder setImage(@Nullable Image value) {
             this.image = value;
             this._bits |= IMAGE_SET;
             return this;
         }
-    
+
         public Builder setLastName(@Nullable String value) {
             this.lastName = value;
             this._bits |= LAST_NAME_SET;
             return this;
         }
-    
+
         public Builder setType(@Nullable String value) {
             this.type = value;
             this._bits |= TYPE_SET;
             return this;
         }
-    
+
         public Builder setUsername(@Nullable String value) {
             this.username = value;
             this._bits |= USERNAME_SET;
             return this;
         }
-    
+
         public @Nullable String getBio() {
             return this.bio;
         }
-    
+
         public @Nullable Map<String, Integer> getCounts() {
             return this.counts;
         }
-    
+
         public @Nullable Date getCreatedAt() {
             return this.createdAt;
         }
-    
+
         public @Nullable @UserEmailFrequency String getEmailFrequency() {
             return this.emailFrequency;
         }
-    
+
         public @Nullable String getFirstName() {
             return this.firstName;
         }
-    
+
         public @Nullable String getIdentifier() {
             return this.identifier;
         }
-    
+
         public @Nullable Image getImage() {
             return this.image;
         }
-    
+
         public @Nullable String getLastName() {
             return this.lastName;
         }
-    
+
         public @Nullable String getType() {
             return this.type;
         }
-    
+
         public @Nullable String getUsername() {
             return this.username;
         }
-    
+
         public User build() {
             return new User(
             this.bio,
@@ -365,7 +365,7 @@ public class User {
             this._bits
             );
         }
-    
+
         public void mergeFrom(User model) {
             if (model.getBioIsSet()) {
                 this.bio = model.bio;
@@ -401,7 +401,7 @@ public class User {
     }
 
     public static class UserTypeAdapterFactory implements TypeAdapterFactory {
-    
+
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
             if (!User.class.isAssignableFrom(typeToken.getRawType())) {
@@ -411,21 +411,21 @@ public class User {
         }
     }
 
-    public static class UserTypeAdapter extends TypeAdapter<User>  {
-    
+    public static class UserTypeAdapter extends TypeAdapter<User> {
+
         final private TypeAdapter<User> delegateTypeAdapter;
         final private TypeAdapter<JsonElement> elementTypeAdapter;
-    
+
         public UserTypeAdapter(Gson gson, UserTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
             this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
         }
-    
+
         @Override
         public void write(JsonWriter writer, User value) throws IOException {
             this.delegateTypeAdapter.write(writer, value);
         }
-    
+
         @Override
         public User read(JsonReader reader) throws IOException {
             JsonElement tree = this.elementTypeAdapter.read(reader);

@@ -171,42 +171,34 @@ public struct JavaIR {
 
         func render() -> [String] {
             let implementsList = implements?.joined(separator: ", ") ?? ""
-            let implementsStmt = implementsList == "" ? "" : "implements \(implementsList)"
+            let implementsStmt = implementsList == "" ? "" : " implements \(implementsList)"
 
             let extendsStmt = extends.map { " extends \($0) " } ?? ""
 
-            var toRender = annotations.map { "@\($0)" } + [
-                "\(modifiers.render()) class \(name)\(extendsStmt) \(implementsStmt) {",
+            var lines = annotations.map { "@\($0)" } + [
+                "\(modifiers.render()) class \(name)\(extendsStmt)\(implementsStmt) {",
             ]
-
+        
             if !enums.isEmpty {
-                toRender.append("")
-                toRender.append(-->enums.flatMap { $0.render() })
+                lines.append("")
+                lines.append(-->enums.flatMap { $0.render() })
             }
-
+            
             if !properties.isEmpty {
-                toRender += properties.reduce([String]()) { result, propertyBatch in
-                    result + [""] + propertyBatch.map { property in
-                        -->[property.render()]
-                    }
-                }
+                lines.append(-->properties.flatMap{ [""] + $0.compactMap { $0.render() } })
             }
-
+            
             if !methods.isEmpty {
-                toRender += (methods.reduce([String]()) { result, method in
-                    result + [""] + [-->method.render()]
-                })
+                lines.append(-->methods.flatMap { [""] + $0.render() })
             }
-
+            
             if !innerClasses.isEmpty {
-                toRender += (innerClasses.reduce([String]()) { result, innerClass in
-                    result + [""] + [-->innerClass.render()]
-                })
+                lines.append(-->innerClasses.flatMap { [""] + $0.render() })
             }
-
-            toRender.append("}")
-
-            return toRender
+            
+            lines.append("}")
+            
+            return lines
         }
     }
 

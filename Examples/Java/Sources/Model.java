@@ -85,36 +85,36 @@ public class Model {
     }
 
     public static class Builder {
-    
+
         @SerializedName("id") private @Nullable String identifier;
-    
+
         private int _bits = 0;
-    
+
         private Builder() {
         }
-    
+
         private Builder(@NonNull Model model) {
             this.identifier = model.identifier;
             this._bits = model._bits;
         }
-    
+
         public Builder setIdentifier(@Nullable String value) {
             this.identifier = value;
             this._bits |= ID_SET;
             return this;
         }
-    
+
         public @Nullable String getIdentifier() {
             return this.identifier;
         }
-    
+
         public Model build() {
             return new Model(
             this.identifier,
             this._bits
             );
         }
-    
+
         public void mergeFrom(Model model) {
             if (model.getIdentifierIsSet()) {
                 this.identifier = model.identifier;
@@ -123,7 +123,7 @@ public class Model {
     }
 
     public static class ModelTypeAdapterFactory implements TypeAdapterFactory {
-    
+
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
             if (!Model.class.isAssignableFrom(typeToken.getRawType())) {
@@ -133,21 +133,21 @@ public class Model {
         }
     }
 
-    public static class ModelTypeAdapter extends TypeAdapter<Model>  {
-    
+    public static class ModelTypeAdapter extends TypeAdapter<Model> {
+
         final private TypeAdapter<Model> delegateTypeAdapter;
         final private TypeAdapter<JsonElement> elementTypeAdapter;
-    
+
         public ModelTypeAdapter(Gson gson, ModelTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
             this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
         }
-    
+
         @Override
         public void write(JsonWriter writer, Model value) throws IOException {
             this.delegateTypeAdapter.write(writer, value);
         }
-    
+
         @Override
         public Model read(JsonReader reader) throws IOException {
             JsonElement tree = this.elementTypeAdapter.read(reader);

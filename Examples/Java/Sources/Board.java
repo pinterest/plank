@@ -197,7 +197,7 @@ public class Board {
     }
 
     public static class Builder {
-    
+
         @SerializedName("id") private @Nullable String identifier;
         @SerializedName("contributors") private @Nullable Set<User> contributors;
         @SerializedName("counts") private @Nullable Map<String, Integer> counts;
@@ -207,12 +207,12 @@ public class Board {
         @SerializedName("image") private @NonNull Image image;
         @SerializedName("name") private @Nullable String name;
         @SerializedName("url") private @Nullable String url;
-    
+
         private int _bits = 0;
-    
+
         private Builder() {
         }
-    
+
         private Builder(@NonNull Board model) {
             this.identifier = model.identifier;
             this.contributors = model.contributors;
@@ -225,97 +225,97 @@ public class Board {
             this.url = model.url;
             this._bits = model._bits;
         }
-    
+
         public Builder setIdentifier(@Nullable String value) {
             this.identifier = value;
             this._bits |= ID_SET;
             return this;
         }
-    
+
         public Builder setContributors(@Nullable Set<User> value) {
             this.contributors = value;
             this._bits |= CONTRIBUTORS_SET;
             return this;
         }
-    
+
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
             this._bits |= COUNTS_SET;
             return this;
         }
-    
+
         public Builder setCreatedAt(@Nullable Date value) {
             this.createdAt = value;
             this._bits |= CREATED_AT_SET;
             return this;
         }
-    
+
         public Builder setCreator(@Nullable Map<String, String> value) {
             this.creator = value;
             this._bits |= CREATOR_SET;
             return this;
         }
-    
+
         public Builder setDescriptionText(@Nullable String value) {
             this.descriptionText = value;
             this._bits |= DESCRIPTION_SET;
             return this;
         }
-    
+
         public Builder setImage(@NonNull Image value) {
             this.image = value;
             this._bits |= IMAGE_SET;
             return this;
         }
-    
+
         public Builder setName(@Nullable String value) {
             this.name = value;
             this._bits |= NAME_SET;
             return this;
         }
-    
+
         public Builder setUrl(@Nullable String value) {
             this.url = value;
             this._bits |= URL_SET;
             return this;
         }
-    
+
         public @Nullable String getIdentifier() {
             return this.identifier;
         }
-    
+
         public @Nullable Set<User> getContributors() {
             return this.contributors;
         }
-    
+
         public @Nullable Map<String, Integer> getCounts() {
             return this.counts;
         }
-    
+
         public @Nullable Date getCreatedAt() {
             return this.createdAt;
         }
-    
+
         public @Nullable Map<String, String> getCreator() {
             return this.creator;
         }
-    
+
         public @Nullable String getDescriptionText() {
             return this.descriptionText;
         }
-    
+
         public @NonNull Image getImage() {
             return this.image;
         }
-    
+
         public @Nullable String getName() {
             return this.name;
         }
-    
+
         public @Nullable String getUrl() {
             return this.url;
         }
-    
+
         public Board build() {
             return new Board(
             this.identifier,
@@ -330,7 +330,7 @@ public class Board {
             this._bits
             );
         }
-    
+
         public void mergeFrom(Board model) {
             if (model.getIdentifierIsSet()) {
                 this.identifier = model.identifier;
@@ -363,7 +363,7 @@ public class Board {
     }
 
     public static class BoardTypeAdapterFactory implements TypeAdapterFactory {
-    
+
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
             if (!Board.class.isAssignableFrom(typeToken.getRawType())) {
@@ -373,21 +373,21 @@ public class Board {
         }
     }
 
-    public static class BoardTypeAdapter extends TypeAdapter<Board>  {
-    
+    public static class BoardTypeAdapter extends TypeAdapter<Board> {
+
         final private TypeAdapter<Board> delegateTypeAdapter;
         final private TypeAdapter<JsonElement> elementTypeAdapter;
-    
+
         public BoardTypeAdapter(Gson gson, BoardTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
             this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
         }
-    
+
         @Override
         public void write(JsonWriter writer, Board value) throws IOException {
             this.delegateTypeAdapter.write(writer, value);
         }
-    
+
         @Override
         public Board read(JsonReader reader) throws IOException {
             JsonElement tree = this.elementTypeAdapter.read(reader);
