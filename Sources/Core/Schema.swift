@@ -185,8 +185,16 @@ extension Schema: CustomDebugStringConvertible {
             return "Float"
         case .boolean:
             return "Boolean"
-        case .string:
+        case .string(format: .none),
+             .string(format: .some(.email)),
+             .string(format: .some(.hostname)),
+             .string(format: .some(.ipv4)),
+             .string(format: .some(.ipv6)):
             return "String"
+        case .string(format: .some(.dateTime)):
+            return "String: DateTime"
+        case .string(format: .some(.uri)):
+            return "String: URI"
         case let .oneOf(types: types):
             return (["OneOf"] + types.map { value in "\t\(value.debugDescription)\n" }).reduce("", +)
         case let .enumT(enumType):

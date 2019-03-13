@@ -1,5 +1,7 @@
 load('@bazel_tools//tools/build_defs/repo:git.bzl', system_git_repository='git_repository')
 
+# Apple platform dependencies
+
 system_git_repository(
     name = "build_bazel_rules_swift",
     remote = "https://github.com/bazelbuild/rules_swift.git",
@@ -19,3 +21,30 @@ load(
 )
 
 apple_support_dependencies()
+
+# Java / Android dependencies
+
+android_sdk_repository(
+    name = "androidsdk",
+)
+
+maven_server(
+    name = "google_maven",
+    url = "https://maven.google.com"
+)
+
+maven_jar(
+    name = "gson_maven",
+    artifact = "com.google.code.gson:gson:2.8.5",
+)
+
+bind(
+    name = "gson",
+    actual = "@gson_maven//jar",
+)
+
+maven_jar(
+    name = "android_support_annotations",
+    artifact = "com.android.support:support-annotations:28.0.0",
+    server = "google_maven"
+)

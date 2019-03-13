@@ -1,24 +1,29 @@
 language: generic
 osx_image: xcode10
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-28.0.3
+    - android-28
+
 addons:
   homebrew:
     packages:
-    - swiftlint 
+    - flow
 jobs:
     include:
         - stage: "lint"
           script: "make lint"
           os: osx
         - stage: "test"
-          script: "make test"
+          script: "make ci_tests"
           os: osx
         - stage: "test linux"
-          script: "make test"
+          script: "make ci_tests"
+          language: android
           sudo: required
           dist: trusty
           install:
               - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
           os: linux
-        - stage: "integration"
-          script: "make integration_test output_stability_test"
-          os: osx

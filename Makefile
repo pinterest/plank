@@ -1,7 +1,7 @@
 # This makefile exposes targets that unify building, testing and archiving of
 # Plank
 
-.PHONY: all clean lint build test integration_test archive upload_pipeline build_test_index_linux archive_linux install
+.PHONY: all clean lint build test integration_test archive upload_pipeline build_test_index_linux archive_linux install output_stability_test ci_tests
 
 PREFIX := /usr/local
 
@@ -27,6 +27,8 @@ integration_test: build
 
 output_stability_test: build
 	./Utility/stable-output-test.sh
+
+ci_tests: test integration_test output_stability_test
 
 archive:
 	swift build -c release -Xswiftc -static-stdlib --disable-sandbox

@@ -315,6 +315,15 @@ public struct JavaModelRenderer: JavaFileRenderer {
             }
         }
 
+        let adtClasses: [JavaIR.Class] = adtRoots.compactMap {
+            switch $0 {
+            case let .classDecl(aClass: classObj):
+                return classObj
+            default:
+                return nil
+            }
+        }
+
         let builderClass = JavaIR.Class(
             annotations: [],
             modifiers: [.public, .static],
@@ -376,7 +385,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                     builderClass,
                     typeAdapterFactoryClass,
                     typeAdapterClass,
-                ],
+                ] + adtClasses,
                 properties: renderModelProperties()
             )
         )
@@ -384,9 +393,14 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let roots: [JavaIR.Root] =
             packages +
             imports +
-            adtRoots +
-            [modelClass]
-
+            adtRoots.compactMap {
+                switch $0 {
+                case .classDecl(aClass: _):
+                    return nil
+                default:
+                    return $0
+                }
+            } + [modelClass]
         return roots
     }
 }

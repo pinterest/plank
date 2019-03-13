@@ -30,29 +30,8 @@ import java.util.Objects;
 import java.util.Set;
 
 interface PinAttributionObjectsMatcher<R> {
-    R match(@Nullable Board);
-    R match(@Nullable User);
-}
-
-public final class PinAttributionObjects<R> {
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({InternalStorage.BOARD, InternalStorage.USER})
-    public @interface InternalStorage {
-        int BOARD = 0;
-        int USER = 1;
-    }
-
-    private @Nullable Board value0;
-    private @Nullable User value1;
-
-    private @InternalStorage int internalStorage;
-
-    private PinAttributionObjects() {
-    }
-
-    public R match PinAttributionObjects(PinAttributionObjectsMatcher<R>) {
-    }
+    R match(@Nullable Board value0);
+    R match(@Nullable User value1);
 }
 
 public class Pin {
@@ -725,6 +704,29 @@ public class Pin {
                 }
             }
             return model;
+        }
+    }
+
+    public static final class PinAttributionObjects<R> {
+
+        @Retention(RetentionPolicy.SOURCE)
+        @IntDef({InternalStorage.BOARD, InternalStorage.USER})
+        public @interface InternalStorage {
+            int BOARD = 0;
+            int USER = 1;
+        }
+
+        private @Nullable Board value0;
+        private @Nullable User value1;
+
+        static private @InternalStorage int internalStorage;
+
+        private PinAttributionObjects() {
+        }
+
+        public R matchPinAttributionObjects(PinAttributionObjectsMatcher<R> matcher) {
+            // TODO: Implement this!
+            return null;
         }
     }
 }
