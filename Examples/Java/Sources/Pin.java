@@ -8,10 +8,8 @@
 
 package com.pinterest.models;
 
-import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
@@ -36,12 +34,17 @@ interface PinAttributionObjectsMatcher<R> {
 
 public class Pin {
 
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({PinInStock.UNKNOWN, PinInStock.OUT_OF_STOCK, PinInStock.IN_STOCK})
-    public @interface PinInStock {
-        int UNKNOWN = -1;
-        int OUT_OF_STOCK = 0;
-        int IN_STOCK = 1;
+    public enum PinInStock {
+        UNKNOWN(-1), 
+        OUT_OF_STOCK(0), 
+        IN_STOCK(1);
+        private final int value;
+        PinInStock(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
     }
 
     @SerializedName("attribution") private @Nullable Map<String, String> attribution;
@@ -54,7 +57,7 @@ public class Pin {
     @SerializedName("description") private @Nullable String descriptionText;
     @SerializedName("id") private @NonNull String identifier;
     @SerializedName("image") private @Nullable Image image;
-    @SerializedName("in_stock") private @Nullable @PinInStock int inStock;
+    @SerializedName("in_stock") private @Nullable PinInStock inStock;
     @SerializedName("link") private @Nullable String link;
     @SerializedName("media") private @Nullable Map<String, String> media;
     @SerializedName("note") private @Nullable String note;
@@ -93,7 +96,7 @@ public class Pin {
         @Nullable String descriptionText,
         @NonNull String identifier,
         @Nullable Image image,
-        @Nullable @PinInStock int inStock,
+        @Nullable PinInStock inStock,
         @Nullable String link,
         @Nullable Map<String, String> media,
         @Nullable String note,
@@ -225,7 +228,7 @@ public class Pin {
         return this.image;
     }
 
-    public @Nullable @PinInStock int getInStock() {
+    public @Nullable PinInStock getInStock() {
         return this.inStock;
     }
 
@@ -333,7 +336,7 @@ public class Pin {
         @SerializedName("description") private @Nullable String descriptionText;
         @SerializedName("id") private @NonNull String identifier;
         @SerializedName("image") private @Nullable Image image;
-        @SerializedName("in_stock") private @Nullable @PinInStock int inStock;
+        @SerializedName("in_stock") private @Nullable PinInStock inStock;
         @SerializedName("link") private @Nullable String link;
         @SerializedName("media") private @Nullable Map<String, String> media;
         @SerializedName("note") private @Nullable String note;
@@ -427,7 +430,7 @@ public class Pin {
             return this;
         }
 
-        public Builder setInStock(@Nullable @PinInStock int value) {
+        public Builder setInStock(@Nullable PinInStock value) {
             this.inStock = value;
             this._bits |= IN_STOCK_SET;
             return this;
@@ -509,7 +512,7 @@ public class Pin {
             return this.image;
         }
 
-        public @Nullable @PinInStock int getInStock() {
+        public @Nullable PinInStock getInStock() {
             return this.inStock;
         }
 
@@ -709,17 +712,22 @@ public class Pin {
 
     public static final class PinAttributionObjects<R> {
 
-        @Retention(RetentionPolicy.SOURCE)
-        @IntDef({InternalStorage.BOARD, InternalStorage.USER})
-        public @interface InternalStorage {
-            int BOARD = 0;
-            int USER = 1;
+        public enum InternalStorage {
+            BOARD(0), 
+            USER(1);
+            private final int value;
+            InternalStorage(int value) {
+                this.value = value;
+            }
+            public int getValue() {
+                return this.value;
+            }
         }
 
         private @Nullable Board value0;
         private @Nullable User value1;
 
-        static private @InternalStorage int internalStorage;
+        static private InternalStorage internalStorage;
 
         private PinAttributionObjects() {
         }

@@ -60,7 +60,7 @@ extension JavaModelRenderer {
 
         let internalStorageEnum = JavaIR.Enum(name: "InternalStorage", values: .integer(enumOptions))
 
-        let internalStorageProp = JavaIR.Property(annotations: [], modifiers: [.private, .static], type: "@InternalStorage int", name: "internalStorage", initialValue: "")
+        let internalStorageProp = JavaIR.Property(annotations: [], modifiers: [.private, .static], type: "InternalStorage", name: "internalStorage", initialValue: "")
         let cls = JavaIR.Class(annotations: [],
                                modifiers: [.public, .static, .final],
                                extends: nil,

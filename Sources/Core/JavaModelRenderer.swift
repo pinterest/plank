@@ -302,10 +302,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "java.util.Objects",
                 "java.lang.annotation.Retention",
                 "java.lang.annotation.RetentionPolicy",
-                "android.support.annotation.IntDef",
                 "android.support.annotation.NonNull",
                 "android.support.annotation.Nullable",
-                "android.support.annotation.StringDef",
             ]),
         ]
 
