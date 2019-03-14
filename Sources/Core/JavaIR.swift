@@ -155,25 +155,25 @@ public struct JavaIR {
                 let names = values
                     .map { ($0.description, $0.defaultValue) }
                     .map { "\($0.0.uppercased())(\($0.1))" }.joined(separator: ", \n")
-                let enumInitializer = JavaIR.method([], "\(name)(int value)") {[
-                    "this.value = value;"
-                ]}
+                let enumInitializer = JavaIR.method([], "\(name)(int value)") { [
+                    "this.value = value;",
+                ] }
 
-                let getterMethod = JavaIR.method([.public], "int getValue()") {[
-                    "return this.value;"
-                ]}
+                let getterMethod = JavaIR.method([.public], "int getValue()") { [
+                    "return this.value;",
+                ] }
                 return [
                     "public enum \(name) {",
-                        -->["\(names);", "private final int value;",],
-                        -->enumInitializer.render(),
-                        -->getterMethod.render(),
+                    -->["\(names);", "private final int value;"],
+                    -->enumInitializer.render(),
+                    -->getterMethod.render(),
                     "}",
                 ]
             case let .string(values, defaultValue: _):
                 let names = values
                     .map { ($0.description, $0.defaultValue) }
                     .map { "@\(JavaAnnotation.serializedName(name: "\($0.1)").rendered) \($0.0.uppercased())" }.joined(separator: ", ")
-                
+
                 return [
                     "public enum \(name) {",
                     -->["\(names);"],
