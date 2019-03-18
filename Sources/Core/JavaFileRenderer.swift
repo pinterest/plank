@@ -90,7 +90,7 @@ extension JavaFileRenderer {
                 fatalError("Bad reference found in schema for class: \(className)")
             }
         case .oneOf(types: _):
-            return "\(className)\(param.snakeCaseToCamelCase())"
+            return "\(className)\(param.snakeCaseToCamelCase(.java))"
         }
     }
 }

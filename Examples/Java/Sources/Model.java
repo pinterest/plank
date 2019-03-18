@@ -30,17 +30,17 @@ import java.util.Set;
 
 public class Model {
 
-    @SerializedName("id") private @Nullable String identifier;
+    @SerializedName("id") private @Nullable String uid;
 
     static final private int ID_SET = 1 << 0;
 
     private int _bits = 0;
 
     private Model(
-        @Nullable String identifier,
+        @Nullable String uid,
         int _bits
     ) {
-        this.identifier = identifier;
+        this.uid = uid;
         this._bits = _bits;
     }
 
@@ -67,25 +67,25 @@ public class Model {
             return false;
         }
         Model that = (Model) o;
-        return Objects.equals(this.identifier, that.identifier);
+        return Objects.equals(this.uid, that.uid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier);
+        return Objects.hash(uid);
     }
 
-    public @Nullable String getIdentifier() {
-        return this.identifier;
+    public @Nullable String getUid() {
+        return this.uid;
     }
 
-    public boolean getIdentifierIsSet() {
+    public boolean getUidIsSet() {
         return (this._bits & ID_SET) == ID_SET;
     }
 
     public static class Builder {
 
-        @SerializedName("id") private @Nullable String identifier;
+        @SerializedName("id") private @Nullable String uid;
 
         private int _bits = 0;
 
@@ -93,30 +93,30 @@ public class Model {
         }
 
         private Builder(@NonNull Model model) {
-            this.identifier = model.identifier;
+            this.uid = model.uid;
             this._bits = model._bits;
         }
 
-        public Builder setIdentifier(@Nullable String value) {
-            this.identifier = value;
+        public Builder setUid(@Nullable String value) {
+            this.uid = value;
             this._bits |= ID_SET;
             return this;
         }
 
-        public @Nullable String getIdentifier() {
-            return this.identifier;
+        public @Nullable String getUid() {
+            return this.uid;
         }
 
         public Model build() {
             return new Model(
-            this.identifier,
+            this.uid,
             this._bits
             );
         }
 
         public void mergeFrom(Model model) {
-            if (model.getIdentifierIsSet()) {
-                this.identifier = model.identifier;
+            if (model.getUidIsSet()) {
+                this.uid = model.uid;
             }
         }
     }

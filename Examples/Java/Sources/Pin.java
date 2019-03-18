@@ -55,8 +55,8 @@ public class Pin {
     @SerializedName("counts") private @Nullable Map<String, Integer> counts;
     @SerializedName("created_at") private @NonNull Date createdAt;
     @SerializedName("creator") private @NonNull Map<String, User> creator;
-    @SerializedName("description") private @Nullable String descriptionText;
-    @SerializedName("id") private @NonNull String identifier;
+    @SerializedName("description") private @Nullable String description;
+    @SerializedName("id") private @NonNull String uid;
     @SerializedName("image") private @Nullable Image image;
     @SerializedName("in_stock") private @Nullable PinInStock inStock;
     @SerializedName("link") private @Nullable String link;
@@ -94,8 +94,8 @@ public class Pin {
         @Nullable Map<String, Integer> counts,
         @NonNull Date createdAt,
         @NonNull Map<String, User> creator,
-        @Nullable String descriptionText,
-        @NonNull String identifier,
+        @Nullable String description,
+        @NonNull String uid,
         @Nullable Image image,
         @Nullable PinInStock inStock,
         @Nullable String link,
@@ -113,8 +113,8 @@ public class Pin {
         this.counts = counts;
         this.createdAt = createdAt;
         this.creator = creator;
-        this.descriptionText = descriptionText;
-        this.identifier = identifier;
+        this.description = description;
+        this.uid = uid;
         this.image = image;
         this.inStock = inStock;
         this.link = link;
@@ -156,8 +156,8 @@ public class Pin {
         Objects.equals(this.counts, that.counts) &&
         Objects.equals(this.createdAt, that.createdAt) &&
         Objects.equals(this.creator, that.creator) &&
-        Objects.equals(this.descriptionText, that.descriptionText) &&
-        Objects.equals(this.identifier, that.identifier) &&
+        Objects.equals(this.description, that.description) &&
+        Objects.equals(this.uid, that.uid) &&
         Objects.equals(this.image, that.image) &&
         Objects.equals(this.inStock, that.inStock) &&
         Objects.equals(this.link, that.link) &&
@@ -177,8 +177,8 @@ public class Pin {
         counts,
         createdAt,
         creator,
-        descriptionText,
-        identifier,
+        description,
+        uid,
         image,
         inStock,
         link,
@@ -217,12 +217,12 @@ public class Pin {
         return this.creator;
     }
 
-    public @Nullable String getDescriptionText() {
-        return this.descriptionText;
+    public @Nullable String getDescription() {
+        return this.description;
     }
 
-    public @NonNull String getIdentifier() {
-        return this.identifier;
+    public @NonNull String getUid() {
+        return this.uid;
     }
 
     public @Nullable Image getImage() {
@@ -285,11 +285,11 @@ public class Pin {
         return (this._bits & CREATOR_SET) == CREATOR_SET;
     }
 
-    public boolean getDescriptionTextIsSet() {
+    public boolean getDescriptionIsSet() {
         return (this._bits & DESCRIPTION_SET) == DESCRIPTION_SET;
     }
 
-    public boolean getIdentifierIsSet() {
+    public boolean getUidIsSet() {
         return (this._bits & ID_SET) == ID_SET;
     }
 
@@ -334,8 +334,8 @@ public class Pin {
         @SerializedName("counts") private @Nullable Map<String, Integer> counts;
         @SerializedName("created_at") private @NonNull Date createdAt;
         @SerializedName("creator") private @NonNull Map<String, User> creator;
-        @SerializedName("description") private @Nullable String descriptionText;
-        @SerializedName("id") private @NonNull String identifier;
+        @SerializedName("description") private @Nullable String description;
+        @SerializedName("id") private @NonNull String uid;
         @SerializedName("image") private @Nullable Image image;
         @SerializedName("in_stock") private @Nullable PinInStock inStock;
         @SerializedName("link") private @Nullable String link;
@@ -358,8 +358,8 @@ public class Pin {
             this.counts = model.counts;
             this.createdAt = model.createdAt;
             this.creator = model.creator;
-            this.descriptionText = model.descriptionText;
-            this.identifier = model.identifier;
+            this.description = model.description;
+            this.uid = model.uid;
             this.image = model.image;
             this.inStock = model.inStock;
             this.link = model.link;
@@ -413,14 +413,14 @@ public class Pin {
             return this;
         }
 
-        public Builder setDescriptionText(@Nullable String value) {
-            this.descriptionText = value;
+        public Builder setDescription(@Nullable String value) {
+            this.description = value;
             this._bits |= DESCRIPTION_SET;
             return this;
         }
 
-        public Builder setIdentifier(@NonNull String value) {
-            this.identifier = value;
+        public Builder setUid(@NonNull String value) {
+            this.uid = value;
             this._bits |= ID_SET;
             return this;
         }
@@ -501,12 +501,12 @@ public class Pin {
             return this.creator;
         }
 
-        public @Nullable String getDescriptionText() {
-            return this.descriptionText;
+        public @Nullable String getDescription() {
+            return this.description;
         }
 
-        public @NonNull String getIdentifier() {
-            return this.identifier;
+        public @NonNull String getUid() {
+            return this.uid;
         }
 
         public @Nullable Image getImage() {
@@ -550,8 +550,8 @@ public class Pin {
             this.counts,
             this.createdAt,
             this.creator,
-            this.descriptionText,
-            this.identifier,
+            this.description,
+            this.uid,
             this.image,
             this.inStock,
             this.link,
@@ -586,11 +586,11 @@ public class Pin {
             if (model.getCreatorIsSet()) {
                 this.creator = model.creator;
             }
-            if (model.getDescriptionTextIsSet()) {
-                this.descriptionText = model.descriptionText;
+            if (model.getDescriptionIsSet()) {
+                this.description = model.description;
             }
-            if (model.getIdentifierIsSet()) {
-                this.identifier = model.identifier;
+            if (model.getUidIsSet()) {
+                this.uid = model.uid;
             }
             if (model.getImageIsSet()) {
                 this.image = model.image;

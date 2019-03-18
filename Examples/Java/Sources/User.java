@@ -39,7 +39,7 @@ public class User {
     @SerializedName("created_at") private @Nullable Date createdAt;
     @SerializedName("email_frequency") private @Nullable UserEmailFrequency emailFrequency;
     @SerializedName("first_name") private @Nullable String firstName;
-    @SerializedName("id") private @Nullable String identifier;
+    @SerializedName("id") private @Nullable String uid;
     @SerializedName("image") private @Nullable Image image;
     @SerializedName("last_name") private @Nullable String lastName;
     @SerializedName("type") private @Nullable String type;
@@ -64,7 +64,7 @@ public class User {
         @Nullable Date createdAt,
         @Nullable UserEmailFrequency emailFrequency,
         @Nullable String firstName,
-        @Nullable String identifier,
+        @Nullable String uid,
         @Nullable Image image,
         @Nullable String lastName,
         @Nullable String type,
@@ -76,7 +76,7 @@ public class User {
         this.createdAt = createdAt;
         this.emailFrequency = emailFrequency;
         this.firstName = firstName;
-        this.identifier = identifier;
+        this.uid = uid;
         this.image = image;
         this.lastName = lastName;
         this.type = type;
@@ -112,7 +112,7 @@ public class User {
         Objects.equals(this.createdAt, that.createdAt) &&
         Objects.equals(this.emailFrequency, that.emailFrequency) &&
         Objects.equals(this.firstName, that.firstName) &&
-        Objects.equals(this.identifier, that.identifier) &&
+        Objects.equals(this.uid, that.uid) &&
         Objects.equals(this.image, that.image) &&
         Objects.equals(this.lastName, that.lastName) &&
         Objects.equals(this.type, that.type) &&
@@ -126,7 +126,7 @@ public class User {
         createdAt,
         emailFrequency,
         firstName,
-        identifier,
+        uid,
         image,
         lastName,
         type,
@@ -153,8 +153,8 @@ public class User {
         return this.firstName;
     }
 
-    public @Nullable String getIdentifier() {
-        return this.identifier;
+    public @Nullable String getUid() {
+        return this.uid;
     }
 
     public @Nullable Image getImage() {
@@ -193,7 +193,7 @@ public class User {
         return (this._bits & FIRST_NAME_SET) == FIRST_NAME_SET;
     }
 
-    public boolean getIdentifierIsSet() {
+    public boolean getUidIsSet() {
         return (this._bits & ID_SET) == ID_SET;
     }
 
@@ -220,7 +220,7 @@ public class User {
         @SerializedName("created_at") private @Nullable Date createdAt;
         @SerializedName("email_frequency") private @Nullable UserEmailFrequency emailFrequency;
         @SerializedName("first_name") private @Nullable String firstName;
-        @SerializedName("id") private @Nullable String identifier;
+        @SerializedName("id") private @Nullable String uid;
         @SerializedName("image") private @Nullable Image image;
         @SerializedName("last_name") private @Nullable String lastName;
         @SerializedName("type") private @Nullable String type;
@@ -237,7 +237,7 @@ public class User {
             this.createdAt = model.createdAt;
             this.emailFrequency = model.emailFrequency;
             this.firstName = model.firstName;
-            this.identifier = model.identifier;
+            this.uid = model.uid;
             this.image = model.image;
             this.lastName = model.lastName;
             this.type = model.type;
@@ -275,8 +275,8 @@ public class User {
             return this;
         }
 
-        public Builder setIdentifier(@Nullable String value) {
-            this.identifier = value;
+        public Builder setUid(@Nullable String value) {
+            this.uid = value;
             this._bits |= ID_SET;
             return this;
         }
@@ -325,8 +325,8 @@ public class User {
             return this.firstName;
         }
 
-        public @Nullable String getIdentifier() {
-            return this.identifier;
+        public @Nullable String getUid() {
+            return this.uid;
         }
 
         public @Nullable Image getImage() {
@@ -352,7 +352,7 @@ public class User {
             this.createdAt,
             this.emailFrequency,
             this.firstName,
-            this.identifier,
+            this.uid,
             this.image,
             this.lastName,
             this.type,
@@ -377,8 +377,8 @@ public class User {
             if (model.getFirstNameIsSet()) {
                 this.firstName = model.firstName;
             }
-            if (model.getIdentifierIsSet()) {
-                this.identifier = model.identifier;
+            if (model.getUidIsSet()) {
+                this.uid = model.uid;
             }
             if (model.getImageIsSet()) {
                 this.image = model.image;

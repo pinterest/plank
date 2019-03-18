@@ -137,6 +137,72 @@ let objectiveCReservedWords = Set<String>([
     "while",
 ])
 
+// TODO: "id" is technically allowed. It's possible not everyone wants this replacement.
+let javaReservedWordReplacements = [
+    "id": "uid",
+]
+
+// https://en.wikipedia.org/wiki/List_of_Java_keywords
+let javaReservedWords = Set<String>([
+    "abstract",
+    "assert",
+    "boolean",
+    "break",
+    "byte",
+    "case",
+    "catch",
+    "char",
+    "class",
+    "continue",
+    "default",
+    "do",
+    "double",
+    "else",
+    "enum",
+    "exports",
+    "extends",
+    "final",
+    "finally",
+    "float",
+    "for",
+    "if",
+    "implements",
+    "import",
+    "instanceof",
+    "int",
+    "interface",
+    "long",
+    "module",
+    "native",
+    "new",
+    "package",
+    "private",
+    "protected",
+    "public",
+    "requires",
+    "return",
+    "short",
+    "static",
+    "strictfp",
+    "super",
+    "switch",
+    "synchronized",
+    "this",
+    "throw",
+    "throws",
+    "transient",
+    "try",
+    "void",
+    "volatile",
+    "while",
+    "true",
+    "null",
+    "false",
+    "var",
+    "const",
+    "goto",
+])
+
 extension String {
     func indent() -> String {
         // We indent with tabs and in a post process the tabs are changed to a specific number of spaces
@@ -144,28 +210,46 @@ extension String {
     }
 
     /// All components separated by _ will be capitalized including the first one
-    func snakeCaseToCamelCase() -> String {
+    func snakeCaseToCamelCase(_ language: Languages = Languages.objectiveC) -> String {
         var str: String = self
 
-        if let replacementString = objectiveCReservedWordReplacements[self.lowercased()] as String? {
-            str = replacementString
+        if language == .objectiveC {
+            if let replacementString = objectiveCReservedWordReplacements[self.lowercased()] as String? {
+                str = replacementString
+            }
+        } else if language == .java {
+            if let replacementString = javaReservedWordReplacements[self.lowercased()] as String? {
+                str = replacementString
+            }
         }
 
         let components = str.components(separatedBy: "_")
         let name = components.map { $0.uppercaseFirst }
         let formattedName = name.joined(separator: "")
-        if objectiveCReservedWords.contains(formattedName) {
-            return "\(formattedName)Property"
+        if language == .objectiveC {
+            if objectiveCReservedWords.contains(formattedName) {
+                return "\(formattedName)Property"
+            }
+        } else if language == .java {
+            if javaReservedWords.contains(formattedName) {
+                return "\(formattedName)Property"
+            }
         }
         return formattedName
     }
 
     /// All components separated by _ will be capitalized execpt the first
-    func snakeCaseToPropertyName() -> String {
+    func snakeCaseToPropertyName(_ language: Languages = Languages.objectiveC) -> String {
         var str: String = self
 
-        if let replacementString = objectiveCReservedWordReplacements[self.lowercased()] as String? {
-            str = replacementString
+        if language == .objectiveC {
+            if let replacementString = objectiveCReservedWordReplacements[self.lowercased()] as String? {
+                str = replacementString
+            }
+        } else if language == .java {
+            if let replacementString = javaReservedWordReplacements[self.lowercased()] as String? {
+                str = replacementString
+            }
         }
 
         let components = str.components(separatedBy: "_")
@@ -186,15 +270,21 @@ extension String {
             }
         }
 
-        if objectiveCReservedWords.contains(name) {
-            return "\(name)Property"
+        if language == .objectiveC {
+            if objectiveCReservedWords.contains(name) {
+                return "\(name)Property"
+            }
+        } else if language == .java {
+            if javaReservedWords.contains(name) {
+                return "\(name)Property"
+            }
         }
 
         return name
     }
 
-    func snakeCaseToCapitalizedPropertyName() -> String {
-        let formattedPropName = snakeCaseToPropertyName()
+    func snakeCaseToCapitalizedPropertyName(_ language: Languages = Languages.objectiveC) -> String {
+        let formattedPropName = snakeCaseToPropertyName(language)
         let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercased()
         return capitalizedFirstLetter + String(formattedPropName.dropFirst())
     }
