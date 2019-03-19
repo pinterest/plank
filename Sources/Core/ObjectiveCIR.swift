@@ -56,7 +56,7 @@ func dirtyPropertyOption(propertyName aPropertyName: String, className: String) 
     guard !className.isEmpty, !aPropertyName.isEmpty else {
         fatalError("Invalid class name or property name passed to dirtyPropertyOption(propertyName:className)")
     }
-    let propertyName = aPropertyName.snakeCaseToPropertyName()
+    let propertyName = Languages.objectiveC.snakeCaseToPropertyName(aPropertyName)
     let capitalizedFirstLetter = String(propertyName[propertyName.startIndex]).uppercased()
     let capitalizedPropertyName = capitalizedFirstLetter + String(propertyName.dropFirst())
     return className + "DirtyProperty" + capitalizedPropertyName
@@ -71,15 +71,15 @@ func enumToStringMethodName(propertyName: String, className: String) -> String {
 }
 
 func enumTypeName(propertyName: String, className: String) -> String {
-    return "\(className)\(propertyName.snakeCaseToCamelCase())"
+    return "\(className)\(Languages.objectiveC.snakeCaseToCamelCase(propertyName))"
 }
 
 extension SchemaObjectRoot {
     func className(with params: GenerationParameters) -> String {
         if let classPrefix = params[GenerationParameterType.classPrefix] as String? {
-            return "\(classPrefix)\(name.snakeCaseToCamelCase())"
+            return "\(classPrefix)\(Languages.objectiveC.snakeCaseToCamelCase(name))"
         } else {
-            return name.snakeCaseToCamelCase()
+            return Languages.objectiveC.snakeCaseToCamelCase(name)
         }
     }
 
@@ -113,7 +113,7 @@ extension Schema {
 
 extension EnumValue {
     var camelCaseDescription: String {
-        return description.snakeCaseToCamelCase()
+        return Languages.objectiveC.snakeCaseToCamelCase(description)
     }
 
     func objcOptionName(param: String, className: String) -> String {
@@ -318,7 +318,7 @@ public struct ObjCIR {
                 return [
                     "@interface \(className) : \(superClass)",
                     properties.sorted { $0.0 < $1.0 }.map { param, typeName, propSchema, access in
-                        "@property (\(nullability(propSchema))nonatomic, \(propSchema.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
+                        "@property (\(nullability(propSchema))nonatomic, \(propSchema.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(Languages.objectiveC.snakeCaseToPropertyName(param));"
                     }.joined(separator: "\n"),
                     properties.sorted { $0.0 < $1.0 }.filter { param, _, _, _ in
                         param.lowercased().hasPrefix("new_") ||
@@ -326,7 +326,7 @@ public struct ObjCIR {
                             param.lowercased().hasPrefix("copy_") ||
                             param.lowercased().hasPrefix("mutable_copy_")
                     }.map { param, typeName, _, _ in
-                        "- (\(typeName))\(param.snakeCaseToPropertyName()) __attribute__((objc_method_family(none)));"
+                        "- (\(typeName))\(Languages.objectiveC.snakeCaseToPropertyName(param)) __attribute__((objc_method_family(none)));"
                     }.joined(separator: "\n"),
                     methods.filter { visibility, _ in visibility == .publicM }
                         .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
@@ -385,7 +385,7 @@ public struct ObjCIR {
                 return [
                     "@interface \(className) ()",
                     properties.map { param, typeName, prop, access in
-                        "@property (nonatomic, \(prop.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(param.snakeCaseToPropertyName());"
+                        "@property (nonatomic, \(prop.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(Languages.objectiveC.snakeCaseToPropertyName(param));"
                     }.joined(separator: "\n"),
                     methods.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end",

@@ -30,7 +30,7 @@ public struct JSModelRenderer: JSFileRenderer {
     }
 
     static func enumTypeName(className: String, propertyName: String) -> String {
-        return "\(className)\(propertyName.snakeCaseToCamelCase())"
+        return "\(className)\(Languages.flowtype.snakeCaseToCamelCase(propertyName))"
     }
 
     func renderEnumRoots() -> [JSIR.Root] {

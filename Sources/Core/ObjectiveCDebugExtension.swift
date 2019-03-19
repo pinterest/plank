@@ -12,7 +12,7 @@ extension ObjCModelRenderer {
     func renderDebugDescription() -> ObjCIR.Method {
         let props = properties.map { (param, prop) -> String in
             ObjCIR.ifStmt("props.\(dirtyPropertyOption(propertyName: param, className: self.className))") {
-                let ivarName = "_\(param.snakeCaseToPropertyName())"
+                let ivarName = "_\(Languages.objectiveC.snakeCaseToPropertyName(param))"
                 return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, prop.schema))]];"]
             }
         }.joined(separator: "\n")
@@ -33,7 +33,7 @@ extension ObjCADTRenderer {
     func renderDebugDescription() -> ObjCIR.Method {
         let props = properties.map { (param, prop) -> String in
             ObjCIR.ifStmt("self.internalType == \(self.renderInternalEnumTypeCase(name: ObjCADTRenderer.objectName(prop.schema)))") {
-                let ivarName = "_\(param.snakeCaseToPropertyName())"
+                let ivarName = "_\(Languages.objectiveC.snakeCaseToPropertyName(param))"
                 return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, prop.schema))]];"]
             }
         }.joined(separator: "\n")
@@ -51,7 +51,7 @@ extension ObjCADTRenderer {
 
 extension ObjCFileRenderer {
     fileprivate func renderDebugStatement(_ param: String, _ schema: Schema) -> String {
-        let propIVarName = "_\(param.snakeCaseToPropertyName())"
+        let propIVarName = "_\(Languages.objectiveC.snakeCaseToPropertyName(param))"
         switch schema {
         case .enumT(.string):
             return enumToStringMethodName(propertyName: param, className: className) + "(\(propIVarName))"

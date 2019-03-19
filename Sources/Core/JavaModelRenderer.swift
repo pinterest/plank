@@ -20,19 +20,19 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderModelConstructor() -> JavaIR.Method {
         let args = -->(transitiveProperties.map { param, schemaObj in
-            self.typeFromSchema(param, schemaObj) + " " + param.snakeCaseToPropertyName(.java) + ","
+            self.typeFromSchema(param, schemaObj) + " " + Languages.java.snakeCaseToPropertyName(param) + ","
         } + ["int _bits"])
 
         return JavaIR.method([.private], className + "(\n" + args + "\n)") {
             self.transitiveProperties.map { param, _ in
-                "this." + param.snakeCaseToPropertyName(.java) + " = " + param.snakeCaseToPropertyName(.java) + ";"
+                "this." + Languages.java.snakeCaseToPropertyName(param) + " = " + Languages.java.snakeCaseToPropertyName(param) + ";"
             } + ["this._bits = _bits;"]
         }
     }
 
     func renderModelHashCode() -> JavaIR.Method {
         let bodyHashCode = transitiveProperties.map { param, _ in
-            param.snakeCaseToPropertyName(.java)
+            Languages.java.snakeCaseToPropertyName(param)
         }.joined(separator: ",\n")
 
         return JavaIR.method(annotations: [JavaAnnotation.override], [.public], "int hashCode()") { [
@@ -43,7 +43,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderModelEquals() -> JavaIR.Method {
         let bodyEquals = transitiveProperties.map { param, _ in
-            "Objects.equals(this." + param.snakeCaseToPropertyName(.java) + ", that." + param.snakeCaseToPropertyName(.java) + ")"
+            "Objects.equals(this." + Languages.java.snakeCaseToPropertyName(param) + ", that." + Languages.java.snakeCaseToPropertyName(param) + ")"
         }.joined(separator: " &&\n")
 
         return JavaIR.method(annotations: [JavaAnnotation.override], [.public], "boolean equals(Object o)") { [
@@ -61,7 +61,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderModelProperties(modifiers _: JavaModifier = [.private]) -> [[JavaIR.Property]] {
         let props = transitiveProperties.map { param, schemaObj in
-            JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName(.java), initialValue: "")
+            JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
         }
 
         let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "int", name: "_bits", initialValue: "0")
@@ -77,8 +77,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
 
     func propertyGetterForParam(param: String, schemaObj: SchemaObjectProperty) -> JavaIR.Method {
-        let propertyName = param.snakeCaseToPropertyName(.java)
-        let capitalizedPropertyName = param.snakeCaseToCapitalizedPropertyName(.java)
+        let propertyName = Languages.java.snakeCaseToPropertyName(param)
+        let capitalizedPropertyName = Languages.java.snakeCaseToCapitalizedPropertyName(param)
 
         // For Booleans, Integers and Doubles, make the getter method @NonNull and squash to a default value if necessary.
         // This makes callers less susceptible to null pointer exceptions.
@@ -115,7 +115,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderModelIsSetCheckers(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
         let getters = transitiveProperties.map { param, _ in
-            JavaIR.method(modifiers, "boolean get" + param.snakeCaseToCapitalizedPropertyName(.java) + "IsSet()") { [
+            JavaIR.method(modifiers, "boolean get" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "IsSet()") { [
                 "return (this._bits & " + param.uppercased() + "_SET) == " + param.uppercased() + "_SET;",
             ] }
         }
@@ -147,7 +147,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
         let privateConstructor = JavaIR.method([.private], "Builder(@NonNull " + className + " model)") {
             self.transitiveProperties.map { param, _ in
-                "this." + param.snakeCaseToPropertyName(.java) + " = model." + param.snakeCaseToPropertyName(.java) + ";"
+                "this." + Languages.java.snakeCaseToPropertyName(param) + " = model." + Languages.java.snakeCaseToPropertyName(param) + ";"
             } + ["this._bits = model._bits;"]
         }
 
@@ -156,15 +156,15 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderBuild() -> JavaIR.Method {
         let params = (transitiveProperties.map { param, _ in
-            "this." + param.snakeCaseToPropertyName(.java)
+            "this." + Languages.java.snakeCaseToPropertyName(param)
         } + ["this._bits"]).joined(separator: ",\n")
         return JavaIR.method([.public], "\(className) build()") { ["return new " + self.className + "(", params, ");"] }
     }
 
     func renderBuilderGetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
         let getters = transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, self.typeFromSchema(param, schemaObj) + " get" + param.snakeCaseToCapitalizedPropertyName(.java) + "()") { [
-                "return this." + param.snakeCaseToPropertyName(.java) + ";",
+            JavaIR.method(modifiers, self.typeFromSchema(param, schemaObj) + " get" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "()") { [
+                "return this." + Languages.java.snakeCaseToPropertyName(param) + ";",
             ] }
         }
         return getters
@@ -172,8 +172,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderSetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
         let setters = transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, "Builder set\(param.snakeCaseToCamelCase(.java))(\(self.typeFromSchema(param, schemaObj)) value)") { [
-                "this." + param.snakeCaseToPropertyName(.java) + " = value;",
+            JavaIR.method(modifiers, "Builder set\(Languages.java.snakeCaseToCamelCase(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
+                "this." + Languages.java.snakeCaseToPropertyName(param) + " = value;",
                 "this._bits |= " + param.uppercased() + "_SET;",
                 "return this;",
             ] }
@@ -183,8 +183,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderMerge() -> JavaIR.Method {
         let body = (transitiveProperties.map { param, _ in
-            JavaIR.ifBlock(condition: "model.get" + param.snakeCaseToCapitalizedPropertyName(.java) + "IsSet()") {
-                ["this." + param.snakeCaseToPropertyName(.java) + " = model." + param.snakeCaseToPropertyName(.java) + ";"]
+            JavaIR.ifBlock(condition: "model.get" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "IsSet()") {
+                ["this." + Languages.java.snakeCaseToPropertyName(param) + " = model." + Languages.java.snakeCaseToPropertyName(param) + ";"]
             }
         })
         return JavaIR.method([.public], "void mergeFrom(" + className + " model)") { body }
@@ -192,7 +192,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderProperties(modifiers _: JavaModifier = [.private]) -> [[JavaIR.Property]] {
         let props = transitiveProperties.map { param, schemaObj in
-            JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: param.snakeCaseToPropertyName(.java), initialValue: "")
+            JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
         }
 
         let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "int", name: "_bits", initialValue: "0")

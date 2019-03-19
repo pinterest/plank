@@ -23,7 +23,7 @@ extension JavaModelRenderer {
     func adtRootsForSchema(property: String, schemas: [SchemaObjectProperty]) -> [JavaIR.Root] {
         // Do we need to create a custom runtime type adapter factory?
         let adtName = "\(rootSchema.name)_\(property)"
-        let formattedADTName = adtName.snakeCaseToCamelCase()
+        let formattedADTName = Languages.java.snakeCaseToCamelCase(adtName)
         let privateInit = JavaIR.method([.private], "\(formattedADTName)()") { [] }
 
         func interfaceMethods() -> [JavaIR.Method] {

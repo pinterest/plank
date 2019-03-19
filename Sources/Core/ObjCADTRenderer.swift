@@ -90,7 +90,7 @@ struct ObjCADTRenderer: ObjCFileRenderer {
 
     private func renderArgName(schema: Schema) -> (String, String) {
         let name = ObjCADTRenderer.objectName(schema)
-        let arg = name.snakeCaseToPropertyName()
+        let arg = Languages.objectiveC.snakeCaseToPropertyName(name)
         return (name, arg)
     }
 

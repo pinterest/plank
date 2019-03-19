@@ -21,7 +21,7 @@ extension ObjCModelRenderer {
 
                 self.properties.map({ (param, _) -> String in
                     ObjCIR.ifStmt("\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
-                        ["_\(param.snakeCaseToPropertyName()) = modelObject.\(param.snakeCaseToPropertyName());"]
+                        ["_\(Languages.objectiveC.snakeCaseToPropertyName(param)) = modelObject.\(Languages.objectiveC.snakeCaseToPropertyName(param));"]
                     }
                 }).joined(separator: "\n"),
                 "_\(self.dirtyPropertiesIVarName) = \(self.dirtyPropertiesIVarName);",
@@ -34,16 +34,16 @@ extension ObjCModelRenderer {
         func renderBuilderPropertySetter(_ param: Parameter, _ schema: Schema) -> String {
             switch schema.memoryAssignmentType() {
             case .copy:
-                return "[\(param.snakeCaseToPropertyName()) copy];"
+                return "[\(Languages.objectiveC.snakeCaseToPropertyName(param)) copy];"
             default:
-                return "\(param.snakeCaseToPropertyName());"
+                return "\(Languages.objectiveC.snakeCaseToPropertyName(param));"
             }
         }
 
         return properties.map({ (param, prop) -> ObjCIR.Method in
-            ObjCIR.method("- (void)set\(param.snakeCaseToCapitalizedPropertyName()):(\(typeFromSchema(param, prop)))\(param.snakeCaseToPropertyName())") {
+            ObjCIR.method("- (void)set\(Languages.objectiveC.snakeCaseToCapitalizedPropertyName(param)):(\(typeFromSchema(param, prop)))\(Languages.objectiveC.snakeCaseToPropertyName(param))") {
                 [
-                    "_\(param.snakeCaseToPropertyName()) = \(renderBuilderPropertySetter(param, prop.schema))",
+                    "_\(Languages.objectiveC.snakeCaseToPropertyName(param)) = \(renderBuilderPropertySetter(param, prop.schema))",
                     "_\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = 1;",
                 ]
             }
@@ -56,17 +56,17 @@ extension ObjCModelRenderer {
                 func loop(_ schema: Schema, _ nullability: Nullability?) -> [String] {
                     switch schema {
                     case .object:
-                        var stmt = ObjCIR.ifElseStmt("builder.\(param.snakeCaseToPropertyName())") { [
-                            "builder.\(param.snakeCaseToPropertyName()) = [builder.\(param.snakeCaseToPropertyName()) mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];",
+                        var stmt = ObjCIR.ifElseStmt("builder.\(Languages.objectiveC.snakeCaseToPropertyName(param))") { [
+                            "builder.\(Languages.objectiveC.snakeCaseToPropertyName(param)) = [builder.\(param.snakeCaseToPropertyName()) mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];",
                         ] } { [
-                            "builder.\(param.snakeCaseToPropertyName()) = value;",
+                            "builder.\(Languages.objectiveC.snakeCaseToPropertyName(param)) = value;",
                         ] }
                         switch nullability {
-                        case .some(.nullable): stmt = ObjCIR.ifElseStmt("value != nil") { [stmt] } { ["builder.\(param.snakeCaseToPropertyName()) = nil;"] }
+                        case .some(.nullable): stmt = ObjCIR.ifElseStmt("value != nil") { [stmt] } { ["builder.\(Languages.objectiveC.snakeCaseToPropertyName(param)) = nil;"] }
                         case .some(.nonnull), .none: break
                         }
                         return [
-                            "id value = modelObject.\(param.snakeCaseToPropertyName());",
+                            "id value = modelObject.\(Languages.objectiveC.snakeCaseToPropertyName(param));",
                             stmt,
                         ]
                     case let .reference(with: ref):
@@ -77,7 +77,7 @@ extension ObjCModelRenderer {
                             fatalError("Error identifying reference for \(param) in \(schema)")
                         }
                     default:
-                        return ["builder.\(param.snakeCaseToPropertyName()) = modelObject.\(param.snakeCaseToPropertyName());"]
+                        return ["builder.\(Languages.objectiveC.snakeCaseToPropertyName(param)) = modelObject.\(Languages.objectiveC.snakeCaseToPropertyName(param));"]
                     }
                 }
                 return loop(schema, nullability)
