@@ -126,7 +126,7 @@ extension ObjCFileRenderer {
                 ObjCIR.ifStmt("self == anObject") { ["return YES;"] },
                 self.isBaseClass ? "" : ObjCIR.ifStmt("[super isEqual:anObject] == NO") { ["return NO;"] },
                 ObjCIR.ifStmt("[anObject isKindOfClass:[\(self.className) class]] == NO") { ["return NO;"] },
-                "return [self isEqualTo\(self.rootSchema.name.snakeCaseToCamelCase()):anObject];",
+                "return [self isEqualTo\(Languages.objectiveC.snakeCaseToCamelCase(self.rootSchema.name)):anObject];",
             ].filter { $0 != "" }
         }
     }

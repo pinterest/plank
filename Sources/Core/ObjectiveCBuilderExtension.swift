@@ -57,7 +57,7 @@ extension ObjCModelRenderer {
                     switch schema {
                     case .object:
                         var stmt = ObjCIR.ifElseStmt("builder.\(Languages.objectiveC.snakeCaseToPropertyName(param))") { [
-                            "builder.\(Languages.objectiveC.snakeCaseToPropertyName(param)) = [builder.\(param.snakeCaseToPropertyName()) mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];",
+                            "builder.\(Languages.objectiveC.snakeCaseToPropertyName(param)) = [builder.\(Languages.objectiveC.snakeCaseToPropertyName(param)) mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];",
                         ] } { [
                             "builder.\(Languages.objectiveC.snakeCaseToPropertyName(param)) = value;",
                         ] }

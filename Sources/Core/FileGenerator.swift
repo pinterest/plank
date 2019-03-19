@@ -104,7 +104,7 @@ let objectiveCReservedWords = Set<String>([
     "void",
     "volatile",
     "while",
-    ])
+])
 
 // TODO: "id" is technically allowed. It's possible not everyone wants this replacement.
 let javaReservedWordReplacements = [
@@ -170,31 +170,29 @@ let javaReservedWords = Set<String>([
     "var",
     "const",
     "goto",
-    ])
+])
 
 public enum Languages: String {
     case objectiveC = "objc"
     case flowtype = "flow"
     case java
-    
+
     func snakeCaseToCamelCase(_ param: String) -> String {
         var str: String = param
-        
+
         switch self {
         case .objectiveC:
             if let replacementString = objectiveCReservedWordReplacements[param.lowercased()] as String? {
                 str = replacementString
             }
-            break
         case .java:
             if let replacementString = javaReservedWordReplacements[param.lowercased()] as String? {
                 str = replacementString
             }
-            break
         case .flowtype:
             break
         }
-        
+
         let components = str.components(separatedBy: "_")
         let name = components.map { $0.uppercaseFirst }
         let formattedName = name.joined(separator: "")
@@ -210,47 +208,45 @@ public enum Languages: String {
         case .flowtype:
             break
         }
-        
+
         return formattedName
     }
-    
+
     /// All components separated by _ will be capitalized execpt the first
     func snakeCaseToPropertyName(_ param: String) -> String {
         var str: String = param
-        
+
         switch self {
         case .objectiveC:
             if let replacementString = objectiveCReservedWordReplacements[param.lowercased()] as String? {
                 str = replacementString
             }
-            break
         case .java:
             if let replacementString = javaReservedWordReplacements[param.lowercased()] as String? {
                 str = replacementString
             }
-            break
         case .flowtype:
             break
         }
-        
+
         let components = str.components(separatedBy: "_")
-        
+
         var name: String = ""
-        
+
         for (idx, component) in components.enumerated() {
             // Hack: Force URL's to be uppercase if they appear
             if idx != 0, components.count > 1, component == "url" {
                 name += component.uppercased()
                 continue
             }
-            
+
             if idx != 0 {
                 name += component.uppercaseFirst
             } else {
                 name += component.lowercaseFirst
             }
         }
-        
+
         switch self {
         case .objectiveC:
             if objectiveCReservedWords.contains(name) {
@@ -263,10 +259,10 @@ public enum Languages: String {
         case .flowtype:
             break
         }
-        
+
         return name
     }
-    
+
     func snakeCaseToCapitalizedPropertyName(_ param: String) -> String {
         let formattedPropName = snakeCaseToPropertyName(param)
         let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercased()
