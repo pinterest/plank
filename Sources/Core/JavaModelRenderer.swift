@@ -258,6 +258,10 @@ public struct JavaModelRenderer: JavaFileRenderer {
             className + " read(JsonReader reader)",
             ["IOException"]
         ) { [
+            JavaIR.ifBlock(condition: "reader.peek() == JsonToken.NULL") { [
+                "reader.nextNull();",
+                "return null;",
+            ] },
             "JsonElement tree = this.elementTypeAdapter.read(reader);",
             className + " model = this.delegateTypeAdapter.fromJsonTree(tree);",
             "Set<String> keys = tree.getAsJsonObject().keySet();",
@@ -293,6 +297,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "com.google.gson.TypeAdapterFactory",
                 "com.google.gson.reflect.TypeToken",
                 "com.google.gson.stream.JsonReader",
+                "com.google.gson.stream.JsonToken",
                 "com.google.gson.stream.JsonWriter",
                 "java.io.IOException",
                 "java.util.Date",
