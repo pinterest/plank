@@ -17,6 +17,7 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -238,6 +239,10 @@ public class VariableSubtitution {
 
         @Override
         public VariableSubtitution read(JsonReader reader) throws IOException {
+            if (reader.peek() == JsonToken.NULL) {
+                reader.nextNull();
+                return null;
+            }
             JsonElement tree = this.elementTypeAdapter.read(reader);
             VariableSubtitution model = this.delegateTypeAdapter.fromJsonTree(tree);
             Set<String> keys = tree.getAsJsonObject().keySet();
