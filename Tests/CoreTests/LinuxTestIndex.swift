@@ -15,6 +15,16 @@ import XCTest
         ]
     }
 
+    // Generated Test Extension for LanguagesTests
+    extension LanguagesTests {
+        static var allTests = [
+            ("testSnakeCaseToCamelCase", testSnakeCaseToCamelCase),
+            ("testSnakeCaseToPropertyName", testSnakeCaseToPropertyName),
+            ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName),
+            ("testReservedKeywordSubstitution", testReservedKeywordSubstitution),
+            ]
+    }
+
     // Generated Test Extension for ObjectiveCIRTests
     extension ObjectiveCIRTests {
         static var allTests = [
