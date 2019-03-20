@@ -214,12 +214,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     // MARK: - TypeAdapter
 
     func typeAdapterVariableNameForType(_ type: String) -> String {
-        return (type
-            .replacingOccurrences(of: "<", with: "_")
-            .replacingOccurrences(of: ">", with: "_")
-            .replacingOccurrences(of: ",", with: "_")
-            .replacingOccurrences(of: " ", with: "_")
-            + "TypeAdapter").lowercaseFirst
+        return type.replacingNonAlphaNumericsWith("_").lowercaseFirst + "TypeAdapter"
     }
 
     func renderTypeAdapterProperties() -> [[JavaIR.Property]] {
