@@ -21,7 +21,7 @@ for lang in ${lang_options[@]}; do
     update_current_line "[${lang}] Testing output is stable (test case ${i}/100)" 
     treatment_lang_output_dir="$(mktemp -d)"
     $plank_bin --lang ${lang} --output_dir=${treatment_lang_output_dir} ${json_files}
-    if ! diff "${lang_output_dir}" "${treatment_lang_output_dir}"; then
+    if ! diff -rq "${lang_output_dir}" "${treatment_lang_output_dir}"; then
       update_current_line "[${lang}] ❌ Output is unstable"
       exit 1
     fi
