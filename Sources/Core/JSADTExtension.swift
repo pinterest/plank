@@ -10,7 +10,7 @@ import Foundation
 
 extension JSModelRenderer {
     public static func adtVariantTypeName(className: String, property: String) -> String {
-        return "\(className)\(property.snakeCaseToCamelCase())Type"
+        return "\(className)\(Languages.flowtype.snakeCaseToCamelCase(property))Type"
     }
 
     public static func adtCaseTypeName(_ aSchema: Schema) -> String {

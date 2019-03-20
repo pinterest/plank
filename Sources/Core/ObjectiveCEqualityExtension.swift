@@ -39,7 +39,7 @@ extension ObjCFileRenderer {
 
         let rootHashStatement = isBaseClass ? ["17"] : ["[super hash]"]
         let propReturnStatements = rootHashStatement + properties.map { param, prop -> String in
-            let formattedParam = param.snakeCaseToPropertyName()
+            let formattedParam = Languages.objectiveC.snakeCaseToPropertyName(param)
             return schemaHashStatement(with: formattedParam, for: prop.schema)
         }
 
@@ -92,7 +92,7 @@ extension ObjCFileRenderer {
         }
 
         let propReturnStmts = sortedProps.map { param, prop -> String in
-            let formattedParam = param.snakeCaseToPropertyName()
+            let formattedParam = Languages.objectiveC.snakeCaseToPropertyName(param)
             let pointerEqStmt = "_\(formattedParam) == anObject.\(formattedParam)"
             let deepEqStmt = schemaIsEqualStatement(with: formattedParam, for: prop.schema)
             return [pointerEqStmt, deepEqStmt].filter { $0 != "" }.joined(separator: " || ")
@@ -110,7 +110,7 @@ extension ObjCFileRenderer {
         }
 
         let superInvocation = parentName(parentDescriptor).map { ["[super isEqualTo\($0):anObject]"] } ?? []
-        return ObjCIR.method("- (BOOL)isEqualTo\(rootSchema.name.snakeCaseToCamelCase()):(\(className) *)anObject") {
+        return ObjCIR.method("- (BOOL)isEqualTo\(Languages.objectiveC.snakeCaseToCamelCase(rootSchema.name)):(\(className) *)anObject") {
             [
                 "return (",
                 -->[(["anObject != nil"] + superInvocation + propReturnStmts)
@@ -126,7 +126,7 @@ extension ObjCFileRenderer {
                 ObjCIR.ifStmt("self == anObject") { ["return YES;"] },
                 self.isBaseClass ? "" : ObjCIR.ifStmt("[super isEqual:anObject] == NO") { ["return NO;"] },
                 ObjCIR.ifStmt("[anObject isKindOfClass:[\(self.className) class]] == NO") { ["return NO;"] },
-                "return [self isEqualTo\(self.rootSchema.name.snakeCaseToCamelCase()):anObject];",
+                "return [self isEqualTo\(Languages.objectiveC.snakeCaseToCamelCase(self.rootSchema.name)):anObject];",
             ].filter { $0 != "" }
         }
     }

@@ -21,10 +21,253 @@ public enum GenerationParameterType {
     case packageName
 }
 
+// Most of these are derived from https://www.binpress.com/tutorial/objective-c-reserved-keywords/43
+// other language conflicts should be ideally added here.
+// TODO: Find a way to separate this by language since the reserved keywords will differ.
+let objectiveCReservedWordReplacements = [
+    "description": "description_text",
+    "id": "identifier",
+]
+
+let objectiveCReservedWords = Set<String>([
+    "@catch()",
+    "@class",
+    "@dynamic",
+    "@end",
+    "@finally",
+    "@implementation",
+    "@interface",
+    "@private",
+    "@property",
+    "@protected",
+    "@protocol",
+    "@public",
+    "@selector",
+    "@synthesize",
+    "@throw",
+    "@try",
+    "BOOL",
+    "Class",
+    "IMP",
+    "NO",
+    "NULL",
+    "Protocol",
+    "SEL",
+    "YES",
+    "_Bool",
+    "_Complex",
+    "_Imaginery",
+    "atomic",
+    "auto",
+    "break",
+    "bycopy",
+    "byref",
+    "case",
+    "char",
+    "const",
+    "continue",
+    "default",
+    "do",
+    "double",
+    "else",
+    "enum",
+    "extern",
+    "float",
+    "for",
+    "goto",
+    "id",
+    "if",
+    "in",
+    "inline",
+    "inout",
+    "int",
+    "long",
+    "nil",
+    "nonatomic",
+    "oneway",
+    "out",
+    "register",
+    "restrict",
+    "retain",
+    "return",
+    "self",
+    "short",
+    "signed",
+    "sizeof",
+    "static",
+    "struct",
+    "super",
+    "switch",
+    "typedef",
+    "union",
+    "unsigned",
+    "void",
+    "volatile",
+    "while",
+])
+
+// TODO: "id" is technically allowed. It's possible not everyone wants this replacement.
+let javaReservedWordReplacements = [
+    "id": "uid",
+]
+
+// https://en.wikipedia.org/wiki/List_of_Java_keywords
+let javaReservedWords = Set<String>([
+    "abstract",
+    "assert",
+    "boolean",
+    "break",
+    "byte",
+    "case",
+    "catch",
+    "char",
+    "class",
+    "continue",
+    "default",
+    "do",
+    "double",
+    "else",
+    "enum",
+    "exports",
+    "extends",
+    "final",
+    "finally",
+    "float",
+    "for",
+    "if",
+    "implements",
+    "import",
+    "instanceof",
+    "int",
+    "interface",
+    "long",
+    "module",
+    "native",
+    "new",
+    "package",
+    "private",
+    "protected",
+    "public",
+    "requires",
+    "return",
+    "short",
+    "static",
+    "strictfp",
+    "super",
+    "switch",
+    "synchronized",
+    "this",
+    "throw",
+    "throws",
+    "transient",
+    "try",
+    "void",
+    "volatile",
+    "while",
+    "true",
+    "null",
+    "false",
+    "var",
+    "const",
+    "goto",
+])
+
 public enum Languages: String {
     case objectiveC = "objc"
     case flowtype = "flow"
     case java
+
+    func snakeCaseToCamelCase(_ param: String) -> String {
+        var str: String = param
+
+        switch self {
+        case .objectiveC:
+            if let replacementString = objectiveCReservedWordReplacements[param.lowercased()] as String? {
+                str = replacementString
+            }
+        case .java:
+            if let replacementString = javaReservedWordReplacements[param.lowercased()] as String? {
+                str = replacementString
+            }
+        case .flowtype:
+            break
+        }
+
+        let components = str.components(separatedBy: "_")
+        let name = components.map { $0.uppercaseFirst }
+        let formattedName = name.joined(separator: "")
+        switch self {
+        case .objectiveC:
+            if objectiveCReservedWords.contains(formattedName) {
+                return "\(formattedName)Property"
+            }
+        case .java:
+            if javaReservedWords.contains(formattedName) {
+                return "\(formattedName)Property"
+            }
+        case .flowtype:
+            break
+        }
+
+        return formattedName
+    }
+
+    /// All components separated by _ will be capitalized execpt the first
+    func snakeCaseToPropertyName(_ param: String) -> String {
+        var str: String = param
+
+        switch self {
+        case .objectiveC:
+            if let replacementString = objectiveCReservedWordReplacements[param.lowercased()] as String? {
+                str = replacementString
+            }
+        case .java:
+            if let replacementString = javaReservedWordReplacements[param.lowercased()] as String? {
+                str = replacementString
+            }
+        case .flowtype:
+            break
+        }
+
+        let components = str.components(separatedBy: "_")
+
+        var name: String = ""
+
+        for (idx, component) in components.enumerated() {
+            // Hack: Force URL's to be uppercase if they appear
+            if idx != 0, components.count > 1, component == "url" {
+                name += component.uppercased()
+                continue
+            }
+
+            if idx != 0 {
+                name += component.uppercaseFirst
+            } else {
+                name += component.lowercaseFirst
+            }
+        }
+
+        switch self {
+        case .objectiveC:
+            if objectiveCReservedWords.contains(name) {
+                return "\(name)Property"
+            }
+        case .java:
+            if javaReservedWords.contains(name) {
+                return "\(name)Property"
+            }
+        case .flowtype:
+            break
+        }
+
+        return name
+    }
+
+    func snakeCaseToCapitalizedPropertyName(_ param: String) -> String {
+        let formattedPropName = snakeCaseToPropertyName(param)
+        let capitalizedFirstLetter = String(formattedPropName[formattedPropName.startIndex]).uppercased()
+        return capitalizedFirstLetter + String(formattedPropName.dropFirst())
+    }
 }
 
 public protocol FileGeneratorManager {

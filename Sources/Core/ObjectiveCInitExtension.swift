@@ -47,7 +47,7 @@ extension ObjCModelRenderer {
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                     ObjCIR.ifStmt("!(self = [super initWithBuilder:builder initType:initType])") { ["return self;"] },
                 self.properties.map { name, _ in
-                    "_\(name.snakeCaseToPropertyName()) = builder.\(name.snakeCaseToPropertyName());"
+                    "_\(Languages.objectiveC.snakeCaseToPropertyName(name)) = builder.\(Languages.objectiveC.snakeCaseToPropertyName(name));"
                 }.joined(separator: "\n"),
                 "_\(self.dirtyPropertiesIVarName) = builder.\(self.dirtyPropertiesIVarName);",
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
@@ -268,7 +268,7 @@ extension ObjCModelRenderer {
                         "__unsafe_unretained id value = modelDictionary[\(name.objcLiteral())]; // Collection will retain.",
                         ObjCIR.ifStmt("value != nil") { [
                             ObjCIR.ifStmt("value != (id)kCFNull") {
-                                renderPropertyInit("self->_\(name.snakeCaseToPropertyName())", "value", schema: prop.schema, firstName: name)
+                                renderPropertyInit("self->_\(Languages.objectiveC.snakeCaseToPropertyName(name))", "value", schema: prop.schema, firstName: name)
                             },
                             "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;",
                         ] },

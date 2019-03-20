@@ -30,12 +30,12 @@ import java.util.Set;
 
 public class Board {
 
-    @SerializedName("id") private @Nullable String identifier;
+    @SerializedName("id") private @Nullable String uid;
     @SerializedName("contributors") private @Nullable Set<User> contributors;
     @SerializedName("counts") private @Nullable Map<String, Integer> counts;
     @SerializedName("created_at") private @Nullable Date createdAt;
     @SerializedName("creator") private @Nullable Map<String, String> creator;
-    @SerializedName("description") private @Nullable String descriptionText;
+    @SerializedName("description") private @Nullable String description;
     @SerializedName("image") private @NonNull Image image;
     @SerializedName("name") private @Nullable String name;
     @SerializedName("url") private @Nullable String url;
@@ -53,23 +53,23 @@ public class Board {
     private int _bits = 0;
 
     private Board(
-        @Nullable String identifier,
+        @Nullable String uid,
         @Nullable Set<User> contributors,
         @Nullable Map<String, Integer> counts,
         @Nullable Date createdAt,
         @Nullable Map<String, String> creator,
-        @Nullable String descriptionText,
+        @Nullable String description,
         @NonNull Image image,
         @Nullable String name,
         @Nullable String url,
         int _bits
     ) {
-        this.identifier = identifier;
+        this.uid = uid;
         this.contributors = contributors;
         this.counts = counts;
         this.createdAt = createdAt;
         this.creator = creator;
-        this.descriptionText = descriptionText;
+        this.description = description;
         this.image = image;
         this.name = name;
         this.url = url;
@@ -99,12 +99,12 @@ public class Board {
             return false;
         }
         Board that = (Board) o;
-        return Objects.equals(this.identifier, that.identifier) &&
+        return Objects.equals(this.uid, that.uid) &&
         Objects.equals(this.contributors, that.contributors) &&
         Objects.equals(this.counts, that.counts) &&
         Objects.equals(this.createdAt, that.createdAt) &&
         Objects.equals(this.creator, that.creator) &&
-        Objects.equals(this.descriptionText, that.descriptionText) &&
+        Objects.equals(this.description, that.description) &&
         Objects.equals(this.image, that.image) &&
         Objects.equals(this.name, that.name) &&
         Objects.equals(this.url, that.url);
@@ -112,19 +112,19 @@ public class Board {
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier,
+        return Objects.hash(uid,
         contributors,
         counts,
         createdAt,
         creator,
-        descriptionText,
+        description,
         image,
         name,
         url);
     }
 
-    public @Nullable String getIdentifier() {
-        return this.identifier;
+    public @Nullable String getUid() {
+        return this.uid;
     }
 
     public @Nullable Set<User> getContributors() {
@@ -143,8 +143,8 @@ public class Board {
         return this.creator;
     }
 
-    public @Nullable String getDescriptionText() {
-        return this.descriptionText;
+    public @Nullable String getDescription() {
+        return this.description;
     }
 
     public @NonNull Image getImage() {
@@ -159,7 +159,7 @@ public class Board {
         return this.url;
     }
 
-    public boolean getIdentifierIsSet() {
+    public boolean getUidIsSet() {
         return (this._bits & ID_SET) == ID_SET;
     }
 
@@ -179,7 +179,7 @@ public class Board {
         return (this._bits & CREATOR_SET) == CREATOR_SET;
     }
 
-    public boolean getDescriptionTextIsSet() {
+    public boolean getDescriptionIsSet() {
         return (this._bits & DESCRIPTION_SET) == DESCRIPTION_SET;
     }
 
@@ -197,12 +197,12 @@ public class Board {
 
     public static class Builder {
 
-        @SerializedName("id") private @Nullable String identifier;
+        @SerializedName("id") private @Nullable String uid;
         @SerializedName("contributors") private @Nullable Set<User> contributors;
         @SerializedName("counts") private @Nullable Map<String, Integer> counts;
         @SerializedName("created_at") private @Nullable Date createdAt;
         @SerializedName("creator") private @Nullable Map<String, String> creator;
-        @SerializedName("description") private @Nullable String descriptionText;
+        @SerializedName("description") private @Nullable String description;
         @SerializedName("image") private @NonNull Image image;
         @SerializedName("name") private @Nullable String name;
         @SerializedName("url") private @Nullable String url;
@@ -213,20 +213,20 @@ public class Board {
         }
 
         private Builder(@NonNull Board model) {
-            this.identifier = model.identifier;
+            this.uid = model.uid;
             this.contributors = model.contributors;
             this.counts = model.counts;
             this.createdAt = model.createdAt;
             this.creator = model.creator;
-            this.descriptionText = model.descriptionText;
+            this.description = model.description;
             this.image = model.image;
             this.name = model.name;
             this.url = model.url;
             this._bits = model._bits;
         }
 
-        public Builder setIdentifier(@Nullable String value) {
-            this.identifier = value;
+        public Builder setUid(@Nullable String value) {
+            this.uid = value;
             this._bits |= ID_SET;
             return this;
         }
@@ -255,8 +255,8 @@ public class Board {
             return this;
         }
 
-        public Builder setDescriptionText(@Nullable String value) {
-            this.descriptionText = value;
+        public Builder setDescription(@Nullable String value) {
+            this.description = value;
             this._bits |= DESCRIPTION_SET;
             return this;
         }
@@ -279,8 +279,8 @@ public class Board {
             return this;
         }
 
-        public @Nullable String getIdentifier() {
-            return this.identifier;
+        public @Nullable String getUid() {
+            return this.uid;
         }
 
         public @Nullable Set<User> getContributors() {
@@ -299,8 +299,8 @@ public class Board {
             return this.creator;
         }
 
-        public @Nullable String getDescriptionText() {
-            return this.descriptionText;
+        public @Nullable String getDescription() {
+            return this.description;
         }
 
         public @NonNull Image getImage() {
@@ -317,12 +317,12 @@ public class Board {
 
         public Board build() {
             return new Board(
-            this.identifier,
+            this.uid,
             this.contributors,
             this.counts,
             this.createdAt,
             this.creator,
-            this.descriptionText,
+            this.description,
             this.image,
             this.name,
             this.url,
@@ -331,8 +331,8 @@ public class Board {
         }
 
         public void mergeFrom(Board model) {
-            if (model.getIdentifierIsSet()) {
-                this.identifier = model.identifier;
+            if (model.getUidIsSet()) {
+                this.uid = model.uid;
             }
             if (model.getContributorsIsSet()) {
                 this.contributors = model.contributors;
@@ -346,8 +346,8 @@ public class Board {
             if (model.getCreatorIsSet()) {
                 this.creator = model.creator;
             }
-            if (model.getDescriptionTextIsSet()) {
-                this.descriptionText = model.descriptionText;
+            if (model.getDescriptionIsSet()) {
+                this.description = model.description;
             }
             if (model.getImageIsSet()) {
                 this.image = model.image;

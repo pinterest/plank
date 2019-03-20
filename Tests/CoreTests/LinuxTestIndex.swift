@@ -8,10 +8,6 @@ import XCTest
             ("testUppercaseFirst", testUppercaseFirst),
             ("testLowercaseFirst", testLowercaseFirst),
             ("testSuffixSubstring", testSuffixSubstring),
-            ("testSnakeCaseToCamelCase", testSnakeCaseToCamelCase),
-            ("testSnakeCaseToPropertyName", testSnakeCaseToPropertyName),
-            ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName),
-            ("testReservedKeywordSubstitution", testReservedKeywordSubstitution),
         ]
     }
 
@@ -32,6 +28,16 @@ import XCTest
             ("testElseIfStmt", testElseIfStmt),
             ("testElseStmt", testElseStmt),
             ("testIfElseStmt", testIfElseStmt),
+        ]
+    }
+
+    // Generated Test Extension for LanguagesTests
+    extension LanguagesTests {
+        static var allTests = [
+            ("testSnakeCaseToCamelCase", testSnakeCaseToCamelCase),
+            ("testSnakeCaseToPropertyName", testSnakeCaseToPropertyName),
+            ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName),
+            ("testReservedKeywordSubstitution", testReservedKeywordSubstitution),
         ]
     }
 

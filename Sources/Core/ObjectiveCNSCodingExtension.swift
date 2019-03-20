@@ -109,7 +109,7 @@ extension ObjCFileRenderer {
     }
 
     fileprivate func decodeStatement(_ param: String, _ schema: Schema) -> String {
-        let propIVarName = "_\(param.snakeCaseToPropertyName())"
+        let propIVarName = "_\(Languages.objectiveC.snakeCaseToPropertyName(param))"
         return "\(propIVarName) = " + {
             switch schema {
             case .enumT:
@@ -134,7 +134,7 @@ extension ObjCFileRenderer {
     }
 
     func encodeStatement(_ param: String, _ schema: Schema) -> String {
-        let propGetter = "self.\(param.snakeCaseToPropertyName())"
+        let propGetter = "self.\(Languages.objectiveC.snakeCaseToPropertyName(param))"
         switch schema {
         case .enumT:
             return "[aCoder encodeInteger:\(propGetter) forKey:\(param.objcLiteral())];"

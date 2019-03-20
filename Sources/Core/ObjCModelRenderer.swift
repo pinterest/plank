@@ -24,7 +24,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     }
 
     var dirtyPropertiesIVarName: String {
-        return "\(rootSchema.name.snakeCaseToPropertyName())DirtyProperties"
+        return "\(Languages.objectiveC.snakeCaseToPropertyName(rootSchema.name))DirtyProperties"
     }
 
     // MARK: Model methods
@@ -113,7 +113,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
 
     func renderIsSetMethods() -> [ObjCIR.Method] {
         return properties.map { param, _ in
-            ObjCIR.method("- (BOOL)is\(param.snakeCaseToCamelCase())Set") { [
+            ObjCIR.method("- (BOOL)is\(Languages.objectiveC.snakeCaseToCamelCase(param))Set") { [
                 "return _\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) == 1;",
             ] }
         }

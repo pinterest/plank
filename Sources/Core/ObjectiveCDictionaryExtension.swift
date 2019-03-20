@@ -17,7 +17,7 @@ extension ObjCModelRenderer {
             ObjCIR.ifStmt("_" + "\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") { [
                 schemaObj.schema.isObjCPrimitiveType ?
                     self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary) :
-                    ObjCIR.ifElseStmt("_\(param.snakeCaseToPropertyName()) != nil") { [
+                    ObjCIR.ifElseStmt("_\(Languages.objectiveC.snakeCaseToPropertyName(param)) != nil") { [
                         self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary),
                     ] } { [
                         "[\(dictionary) setObject:[NSNull null] forKey:@\"\(param)\"];",
@@ -73,10 +73,10 @@ enum ParamType {
     func paramVariable() -> String {
         switch self {
         case let .ivar(paramName):
-            return "_\(paramName.snakeCaseToPropertyName())"
+            return "_\(Languages.objectiveC.snakeCaseToPropertyName(paramName))"
         case let .localVariable(paramName)
              :
-            return paramName.snakeCaseToPropertyName()
+            return Languages.objectiveC.snakeCaseToPropertyName(paramName)
         }
     }
 
