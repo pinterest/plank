@@ -255,10 +255,14 @@ public struct JavaModelRenderer: JavaFileRenderer {
             className + "TypeAdapter(Gson gson, " + className + "TypeAdapterFactory factory, TypeToken typeToken)"
         ) { ["this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);"] +
             Set(transitiveProperties.map { param, schemaObj in
-                unwrappedTypeFromSchema(param, schemaObj.schema)
-            }).sorted().map { type in
-                "this." + typeAdapterVariableNameForType(type) + " = gson.getAdapter(new TypeToken<" + type + ">(){}).nullSafe();"
-            }
+                let type = unwrappedTypeFromSchema(param, schemaObj.schema)
+                let variableName = typeAdapterVariableNameForType(type)
+                if schemaObj.schema.isJavaCollection {
+                    return "this.\(variableName) = gson.getAdapter(new TypeToken<" + type + ">(){}).nullSafe();"
+                } else {
+                    return "this.\(variableName) = gson.getAdapter(\(type).class).nullSafe();"
+                }
+            }).sorted()
         }
 
         let write = JavaIR.methodThatThrows(

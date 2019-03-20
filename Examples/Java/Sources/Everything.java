@@ -1046,13 +1046,13 @@ public class Everything {
 
         public EverythingTypeAdapter(Gson gson, EverythingTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.booleanTypeAdapter = gson.getAdapter(new TypeToken<Boolean>(){}).nullSafe();
-            this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
-            this.doubleTypeAdapter = gson.getAdapter(new TypeToken<Double>(){}).nullSafe();
-            this.everythingIntEnumTypeAdapter = gson.getAdapter(new TypeToken<EverythingIntEnum>(){}).nullSafe();
-            this.everythingPolymorphicPropTypeAdapter = gson.getAdapter(new TypeToken<EverythingPolymorphicProp>(){}).nullSafe();
-            this.everythingStringEnumTypeAdapter = gson.getAdapter(new TypeToken<EverythingStringEnum>(){}).nullSafe();
-            this.integerTypeAdapter = gson.getAdapter(new TypeToken<Integer>(){}).nullSafe();
+            this.booleanTypeAdapter = gson.getAdapter(Boolean.class).nullSafe();
+            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
+            this.doubleTypeAdapter = gson.getAdapter(Double.class).nullSafe();
+            this.everythingIntEnumTypeAdapter = gson.getAdapter(EverythingIntEnum.class).nullSafe();
+            this.everythingPolymorphicPropTypeAdapter = gson.getAdapter(EverythingPolymorphicProp.class).nullSafe();
+            this.everythingStringEnumTypeAdapter = gson.getAdapter(EverythingStringEnum.class).nullSafe();
+            this.integerTypeAdapter = gson.getAdapter(Integer.class).nullSafe();
             this.list_Integer_TypeAdapter = gson.getAdapter(new TypeToken<List<Integer>>(){}).nullSafe();
             this.list_List_User__TypeAdapter = gson.getAdapter(new TypeToken<List<List<User>>>(){}).nullSafe();
             this.list_Map_String__User__TypeAdapter = gson.getAdapter(new TypeToken<List<Map<String, User>>>(){}).nullSafe();
@@ -1070,8 +1070,8 @@ public class Everything {
             this.set_Object_TypeAdapter = gson.getAdapter(new TypeToken<Set<Object>>(){}).nullSafe();
             this.set_String_TypeAdapter = gson.getAdapter(new TypeToken<Set<String>>(){}).nullSafe();
             this.set_User_TypeAdapter = gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
-            this.userTypeAdapter = gson.getAdapter(new TypeToken<User>(){}).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
+            this.userTypeAdapter = gson.getAdapter(User.class).nullSafe();
         }
 
         @Override

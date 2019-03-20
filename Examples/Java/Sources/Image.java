@@ -201,8 +201,8 @@ public class Image {
 
         public ImageTypeAdapter(Gson gson, ImageTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.integerTypeAdapter = gson.getAdapter(new TypeToken<Integer>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
+            this.integerTypeAdapter = gson.getAdapter(Integer.class).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
         }
 
         @Override

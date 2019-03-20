@@ -385,12 +385,12 @@ public class Board {
 
         public BoardTypeAdapter(Gson gson, BoardTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
-            this.imageTypeAdapter = gson.getAdapter(new TypeToken<Image>(){}).nullSafe();
+            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
+            this.imageTypeAdapter = gson.getAdapter(Image.class).nullSafe();
             this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
             this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
             this.set_User_TypeAdapter = gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
         }
 
         @Override

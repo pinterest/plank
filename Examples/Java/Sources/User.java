@@ -418,11 +418,11 @@ public class User {
 
         public UserTypeAdapter(Gson gson, UserTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
-            this.imageTypeAdapter = gson.getAdapter(new TypeToken<Image>(){}).nullSafe();
+            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
+            this.imageTypeAdapter = gson.getAdapter(Image.class).nullSafe();
             this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
-            this.userEmailFrequencyTypeAdapter = gson.getAdapter(new TypeToken<UserEmailFrequency>(){}).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
+            this.userEmailFrequencyTypeAdapter = gson.getAdapter(UserEmailFrequency.class).nullSafe();
         }
 
         @Override

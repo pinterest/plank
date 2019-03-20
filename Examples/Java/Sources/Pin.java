@@ -648,17 +648,17 @@ public class Pin {
 
         public PinTypeAdapter(Gson gson, PinTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.boardTypeAdapter = gson.getAdapter(new TypeToken<Board>(){}).nullSafe();
-            this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
-            this.imageTypeAdapter = gson.getAdapter(new TypeToken<Image>(){}).nullSafe();
+            this.boardTypeAdapter = gson.getAdapter(Board.class).nullSafe();
+            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
+            this.imageTypeAdapter = gson.getAdapter(Image.class).nullSafe();
             this.list_Map_String__Object__TypeAdapter = gson.getAdapter(new TypeToken<List<Map<String, Object>>>(){}).nullSafe();
             this.list_PinAttributionObjects_TypeAdapter = gson.getAdapter(new TypeToken<List<PinAttributionObjects>>(){}).nullSafe();
             this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
             this.map_String__Object_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
             this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
             this.map_String__User_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
-            this.pinInStockTypeAdapter = gson.getAdapter(new TypeToken<PinInStock>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
+            this.pinInStockTypeAdapter = gson.getAdapter(PinInStock.class).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
         }
 
         @Override

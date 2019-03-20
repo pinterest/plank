@@ -140,7 +140,7 @@ public class Model {
 
         public ModelTypeAdapter(Gson gson, ModelTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
         }
 
         @Override

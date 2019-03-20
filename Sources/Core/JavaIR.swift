@@ -46,6 +46,17 @@ enum JavaAnnotation: Hashable {
     }
 }
 
+extension Schema {
+    var isJavaCollection: Bool {
+        switch self {
+        case .array, .map, .set:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
 public struct JavaIR {
     public struct Method {
         let annotations: Set<JavaAnnotation>
