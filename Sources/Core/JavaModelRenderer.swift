@@ -233,7 +233,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
         let types = Set(transitiveProperties.map { param, schemaObj in
             unwrappedTypeFromSchema(param, schemaObj.schema)
-        })
+        }).sorted()
 
         let typeAdapters = types.map { type in
             JavaIR.Property(
@@ -256,7 +256,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         ) { ["this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);"] +
             Set(transitiveProperties.map { param, schemaObj in
                 unwrappedTypeFromSchema(param, schemaObj.schema)
-            }).map { type in
+            }).sorted().map { type in
                 "this." + typeAdapterVariableNameForType(type) + " = gson.getAdapter(new TypeToken<" + type + ">(){}).nullSafe();"
             }
         }

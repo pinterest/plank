@@ -634,31 +634,31 @@ public class Pin {
 
         final private TypeAdapter<Pin> delegateTypeAdapter;
 
+        final private TypeAdapter<Board> boardTypeAdapter;
+        final private TypeAdapter<Date> dateTypeAdapter;
+        final private TypeAdapter<Image> imageTypeAdapter;
+        final private TypeAdapter<List<Map<String, Object>>> list_Map_String__Object__TypeAdapter;
+        final private TypeAdapter<List<PinAttributionObjects>> list_PinAttributionObjects_TypeAdapter;
+        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
+        final private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
         final private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
         final private TypeAdapter<Map<String, User>> map_String__User_TypeAdapter;
-        final private TypeAdapter<String> stringTypeAdapter;
-        final private TypeAdapter<Date> dateTypeAdapter;
-        final private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
-        final private TypeAdapter<List<PinAttributionObjects>> list_PinAttributionObjects_TypeAdapter;
-        final private TypeAdapter<List<Map<String, Object>>> list_Map_String__Object__TypeAdapter;
-        final private TypeAdapter<Image> imageTypeAdapter;
-        final private TypeAdapter<Board> boardTypeAdapter;
         final private TypeAdapter<PinInStock> pinInStockTypeAdapter;
-        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
+        final private TypeAdapter<String> stringTypeAdapter;
 
         public PinTypeAdapter(Gson gson, PinTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
+            this.boardTypeAdapter = gson.getAdapter(new TypeToken<Board>(){}).nullSafe();
+            this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
+            this.imageTypeAdapter = gson.getAdapter(new TypeToken<Image>(){}).nullSafe();
+            this.list_Map_String__Object__TypeAdapter = gson.getAdapter(new TypeToken<List<Map<String, Object>>>(){}).nullSafe();
+            this.list_PinAttributionObjects_TypeAdapter = gson.getAdapter(new TypeToken<List<PinAttributionObjects>>(){}).nullSafe();
+            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+            this.map_String__Object_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
             this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
             this.map_String__User_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
-            this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
-            this.map_String__Object_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
-            this.list_PinAttributionObjects_TypeAdapter = gson.getAdapter(new TypeToken<List<PinAttributionObjects>>(){}).nullSafe();
-            this.list_Map_String__Object__TypeAdapter = gson.getAdapter(new TypeToken<List<Map<String, Object>>>(){}).nullSafe();
-            this.imageTypeAdapter = gson.getAdapter(new TypeToken<Image>(){}).nullSafe();
-            this.boardTypeAdapter = gson.getAdapter(new TypeToken<Board>(){}).nullSafe();
             this.pinInStockTypeAdapter = gson.getAdapter(new TypeToken<PinInStock>(){}).nullSafe();
-            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
         }
 
         @Override

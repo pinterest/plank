@@ -196,13 +196,13 @@ public class Image {
 
         final private TypeAdapter<Image> delegateTypeAdapter;
 
-        final private TypeAdapter<String> stringTypeAdapter;
         final private TypeAdapter<Integer> integerTypeAdapter;
+        final private TypeAdapter<String> stringTypeAdapter;
 
         public ImageTypeAdapter(Gson gson, ImageTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
             this.integerTypeAdapter = gson.getAdapter(new TypeToken<Integer>(){}).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
         }
 
         @Override

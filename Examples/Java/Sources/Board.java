@@ -376,21 +376,21 @@ public class Board {
 
         final private TypeAdapter<Board> delegateTypeAdapter;
 
-        final private TypeAdapter<Image> imageTypeAdapter;
-        final private TypeAdapter<String> stringTypeAdapter;
-        final private TypeAdapter<Set<User>> set_User_TypeAdapter;
         final private TypeAdapter<Date> dateTypeAdapter;
-        final private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
+        final private TypeAdapter<Image> imageTypeAdapter;
         final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
+        final private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
+        final private TypeAdapter<Set<User>> set_User_TypeAdapter;
+        final private TypeAdapter<String> stringTypeAdapter;
 
         public BoardTypeAdapter(Gson gson, BoardTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.imageTypeAdapter = gson.getAdapter(new TypeToken<Image>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
-            this.set_User_TypeAdapter = gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
             this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
-            this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+            this.imageTypeAdapter = gson.getAdapter(new TypeToken<Image>(){}).nullSafe();
             this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+            this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+            this.set_User_TypeAdapter = gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
         }
 
         @Override

@@ -410,19 +410,19 @@ public class User {
 
         final private TypeAdapter<User> delegateTypeAdapter;
 
+        final private TypeAdapter<Date> dateTypeAdapter;
         final private TypeAdapter<Image> imageTypeAdapter;
+        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
         final private TypeAdapter<String> stringTypeAdapter;
         final private TypeAdapter<UserEmailFrequency> userEmailFrequencyTypeAdapter;
-        final private TypeAdapter<Date> dateTypeAdapter;
-        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
 
         public UserTypeAdapter(Gson gson, UserTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
+            this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
             this.imageTypeAdapter = gson.getAdapter(new TypeToken<Image>(){}).nullSafe();
+            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
             this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
             this.userEmailFrequencyTypeAdapter = gson.getAdapter(new TypeToken<UserEmailFrequency>(){}).nullSafe();
-            this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
-            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
         }
 
         @Override
