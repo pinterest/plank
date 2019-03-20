@@ -27,10 +27,9 @@ readonly TEMP_DIR=$(mktemp -d)
 cp -R Tests "${TEMP_DIR}"
 cp -R Utility "${TEMP_DIR}"
 cp Makefile "${TEMP_DIR}"
-(cd "${TEMP_DIR}" &&  make build_test_index_linux)
-
+(cd "${TEMP_DIR}" &&  make build_test_index_linux > /dev/null)
 # Check if files changed, fail
-if ! diff -rq "${TEMP_DIR}/Tests" "Tests"; then
+if ! diff -r "${TEMP_DIR}/Tests" "Tests"; then
   log_err "Linux test index is out-of-date. Please update with 'make build_test_index_linux' and commit the changes"
   exit 1 
 else 
