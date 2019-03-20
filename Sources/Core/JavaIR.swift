@@ -46,6 +46,17 @@ enum JavaAnnotation: Hashable {
     }
 }
 
+extension Schema {
+    var isJavaCollection: Bool {
+        switch self {
+        case .array, .map, .set:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
 public struct JavaIR {
     public struct Method {
         let annotations: Set<JavaAnnotation>
@@ -114,6 +125,14 @@ public struct JavaIR {
     static func forBlock(condition: String, body: () -> [String]) -> String {
         return [
             "for (" + condition + ") {",
+            -->body(),
+            "}",
+        ].joined(separator: "\n")
+    }
+
+    static func whileBlock(condition: String, body: () -> [String]) -> String {
+        return [
+            "while (" + condition + ") {",
             -->body(),
             "}",
         ].joined(separator: "\n")

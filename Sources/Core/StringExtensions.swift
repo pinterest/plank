@@ -72,4 +72,9 @@ extension String {
     var lowercaseFirst: String {
         return String(prefix(1)).lowercased() + String(dropFirst())
     }
+
+    func replacingNonAlphaNumericsWith(_ replacement: String) -> String {
+        let charactersToRemove = NSCharacterSet.alphanumerics.inverted
+        return components(separatedBy: charactersToRemove).joined(separator: replacement)
+    }
 }

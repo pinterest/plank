@@ -213,6 +213,10 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     // MARK: - TypeAdapter
 
+    func typeAdapterVariableNameForType(_ type: String) -> String {
+        return type.replacingNonAlphaNumericsWith("_").lowercaseFirst + "TypeAdapter"
+    }
+
     func renderTypeAdapterProperties() -> [[JavaIR.Property]] {
         let delegate = JavaIR.Property(
             annotations: [],
@@ -222,15 +226,21 @@ public struct JavaModelRenderer: JavaFileRenderer {
             initialValue: ""
         )
 
-        let elementTypeAdapter = JavaIR.Property(
-            annotations: [],
-            modifiers: [.final, .private],
-            type: "TypeAdapter<JsonElement>",
-            name: "elementTypeAdapter",
-            initialValue: ""
-        )
+        let types = Set(transitiveProperties.map { param, schemaObj in
+            unwrappedTypeFromSchema(param, schemaObj.schema)
+        }).sorted()
 
-        return [[delegate, elementTypeAdapter]]
+        let typeAdapters = types.map { type in
+            JavaIR.Property(
+                annotations: [],
+                modifiers: [.final, .private],
+                type: "TypeAdapter<\(type)>",
+                name: typeAdapterVariableNameForType(type),
+                initialValue: ""
+            )
+        }
+
+        return [[delegate], typeAdapters]
     }
 
     func renderTypeAdapterMethods() -> [JavaIR.Method] {
@@ -238,10 +248,17 @@ public struct JavaModelRenderer: JavaFileRenderer {
             annotations: [],
             [.public],
             className + "TypeAdapter(Gson gson, " + className + "TypeAdapterFactory factory, TypeToken typeToken)"
-        ) { [
-            "this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);",
-            "this.elementTypeAdapter = gson.getAdapter(JsonElement.class);",
-        ] }
+        ) { ["this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);"] +
+            Set(transitiveProperties.map { param, schemaObj in
+                let type = unwrappedTypeFromSchema(param, schemaObj.schema)
+                let variableName = typeAdapterVariableNameForType(type)
+                if schemaObj.schema.isJavaCollection {
+                    return "this.\(variableName) = gson.getAdapter(new TypeToken<" + type + ">(){}).nullSafe();"
+                } else {
+                    return "this.\(variableName) = gson.getAdapter(\(type).class).nullSafe();"
+                }
+            }).sorted()
+        }
 
         let write = JavaIR.methodThatThrows(
             annotations: [JavaAnnotation.override],
@@ -262,20 +279,23 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "reader.nextNull();",
                 "return null;",
             ] },
-            "JsonElement tree = this.elementTypeAdapter.read(reader);",
-            className + " model = this.delegateTypeAdapter.fromJsonTree(tree);",
-            "Set<String> keys = tree.getAsJsonObject().keySet();",
-            JavaIR.forBlock(condition: "String key : keys") { [
-                JavaIR.switchBlock(variableToCheck: "key", defaultBody: ["break;"]) {
-                    transitiveProperties.map { param, _ in
+            "Builder builder = \(className).builder();",
+            "reader.beginObject();",
+            JavaIR.whileBlock(condition: "reader.hasNext()") { [
+                "String name = reader.nextName();",
+                JavaIR.switchBlock(variableToCheck: "name", defaultBody: ["reader.skipValue();"]) {
+                    transitiveProperties.map { param, schemaObj in
                         JavaIR.Case(
-                            variableEquals: "\"" + param + "\"",
-                            body: ["model._bits |= " + param.uppercased() + "_SET;"]
+                            variableEquals: "\"\(param)\"",
+                            body: [
+                                "builder.set" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "(" + typeAdapterVariableNameForType(unwrappedTypeFromSchema(param, schemaObj.schema)) + ".read(reader));",
+                            ]
                         )
                     }
                 },
             ] },
-            "return model;",
+            "reader.endObject();",
+            "return builder.build();",
         ] }
 
         return [constructor, write, read]

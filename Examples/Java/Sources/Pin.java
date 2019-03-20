@@ -633,11 +633,32 @@ public class Pin {
     public static class PinTypeAdapter extends TypeAdapter<Pin> {
 
         final private TypeAdapter<Pin> delegateTypeAdapter;
-        final private TypeAdapter<JsonElement> elementTypeAdapter;
+
+        final private TypeAdapter<Board> boardTypeAdapter;
+        final private TypeAdapter<Date> dateTypeAdapter;
+        final private TypeAdapter<Image> imageTypeAdapter;
+        final private TypeAdapter<List<Map<String, Object>>> list_Map_String__Object__TypeAdapter;
+        final private TypeAdapter<List<PinAttributionObjects>> list_PinAttributionObjects_TypeAdapter;
+        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
+        final private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
+        final private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
+        final private TypeAdapter<Map<String, User>> map_String__User_TypeAdapter;
+        final private TypeAdapter<PinInStock> pinInStockTypeAdapter;
+        final private TypeAdapter<String> stringTypeAdapter;
 
         public PinTypeAdapter(Gson gson, PinTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+            this.boardTypeAdapter = gson.getAdapter(Board.class).nullSafe();
+            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
+            this.imageTypeAdapter = gson.getAdapter(Image.class).nullSafe();
+            this.list_Map_String__Object__TypeAdapter = gson.getAdapter(new TypeToken<List<Map<String, Object>>>(){}).nullSafe();
+            this.list_PinAttributionObjects_TypeAdapter = gson.getAdapter(new TypeToken<List<PinAttributionObjects>>(){}).nullSafe();
+            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+            this.map_String__Object_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
+            this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+            this.map_String__User_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
+            this.pinInStockTypeAdapter = gson.getAdapter(PinInStock.class).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
         }
 
         @Override
@@ -651,67 +672,68 @@ public class Pin {
                 reader.nextNull();
                 return null;
             }
-            JsonElement tree = this.elementTypeAdapter.read(reader);
-            Pin model = this.delegateTypeAdapter.fromJsonTree(tree);
-            Set<String> keys = tree.getAsJsonObject().keySet();
-            for (String key : keys) {
-                switch (key) {
+            Builder builder = Pin.builder();
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                switch (name) {
                     case ("attribution"):
-                        model._bits |= ATTRIBUTION_SET;
+                        builder.setAttribution(map_String__String_TypeAdapter.read(reader));
                         break;
                     case ("attribution_objects"):
-                        model._bits |= ATTRIBUTION_OBJECTS_SET;
+                        builder.setAttributionObjects(list_PinAttributionObjects_TypeAdapter.read(reader));
                         break;
                     case ("board"):
-                        model._bits |= BOARD_SET;
+                        builder.setBoard(boardTypeAdapter.read(reader));
                         break;
                     case ("color"):
-                        model._bits |= COLOR_SET;
+                        builder.setColor(stringTypeAdapter.read(reader));
                         break;
                     case ("counts"):
-                        model._bits |= COUNTS_SET;
+                        builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
                         break;
                     case ("created_at"):
-                        model._bits |= CREATED_AT_SET;
+                        builder.setCreatedAt(dateTypeAdapter.read(reader));
                         break;
                     case ("creator"):
-                        model._bits |= CREATOR_SET;
+                        builder.setCreator(map_String__User_TypeAdapter.read(reader));
                         break;
                     case ("description"):
-                        model._bits |= DESCRIPTION_SET;
+                        builder.setDescription(stringTypeAdapter.read(reader));
                         break;
                     case ("id"):
-                        model._bits |= ID_SET;
+                        builder.setUid(stringTypeAdapter.read(reader));
                         break;
                     case ("image"):
-                        model._bits |= IMAGE_SET;
+                        builder.setImage(imageTypeAdapter.read(reader));
                         break;
                     case ("in_stock"):
-                        model._bits |= IN_STOCK_SET;
+                        builder.setInStock(pinInStockTypeAdapter.read(reader));
                         break;
                     case ("link"):
-                        model._bits |= LINK_SET;
+                        builder.setLink(stringTypeAdapter.read(reader));
                         break;
                     case ("media"):
-                        model._bits |= MEDIA_SET;
+                        builder.setMedia(map_String__String_TypeAdapter.read(reader));
                         break;
                     case ("note"):
-                        model._bits |= NOTE_SET;
+                        builder.setNote(stringTypeAdapter.read(reader));
                         break;
                     case ("tags"):
-                        model._bits |= TAGS_SET;
+                        builder.setTags(list_Map_String__Object__TypeAdapter.read(reader));
                         break;
                     case ("url"):
-                        model._bits |= URL_SET;
+                        builder.setUrl(stringTypeAdapter.read(reader));
                         break;
                     case ("visual_search_attrs"):
-                        model._bits |= VISUAL_SEARCH_ATTRS_SET;
+                        builder.setVisualSearchAttrs(map_String__Object_TypeAdapter.read(reader));
                         break;
                     default:
-                        break;
+                        reader.skipValue();
                 }
             }
-            return model;
+            reader.endObject();
+            return builder.build();
         }
     }
 

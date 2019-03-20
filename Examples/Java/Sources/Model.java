@@ -135,11 +135,12 @@ public class Model {
     public static class ModelTypeAdapter extends TypeAdapter<Model> {
 
         final private TypeAdapter<Model> delegateTypeAdapter;
-        final private TypeAdapter<JsonElement> elementTypeAdapter;
+
+        final private TypeAdapter<String> stringTypeAdapter;
 
         public ModelTypeAdapter(Gson gson, ModelTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
         }
 
         @Override
@@ -153,19 +154,20 @@ public class Model {
                 reader.nextNull();
                 return null;
             }
-            JsonElement tree = this.elementTypeAdapter.read(reader);
-            Model model = this.delegateTypeAdapter.fromJsonTree(tree);
-            Set<String> keys = tree.getAsJsonObject().keySet();
-            for (String key : keys) {
-                switch (key) {
+            Builder builder = Model.builder();
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                switch (name) {
                     case ("id"):
-                        model._bits |= ID_SET;
+                        builder.setUid(stringTypeAdapter.read(reader));
                         break;
                     default:
-                        break;
+                        reader.skipValue();
                 }
             }
-            return model;
+            reader.endObject();
+            return builder.build();
         }
     }
 }

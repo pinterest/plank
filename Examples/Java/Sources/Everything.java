@@ -1016,11 +1016,62 @@ public class Everything {
     public static class EverythingTypeAdapter extends TypeAdapter<Everything> {
 
         final private TypeAdapter<Everything> delegateTypeAdapter;
-        final private TypeAdapter<JsonElement> elementTypeAdapter;
+
+        final private TypeAdapter<Boolean> booleanTypeAdapter;
+        final private TypeAdapter<Date> dateTypeAdapter;
+        final private TypeAdapter<Double> doubleTypeAdapter;
+        final private TypeAdapter<EverythingIntEnum> everythingIntEnumTypeAdapter;
+        final private TypeAdapter<EverythingPolymorphicProp> everythingPolymorphicPropTypeAdapter;
+        final private TypeAdapter<EverythingStringEnum> everythingStringEnumTypeAdapter;
+        final private TypeAdapter<Integer> integerTypeAdapter;
+        final private TypeAdapter<List<Integer>> list_Integer_TypeAdapter;
+        final private TypeAdapter<List<List<User>>> list_List_User__TypeAdapter;
+        final private TypeAdapter<List<Map<String, User>>> list_Map_String__User__TypeAdapter;
+        final private TypeAdapter<List<Object>> list_Object_TypeAdapter;
+        final private TypeAdapter<List<String>> list_String_TypeAdapter;
+        final private TypeAdapter<List<User>> list_User_TypeAdapter;
+        final private TypeAdapter<Map<String, EverythingMapPolymorphicValues>> map_String__EverythingMapPolymorphicValues_TypeAdapter;
+        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
+        final private TypeAdapter<Map<String, List<User>>> map_String__List_User__TypeAdapter;
+        final private TypeAdapter<Map<String, Map<String, Object>>> map_String__Map_String__Object__TypeAdapter;
+        final private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
+        final private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
+        final private TypeAdapter<Map<String, User>> map_String__User_TypeAdapter;
+        final private TypeAdapter<Set<Integer>> set_Integer_TypeAdapter;
+        final private TypeAdapter<Set<Object>> set_Object_TypeAdapter;
+        final private TypeAdapter<Set<String>> set_String_TypeAdapter;
+        final private TypeAdapter<Set<User>> set_User_TypeAdapter;
+        final private TypeAdapter<String> stringTypeAdapter;
+        final private TypeAdapter<User> userTypeAdapter;
 
         public EverythingTypeAdapter(Gson gson, EverythingTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+            this.booleanTypeAdapter = gson.getAdapter(Boolean.class).nullSafe();
+            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
+            this.doubleTypeAdapter = gson.getAdapter(Double.class).nullSafe();
+            this.everythingIntEnumTypeAdapter = gson.getAdapter(EverythingIntEnum.class).nullSafe();
+            this.everythingPolymorphicPropTypeAdapter = gson.getAdapter(EverythingPolymorphicProp.class).nullSafe();
+            this.everythingStringEnumTypeAdapter = gson.getAdapter(EverythingStringEnum.class).nullSafe();
+            this.integerTypeAdapter = gson.getAdapter(Integer.class).nullSafe();
+            this.list_Integer_TypeAdapter = gson.getAdapter(new TypeToken<List<Integer>>(){}).nullSafe();
+            this.list_List_User__TypeAdapter = gson.getAdapter(new TypeToken<List<List<User>>>(){}).nullSafe();
+            this.list_Map_String__User__TypeAdapter = gson.getAdapter(new TypeToken<List<Map<String, User>>>(){}).nullSafe();
+            this.list_Object_TypeAdapter = gson.getAdapter(new TypeToken<List<Object>>(){}).nullSafe();
+            this.list_String_TypeAdapter = gson.getAdapter(new TypeToken<List<String>>(){}).nullSafe();
+            this.list_User_TypeAdapter = gson.getAdapter(new TypeToken<List<User>>(){}).nullSafe();
+            this.map_String__EverythingMapPolymorphicValues_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, EverythingMapPolymorphicValues>>(){}).nullSafe();
+            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+            this.map_String__List_User__TypeAdapter = gson.getAdapter(new TypeToken<Map<String, List<User>>>(){}).nullSafe();
+            this.map_String__Map_String__Object__TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Map<String, Object>>>(){}).nullSafe();
+            this.map_String__Object_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
+            this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+            this.map_String__User_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
+            this.set_Integer_TypeAdapter = gson.getAdapter(new TypeToken<Set<Integer>>(){}).nullSafe();
+            this.set_Object_TypeAdapter = gson.getAdapter(new TypeToken<Set<Object>>(){}).nullSafe();
+            this.set_String_TypeAdapter = gson.getAdapter(new TypeToken<Set<String>>(){}).nullSafe();
+            this.set_User_TypeAdapter = gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
+            this.userTypeAdapter = gson.getAdapter(User.class).nullSafe();
         }
 
         @Override
@@ -1034,103 +1085,104 @@ public class Everything {
                 reader.nextNull();
                 return null;
             }
-            JsonElement tree = this.elementTypeAdapter.read(reader);
-            Everything model = this.delegateTypeAdapter.fromJsonTree(tree);
-            Set<String> keys = tree.getAsJsonObject().keySet();
-            for (String key : keys) {
-                switch (key) {
+            Builder builder = Everything.builder();
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                switch (name) {
                     case ("array_prop"):
-                        model._bits |= ARRAY_PROP_SET;
+                        builder.setArrayProp(list_Object_TypeAdapter.read(reader));
                         break;
                     case ("boolean_prop"):
-                        model._bits |= BOOLEAN_PROP_SET;
+                        builder.setBooleanProp(booleanTypeAdapter.read(reader));
                         break;
                     case ("date_prop"):
-                        model._bits |= DATE_PROP_SET;
+                        builder.setDateProp(dateTypeAdapter.read(reader));
                         break;
                     case ("int_enum"):
-                        model._bits |= INT_ENUM_SET;
+                        builder.setIntEnum(everythingIntEnumTypeAdapter.read(reader));
                         break;
                     case ("int_prop"):
-                        model._bits |= INT_PROP_SET;
+                        builder.setIntProp(integerTypeAdapter.read(reader));
                         break;
                     case ("list_polymorphic_values"):
-                        model._bits |= LIST_POLYMORPHIC_VALUES_SET;
+                        builder.setListPolymorphicValues(list_Object_TypeAdapter.read(reader));
                         break;
                     case ("list_with_list_and_other_model_values"):
-                        model._bits |= LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+                        builder.setListWithListAndOtherModelValues(list_List_User__TypeAdapter.read(reader));
                         break;
                     case ("list_with_map_and_other_model_values"):
-                        model._bits |= LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+                        builder.setListWithMapAndOtherModelValues(list_Map_String__User__TypeAdapter.read(reader));
                         break;
                     case ("list_with_object_values"):
-                        model._bits |= LIST_WITH_OBJECT_VALUES_SET;
+                        builder.setListWithObjectValues(list_String_TypeAdapter.read(reader));
                         break;
                     case ("list_with_other_model_values"):
-                        model._bits |= LIST_WITH_OTHER_MODEL_VALUES_SET;
+                        builder.setListWithOtherModelValues(list_User_TypeAdapter.read(reader));
                         break;
                     case ("list_with_primitive_values"):
-                        model._bits |= LIST_WITH_PRIMITIVE_VALUES_SET;
+                        builder.setListWithPrimitiveValues(list_Integer_TypeAdapter.read(reader));
                         break;
                     case ("map_polymorphic_values"):
-                        model._bits |= MAP_POLYMORPHIC_VALUES_SET;
+                        builder.setMapPolymorphicValues(map_String__EverythingMapPolymorphicValues_TypeAdapter.read(reader));
                         break;
                     case ("map_prop"):
-                        model._bits |= MAP_PROP_SET;
+                        builder.setMapProp(map_String__Object_TypeAdapter.read(reader));
                         break;
                     case ("map_with_list_and_other_model_values"):
-                        model._bits |= MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+                        builder.setMapWithListAndOtherModelValues(map_String__List_User__TypeAdapter.read(reader));
                         break;
                     case ("map_with_map_and_other_model_values"):
-                        model._bits |= MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+                        builder.setMapWithMapAndOtherModelValues(map_String__Map_String__Object__TypeAdapter.read(reader));
                         break;
                     case ("map_with_object_values"):
-                        model._bits |= MAP_WITH_OBJECT_VALUES_SET;
+                        builder.setMapWithObjectValues(map_String__String_TypeAdapter.read(reader));
                         break;
                     case ("map_with_other_model_values"):
-                        model._bits |= MAP_WITH_OTHER_MODEL_VALUES_SET;
+                        builder.setMapWithOtherModelValues(map_String__User_TypeAdapter.read(reader));
                         break;
                     case ("map_with_primitive_values"):
-                        model._bits |= MAP_WITH_PRIMITIVE_VALUES_SET;
+                        builder.setMapWithPrimitiveValues(map_String__Integer_TypeAdapter.read(reader));
                         break;
                     case ("number_prop"):
-                        model._bits |= NUMBER_PROP_SET;
+                        builder.setNumberProp(doubleTypeAdapter.read(reader));
                         break;
                     case ("other_model_prop"):
-                        model._bits |= OTHER_MODEL_PROP_SET;
+                        builder.setOtherModelProp(userTypeAdapter.read(reader));
                         break;
                     case ("polymorphic_prop"):
-                        model._bits |= POLYMORPHIC_PROP_SET;
+                        builder.setPolymorphicProp(everythingPolymorphicPropTypeAdapter.read(reader));
                         break;
                     case ("set_prop"):
-                        model._bits |= SET_PROP_SET;
+                        builder.setSetProp(set_Object_TypeAdapter.read(reader));
                         break;
                     case ("set_prop_with_other_model_values"):
-                        model._bits |= SET_PROP_WITH_OTHER_MODEL_VALUES_SET;
+                        builder.setSetPropWithOtherModelValues(set_User_TypeAdapter.read(reader));
                         break;
                     case ("set_prop_with_primitive_values"):
-                        model._bits |= SET_PROP_WITH_PRIMITIVE_VALUES_SET;
+                        builder.setSetPropWithPrimitiveValues(set_Integer_TypeAdapter.read(reader));
                         break;
                     case ("set_prop_with_values"):
-                        model._bits |= SET_PROP_WITH_VALUES_SET;
+                        builder.setSetPropWithValues(set_String_TypeAdapter.read(reader));
                         break;
                     case ("string_enum"):
-                        model._bits |= STRING_ENUM_SET;
+                        builder.setStringEnum(everythingStringEnumTypeAdapter.read(reader));
                         break;
                     case ("string_prop"):
-                        model._bits |= STRING_PROP_SET;
+                        builder.setStringProp(stringTypeAdapter.read(reader));
                         break;
                     case ("type"):
-                        model._bits |= TYPE_SET;
+                        builder.setType(stringTypeAdapter.read(reader));
                         break;
                     case ("uri_prop"):
-                        model._bits |= URI_PROP_SET;
+                        builder.setUriProp(stringTypeAdapter.read(reader));
                         break;
                     default:
-                        break;
+                        reader.skipValue();
                 }
             }
-            return model;
+            reader.endObject();
+            return builder.build();
         }
     }
 
