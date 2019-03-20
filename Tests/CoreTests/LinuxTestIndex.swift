@@ -22,7 +22,7 @@ import XCTest
             ("testSnakeCaseToPropertyName", testSnakeCaseToPropertyName),
             ("testSnakeCaseToCapitalizedPropertyName", testSnakeCaseToCapitalizedPropertyName),
             ("testReservedKeywordSubstitution", testReservedKeywordSubstitution),
-            ]
+        ]
     }
 
     // Generated Test Extension for ObjectiveCIRTests
