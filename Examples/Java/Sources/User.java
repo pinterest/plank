@@ -409,11 +409,20 @@ public class User {
     public static class UserTypeAdapter extends TypeAdapter<User> {
 
         final private TypeAdapter<User> delegateTypeAdapter;
-        final private TypeAdapter<JsonElement> elementTypeAdapter;
+
+        final private TypeAdapter<Image> imageTypeAdapter;
+        final private TypeAdapter<String> stringTypeAdapter;
+        final private TypeAdapter<UserEmailFrequency> userEmailFrequencyTypeAdapter;
+        final private TypeAdapter<Date> dateTypeAdapter;
+        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
 
         public UserTypeAdapter(Gson gson, UserTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+            this.imageTypeAdapter = gson.getAdapter(new TypeToken<Image>(){}).nullSafe();
+            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
+            this.userEmailFrequencyTypeAdapter = gson.getAdapter(new TypeToken<UserEmailFrequency>(){}).nullSafe();
+            this.dateTypeAdapter = gson.getAdapter(new TypeToken<Date>(){}).nullSafe();
+            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
         }
 
         @Override
@@ -427,46 +436,47 @@ public class User {
                 reader.nextNull();
                 return null;
             }
-            JsonElement tree = this.elementTypeAdapter.read(reader);
-            User model = this.delegateTypeAdapter.fromJsonTree(tree);
-            Set<String> keys = tree.getAsJsonObject().keySet();
-            for (String key : keys) {
-                switch (key) {
+            Builder builder = User.builder();
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                switch (name) {
                     case ("bio"):
-                        model._bits |= BIO_SET;
+                        builder.setBio(stringTypeAdapter.read(reader));
                         break;
                     case ("counts"):
-                        model._bits |= COUNTS_SET;
+                        builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
                         break;
                     case ("created_at"):
-                        model._bits |= CREATED_AT_SET;
+                        builder.setCreatedAt(dateTypeAdapter.read(reader));
                         break;
                     case ("email_frequency"):
-                        model._bits |= EMAIL_FREQUENCY_SET;
+                        builder.setEmailFrequency(userEmailFrequencyTypeAdapter.read(reader));
                         break;
                     case ("first_name"):
-                        model._bits |= FIRST_NAME_SET;
+                        builder.setFirstName(stringTypeAdapter.read(reader));
                         break;
                     case ("id"):
-                        model._bits |= ID_SET;
+                        builder.setUid(stringTypeAdapter.read(reader));
                         break;
                     case ("image"):
-                        model._bits |= IMAGE_SET;
+                        builder.setImage(imageTypeAdapter.read(reader));
                         break;
                     case ("last_name"):
-                        model._bits |= LAST_NAME_SET;
+                        builder.setLastName(stringTypeAdapter.read(reader));
                         break;
                     case ("type"):
-                        model._bits |= TYPE_SET;
+                        builder.setType(stringTypeAdapter.read(reader));
                         break;
                     case ("username"):
-                        model._bits |= USERNAME_SET;
+                        builder.setUsername(stringTypeAdapter.read(reader));
                         break;
                     default:
-                        break;
+                        reader.skipValue();
                 }
             }
-            return model;
+            reader.endObject();
+            return builder.build();
         }
     }
 }

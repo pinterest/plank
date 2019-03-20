@@ -225,11 +225,12 @@ public class VariableSubtitution {
     public static class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution> {
 
         final private TypeAdapter<VariableSubtitution> delegateTypeAdapter;
-        final private TypeAdapter<JsonElement> elementTypeAdapter;
+
+        final private TypeAdapter<Integer> integerTypeAdapter;
 
         public VariableSubtitutionTypeAdapter(Gson gson, VariableSubtitutionTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+            this.integerTypeAdapter = gson.getAdapter(new TypeToken<Integer>(){}).nullSafe();
         }
 
         @Override
@@ -243,28 +244,29 @@ public class VariableSubtitution {
                 reader.nextNull();
                 return null;
             }
-            JsonElement tree = this.elementTypeAdapter.read(reader);
-            VariableSubtitution model = this.delegateTypeAdapter.fromJsonTree(tree);
-            Set<String> keys = tree.getAsJsonObject().keySet();
-            for (String key : keys) {
-                switch (key) {
+            Builder builder = VariableSubtitution.builder();
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                switch (name) {
                     case ("alloc_prop"):
-                        model._bits |= ALLOC_PROP_SET;
+                        builder.setAllocProp(integerTypeAdapter.read(reader));
                         break;
                     case ("copy_prop"):
-                        model._bits |= COPY_PROP_SET;
+                        builder.setCopyProp(integerTypeAdapter.read(reader));
                         break;
                     case ("mutable_copy_prop"):
-                        model._bits |= MUTABLE_COPY_PROP_SET;
+                        builder.setMutableCopyProp(integerTypeAdapter.read(reader));
                         break;
                     case ("new_prop"):
-                        model._bits |= NEW_PROP_SET;
+                        builder.setNewProp(integerTypeAdapter.read(reader));
                         break;
                     default:
-                        break;
+                        reader.skipValue();
                 }
             }
-            return model;
+            reader.endObject();
+            return builder.build();
         }
     }
 }

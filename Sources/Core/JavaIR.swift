@@ -119,6 +119,14 @@ public struct JavaIR {
         ].joined(separator: "\n")
     }
 
+    static func whileBlock(condition: String, body: () -> [String]) -> String {
+        return [
+            "while (" + condition + ") {",
+            -->body(),
+            "}",
+        ].joined(separator: "\n")
+    }
+
     static func switchBlock(variableToCheck: String, defaultBody: [String], cases: () -> [Case]) -> String {
         return [
             "switch (" + variableToCheck + ") {",

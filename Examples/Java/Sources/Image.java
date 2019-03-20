@@ -195,11 +195,14 @@ public class Image {
     public static class ImageTypeAdapter extends TypeAdapter<Image> {
 
         final private TypeAdapter<Image> delegateTypeAdapter;
-        final private TypeAdapter<JsonElement> elementTypeAdapter;
+
+        final private TypeAdapter<String> stringTypeAdapter;
+        final private TypeAdapter<Integer> integerTypeAdapter;
 
         public ImageTypeAdapter(Gson gson, ImageTypeAdapterFactory factory, TypeToken typeToken) {
             this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.elementTypeAdapter = gson.getAdapter(JsonElement.class);
+            this.stringTypeAdapter = gson.getAdapter(new TypeToken<String>(){}).nullSafe();
+            this.integerTypeAdapter = gson.getAdapter(new TypeToken<Integer>(){}).nullSafe();
         }
 
         @Override
@@ -213,25 +216,26 @@ public class Image {
                 reader.nextNull();
                 return null;
             }
-            JsonElement tree = this.elementTypeAdapter.read(reader);
-            Image model = this.delegateTypeAdapter.fromJsonTree(tree);
-            Set<String> keys = tree.getAsJsonObject().keySet();
-            for (String key : keys) {
-                switch (key) {
+            Builder builder = Image.builder();
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                switch (name) {
                     case ("height"):
-                        model._bits |= HEIGHT_SET;
+                        builder.setHeight(integerTypeAdapter.read(reader));
                         break;
                     case ("url"):
-                        model._bits |= URL_SET;
+                        builder.setUrl(stringTypeAdapter.read(reader));
                         break;
                     case ("width"):
-                        model._bits |= WIDTH_SET;
+                        builder.setWidth(integerTypeAdapter.read(reader));
                         break;
                     default:
-                        break;
+                        reader.skipValue();
                 }
             }
-            return model;
+            reader.endObject();
+            return builder.build();
         }
     }
 }
