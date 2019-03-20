@@ -92,6 +92,7 @@ func processDirectory(atPath path: String) {
     guard path != "" else { return }
     if let files = try? FileManager.default.contentsOfDirectory(atPath: path) {
         let generatedOutput = files
+            .sorted()
             .map { processFile(withPath: path + "/" + $0) }
             .filter { $0 != "" }
             .joined(separator: "\n")

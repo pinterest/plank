@@ -4,9 +4,9 @@ import XCTest
 @testable import CoreTests
 
 var tests = [XCTestCaseEntry]()
-   tests += [testCase(StringExtensionsTests.allTests)]
-   tests += [testCase(ObjectiveCIRTests.allTests)]
    tests += [testCase(LanguagesTests.allTests)]
+   tests += [testCase(ObjectiveCIRTests.allTests)]
    tests += [testCase(ObjectiveCInitTests.allTests)]
+   tests += [testCase(StringExtensionsTests.allTests)]
 
 XCTMain(tests)
