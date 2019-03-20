@@ -38,5 +38,8 @@ class LanguagesTests: XCTestCase {
 
         XCTAssert(Languages.objectiveC.snakeCaseToCapitalizedPropertyName("null") == "Null")
         XCTAssert(Languages.java.snakeCaseToCapitalizedPropertyName("null") == "NullProperty")
+        
+        XCTAssert(Languages.objectiveC.snakeCaseToPropertyName("id") == "identifier")
+        XCTAssert(Languages.java.snakeCaseToPropertyName("id") == "uid")
     }
 }
