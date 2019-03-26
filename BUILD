@@ -1,4 +1,5 @@
-load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library", "swift_binary")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+load("@build_bazel_rules_apple//apple:macos.bzl", "macos_command_line_application")
 
 
 swift_library(
@@ -15,8 +16,9 @@ swift_library(
     deps = [":PlankCore"]
 )
 
-swift_binary(
+macos_command_line_application(
     name = "plank",
     deps = [":PlankLib"],
     visibility = ["//visibility:public"],
+    minimum_os_version = "10.13",
 )
