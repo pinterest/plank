@@ -113,6 +113,7 @@ extension ObjCFileRenderer {
         return "\(propIVarName) = " + {
             switch schema {
             case .enumT:
+                // How do I get the EverythingIntEnum name here?
                 return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
             case .boolean:
                 return "[aDecoder decodeBoolForKey:\(param.objcLiteral())];"
