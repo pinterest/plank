@@ -17,7 +17,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, EverythingMapPolymorphicValuesInternalType) {
+typedef NS_ENUM(unsigned char, EverythingMapPolymorphicValuesInternalType) {
     EverythingMapPolymorphicValuesInternalTypeUser = 1,
     EverythingMapPolymorphicValuesInternalTypeBoard = 2,
     EverythingMapPolymorphicValuesInternalTypeImage = 3,
@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_END
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, EverythingPolymorphicPropInternalType) {
+typedef NS_ENUM(unsigned char, EverythingPolymorphicPropInternalType) {
     EverythingPolymorphicPropInternalTypeUser = 1,
     EverythingPolymorphicPropInternalTypeBoard = 2,
     EverythingPolymorphicPropInternalTypeImage = 3,
@@ -81,13 +81,13 @@ typedef NS_ENUM(NSInteger, EverythingPolymorphicPropInternalType) {
 
 NS_ASSUME_NONNULL_END
 
-typedef NS_ENUM(NSInteger, EverythingIntEnum) {
+typedef NS_ENUM(unsigned char, EverythingIntEnum) {
     EverythingIntEnumIntCase1 = 1,
     EverythingIntEnumIntCase2 = 2,
     EverythingIntEnumIntCase3 = 3
 };
 
-typedef NS_ENUM(NSInteger, EverythingStringEnum) {
+typedef NS_ENUM(unsigned char, EverythingStringEnum) {
     EverythingStringEnumCase1 /* case1 */,
     EverythingStringEnumCase2 /* case2 */,
     EverythingStringEnumCase3 /* case3 */

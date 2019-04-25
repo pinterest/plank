@@ -155,4 +155,58 @@ class ObjectiveCIRTests: XCTestCase {
         ] }
         XCTAssertEqual(expected, actual)
     }
+
+    private func buildEnumDelcarationTest(count: Int, type: String) -> (String, String) {
+        var values: [String] = []
+        for i in 0..<count {
+            values.append("e\(i)")
+        }
+
+        var lines = ["typedef NS_ENUM(\(type), enumeration) {"]
+        for (index, value) in values.enumerated() {
+            if (index < values.count - 1) {
+                lines.append("\(value),".indent())
+            } else {
+                lines.append("\(value)".indent())
+            }
+        }
+        lines.append("};")
+        let expected = lines.joined(separator: "\n")
+
+        let actual = ObjCIR.enumStmt("enumeration") { () -> [String] in
+            return values
+        }
+
+        return (expected, actual)
+    }
+
+    func testEnumDeclaration_defaultValues_2_char() {
+        let (expected, actual) = buildEnumDelcarationTest(count: 2, type: "unsigned char")
+
+        XCTAssertEqual(expected, actual)
+    }
+
+    func testEnumDeclaration_defaultValues_255_char() {
+        let (expected, actual) = buildEnumDelcarationTest(count: 255, type: "unsigned char")
+
+        XCTAssertEqual(expected, actual)
+    }
+
+    func testEnumDeclaration_defaultValues_256_short() {
+        let (expected, actual) = buildEnumDelcarationTest(count: 256, type: "unsigned short")
+
+        XCTAssertEqual(expected, actual)
+    }
+
+    func testEnumDeclaration_defaultValues_65535_short() {
+        let (expected, actual) = buildEnumDelcarationTest(count: 65535, type: "unsigned short")
+
+        XCTAssertEqual(expected, actual)
+    }
+
+    func testEnumDeclaration_defaultValues_65536_NSInteger() {
+        let (expected, actual) = buildEnumDelcarationTest(count: 65536, type: "NSInteger")
+
+        XCTAssertEqual(expected, actual)
+    }
 }

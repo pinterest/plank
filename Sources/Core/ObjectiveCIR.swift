@@ -246,11 +246,26 @@ public struct ObjCIR {
     }
 
     static func enumStmt(_ enumName: String, body: () -> [String]) -> String {
+        let enums = body()
+        let enumType : String
+        switch enums.count {
+        case 0...Int(UInt8.max):
+            enumType = "unsigned char"
+        case Int(UInt8.max)...Int(UInt16.max):
+            enumType = "unsigned short"
+        default:
+            enumType = "NSInteger"
+        }
         return [
-            "typedef NS_ENUM(NSInteger, \(enumName)) {",
-            -->[body().joined(separator: ",\n")],
+            "typedef NS_ENUM(\(enumType), \(enumName)) {",
+            -->[enums.joined(separator: ",\n")],
             "};",
         ].joined(separator: "\n")
+//        return [
+//            "typedef NS_ENUM(NSInteger, \(enumName)) {",
+//            -->[body().joined(separator: ",\n")],
+//            "};",
+//            ].joined(separator: "\n")
     }
 
     static func optionEnumStmt(_ enumName: String, body: () -> [String]) -> String {
