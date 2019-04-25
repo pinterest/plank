@@ -247,7 +247,7 @@ public struct ObjCIR {
 
     static func enumStmt(_ enumName: String, body: () -> [String]) -> String {
         let enums = body()
-        let enumType : String
+        let enumType: String
         switch enums.count {
         case 0...Int(UInt8.max):
             enumType = "unsigned char"

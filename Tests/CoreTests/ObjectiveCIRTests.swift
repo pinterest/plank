@@ -158,13 +158,13 @@ class ObjectiveCIRTests: XCTestCase {
 
     private func buildEnumDelcarationTest(count: Int, type: String) -> (String, String) {
         var values: [String] = []
-        for i in 0..<count {
-            values.append("e\(i)")
+        for num in 0..<count {
+            values.append("e\(num)")
         }
 
         var lines = ["typedef NS_ENUM(\(type), enumeration) {"]
         for (index, value) in values.enumerated() {
-            if (index < values.count - 1) {
+            if index < values.count - 1 {
                 lines.append("\(value),".indent())
             } else {
                 lines.append("\(value)".indent())
