@@ -122,12 +122,16 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     func renderRoots() -> [ObjCIR.Root] {
         let properties: [(Parameter, SchemaObjectProperty)] = rootSchema.properties.map { $0 } // Convert [String:Schema] -> [(String, Schema)]
 
+        // get the bool properties
+
         let protocols: [String: [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
             "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }],
         ]
 
         let parentName = resolveClassName(parentDescriptor)
+
+        // build struct size here somehow to pass in?
 
         func enumRoot(from prop: Schema, param: String) -> [ObjCIR.Root] {
             switch prop {
@@ -187,6 +191,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             ObjCIR.Root.structDecl(name: self.dirtyPropertyOptionName,
                                    fields: rootSchema.properties.keys
                                        .map { "unsigned int \(dirtyPropertyOption(propertyName: $0, className: self.className)):1;" }),
+            // emit bool / scalar struct here
             ObjCIR.Root.category(className: self.className,
                                  categoryName: nil,
                                  methods: [],
