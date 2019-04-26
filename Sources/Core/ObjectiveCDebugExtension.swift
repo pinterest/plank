@@ -10,10 +10,31 @@ import Foundation
 
 extension ObjCModelRenderer {
     func renderDebugDescription() -> ObjCIR.Method {
-        let props = properties.map { (param, prop) -> String in
+        let props = properties.filter { (_, schema) -> Bool in
+            switch schema.schema {
+            case .boolean:
+                return false
+            default:
+                return true
+            }
+        }.map { (param, prop) -> String in
             ObjCIR.ifStmt("props.\(dirtyPropertyOption(propertyName: param, className: self.className))") {
                 let ivarName = "_\(Languages.objectiveC.snakeCaseToPropertyName(param))"
                 return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, prop.schema))]];"]
+            }
+        }.joined(separator: "\n")
+
+        let boolProps = properties.filter { (_, schema) -> Bool in
+            switch schema.schema {
+            case .boolean:
+                return true
+            default:
+                return false
+            }
+        }.map { (param, _) -> String in
+            ObjCIR.ifStmt("props.\(dirtyPropertyOption(propertyName: param, className: self.className))") {
+                let ivarName = "_\(booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: param, className: self.className))"
+                return ["[descriptionFields addObject:[@\"\(ivarName) = \" stringByAppendingFormat:\("%@".objcLiteral()), @(\(ivarName))]];"]
             }
         }.joined(separator: "\n")
 
@@ -24,6 +45,7 @@ extension ObjCModelRenderer {
             "[descriptionFields addObject:parentDebugDescription];",
             !self.properties.isEmpty ? "struct \(self.dirtyPropertyOptionName) props = _\(self.dirtyPropertiesIVarName);" : "",
             props,
+            boolProps,
             "return [NSString stringWithFormat:\(printFormat), debugDescriptionForFields(descriptionFields)];",
         ] }
     }
@@ -55,7 +77,9 @@ extension ObjCFileRenderer {
         switch schema {
         case .enumT(.string):
             return enumToStringMethodName(propertyName: param, className: className) + "(\(propIVarName))"
-        case .boolean, .float, .integer:
+        case .boolean:
+            return "@(_.\(booleanPropertyOption(propertyName: param, className: className)))"
+        case .float, .integer:
             return "@(\(propIVarName))"
         case .enumT(.integer):
             return "@(\(propIVarName))"

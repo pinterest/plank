@@ -610,8 +610,13 @@ struct EverythingDirtyProperties {
     unsigned int EverythingDirtyPropertyUriProp:1;
 };
 
+struct EverythingBooleanProperties {
+    unsigned int EverythingBooleanBooleanProp:1;
+};
+
 @interface Everything ()
 @property (nonatomic, assign, readwrite) struct EverythingDirtyProperties everythingDirtyProperties;
+@property (nonatomic, assign, readwrite) struct EverythingBooleanProperties everythingBooleanProperties;
 @end
 
 @interface EverythingBuilder ()
@@ -686,7 +691,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             __unsafe_unretained id value = modelDictionary[@"boolean_prop"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_booleanProp = [value boolValue];
+                    self->_everythingBooleanProperties.EverythingBooleanBooleanProp = [value boolValue] && 0x1;
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertyBooleanProp = 1;
             }
@@ -1004,7 +1009,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                         self->_polymorphicProp = [EverythingPolymorphicProp  objectWithString:[value copy]];
                     }
                     if ([value isKindOfClass:[NSNumber class]] && strcmp([value objCType], @encode(BOOL)) == 0) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoolean:[value boolValue]];
+                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoolean:[value boolValue] && 0x1];
                     }
                     if ([value isKindOfClass:[NSNumber class]] && (strcmp([value objCType], @encode(int)) == 0 ||
                     strcmp([value objCType], @encode(unsigned int)) == 0 ||
@@ -1142,7 +1147,6 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         return self;
     }
     _arrayProp = builder.arrayProp;
-    _booleanProp = builder.booleanProp;
     _dateProp = builder.dateProp;
     _intEnum = builder.intEnum;
     _intProp = builder.intProp;
@@ -1170,6 +1174,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _stringProp = builder.stringProp;
     _type = builder.type;
     _uriProp = builder.uriProp;
+    _everythingBooleanProperties.EverythingBooleanBooleanProp = builder.booleanProp;
     _everythingDirtyProperties = builder.everythingDirtyProperties;
     if ([self class] == [Everything class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
@@ -1184,9 +1189,6 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     struct EverythingDirtyProperties props = _everythingDirtyProperties;
     if (props.EverythingDirtyPropertyArrayProp) {
         [descriptionFields addObject:[@"_arrayProp = " stringByAppendingFormat:@"%@", _arrayProp]];
-    }
-    if (props.EverythingDirtyPropertyBooleanProp) {
-        [descriptionFields addObject:[@"_booleanProp = " stringByAppendingFormat:@"%@", @(_booleanProp)]];
     }
     if (props.EverythingDirtyPropertyDateProp) {
         [descriptionFields addObject:[@"_dateProp = " stringByAppendingFormat:@"%@", _dateProp]];
@@ -1269,6 +1271,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (props.EverythingDirtyPropertyUriProp) {
         [descriptionFields addObject:[@"_uriProp = " stringByAppendingFormat:@"%@", _uriProp]];
     }
+    if (props.EverythingDirtyPropertyBooleanProp) {
+        [descriptionFields addObject:[@"_everythingBooleanProperties.EverythingBooleanBooleanProp = " stringByAppendingFormat:@"%@", @(_everythingBooleanProperties.EverythingBooleanBooleanProp)]];
+    }
     return [NSString stringWithFormat:@"Everything = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(EverythingBuilder *builder))block
@@ -1296,7 +1301,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         (_intProp == anObject.intProp) &&
         (_intEnum == anObject.intEnum) &&
         (_stringEnum == anObject.stringEnum) &&
-        (_booleanProp == anObject.booleanProp) &&
+        (_everythingBooleanProperties.EverythingBooleanBooleanProp == anObject.booleanProp) &&
         (_arrayProp == anObject.arrayProp || [_arrayProp isEqualToArray:anObject.arrayProp]) &&
         (_listWithListAndOtherModelValues == anObject.listWithListAndOtherModelValues || [_listWithListAndOtherModelValues isEqualToArray:anObject.listWithListAndOtherModelValues]) &&
         (_listWithMapAndOtherModelValues == anObject.listWithMapAndOtherModelValues || [_listWithMapAndOtherModelValues isEqualToArray:anObject.listWithMapAndOtherModelValues]) &&
@@ -1328,7 +1333,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     NSUInteger subhashes[] = {
         17,
         [_arrayProp hash],
-        (_booleanProp ? 1231 : 1237),
+        (_everythingBooleanProperties.EverythingBooleanBooleanProp ? 1231 : 1237),
         [_dateProp hash],
         (NSUInteger)_intEnum,
         (NSUInteger)_intProp,
@@ -1379,9 +1384,6 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         } else {
             [dict setObject:[NSNull null] forKey:@"array_prop"];
         }
-    }
-    if (_everythingDirtyProperties.EverythingDirtyPropertyBooleanProp) {
-        [dict setObject:@(_booleanProp) forKey: @"boolean_prop"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyDateProp) {
         if (_dateProp != nil) {
@@ -1647,6 +1649,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             [dict setObject:[NSNull null] forKey:@"uri_prop"];
         }
     }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyBooleanProp) {
+        [dict setObject:@(_everythingBooleanProperties.EverythingBooleanBooleanProp) forKey: @"boolean_prop"];
+    }
     return dict;
 }
 - (BOOL)isArrayPropSet
@@ -1765,6 +1770,10 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyUriProp == 1;
 }
+- (BOOL)booleanProp
+{
+    return _everythingBooleanProperties.EverythingBooleanBooleanProp;
+}
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {
@@ -1781,7 +1790,6 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         return self;
     }
     _arrayProp = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@"array_prop"];
-    _booleanProp = [aDecoder decodeBoolForKey:@"boolean_prop"];
     _dateProp = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"date_prop"];
     _intEnum = [aDecoder decodeIntegerForKey:@"int_enum"];
     _intProp = [aDecoder decodeIntegerForKey:@"int_prop"];
@@ -1809,6 +1817,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _stringProp = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"string_prop"];
     _type = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"type"];
     _uriProp = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"uri_prop"];
+    _everythingBooleanProperties.EverythingBooleanBooleanProp = [aDecoder decodeBoolForKey:@"boolean_prop"];
     _everythingDirtyProperties.EverythingDirtyPropertyArrayProp = [aDecoder decodeIntForKey:@"array_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyBooleanProp = [aDecoder decodeIntForKey:@"boolean_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyDateProp = [aDecoder decodeIntForKey:@"date_prop_dirty_property"] & 0x1;

@@ -170,6 +170,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isStringPropSet;
 - (BOOL)isTypeSet;
 - (BOOL)isUriPropSet;
+- (BOOL)booleanProp;
 @end
 
 @interface EverythingBuilder : NSObject

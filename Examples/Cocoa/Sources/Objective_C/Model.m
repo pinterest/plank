@@ -72,6 +72,7 @@ struct ModelDirtyProperties {
         return self;
     }
     _identifier = builder.identifier;
+
     _modelDirtyProperties = builder.modelDirtyProperties;
     if ([self class] == [Model class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
@@ -87,6 +88,7 @@ struct ModelDirtyProperties {
     if (props.ModelDirtyPropertyIdentifier) {
         [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", _identifier]];
     }
+
     return [NSString stringWithFormat:@"Model = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(ModelBuilder *builder))block
@@ -142,6 +144,7 @@ struct ModelDirtyProperties {
             [dict setObject:[NSNull null] forKey:@"id"];
         }
     }
+
     return dict;
 }
 - (BOOL)isIdentifierSet
@@ -164,6 +167,7 @@ struct ModelDirtyProperties {
         return self;
     }
     _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
+
     _modelDirtyProperties.ModelDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@"id_dirty_property"] & 0x1;
     if ([self class] == [Model class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];

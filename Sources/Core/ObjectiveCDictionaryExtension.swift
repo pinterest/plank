@@ -12,8 +12,14 @@ extension ObjCModelRenderer {
     func renderGenerateDictionary() -> ObjCIR.Method {
         let dictionary = "dict"
 
-        let props = properties.map { (param, schemaObj) -> String in
-
+        let props = properties.filter { (_, schema) -> Bool in
+            switch schema.schema {
+            case .boolean:
+                return false
+            default:
+                return true
+            }
+        }.map { (param, schemaObj) -> String in
             ObjCIR.ifStmt("_" + "\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") { [
                 schemaObj.schema.isObjCPrimitiveType ?
                     self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary) :
@@ -24,11 +30,27 @@ extension ObjCModelRenderer {
                     ] },
             ] }
         }.joined(separator: "\n")
+
+        let boolProps = properties.filter { (_, schema) -> Bool in
+            switch schema.schema {
+            case .boolean:
+                return true
+            default:
+                return false
+            }
+        }.map { (param, _) -> String in
+            let ivarName = "_\(booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: param, className: self.className))"
+            return ObjCIR.ifStmt("_" + "\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") { [
+                "[\(dictionary) setObject:@(\(ivarName)) forKey: @\"\(param)\"];",
+            ] }
+        }.joined(separator: "\n")
+
         return ObjCIR.method("- (NSDictionary *)dictionaryObjectRepresentation") { [
             "NSMutableDictionary *\(dictionary) = " +
                 (self.isBaseClass ? "[[NSMutableDictionary alloc] initWithCapacity:\(self.properties.count)];" :
                     "[[super dictionaryObjectRepresentation] mutableCopy];"),
             props,
+            boolProps,
             "return \(dictionary);",
         ] }
     }

@@ -23,8 +23,16 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
         return "\(className)DirtyProperties"
     }
 
+    var booleanPropertiesStructName: String {
+        return "\(className)BooleanProperties"
+    }
+
     var dirtyPropertiesIVarName: String {
         return "\(Languages.objectiveC.snakeCaseToPropertyName(rootSchema.name))DirtyProperties"
+    }
+
+    var booleanPropertiesIVarName: String {
+        return "\(Languages.objectiveC.snakeCaseToPropertyName(rootSchema.name))BooleanProperties"
     }
 
     // MARK: Model methods
@@ -119,8 +127,36 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
         }
     }
 
+    func renderBooleanPropertyAccessorMethods() -> [ObjCIR.Method] {
+        return properties.flatMap { (param, prop) -> [ObjCIR.Method] in
+            switch prop.schema {
+            case .boolean:
+                return [ObjCIR.method("- (BOOL)\(Languages.objectiveC.snakeCaseToPropertyName(param))") { ["return _\(self.booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: param, className: self.className));"] }]
+            default:
+                return []
+            }
+        }
+    }
+
     func renderRoots() -> [ObjCIR.Root] {
         let properties: [(Parameter, SchemaObjectProperty)] = rootSchema.properties.map { $0 } // Convert [String:Schema] -> [(String, Schema)]
+
+        let booleanProperties = rootSchema.properties.filter { (arg) -> Bool in
+            let (_, schema) = arg
+            switch schema.schema {
+            case .boolean:
+                return true
+            default:
+                return false
+            }
+        }
+
+        let booleanStructDeclaration = !booleanProperties.isEmpty ? [ObjCIR.Root.structDecl(name: self.booleanPropertiesStructName,
+                                                                                            fields: booleanProperties.keys.map { "unsigned int \(booleanPropertyOption(propertyName: $0, className: self.className)):1;" })] : []
+
+        let booleanIvarDeclaration: [SimpleProperty] = !booleanProperties.isEmpty ? [(self.booleanPropertiesIVarName, "struct \(self.booleanPropertiesStructName)",
+                                                                                      SchemaObjectProperty(schema: .integer, nullability: nil),
+                                                                                      .readwrite)] : []
 
         let protocols: [String: [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
@@ -183,61 +219,63 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                 myName: self.className,
                 parentName: parentName
             ),
-        ] + adtRoots + enumRoots + [
-            ObjCIR.Root.structDecl(name: self.dirtyPropertyOptionName,
-                                   fields: rootSchema.properties.keys
-                                       .map { "unsigned int \(dirtyPropertyOption(propertyName: $0, className: self.className)):1;" }),
-            ObjCIR.Root.category(className: self.className,
-                                 categoryName: nil,
-                                 methods: [],
-                                 properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
-                                               SchemaObjectProperty(schema: .integer, nullability: nil),
-                                               .readwrite)]),
-            ObjCIR.Root.category(className: self.builderClassName,
-                                 categoryName: nil,
-                                 methods: [],
-                                 properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
-                                               SchemaObjectProperty(schema: .integer, nullability: nil),
-                                               .readwrite)]),
-        ] + renderStringEnumerationMethods().map { ObjCIR.Root.function($0) } + [
-            ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
-            ObjCIR.Root.classDecl(
-                name: self.className,
-                extends: parentName,
-                methods: [
-                    (self.isBaseClass ? .publicM : .privateM, self.renderClassName()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderPolymorphicTypeIdentifier()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderModelObjectWithDictionary()),
-                    (.privateM, self.renderDesignatedInit()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderInitWithModelDictionary()),
-                    (.publicM, self.renderInitWithBuilder()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderInitWithBuilderWithInitType()),
-                    (.privateM, self.renderDebugDescription()),
-                    (.publicM, self.renderCopyWithBlock()),
-                    (.privateM, self.renderIsEqual()),
-                    (.publicM, self.renderIsEqualToClass()),
-                    (.privateM, self.renderHash()),
-                    (.publicM, self.renderMergeWithModel()),
-                    (.publicM, self.renderMergeWithModelWithInitType()),
-                    (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary()),
-                ] + self.renderIsSetMethods().map { (.publicM, $0) },
-                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
-                protocols: protocols
-            ),
-            ObjCIR.Root.classDecl(
-                name: self.builderClassName,
-                extends: resolveClassName(self.parentDescriptor).map { "\($0)Builder" },
-                methods: [
-                    (.publicM, self.renderBuilderInitWithModel()),
-                    (.publicM, ObjCIR.method("- (\(self.className) *)build") {
-                        ["return [[\(self.className) alloc] initWithBuilder:self];"]
-                    }),
-                    (.publicM, self.renderBuilderMergeWithModel()),
-                ] + self.renderBuilderPropertySetters().map { (.privateM, $0) },
-                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readwrite) },
-                protocols: [:]
-            ),
-            ObjCIR.Root.macro("NS_ASSUME_NONNULL_END"),
-        ]
+        ] + adtRoots + enumRoots +
+            [ObjCIR.Root.structDecl(name: self.dirtyPropertyOptionName,
+                                    fields: rootSchema.properties.keys
+                                        .map { "unsigned int \(dirtyPropertyOption(propertyName: $0, className: self.className)):1;" })] +
+            booleanStructDeclaration +
+            [
+                ObjCIR.Root.category(className: self.className,
+                                     categoryName: nil,
+                                     methods: [],
+                                     properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
+                                                   SchemaObjectProperty(schema: .integer, nullability: nil),
+                                                   .readwrite)] + booleanIvarDeclaration),
+                ObjCIR.Root.category(className: self.builderClassName,
+                                     categoryName: nil,
+                                     methods: [],
+                                     properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
+                                                   SchemaObjectProperty(schema: .integer, nullability: nil),
+                                                   .readwrite)]),
+            ] + renderStringEnumerationMethods().map { ObjCIR.Root.function($0) } + [
+                ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
+                ObjCIR.Root.classDecl(
+                    name: self.className,
+                    extends: parentName,
+                    methods: [
+                        (self.isBaseClass ? .publicM : .privateM, self.renderClassName()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderPolymorphicTypeIdentifier()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderModelObjectWithDictionary()),
+                        (.privateM, self.renderDesignatedInit()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderInitWithModelDictionary()),
+                        (.publicM, self.renderInitWithBuilder()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderInitWithBuilderWithInitType()),
+                        (.privateM, self.renderDebugDescription()),
+                        (.publicM, self.renderCopyWithBlock()),
+                        (.privateM, self.renderIsEqual()),
+                        (.publicM, self.renderIsEqualToClass(self.booleanPropertiesIVarName)),
+                        (.privateM, self.renderHash(self.booleanPropertiesIVarName)),
+                        (.publicM, self.renderMergeWithModel()),
+                        (.publicM, self.renderMergeWithModelWithInitType()),
+                        (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary()),
+                    ] + self.renderIsSetMethods().map { (.publicM, $0) } + self.renderBooleanPropertyAccessorMethods().map { (.publicM, $0) },
+                    properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
+                    protocols: protocols
+                ),
+                ObjCIR.Root.classDecl(
+                    name: self.builderClassName,
+                    extends: resolveClassName(self.parentDescriptor).map { "\($0)Builder" },
+                    methods: [
+                        (.publicM, self.renderBuilderInitWithModel()),
+                        (.publicM, ObjCIR.method("- (\(self.className) *)build") {
+                            ["return [[\(self.className) alloc] initWithBuilder:self];"]
+                        }),
+                        (.publicM, self.renderBuilderMergeWithModel()),
+                    ] + self.renderBuilderPropertySetters().map { (.privateM, $0) },
+                    properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readwrite) },
+                    protocols: [:]
+                ),
+                ObjCIR.Root.macro("NS_ASSUME_NONNULL_END"),
+            ]
     }
 }

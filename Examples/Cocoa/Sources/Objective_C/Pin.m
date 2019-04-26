@@ -411,6 +411,7 @@ struct PinDirtyProperties {
     _tags = builder.tags;
     _url = builder.url;
     _visualSearchAttrs = builder.visualSearchAttrs;
+
     _pinDirtyProperties = builder.pinDirtyProperties;
     if ([self class] == [Pin class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
@@ -474,6 +475,7 @@ struct PinDirtyProperties {
     if (props.PinDirtyPropertyVisualSearchAttrs) {
         [descriptionFields addObject:[@"_visualSearchAttrs = " stringByAppendingFormat:@"%@", _visualSearchAttrs]];
     }
+
     return [NSString stringWithFormat:@"Pin = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(PinBuilder *builder))block
@@ -691,6 +693,7 @@ struct PinDirtyProperties {
             [dict setObject:[NSNull null] forKey:@"visual_search_attrs"];
         }
     }
+
     return dict;
 }
 - (BOOL)isAttributionSet
@@ -793,6 +796,7 @@ struct PinDirtyProperties {
     _tags = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSArray class], [NSDictionary class]]] forKey:@"tags"];
     _url = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"url"];
     _visualSearchAttrs = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"visual_search_attrs"];
+
     _pinDirtyProperties.PinDirtyPropertyAttribution = [aDecoder decodeIntForKey:@"attribution_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyAttributionObjects = [aDecoder decodeIntForKey:@"attribution_objects_dirty_property"] & 0x1;
     _pinDirtyProperties.PinDirtyPropertyBoard = [aDecoder decodeIntForKey:@"board_dirty_property"] & 0x1;
