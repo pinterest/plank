@@ -249,9 +249,9 @@ public struct ObjCIR {
         let enums = body()
         let enumType: String
         switch enums.count {
-        case 0...Int(UInt8.max):
+        case 0 ... Int(UInt8.max):
             enumType = "unsigned char"
-        case Int(UInt8.max)...Int(UInt16.max):
+        case Int(UInt8.max) ... Int(UInt16.max):
             enumType = "unsigned short"
         default:
             enumType = "NSInteger"

@@ -158,7 +158,7 @@ class ObjectiveCIRTests: XCTestCase {
 
     private func buildEnumDelcarationTest(count: Int, type: String) -> (String, String) {
         var values: [String] = []
-        for num in 0..<count {
+        for num in 0 ..< count {
             values.append("e\(num)")
         }
 
@@ -174,7 +174,7 @@ class ObjectiveCIRTests: XCTestCase {
         let expected = lines.joined(separator: "\n")
 
         let actual = ObjCIR.enumStmt("enumeration") { () -> [String] in
-            return values
+            values
         }
 
         return (expected, actual)
