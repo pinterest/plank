@@ -28,12 +28,7 @@ extension ObjectiveCIRTests {
        ("testIfStmt", testIfStmt),
        ("testElseIfStmt", testElseIfStmt),
        ("testElseStmt", testElseStmt),
-       ("testIfElseStmt", testIfElseStmt),
-       ("testEnumDeclaration_defaultValues_2_char", testEnumDeclaration_defaultValues_2_char),
-       ("testEnumDeclaration_defaultValues_255_char", testEnumDeclaration_defaultValues_255_char),
-       ("testEnumDeclaration_defaultValues_256_short", testEnumDeclaration_defaultValues_256_short),
-       ("testEnumDeclaration_defaultValues_65535_short", testEnumDeclaration_defaultValues_65535_short),
-       ("testEnumDeclaration_defaultValues_65536_NSInteger", testEnumDeclaration_defaultValues_65536_NSInteger)
+       ("testIfElseStmt", testIfElseStmt)
    ]
 }
 // Generated Test Extension for ObjectiveCInitTests
