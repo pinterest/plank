@@ -32,7 +32,7 @@ typedef NS_ENUM(unsigned char, PinAttributionObjectsInternalType) {
 
 NS_ASSUME_NONNULL_END
 
-typedef NS_ENUM(unsigned char, PinInStock) {
+typedef NS_ENUM(char, PinInStock) {
     PinInStockUnknown = -1,
     PinInStockOutOfStock = 0,
     PinInStockInStock = 1

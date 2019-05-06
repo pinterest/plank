@@ -110,7 +110,7 @@
     if (!(self = [super init])) {
         return self;
     }
-    _internalType = [aDecoder decodeIntegerForKey:@"internal_type"];
+    _internalType = (PinAttributionObjectsInternalType)[aDecoder decodeIntegerForKey:@"internal_type"];
     _value0 = [aDecoder decodeObjectOfClass:[Board class] forKey:@"value0"];
     _value1 = [aDecoder decodeObjectOfClass:[User class] forKey:@"value1"];
     return self;
@@ -301,7 +301,7 @@ struct PinDirtyProperties {
             __unsafe_unretained id value = modelDictionary[@"in_stock"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_inStock = [value integerValue];
+                    self->_inStock = (PinInStock)[value integerValue];
                 }
                 self->_pinDirtyProperties.PinDirtyPropertyInStock = 1;
             }
@@ -786,7 +786,7 @@ struct PinDirtyProperties {
     _descriptionText = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
     _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
-    _inStock = [aDecoder decodeIntegerForKey:@"in_stock"];
+    _inStock = (PinInStock)[aDecoder decodeIntegerForKey:@"in_stock"];
     _link = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"link"];
     _media = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"media"];
     _note = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"note"];

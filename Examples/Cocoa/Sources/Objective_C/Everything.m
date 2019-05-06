@@ -222,7 +222,7 @@
     if (!(self = [super init])) {
         return self;
     }
-    _internalType = [aDecoder decodeIntegerForKey:@"internal_type"];
+    _internalType = (EverythingMapPolymorphicValuesInternalType)[aDecoder decodeIntegerForKey:@"internal_type"];
     _value0 = [aDecoder decodeObjectOfClass:[User class] forKey:@"value0"];
     _value1 = [aDecoder decodeObjectOfClass:[Board class] forKey:@"value1"];
     _value2 = [aDecoder decodeObjectOfClass:[Image class] forKey:@"value2"];
@@ -547,7 +547,7 @@
     if (!(self = [super init])) {
         return self;
     }
-    _internalType = [aDecoder decodeIntegerForKey:@"internal_type"];
+    _internalType = (EverythingPolymorphicPropInternalType)[aDecoder decodeIntegerForKey:@"internal_type"];
     _value0 = [aDecoder decodeObjectOfClass:[User class] forKey:@"value0"];
     _value1 = [aDecoder decodeObjectOfClass:[Board class] forKey:@"value1"];
     _value10 = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"value10"];
@@ -704,7 +704,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             __unsafe_unretained id value = modelDictionary[@"int_enum"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_intEnum = [value integerValue];
+                    self->_intEnum = (EverythingIntEnum)[value integerValue];
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertyIntEnum = 1;
             }
@@ -1783,7 +1783,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _arrayProp = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@"array_prop"];
     _booleanProp = [aDecoder decodeBoolForKey:@"boolean_prop"];
     _dateProp = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"date_prop"];
-    _intEnum = [aDecoder decodeIntegerForKey:@"int_enum"];
+    _intEnum = (EverythingIntEnum)[aDecoder decodeIntegerForKey:@"int_enum"];
     _intProp = [aDecoder decodeIntegerForKey:@"int_prop"];
     _listPolymorphicValues = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@"list_polymorphic_values"];
     _listWithListAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSArray class], [User class]]] forKey:@"list_with_list_and_other_model_values"];
@@ -1805,7 +1805,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _setPropWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [User class]]] forKey:@"set_prop_with_other_model_values"];
     _setPropWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSSet class]]] forKey:@"set_prop_with_primitive_values"];
     _setPropWithValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [NSString class]]] forKey:@"set_prop_with_values"];
-    _stringEnum = [aDecoder decodeIntegerForKey:@"string_enum"];
+    _stringEnum = (EverythingStringEnum)[aDecoder decodeIntegerForKey:@"string_enum"];
     _stringProp = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"string_prop"];
     _type = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"type"];
     _uriProp = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"uri_prop"];
