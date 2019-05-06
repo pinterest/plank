@@ -250,7 +250,7 @@ public struct ObjCIR {
             "typedef NS_ENUM(\(enumType), \(enumName)) {",
             -->[body().joined(separator: ",\n")],
             "};",
-            ].joined(separator: "\n")
+        ].joined(separator: "\n")
     }
 
     static func optionEnumStmt(_ enumName: String, body: () -> [String]) -> String {
@@ -338,8 +338,8 @@ public struct ObjCIR {
             case let .function(method):
                 return ["\(method.signature);"]
             case let .enumDecl(name, values):
-                let min : Int
-                let max : Int
+                let min: Int
+                let max: Int
                 switch values {
                 case let .integer(options):
                     let values = options.map { $0.defaultValue }
