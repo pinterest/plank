@@ -245,27 +245,12 @@ public struct ObjCIR {
         return "#import \"\(filename).h\""
     }
 
-    static func enumStmt(_ enumName: String, body: () -> [String]) -> String {
-        let enums = body()
-        let enumType: String
-        switch enums.count {
-        case 0 ... Int(UInt8.max):
-            enumType = "unsigned char"
-        case Int(UInt8.max) ... Int(UInt16.max):
-            enumType = "unsigned short"
-        default:
-            enumType = "NSInteger"
-        }
+    static func enumStmt(_ enumName: String, enumType: String, body: () -> [String]) -> String {
         return [
             "typedef NS_ENUM(\(enumType), \(enumName)) {",
-            -->[enums.joined(separator: ",\n")],
+            -->[body().joined(separator: ",\n")],
             "};",
-        ].joined(separator: "\n")
-//        return [
-//            "typedef NS_ENUM(NSInteger, \(enumName)) {",
-//            -->[body().joined(separator: ",\n")],
-//            "};",
-//            ].joined(separator: "\n")
+            ].joined(separator: "\n")
     }
 
     static func optionEnumStmt(_ enumName: String, body: () -> [String]) -> String {
@@ -353,7 +338,29 @@ public struct ObjCIR {
             case let .function(method):
                 return ["\(method.signature);"]
             case let .enumDecl(name, values):
-                return [ObjCIR.enumStmt(name) {
+                let min : Int
+                let max : Int
+                switch values {
+                case let .integer(options):
+                    let values = options.map { $0.defaultValue }
+                    min = values.min() ?? 0
+                    max = values.max() ?? Int.max
+                case let .string(options, _):
+                    min = 0
+                    max = options.count
+                }
+                let enumType: String
+                switch abs(max - min) {
+                case 0 ... Int(UInt8.max):
+                    enumType = min < 0 ? "char" : "unsigned char"
+                case Int(UInt8.max) ... Int(UInt16.max):
+                    enumType = min < 0 ? "short" : "unsigned short"
+                case Int(UInt16.max) ... Int(UInt32.max):
+                    enumType = min < 0 ? "int" : "unsigned int"
+                default:
+                    enumType = min < 0 ? "NSInteger" : "NSUInteger"
+                }
+                return [ObjCIR.enumStmt(name, enumType: enumType) {
                     switch values {
                     case let .integer(options):
                         return options.map { "\(name + $0.camelCaseDescription) = \($0.defaultValue)" }
