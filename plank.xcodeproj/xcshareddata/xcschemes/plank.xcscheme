@@ -62,12 +62,6 @@
             ReferencedContainer = "container:plank.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "/Users/gbolsinga/code/plank/Examples/PDK/everything.json"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
