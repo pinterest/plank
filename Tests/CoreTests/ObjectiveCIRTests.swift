@@ -157,7 +157,7 @@ class ObjectiveCIRTests: XCTestCase {
     }
 
     func testEnumIntegralTypes() {
-        var array : [Int] = [-1, 1]
+        var array: [Int] = [-1, 1]
         XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "char")
 
         array = [0, 1]
