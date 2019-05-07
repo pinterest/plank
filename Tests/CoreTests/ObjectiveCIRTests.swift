@@ -155,4 +155,38 @@ class ObjectiveCIRTests: XCTestCase {
         ] }
         XCTAssertEqual(expected, actual)
     }
+
+    func testEnumIntegralTypes() {
+        var array : [Int] = [-1, 1]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "char")
+
+        array = [0, 1]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "unsigned char")
+
+        array = [-1, Int(UInt8.max)]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "short")
+
+        array = [0, Int(UInt8.max)]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "unsigned char")
+
+        array = [-1, Int(UInt16.max)]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "int")
+
+        array = [0, Int(UInt16.max)]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "unsigned short")
+
+        array = [-1, Int(UInt32.max)]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "NSInteger")
+
+        array = [0, Int(UInt32.max)]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "unsigned int")
+
+        array = [-1, Int(Int64.max)]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "NSInteger")
+
+        array = [0, Int(Int64.max)]
+        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), "NSUInteger")
+
+        // Tests with UInt64 fail to run. plank only has Int internally.
+    }
 }

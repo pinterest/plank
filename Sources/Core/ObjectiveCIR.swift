@@ -74,6 +74,37 @@ func enumTypeName(propertyName: String, className: String) -> String {
     return "\(className)\(Languages.objectiveC.snakeCaseToCamelCase(propertyName))"
 }
 
+func enumIntegralType(_ values: EnumType) -> String {
+    let min: Int
+    let max: Int
+    switch values {
+    case let .integer(options):
+        let values = options.map { $0.defaultValue }
+        min = values.min() ?? 0
+        max = values.max() ?? Int.max
+    case let .string(options, _):
+        min = 0
+        max = options.count
+    }
+    let underlyingIntegralType: String
+    let (_, overflow) = max.subtractingReportingOverflow(min)
+    if overflow {
+        underlyingIntegralType = min < 0 ? "NSInteger" : "NSUInteger"
+    } else {
+        switch abs(max - min) {
+        case 0 ... Int(UInt8.max):
+            underlyingIntegralType = min < 0 ? "char" : "unsigned char"
+        case Int(UInt8.max) ... Int(UInt16.max):
+            underlyingIntegralType = min < 0 ? "short" : "unsigned short"
+        case Int(UInt16.max) ... Int(UInt32.max):
+            underlyingIntegralType = min < 0 ? "int" : "unsigned int"
+        default:
+            underlyingIntegralType = min < 0 ? "NSInteger" : "NSUInteger"
+        }
+    }
+    return underlyingIntegralType
+}
+
 extension SchemaObjectRoot {
     func className(with params: GenerationParameters) -> String {
         if let classPrefix = params[GenerationParameterType.classPrefix] as String? {
@@ -338,29 +369,7 @@ public struct ObjCIR {
             case let .function(method):
                 return ["\(method.signature);"]
             case let .enumDecl(name, values):
-                let min: Int
-                let max: Int
-                switch values {
-                case let .integer(options):
-                    let values = options.map { $0.defaultValue }
-                    min = values.min() ?? 0
-                    max = values.max() ?? Int.max
-                case let .string(options, _):
-                    min = 0
-                    max = options.count
-                }
-                let underlyingIntegralType: String
-                switch abs(max - min) {
-                case 0 ... Int(UInt8.max):
-                    underlyingIntegralType = min < 0 ? "char" : "unsigned char"
-                case Int(UInt8.max) ... Int(UInt16.max):
-                    underlyingIntegralType = min < 0 ? "short" : "unsigned short"
-                case Int(UInt16.max) ... Int(UInt32.max):
-                    underlyingIntegralType = min < 0 ? "int" : "unsigned int"
-                default:
-                    underlyingIntegralType = min < 0 ? "NSInteger" : "NSUInteger"
-                }
-                return [ObjCIR.enumStmt(name, underlyingIntegralType: underlyingIntegralType) {
+                return [ObjCIR.enumStmt(name, underlyingIntegralType: enumIntegralType(values)) {
                     switch values {
                     case let .integer(options):
                         return options.map { "\(name + $0.camelCaseDescription) = \($0.defaultValue)" }
