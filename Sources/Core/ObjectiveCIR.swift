@@ -245,9 +245,9 @@ public struct ObjCIR {
         return "#import \"\(filename).h\""
     }
 
-    static func enumStmt(_ enumName: String, enumType: String, body: () -> [String]) -> String {
+    static func enumStmt(_ enumName: String, underlyingIntegralType: String, body: () -> [String]) -> String {
         return [
-            "typedef NS_ENUM(\(enumType), \(enumName)) {",
+            "typedef NS_ENUM(\(underlyingIntegralType), \(enumName)) {",
             -->[body().joined(separator: ",\n")],
             "};",
         ].joined(separator: "\n")
@@ -349,18 +349,18 @@ public struct ObjCIR {
                     min = 0
                     max = options.count
                 }
-                let enumType: String
+                let underlyingIntegralType: String
                 switch abs(max - min) {
                 case 0 ... Int(UInt8.max):
-                    enumType = min < 0 ? "char" : "unsigned char"
+                    underlyingIntegralType = min < 0 ? "char" : "unsigned char"
                 case Int(UInt8.max) ... Int(UInt16.max):
-                    enumType = min < 0 ? "short" : "unsigned short"
+                    underlyingIntegralType = min < 0 ? "short" : "unsigned short"
                 case Int(UInt16.max) ... Int(UInt32.max):
-                    enumType = min < 0 ? "int" : "unsigned int"
+                    underlyingIntegralType = min < 0 ? "int" : "unsigned int"
                 default:
-                    enumType = min < 0 ? "NSInteger" : "NSUInteger"
+                    underlyingIntegralType = min < 0 ? "NSInteger" : "NSUInteger"
                 }
-                return [ObjCIR.enumStmt(name, enumType: enumType) {
+                return [ObjCIR.enumStmt(name, underlyingIntegralType: underlyingIntegralType) {
                     switch values {
                     case let .integer(options):
                         return options.map { "\(name + $0.camelCaseDescription) = \($0.defaultValue)" }
