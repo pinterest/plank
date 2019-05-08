@@ -28,7 +28,8 @@ extension ObjectiveCIRTests {
        ("testIfStmt", testIfStmt),
        ("testElseIfStmt", testElseIfStmt),
        ("testElseStmt", testElseStmt),
-       ("testIfElseStmt", testIfElseStmt)
+       ("testIfElseStmt", testIfElseStmt),
+       ("testEnumIntegralTypes", testEnumIntegralTypes)
    ]
 }
 // Generated Test Extension for ObjectiveCInitTests
