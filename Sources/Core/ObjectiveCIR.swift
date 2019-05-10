@@ -74,7 +74,18 @@ func enumTypeName(propertyName: String, className: String) -> String {
     return "\(className)\(Languages.objectiveC.snakeCaseToCamelCase(propertyName))"
 }
 
-func enumIntegralType(_ values: EnumType) -> String {
+enum EnumerationIntegralType : String {
+    case char = "char"
+    case unsigned_char = "unsigned char"
+    case short = "short"
+    case unsigned_short = "unsigned short"
+    case int = "int"
+    case unsigned_int = "unsigned int"
+    case NSInteger = "NSInteger"
+    case NSUInteger = "NSUInteger"
+}
+
+func enumIntegralType(_ values: EnumType) -> EnumerationIntegralType {
     let min: Int
     let max: Int
     switch values {
@@ -86,20 +97,20 @@ func enumIntegralType(_ values: EnumType) -> String {
         min = 0
         max = options.count
     }
-    let underlyingIntegralType: String
+    let underlyingIntegralType: EnumerationIntegralType
     let (_, overflow) = max.subtractingReportingOverflow(min)
     if overflow {
-        underlyingIntegralType = min < 0 ? "NSInteger" : "NSUInteger"
+        underlyingIntegralType = min < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
     } else {
         switch abs(max - min) {
         case 0 ... Int(UInt8.max):
-            underlyingIntegralType = min < 0 ? "char" : "unsigned char"
+            underlyingIntegralType = min < 0 ? EnumerationIntegralType.char : EnumerationIntegralType.unsigned_char
         case Int(UInt8.max) ... Int(UInt16.max):
-            underlyingIntegralType = min < 0 ? "short" : "unsigned short"
+            underlyingIntegralType = min < 0 ? EnumerationIntegralType.short : EnumerationIntegralType.unsigned_short
         case Int(UInt16.max) ... Int(UInt32.max):
-            underlyingIntegralType = min < 0 ? "int" : "unsigned int"
+            underlyingIntegralType = min < 0 ? EnumerationIntegralType.int : EnumerationIntegralType.unsigned_int
         default:
-            underlyingIntegralType = min < 0 ? "NSInteger" : "NSUInteger"
+            underlyingIntegralType = min < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
         }
     }
     return underlyingIntegralType
@@ -276,9 +287,9 @@ public struct ObjCIR {
         return "#import \"\(filename).h\""
     }
 
-    static func enumStmt(_ enumName: String, underlyingIntegralType: String, body: () -> [String]) -> String {
+    static func enumStmt(_ enumName: String, underlyingIntegralType: EnumerationIntegralType, body: () -> [String]) -> String {
         return [
-            "typedef NS_ENUM(\(underlyingIntegralType), \(enumName)) {",
+            "typedef NS_ENUM(\(underlyingIntegralType.rawValue), \(enumName)) {",
             -->[body().joined(separator: ",\n")],
             "};",
         ].joined(separator: "\n")
