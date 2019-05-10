@@ -34,6 +34,8 @@ public class User {
         @SerializedName("unset") UNSET, @SerializedName("immediate") IMMEDIATE, @SerializedName("daily") DAILY;
     }
 
+    public static final String TYPE = "user";
+
     @SerializedName("bio") private @Nullable String bio;
     @SerializedName("counts") private @Nullable Map<String, Integer> counts;
     @SerializedName("created_at") private @Nullable Date createdAt;

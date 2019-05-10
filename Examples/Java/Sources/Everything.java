@@ -71,6 +71,8 @@ public class Everything {
         @SerializedName("case1") CASE1, @SerializedName("case2") CASE2, @SerializedName("case3") CASE3;
     }
 
+    public static final String TYPE = "everything";
+
     @SerializedName("array_prop") private @Nullable List<Object> arrayProp;
     @SerializedName("boolean_prop") private @Nullable Boolean booleanProp;
     @SerializedName("date_prop") private @Nullable Date dateProp;

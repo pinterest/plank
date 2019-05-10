@@ -30,6 +30,10 @@ public struct JavaModelRenderer: JavaFileRenderer {
         }
     }
 
+    func renderStaticTypeString() -> JavaIR.Property {
+        return JavaIR.Property(annotations: [], modifiers: [.public, .static, .final], type: "String", name: "TYPE", initialValue: "\"" + rootSchema.typeIdentifier + "\"")
+    }
+
     func renderModelHashCode() -> JavaIR.Method {
         let bodyHashCode = transitiveProperties.map { param, _ in
             Languages.java.snakeCaseToPropertyName(param)
@@ -73,7 +77,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             index += 1
         }
 
-        return [props, bitmasks, [bits]]
+        return [[renderStaticTypeString()], props, bitmasks, [bits]]
     }
 
     func propertyGetterForParam(param: String, schemaObj: SchemaObjectProperty) -> JavaIR.Method {
