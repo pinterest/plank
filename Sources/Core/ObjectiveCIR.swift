@@ -77,11 +77,11 @@ func enumTypeName(propertyName: String, className: String) -> String {
 // ObjC integreal types for NS_ENUM declarations in generated code.
 enum EnumerationIntegralType: String {
     case char
-    case unsigned_char = "unsigned char"
+    case unsignedChar = "unsigned char"
     case short
-    case unsigned_short = "unsigned short"
+    case unsignedShort = "unsigned short"
     case int
-    case unsigned_int = "unsigned int"
+    case unsignedInt = "unsigned int"
     case NSInteger
     case NSUInteger
 }
@@ -114,11 +114,11 @@ func enumIntegralType(_ values: EnumType) -> EnumerationIntegralType {
     } else {
         switch abs(max - min) {
         case 0 ... Int(UInt8.max):
-            underlyingIntegralType = min < 0 ? EnumerationIntegralType.char : EnumerationIntegralType.unsigned_char
+            underlyingIntegralType = min < 0 ? EnumerationIntegralType.char : EnumerationIntegralType.unsignedChar
         case Int(UInt8.max) ... Int(UInt16.max):
-            underlyingIntegralType = min < 0 ? EnumerationIntegralType.short : EnumerationIntegralType.unsigned_short
+            underlyingIntegralType = min < 0 ? EnumerationIntegralType.short : EnumerationIntegralType.unsignedShort
         case Int(UInt16.max) ... Int(UInt32.max):
-            underlyingIntegralType = min < 0 ? EnumerationIntegralType.int : EnumerationIntegralType.unsigned_int
+            underlyingIntegralType = min < 0 ? EnumerationIntegralType.int : EnumerationIntegralType.unsignedInt
         default:
             underlyingIntegralType = min < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
         }
