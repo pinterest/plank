@@ -74,15 +74,15 @@ func enumTypeName(propertyName: String, className: String) -> String {
     return "\(className)\(Languages.objectiveC.snakeCaseToCamelCase(propertyName))"
 }
 
-enum EnumerationIntegralType : String {
-    case char = "char"
+enum EnumerationIntegralType: String {
+    case char
     case unsigned_char = "unsigned char"
-    case short = "short"
+    case short
     case unsigned_short = "unsigned short"
-    case int = "int"
+    case int
     case unsigned_int = "unsigned int"
-    case NSInteger = "NSInteger"
-    case NSUInteger = "NSUInteger"
+    case NSInteger
+    case NSUInteger
 }
 
 func enumIntegralType(_ values: EnumType) -> EnumerationIntegralType {
