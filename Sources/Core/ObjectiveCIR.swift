@@ -84,46 +84,46 @@ enum EnumerationIntegralType: String {
     case unsignedInt = "unsigned int"
     case NSInteger
     case NSUInteger
-}
 
-// Return the best fitting and smallest EnumerationIntegralType for the given EnumType.
-// In ObjC not all NS_ENUM declarations need to be NSInteger in size. Using smaller integral types
-// can allow the code that plank generates to use less memory in the resulting application.
-// As an example with an object with 2 enumerations values, each of NSInteger size,
-// those 2 enumerations will take 16 bytes of the objects instance size in the heap. However,
-// if the enumeration storage is smaller, in this case 1 byte long for an unsigned char, the
-// 2 enumerations will only take 8 bytes in the heap. This is because the compiler will best fit
-// the two unsigned char enumerations to fit into the 8 bytes natural alignment of the platform.
-// As more enumerations are found in a class, the better this best fitting code will save memory.
-func enumIntegralType(_ values: EnumType) -> EnumerationIntegralType {
-    let min: Int
-    let max: Int
-    switch values {
-    case let .integer(options):
-        let values = options.map { $0.defaultValue }
-        min = values.min() ?? 0
-        max = values.max() ?? Int.max
-    case let .string(options, _):
-        min = 0
-        max = options.count
-    }
-    let underlyingIntegralType: EnumerationIntegralType
-    let (_, overflow) = max.subtractingReportingOverflow(min)
-    if overflow {
-        underlyingIntegralType = min < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
-    } else {
-        switch abs(max - min) {
-        case 0 ... Int(UInt8.max):
-            underlyingIntegralType = min < 0 ? EnumerationIntegralType.char : EnumerationIntegralType.unsignedChar
-        case Int(UInt8.max) ... Int(UInt16.max):
-            underlyingIntegralType = min < 0 ? EnumerationIntegralType.short : EnumerationIntegralType.unsignedShort
-        case Int(UInt16.max) ... Int(UInt32.max):
-            underlyingIntegralType = min < 0 ? EnumerationIntegralType.int : EnumerationIntegralType.unsignedInt
-        default:
-            underlyingIntegralType = min < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
+    // Return the best fitting and smallest EnumerationIntegralType for the given EnumType.
+    // In ObjC not all NS_ENUM declarations need to be NSInteger in size. Using smaller integral types
+    // can allow the code that plank generates to use less memory in the resulting application.
+    // As an example with an object with 2 enumerations values, each of NSInteger size,
+    // those 2 enumerations will take 16 bytes of the objects instance size in the heap. However,
+    // if the enumeration storage is smaller, in this case 1 byte long for an unsigned char, the
+    // 2 enumerations will only take 8 bytes in the heap. This is because the compiler will best fit
+    // the two unsigned char enumerations to fit into the 8 bytes natural alignment of the platform.
+    // As more enumerations are found in a class, the better this best fitting code will save memory.
+    static func enumerationIntegrateTypeFor(_ values: EnumType) -> EnumerationIntegralType {
+        let min: Int
+        let max: Int
+        switch values {
+        case let .integer(options):
+            let values = options.map { $0.defaultValue }
+            min = values.min() ?? 0
+            max = values.max() ?? Int.max
+        case let .string(options, _):
+            min = 0
+            max = options.count
         }
+        let underlyingIntegralType: EnumerationIntegralType
+        let (_, overflow) = max.subtractingReportingOverflow(min)
+        if overflow {
+            underlyingIntegralType = min < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
+        } else {
+            switch abs(max - min) {
+            case 0 ... Int(UInt8.max):
+                underlyingIntegralType = min < 0 ? EnumerationIntegralType.char : EnumerationIntegralType.unsignedChar
+            case Int(UInt8.max) ... Int(UInt16.max):
+                underlyingIntegralType = min < 0 ? EnumerationIntegralType.short : EnumerationIntegralType.unsignedShort
+            case Int(UInt16.max) ... Int(UInt32.max):
+                underlyingIntegralType = min < 0 ? EnumerationIntegralType.int : EnumerationIntegralType.unsignedInt
+            default:
+                underlyingIntegralType = min < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
+            }
+        }
+        return underlyingIntegralType
     }
-    return underlyingIntegralType
 }
 
 extension SchemaObjectRoot {
@@ -390,7 +390,7 @@ public struct ObjCIR {
             case let .function(method):
                 return ["\(method.signature);"]
             case let .enumDecl(name, values):
-                return [ObjCIR.enumStmt(name, underlyingIntegralType: enumIntegralType(values)) {
+                return [ObjCIR.enumStmt(name, underlyingIntegralType: EnumerationIntegralType.enumerationIntegrateTypeFor(values)) {
                     switch values {
                     case let .integer(options):
                         return options.map { "\(name + $0.camelCaseDescription) = \($0.defaultValue)" }

@@ -158,34 +158,34 @@ class ObjectiveCIRTests: XCTestCase {
 
     func testEnumIntegralTypes() {
         var array: [Int] = [-1, 1]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.char)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.char)
 
         array = [0, 1]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedChar)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedChar)
 
         array = [-1, Int(UInt8.max)]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.short)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.short)
 
         array = [0, Int(UInt8.max)]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedChar)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedChar)
 
         array = [-1, Int(UInt16.max)]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.int)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.int)
 
         array = [0, Int(UInt16.max)]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedShort)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedShort)
 
         array = [-1, Int(UInt32.max)]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.NSInteger)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.NSInteger)
 
         array = [0, Int(UInt32.max)]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedInt)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedInt)
 
         array = [-1, Int(Int64.max)]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.NSInteger)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.NSInteger)
 
         array = [0, Int(Int64.max)]
-        XCTAssertEqual(enumIntegralType(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.NSUInteger)
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.NSUInteger)
 
         // Tests with UInt64 fail to run. plank only has Int internally.
     }
