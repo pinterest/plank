@@ -157,35 +157,69 @@ class ObjectiveCIRTests: XCTestCase {
     }
 
     func testEnumIntegralTypes() {
-        var array: [Int] = [-1, 1]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.char)
+        var array: [Int] = [-1]
+        var value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.char)
 
-        array = [0, 1]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedChar)
+        array = [Int(UInt8.max) - 1]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.unsignedChar)
+
+        array = [Int(UInt8.max)]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.unsignedChar)
+
+        array = [Int(UInt8.max) + 1]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.unsignedShort)
 
         array = [-1, Int(UInt8.max)]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.short)
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.short)
 
-        array = [0, Int(UInt8.max)]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedChar)
+        array = [Int(UInt16.max) - 1]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.unsignedShort)
+
+        array = [Int(UInt16.max)]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.unsignedShort)
+
+        array = [Int(UInt16.max) + 1]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.unsignedInt)
 
         array = [-1, Int(UInt16.max)]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.int)
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.int)
 
-        array = [0, Int(UInt16.max)]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedShort)
+        array = [Int(UInt32.max) - 1]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.unsignedInt)
+
+        array = [Int(UInt32.max)]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.unsignedInt)
+
+        array = [Int(UInt32.max) + 1]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.NSUInteger)
 
         array = [-1, Int(UInt32.max)]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.NSInteger)
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.NSInteger)
 
-        array = [0, Int(UInt32.max)]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.unsignedInt)
+        array = [Int(Int64.max) - 1]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.NSUInteger)
+
+        array = [Int(Int64.max)]
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.NSUInteger)
 
         array = [-1, Int(Int64.max)]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.NSInteger)
-
-        array = [0, Int(Int64.max)]
-        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })), EnumerationIntegralType.NSUInteger)
+        value = EnumType.integer(array.map { EnumValue<Int>(defaultValue: $0, description: "e\($0)") })
+        XCTAssertEqual(EnumerationIntegralType.enumerationIntegrateTypeFor(value), EnumerationIntegralType.NSInteger)
 
         // Tests with UInt64 fail to run. plank only has Int internally.
     }

@@ -95,31 +95,31 @@ enum EnumerationIntegralType: String {
     // the two unsigned char enumerations to fit into the 8 bytes natural alignment of the platform.
     // As more enumerations are found in a class, the better this best fitting code will save memory.
     static func enumerationIntegrateTypeFor(_ values: EnumType) -> EnumerationIntegralType {
-        let min: Int
-        let max: Int
+        let minimum: Int
+        let maximum: Int
         switch values {
         case let .integer(options):
             let values = options.map { $0.defaultValue }
-            min = values.min() ?? 0
-            max = values.max() ?? Int.max
+            minimum = values.min() ?? 0
+            maximum = values.max() ?? Int.max
         case let .string(options, _):
-            min = 0
-            max = options.count
+            minimum = 0
+            maximum = options.count
         }
         let underlyingIntegralType: EnumerationIntegralType
-        let (_, overflow) = max.subtractingReportingOverflow(min)
+        let (_, overflow) = maximum.subtractingReportingOverflow(minimum)
         if overflow {
-            underlyingIntegralType = min < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
+            underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
         } else {
-            switch abs(max - min) {
+            switch max(maximum, abs(maximum - minimum)) {
             case 0 ... Int(UInt8.max):
-                underlyingIntegralType = min < 0 ? EnumerationIntegralType.char : EnumerationIntegralType.unsignedChar
+                underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.char : EnumerationIntegralType.unsignedChar
             case Int(UInt8.max) ... Int(UInt16.max):
-                underlyingIntegralType = min < 0 ? EnumerationIntegralType.short : EnumerationIntegralType.unsignedShort
+                underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.short : EnumerationIntegralType.unsignedShort
             case Int(UInt16.max) ... Int(UInt32.max):
-                underlyingIntegralType = min < 0 ? EnumerationIntegralType.int : EnumerationIntegralType.unsignedInt
+                underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.int : EnumerationIntegralType.unsignedInt
             default:
-                underlyingIntegralType = min < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
+                underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
             }
         }
         return underlyingIntegralType

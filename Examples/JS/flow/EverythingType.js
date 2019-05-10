@@ -17,10 +17,27 @@ export type EverythingMapPolymorphicValuesType = UserType | BoardType | ImageTyp
 
 export type EverythingPolymorphicPropType = UserType | BoardType | ImageType | PinType | EverythingType | string | boolean | number | number | PlankDate | PlankURI;
 
+export type EverythingCharEnum = 
+  | -1 /* char_case_1 */
+;
+
 export type EverythingIntEnum = 
-  | 1 /* int_case_1 */
-  | 2 /* int_case_2 */
-  | 3 /* int_case_3 */
+  | -1 /* int_case_1 */
+  | 65536 /* int_case_2 */
+;
+
+export type EverythingNsintegerEnum = 
+  | -1 /* nsinteger_case_1 */
+  | 4294967295 /* nsinteger_case_2 */
+;
+
+export type EverythingNsuintegerEnum = 
+  | 4294967296 /* nsuinteger_case_2 */
+;
+
+export type EverythingShortEnum = 
+  | -1 /* short_case_1 */
+  | 256 /* short_case_2 */
 ;
 
 export type EverythingStringEnum = 
@@ -29,9 +46,22 @@ export type EverythingStringEnum =
   | 'case3'
 ;
 
+export type EverythingUnsignedCharEnum = 
+  | 255 /* unsigned_char_case_2 */
+;
+
+export type EverythingUnsignedIntEnum = 
+  | 65536 /* unsigned_int_case_2 */
+;
+
+export type EverythingUnsignedShortEnum = 
+  | 256 /* char_case_2 */
+;
+
 export type EverythingType = $Shape<{|
   +array_prop: ?Array<*>,
   +boolean_prop: boolean,
+  +char_enum: EverythingCharEnum,
   +date_prop: ?PlankDate,
   +int_enum: EverythingIntEnum,
   +int_prop: number,
@@ -48,6 +78,8 @@ export type EverythingType = $Shape<{|
   +map_with_object_values: ?{ +[string]: string },
   +map_with_other_model_values: ?{ +[string]: UserType },
   +map_with_primitive_values: ?{ +[string]: number } /* Integer */,
+  +nsinteger_enum: EverythingNsintegerEnum,
+  +nsuinteger_enum: EverythingNsuintegerEnum,
   +number_prop: number,
   +other_model_prop: ?UserType,
   +polymorphic_prop: ?EverythingPolymorphicPropType,
@@ -55,9 +87,13 @@ export type EverythingType = $Shape<{|
   +set_prop_with_other_model_values: ?Array<UserType>,
   +set_prop_with_primitive_values: ?Array<number /* Integer> */>,
   +set_prop_with_values: ?Array<string>,
+  +short_enum: EverythingShortEnum,
   +string_enum: EverythingStringEnum,
   +string_prop: ?string,
   +type: ?string,
+  +unsigned_char_enum: EverythingUnsignedCharEnum,
+  +unsigned_int_enum: EverythingUnsignedIntEnum,
+  +unsigned_short_enum: EverythingUnsignedShortEnum,
   +uri_prop: ?PlankURI,
 |}> & {
   id: string
