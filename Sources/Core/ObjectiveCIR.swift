@@ -74,6 +74,7 @@ func enumTypeName(propertyName: String, className: String) -> String {
     return "\(className)\(Languages.objectiveC.snakeCaseToCamelCase(propertyName))"
 }
 
+// ObjC integreal types for NS_ENUM declarations in generated code.
 enum EnumerationIntegralType: String {
     case char
     case unsigned_char = "unsigned char"
@@ -85,6 +86,15 @@ enum EnumerationIntegralType: String {
     case NSUInteger
 }
 
+// Return the best fitting and smalletst EnumerationIntegralType for the given EnumType.
+// In ObjC not all NS_ENUM declarations need to be NSInteger in size. Using smaller integral types
+// can allow the code that plank generates to use less memory in the resulting application.
+// As an example there is an objecty with 2 enumerations values, each of NSInteger size,
+// those 2 enumerations will take 16 bytes of the objects instance size in the heap. However,
+// if the enumeration storage is smaller, in this case 8 bytes long for an unsigned char, the
+// 2 enumeratios will only take 8 bytes in the heap. This is because the compiler will best fit
+// the two unsignec char enumerations to fit into the 8 bytes natural alignment of the platform.
+// As more enumerations are found in a class, the better this best fitting code will save memory.
 func enumIntegralType(_ values: EnumType) -> EnumerationIntegralType {
     let min: Int
     let max: Int
