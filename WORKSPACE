@@ -75,3 +75,9 @@ maven_jar(
     artifact = "com.android.support:support-annotations:28.0.0",
     server = "google_maven"
 )
+
+maven_jar(
+    name = "androidx_annotations",
+    artifact = "androidx.annotation:annotation:1.0.2",
+    server = "google_maven"
+)

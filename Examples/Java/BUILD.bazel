@@ -4,5 +4,6 @@ android_library(
     deps = [
       "@gson_maven//jar",
       "@android_support_annotations//jar",
+      "@androidx_annotations//jar",
     ]
 )
