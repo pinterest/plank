@@ -315,49 +315,49 @@ class ObjcDictionaryRepresentationTestSuite: XCTestCase {
     func testUnsignedCharEnum() {
         let dict: JSONDict = [
             "unsigned_char_enum": 0,
-            ]
+        ]
         assertDictionaryRepresentation(dict)
     }
 
     func testShortEnum() {
         let dict: JSONDict = [
             "short_enum": 0,
-            ]
+        ]
         assertDictionaryRepresentation(dict)
     }
 
     func testUnsignedShortEnum() {
         let dict: JSONDict = [
             "unsigned_short_enum": 0,
-            ]
+        ]
         assertDictionaryRepresentation(dict)
     }
 
     func testIntEnum() {
         let dict: JSONDict = [
             "int_enum": 0,
-            ]
+        ]
         assertDictionaryRepresentation(dict)
     }
 
     func testUnsignedIntEnum() {
         let dict: JSONDict = [
             "unsigned_int_enum": 0,
-            ]
+        ]
         assertDictionaryRepresentation(dict)
     }
 
     func testNSIntegerEnum() {
         let dict: JSONDict = [
             "nsinteger_enum": 0,
-            ]
+        ]
         assertDictionaryRepresentation(dict)
     }
 
     func testNSUIntegerEnum() {
         let dict: JSONDict = [
             "nsuinteger_enum": 0,
-            ]
+        ]
         assertDictionaryRepresentation(dict)
     }
 
