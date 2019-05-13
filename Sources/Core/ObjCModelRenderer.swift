@@ -141,13 +141,13 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             }
         }
 
-        let enumRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
+        let enumRoots = properties.flatMap { (param, prop) -> [ObjCIR.Root] in
             enumRoot(from: prop.schema, param: param)
         }
 
         // TODO: Synthesize oneOf ADT Classes and Class Extension
         // TODO: (rmalik): Clean this up, too much copy / paste here to support oneOf cases
-        let adtRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
+        let adtRoots = properties.flatMap { (param, prop) -> [ObjCIR.Root] in
             switch prop.schema {
             case let .oneOf(types: possibleTypes):
                 let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable) }
@@ -219,7 +219,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     (.publicM, self.renderMergeWithModelWithInitType()),
                     (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary()),
                 ] + self.renderIsSetMethods().map { (.publicM, $0) },
-                properties: self.properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
+                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
                 protocols: protocols
             ),
             ObjCIR.Root.classDecl(
