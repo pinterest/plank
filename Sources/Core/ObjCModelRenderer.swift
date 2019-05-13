@@ -120,8 +120,6 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     }
 
     func renderRoots() -> [ObjCIR.Root] {
-        let properties: [(Parameter, SchemaObjectProperty)] = rootSchema.properties.map { $0 } // Convert [String:Schema] -> [(String, Schema)]
-
         let protocols: [String: [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
             "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }],
@@ -221,7 +219,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                     (.publicM, self.renderMergeWithModelWithInitType()),
                     (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary()),
                 ] + self.renderIsSetMethods().map { (.publicM, $0) },
-                properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
+                properties: self.properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
                 protocols: protocols
             ),
             ObjCIR.Root.classDecl(
