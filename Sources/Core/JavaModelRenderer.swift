@@ -428,8 +428,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
             aClass: JavaIR.Class(
                 annotations: [],
                 modifiers: [.public],
-                extends: nil,
-                implements: nil,
+                extends: params[.javaExtends],
+                implements: params[.javaImplements]?.components(separatedBy: ","),
                 name: className,
                 methods: [
                     self.renderModelConstructor(),

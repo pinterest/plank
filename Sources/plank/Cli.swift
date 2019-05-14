@@ -18,6 +18,8 @@ enum FlagOptions: String {
     case objectiveCClassPrefix = "objc_class_prefix"
     case javaPackageName = "java_package_name"
     case javaNullabilityAnnotationType = "java_nullability_annotation_type"
+    case javaExtends = "java_extends"
+    case javaImplements = "java_implements"
     case printDeps = "print_deps"
     case noRecursive = "no_recursive"
     case noRuntime = "no_runtime"
@@ -41,6 +43,8 @@ enum FlagOptions: String {
         case .version: return false
         case .javaPackageName: return true
         case .javaNullabilityAnnotationType: return true
+        case .javaExtends: return true
+        case .javaImplements: return true
         }
     }
 }
@@ -64,6 +68,8 @@ extension FlagOptions: HelpCommandOutput {
             "    Java:",
             "    --\(FlagOptions.javaPackageName.rawValue) - The package name to associate with generated Java sources",
             "    --\(FlagOptions.javaNullabilityAnnotationType.rawValue) - The type of nullability annotations to use. Can be either \"android-support\" (default) or \"androidx\".",
+            "    --\(FlagOptions.javaExtends.rawValue) - The class that the model extends",
+            "    --\(FlagOptions.javaImplements.rawValue) - The interface(s) that the model implements. If there are multiple interfaces, separate with commas.",
         ].joined(separator: "\n")
     }
 }
@@ -148,6 +154,8 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let indent: String? = flags[.indent]
     let packageName: String? = flags[.javaPackageName]
     let javaNullabilityAnnotationType: String? = flags[.javaNullabilityAnnotationType]
+    let javaExtends: String? = flags[.javaExtends]
+    let javaImplements: String? = flags[.javaImplements]
 
     let generationParameters: GenerationParameters = [
         (.recursive, recursive),
@@ -156,6 +164,8 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         (.indent, indent),
         (.packageName, packageName),
         (.javaNullabilityAnnotationType, javaNullabilityAnnotationType),
+        (.javaExtends, javaExtends),
+        (.javaImplements, javaImplements),
     ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
         var mutableDict = dict
         if let val = tuple.1 {
