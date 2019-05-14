@@ -1174,7 +1174,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _stringProp = builder.stringProp;
     _type = builder.type;
     _uriProp = builder.uriProp;
-    _everythingBooleanProperties.EverythingBooleanBooleanProp = builder.booleanProp;
+    _everythingBooleanProperties.EverythingBooleanBooleanProp = builder.booleanProp == 1;
     _everythingDirtyProperties = builder.everythingDirtyProperties;
     if ([self class] == [Everything class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
