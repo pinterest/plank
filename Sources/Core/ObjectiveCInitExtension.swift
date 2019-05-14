@@ -53,7 +53,7 @@ extension ObjCModelRenderer {
                     default:
                         return true
                     }
-                    }.map { name, _ in
+                }.map { name, _ in
                     "_\(Languages.objectiveC.snakeCaseToPropertyName(name)) = builder.\(Languages.objectiveC.snakeCaseToPropertyName(name));"
                 }.joined(separator: "\n"),
                 self.properties.filter { (_, schema) -> Bool in
@@ -63,9 +63,9 @@ extension ObjCModelRenderer {
                     default:
                         return false
                     }
-                    }.map { name, _ in
-                        "_\(self.booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: name, className: self.className)) = builder.\(Languages.objectiveC.snakeCaseToPropertyName(name)) == 1;"
-                    }.joined(separator: "\n"),
+                }.map { name, _ in
+                    "_\(self.booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: name, className: self.className)) = builder.\(Languages.objectiveC.snakeCaseToPropertyName(name)) == 1;"
+                }.joined(separator: "\n"),
                 "_\(self.dirtyPropertiesIVarName) = builder.\(self.dirtyPropertiesIVarName);",
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
                     [renderPostInitNotification(type: "initType")]
