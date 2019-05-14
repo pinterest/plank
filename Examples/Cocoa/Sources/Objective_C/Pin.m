@@ -144,6 +144,9 @@ struct PinDirtyProperties {
 };
 
 @interface Pin ()
+{
+    PinInStock _inStock;
+}
 @property (nonatomic, assign, readwrite) struct PinDirtyProperties pinDirtyProperties;
 @end
 

@@ -23,6 +23,9 @@ struct UserDirtyProperties {
 };
 
 @interface User ()
+{
+    UserEmailFrequency _emailFrequency;
+}
 @property (nonatomic, assign, readwrite) struct UserDirtyProperties userDirtyProperties;
 @end
 

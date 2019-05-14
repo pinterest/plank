@@ -618,6 +618,17 @@ struct EverythingDirtyProperties {
 };
 
 @interface Everything ()
+{
+    EverythingCharEnum _charEnum;
+    EverythingIntEnum _intEnum;
+    EverythingNsintegerEnum _nsintegerEnum;
+    EverythingNsuintegerEnum _nsuintegerEnum;
+    EverythingShortEnum _shortEnum;
+    EverythingStringEnum _stringEnum;
+    EverythingUnsignedCharEnum _unsignedCharEnum;
+    EverythingUnsignedIntEnum _unsignedIntEnum;
+    EverythingUnsignedShortEnum _unsignedShortEnum;
+}
 @property (nonatomic, assign, readwrite) struct EverythingDirtyProperties everythingDirtyProperties;
 @end
 

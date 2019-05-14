@@ -331,7 +331,8 @@ public struct ObjCIR {
         case structDecl(name: String, fields: [String])
         case imports(classNames: Set<String>, myName: String, parentName: String?)
         case category(className: String, categoryName: String?, methods: [ObjCIR.Method],
-                      properties: [SimpleProperty])
+                      properties: [SimpleProperty],
+                      variables: [(Parameter, TypeName)])
         case macro(String)
         case function(ObjCIR.Method)
         case classDecl(
@@ -384,7 +385,7 @@ public struct ObjCIR {
                         .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end",
                 ]
-            case .category(className: _, categoryName: _, methods: _, properties: _):
+            case .category(className: _, categoryName: _, methods: _, properties: _, variables: _):
                 // skip categories in header
                 return []
             case let .function(method):
@@ -431,11 +432,21 @@ public struct ObjCIR {
                     }).joined(separator: "\n"),
                     "@end",
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
-            case let .category(className: className, categoryName: categoryName, methods: methods, properties: properties):
+            case let .category(className: className, categoryName: categoryName, methods: methods, properties: properties, variables: variables):
                 // Only render anonymous categories in the implementation
                 guard categoryName == nil else { return [] }
+                let variableDeclarations: String
+                if !variables.isEmpty {
+                    let vars: [String] = variables.map { (param, typeName) -> String in
+                        "\t\(typeName) _\(Languages.objectiveC.snakeCaseToPropertyName(param));"
+                    }
+                    variableDeclarations = (["{"] + vars + ["}"]).joined(separator: "\n")
+                } else {
+                    variableDeclarations = ""
+                }
                 return [
                     "@interface \(className) ()",
+                    variableDeclarations,
                     properties.map { param, typeName, prop, access in
                         "@property (nonatomic, \(prop.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(Languages.objectiveC.snakeCaseToPropertyName(param));"
                     }.joined(separator: "\n"),
