@@ -1817,7 +1817,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _stringProp = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"string_prop"];
     _type = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"type"];
     _uriProp = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"uri_prop"];
-    _everythingBooleanProperties.EverythingBooleanBooleanProp = [aDecoder decodeBoolForKey:@"boolean_prop"];
+    _everythingBooleanProperties.EverythingBooleanBooleanProp = [aDecoder decodeBoolForKey:@"boolean_prop"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyArrayProp = [aDecoder decodeIntForKey:@"array_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyBooleanProp = [aDecoder decodeIntForKey:@"boolean_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyDateProp = [aDecoder decodeIntForKey:@"date_prop_dirty_property"] & 0x1;
