@@ -161,7 +161,7 @@ extension ObjCModelRenderer {
             case .integer:
                 return ["\(propertyToAssign) = [\(rawObjectName) integerValue];"]
             case .boolean:
-                return ["\(propertyToAssign) = [\(rawObjectName) boolValue] && 0x1;"]
+                return ["\(propertyToAssign) = [\(rawObjectName) boolValue] & 0x1;"]
             case .string(format: .some(.uri)):
                 return ["\(propertyToAssign) = [NSURL URLWithString:\(rawObjectName)];"]
             case .string(format: .some(.dateTime)):
