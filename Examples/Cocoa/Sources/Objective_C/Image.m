@@ -94,6 +94,7 @@ struct ImageDirtyProperties {
     _height = builder.height;
     _url = builder.url;
     _width = builder.width;
+
     _imageDirtyProperties = builder.imageDirtyProperties;
     if ([self class] == [Image class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
@@ -115,6 +116,7 @@ struct ImageDirtyProperties {
     if (props.ImageDirtyPropertyWidth) {
         [descriptionFields addObject:[@"_width = " stringByAppendingFormat:@"%@", @(_width)]];
     }
+
     return [NSString stringWithFormat:@"Image = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(ImageBuilder *builder))block
@@ -180,6 +182,7 @@ struct ImageDirtyProperties {
     if (_imageDirtyProperties.ImageDirtyPropertyWidth) {
         [dict setObject:@(_width) forKey: @"width"];
     }
+
     return dict;
 }
 - (BOOL)isHeightSet
@@ -212,6 +215,7 @@ struct ImageDirtyProperties {
     _height = [aDecoder decodeIntegerForKey:@"height"];
     _url = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"url"];
     _width = [aDecoder decodeIntegerForKey:@"width"];
+
     _imageDirtyProperties.ImageDirtyPropertyHeight = [aDecoder decodeIntForKey:@"height_dirty_property"] & 0x1;
     _imageDirtyProperties.ImageDirtyPropertyUrl = [aDecoder decodeIntForKey:@"url_dirty_property"] & 0x1;
     _imageDirtyProperties.ImageDirtyPropertyWidth = [aDecoder decodeIntForKey:@"width_dirty_property"] & 0x1;

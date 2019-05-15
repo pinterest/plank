@@ -167,6 +167,7 @@ struct BoardDirtyProperties {
     _image = builder.image;
     _name = builder.name;
     _url = builder.url;
+
     _boardDirtyProperties = builder.boardDirtyProperties;
     if ([self class] == [Board class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
@@ -203,6 +204,7 @@ struct BoardDirtyProperties {
     if (props.BoardDirtyPropertyUrl) {
         [descriptionFields addObject:[@"_url = " stringByAppendingFormat:@"%@", _url]];
     }
+
     return [NSString stringWithFormat:@"Board = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(BoardBuilder *builder))block
@@ -335,6 +337,7 @@ struct BoardDirtyProperties {
             [dict setObject:[NSNull null] forKey:@"url"];
         }
     }
+
     return dict;
 }
 - (BOOL)isContributorsSet
@@ -390,6 +393,7 @@ struct BoardDirtyProperties {
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
     _name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"];
     _url = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"url"];
+
     _boardDirtyProperties.BoardDirtyPropertyContributors = [aDecoder decodeIntForKey:@"contributors_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyCounts = [aDecoder decodeIntForKey:@"counts_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
