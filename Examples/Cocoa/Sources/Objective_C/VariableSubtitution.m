@@ -105,7 +105,6 @@ struct VariableSubtitutionDirtyProperties {
     _copyProp = builder.copyProp;
     _mutableCopyProp = builder.mutableCopyProp;
     _newProp = builder.newProp;
-
     _variableSubtitutionDirtyProperties = builder.variableSubtitutionDirtyProperties;
     if ([self class] == [VariableSubtitution class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
@@ -233,7 +232,6 @@ struct VariableSubtitutionDirtyProperties {
     _copyProp = [aDecoder decodeIntegerForKey:@"copy_prop"];
     _mutableCopyProp = [aDecoder decodeIntegerForKey:@"mutable_copy_prop"];
     _newProp = [aDecoder decodeIntegerForKey:@"new_prop"];
-
     _variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyAllocProp = [aDecoder decodeIntForKey:@"alloc_prop_dirty_property"] & 0x1;
     _variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyCopyProp = [aDecoder decodeIntForKey:@"copy_prop_dirty_property"] & 0x1;
     _variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyMutableCopyProp = [aDecoder decodeIntForKey:@"mutable_copy_prop_dirty_property"] & 0x1;

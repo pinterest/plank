@@ -72,7 +72,6 @@ struct ModelDirtyProperties {
         return self;
     }
     _identifier = builder.identifier;
-
     _modelDirtyProperties = builder.modelDirtyProperties;
     if ([self class] == [Model class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
@@ -165,7 +164,6 @@ struct ModelDirtyProperties {
         return self;
     }
     _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
-
     _modelDirtyProperties.ModelDirtyPropertyIdentifier = [aDecoder decodeIntForKey:@"id_dirty_property"] & 0x1;
     if ([self class] == [Model class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];

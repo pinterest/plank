@@ -201,7 +201,6 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     _lastName = builder.lastName;
     _type = builder.type;
     _username = builder.username;
-
     _userDirtyProperties = builder.userDirtyProperties;
     if ([self class] == [User class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(initType) }];
@@ -448,7 +447,6 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     _lastName = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"last_name"];
     _type = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"type"];
     _username = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"username"];
-
     _userDirtyProperties.UserDirtyPropertyBio = [aDecoder decodeIntForKey:@"bio_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyCounts = [aDecoder decodeIntForKey:@"counts_dirty_property"] & 0x1;
     _userDirtyProperties.UserDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
