@@ -94,7 +94,7 @@ enum EnumerationIntegralType: String {
     // 2 enumerations will only take 8 bytes in the heap. This is because the compiler will best fit
     // the two unsigned char enumerations to fit into the 8 bytes natural alignment of the platform.
     // As more enumerations are found in a class, the better this best fitting code will save memory.
-    static func enumerationIntegrateTypeFor(_ values: EnumType) -> EnumerationIntegralType {
+    static func enumerationIntegralTypeFor(_ values: EnumType) -> EnumerationIntegralType {
         let minimum: Int
         let maximum: Int
         switch values {
