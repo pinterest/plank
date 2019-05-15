@@ -48,6 +48,8 @@ public class Pin {
         }
     }
 
+    public static final String TYPE = "pin";
+
     @SerializedName("attribution") private @Nullable Map<String, String> attribution;
     @SerializedName("attribution_objects") private @Nullable List<PinAttributionObjects> attributionObjects;
     @SerializedName("board") private @Nullable Board board;

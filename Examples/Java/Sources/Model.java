@@ -30,6 +30,8 @@ import java.util.Set;
 
 public class Model {
 
+    public static final String TYPE = "model";
+
     @SerializedName("id") private @Nullable String uid;
 
     static final private int ID_SET = 1 << 0;

@@ -30,6 +30,8 @@ import java.util.Set;
 
 public class VariableSubtitution {
 
+    public static final String TYPE = "variable_subtitution";
+
     @SerializedName("alloc_prop") private @Nullable Integer allocProp;
     @SerializedName("copy_prop") private @Nullable Integer copyProp;
     @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;

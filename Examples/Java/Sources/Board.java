@@ -30,6 +30,8 @@ import java.util.Set;
 
 public class Board {
 
+    public static final String TYPE = "board";
+
     @SerializedName("id") private @Nullable String uid;
     @SerializedName("contributors") private @Nullable Set<User> contributors;
     @SerializedName("counts") private @Nullable Map<String, Integer> counts;

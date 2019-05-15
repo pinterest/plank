@@ -30,6 +30,8 @@ import java.util.Set;
 
 public class Image {
 
+    public static final String TYPE = "image";
+
     @SerializedName("height") private @Nullable Integer height;
     @SerializedName("url") private @Nullable String url;
     @SerializedName("width") private @Nullable Integer width;
