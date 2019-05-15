@@ -1292,12 +1292,14 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     return (
         (anObject != nil) &&
+        (_stringEnum == anObject.stringEnum) &&
         (_numberProp == anObject.numberProp) &&
         (_intProp == anObject.intProp) &&
         (_intEnum == anObject.intEnum) &&
-        (_stringEnum == anObject.stringEnum) &&
         (_booleanProp == anObject.booleanProp) &&
         (_arrayProp == anObject.arrayProp || [_arrayProp isEqualToArray:anObject.arrayProp]) &&
+        (_dateProp == anObject.dateProp || [_dateProp isEqualToDate:anObject.dateProp]) &&
+        (_listPolymorphicValues == anObject.listPolymorphicValues || [_listPolymorphicValues isEqualToArray:anObject.listPolymorphicValues]) &&
         (_listWithListAndOtherModelValues == anObject.listWithListAndOtherModelValues || [_listWithListAndOtherModelValues isEqualToArray:anObject.listWithListAndOtherModelValues]) &&
         (_listWithMapAndOtherModelValues == anObject.listWithMapAndOtherModelValues || [_listWithMapAndOtherModelValues isEqualToArray:anObject.listWithMapAndOtherModelValues]) &&
         (_listWithObjectValues == anObject.listWithObjectValues || [_listWithObjectValues isEqualToArray:anObject.listWithObjectValues]) &&
@@ -1310,14 +1312,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         (_mapWithObjectValues == anObject.mapWithObjectValues || [_mapWithObjectValues isEqualToDictionary:anObject.mapWithObjectValues]) &&
         (_mapWithOtherModelValues == anObject.mapWithOtherModelValues || [_mapWithOtherModelValues isEqualToDictionary:anObject.mapWithOtherModelValues]) &&
         (_mapWithPrimitiveValues == anObject.mapWithPrimitiveValues || [_mapWithPrimitiveValues isEqualToDictionary:anObject.mapWithPrimitiveValues]) &&
-        (_listPolymorphicValues == anObject.listPolymorphicValues || [_listPolymorphicValues isEqualToArray:anObject.listPolymorphicValues]) &&
         (_otherModelProp == anObject.otherModelProp || [_otherModelProp isEqual:anObject.otherModelProp]) &&
         (_polymorphicProp == anObject.polymorphicProp || [_polymorphicProp isEqual:anObject.polymorphicProp]) &&
         (_setProp == anObject.setProp || [_setProp isEqualToSet:anObject.setProp]) &&
         (_setPropWithOtherModelValues == anObject.setPropWithOtherModelValues || [_setPropWithOtherModelValues isEqualToSet:anObject.setPropWithOtherModelValues]) &&
         (_setPropWithPrimitiveValues == anObject.setPropWithPrimitiveValues || [_setPropWithPrimitiveValues isEqualToSet:anObject.setPropWithPrimitiveValues]) &&
         (_setPropWithValues == anObject.setPropWithValues || [_setPropWithValues isEqualToSet:anObject.setPropWithValues]) &&
-        (_dateProp == anObject.dateProp || [_dateProp isEqualToDate:anObject.dateProp]) &&
         (_stringProp == anObject.stringProp || [_stringProp isEqualToString:anObject.stringProp]) &&
         (_type == anObject.type || [_type isEqualToString:anObject.type]) &&
         (_uriProp == anObject.uriProp || [_uriProp isEqual:anObject.uriProp])
