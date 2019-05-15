@@ -120,7 +120,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     }
 
     func renderRoots() -> [ObjCIR.Root] {
-        let enumProperties = self.properties.filter { (arg) -> Bool in
+        let enumProperties = properties.filter { (arg) -> Bool in
             let (_, schema) = arg
             switch schema.schema {
             case .enumT:
