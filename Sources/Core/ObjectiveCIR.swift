@@ -391,7 +391,7 @@ public struct ObjCIR {
             case let .function(method):
                 return ["\(method.signature);"]
             case let .enumDecl(name, values):
-                return [ObjCIR.enumStmt(name, underlyingIntegralType: EnumerationIntegralType.enumerationIntegrateTypeFor(values)) {
+                return [ObjCIR.enumStmt(name, underlyingIntegralType: EnumerationIntegralType.enumerationIntegralTypeFor(values)) {
                     switch values {
                     case let .integer(options):
                         return options.map { "\(name + $0.camelCaseDescription) = \($0.defaultValue)" }
