@@ -691,7 +691,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             __unsafe_unretained id value = modelDictionary[@"boolean_prop"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_everythingBooleanProperties.EverythingBooleanBooleanProp = [value boolValue] && 0x1;
+                    self->_everythingBooleanProperties.EverythingBooleanBooleanProp = [value boolValue] & 0x1;
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertyBooleanProp = 1;
             }
@@ -1009,7 +1009,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                         self->_polymorphicProp = [EverythingPolymorphicProp  objectWithString:[value copy]];
                     }
                     if ([value isKindOfClass:[NSNumber class]] && strcmp([value objCType], @encode(BOOL)) == 0) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoolean:[value boolValue] && 0x1];
+                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoolean:[value boolValue] & 0x1];
                     }
                     if ([value isKindOfClass:[NSNumber class]] && (strcmp([value objCType], @encode(int)) == 0 ||
                     strcmp([value objCType], @encode(unsigned int)) == 0 ||
