@@ -120,8 +120,6 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     }
 
     func renderRoots() -> [ObjCIR.Root] {
-        let properties: [(Parameter, SchemaObjectProperty)] = rootSchema.properties.map { $0 } // Convert [String:Schema] -> [(String, Schema)]
-
         let enumProperties = self.properties.filter { (arg) -> Bool in
             let (_, schema) = arg
             switch schema.schema {
@@ -157,13 +155,13 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             }
         }
 
-        let enumRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
+        let enumRoots = properties.flatMap { (param, prop) -> [ObjCIR.Root] in
             enumRoot(from: prop.schema, param: param)
         }
 
         // TODO: Synthesize oneOf ADT Classes and Class Extension
         // TODO: (rmalik): Clean this up, too much copy / paste here to support oneOf cases
-        let adtRoots = self.properties.flatMap { (param, prop) -> [ObjCIR.Root] in
+        let adtRoots = properties.flatMap { (param, prop) -> [ObjCIR.Root] in
             switch prop.schema {
             case let .oneOf(types: possibleTypes):
                 let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable) }
