@@ -88,7 +88,6 @@ struct ModelDirtyProperties {
     if (props.ModelDirtyPropertyIdentifier) {
         [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", _identifier]];
     }
-
     return [NSString stringWithFormat:@"Model = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(ModelBuilder *builder))block
@@ -144,7 +143,6 @@ struct ModelDirtyProperties {
             [dict setObject:[NSNull null] forKey:@"id"];
         }
     }
-
     return dict;
 }
 - (BOOL)isIdentifierSet

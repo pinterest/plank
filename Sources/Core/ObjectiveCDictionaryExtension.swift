@@ -43,16 +43,14 @@ extension ObjCModelRenderer {
             return ObjCIR.ifStmt("_" + "\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") { [
                 "[\(dictionary) setObject:@(\(ivarName)) forKey: @\"\(param)\"];",
             ] }
-        }.joined(separator: "\n")
+        }
 
         return ObjCIR.method("- (NSDictionary *)dictionaryObjectRepresentation") { [
             "NSMutableDictionary *\(dictionary) = " +
                 (self.isBaseClass ? "[[NSMutableDictionary alloc] initWithCapacity:\(self.properties.count)];" :
                     "[[super dictionaryObjectRepresentation] mutableCopy];"),
             props,
-            boolProps,
-            "return \(dictionary);",
-        ] }
+        ] + boolProps + ["return \(dictionary);"] }
     }
 }
 

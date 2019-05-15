@@ -204,7 +204,6 @@ struct BoardDirtyProperties {
     if (props.BoardDirtyPropertyUrl) {
         [descriptionFields addObject:[@"_url = " stringByAppendingFormat:@"%@", _url]];
     }
-
     return [NSString stringWithFormat:@"Board = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(BoardBuilder *builder))block
@@ -337,7 +336,6 @@ struct BoardDirtyProperties {
             [dict setObject:[NSNull null] forKey:@"url"];
         }
     }
-
     return dict;
 }
 - (BOOL)isContributorsSet

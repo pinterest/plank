@@ -130,7 +130,6 @@ struct VariableSubtitutionDirtyProperties {
     if (props.VariableSubtitutionDirtyPropertyNewProp) {
         [descriptionFields addObject:[@"_newProp = " stringByAppendingFormat:@"%@", @(_newProp)]];
     }
-
     return [NSString stringWithFormat:@"VariableSubtitution = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(VariableSubtitutionBuilder *builder))block
@@ -197,7 +196,6 @@ struct VariableSubtitutionDirtyProperties {
     if (_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyNewProp) {
         [dict setObject:@(_newProp) forKey: @"new_prop"];
     }
-
     return dict;
 }
 - (BOOL)isAllocPropSet

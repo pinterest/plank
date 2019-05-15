@@ -116,7 +116,6 @@ struct ImageDirtyProperties {
     if (props.ImageDirtyPropertyWidth) {
         [descriptionFields addObject:[@"_width = " stringByAppendingFormat:@"%@", @(_width)]];
     }
-
     return [NSString stringWithFormat:@"Image = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(ImageBuilder *builder))block
@@ -182,7 +181,6 @@ struct ImageDirtyProperties {
     if (_imageDirtyProperties.ImageDirtyPropertyWidth) {
         [dict setObject:@(_width) forKey: @"width"];
     }
-
     return dict;
 }
 - (BOOL)isHeightSet

@@ -36,7 +36,7 @@ extension ObjCModelRenderer {
                 let ivarName = "_\(booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: param, className: self.className))"
                 return ["[descriptionFields addObject:[@\"\(ivarName) = \" stringByAppendingFormat:\("%@".objcLiteral()), @(\(ivarName))]];"]
             }
-        }.joined(separator: "\n")
+        }
 
         let printFormat = "\(className) = {\\n%@\\n}".objcLiteral()
         return ObjCIR.method("- (NSString *)debugDescription") { [
@@ -45,9 +45,7 @@ extension ObjCModelRenderer {
             "[descriptionFields addObject:parentDebugDescription];",
             !self.properties.isEmpty ? "struct \(self.dirtyPropertyOptionName) props = _\(self.dirtyPropertiesIVarName);" : "",
             props,
-            boolProps,
-            "return [NSString stringWithFormat:\(printFormat), debugDescriptionForFields(descriptionFields)];",
-        ] }
+        ] + boolProps + ["return [NSString stringWithFormat:\(printFormat), debugDescriptionForFields(descriptionFields)];"] }
     }
 }
 

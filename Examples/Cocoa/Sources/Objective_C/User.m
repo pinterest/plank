@@ -244,7 +244,6 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     if (props.UserDirtyPropertyUsername) {
         [descriptionFields addObject:[@"_username = " stringByAppendingFormat:@"%@", _username]];
     }
-
     return [NSString stringWithFormat:@"User = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(UserBuilder *builder))block
@@ -382,7 +381,6 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             [dict setObject:[NSNull null] forKey:@"username"];
         }
     }
-
     return dict;
 }
 - (BOOL)isBioSet

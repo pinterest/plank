@@ -475,7 +475,6 @@ struct PinDirtyProperties {
     if (props.PinDirtyPropertyVisualSearchAttrs) {
         [descriptionFields addObject:[@"_visualSearchAttrs = " stringByAppendingFormat:@"%@", _visualSearchAttrs]];
     }
-
     return [NSString stringWithFormat:@"Pin = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(PinBuilder *builder))block
@@ -693,7 +692,6 @@ struct PinDirtyProperties {
             [dict setObject:[NSNull null] forKey:@"visual_search_attrs"];
         }
     }
-
     return dict;
 }
 - (BOOL)isAttributionSet
