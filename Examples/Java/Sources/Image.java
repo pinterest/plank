@@ -89,7 +89,8 @@ public class Image {
         width);
     }
 
-    public @NonNull Integer getHeight() {
+    @NonNull
+    public Integer getHeight() {
         return this.height == null ? 0 : this.height;
     }
 
@@ -97,7 +98,8 @@ public class Image {
         return this.url;
     }
 
-    public @NonNull Integer getWidth() {
+    @NonNull
+    public Integer getWidth() {
         return this.width == null ? 0 : this.width;
     }
 

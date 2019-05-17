@@ -95,19 +95,23 @@ public class VariableSubtitution {
         newProp);
     }
 
-    public @NonNull Integer getAllocProp() {
+    @NonNull
+    public Integer getAllocProp() {
         return this.allocProp == null ? 0 : this.allocProp;
     }
 
-    public @NonNull Integer getCopyProp() {
+    @NonNull
+    public Integer getCopyProp() {
         return this.copyProp == null ? 0 : this.copyProp;
     }
 
-    public @NonNull Integer getMutableCopyProp() {
+    @NonNull
+    public Integer getMutableCopyProp() {
         return this.mutableCopyProp == null ? 0 : this.mutableCopyProp;
     }
 
-    public @NonNull Integer getNewProp() {
+    @NonNull
+    public Integer getNewProp() {
         return this.newProp == null ? 0 : this.newProp;
     }
 
