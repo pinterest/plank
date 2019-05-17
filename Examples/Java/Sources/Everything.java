@@ -290,7 +290,8 @@ public class Everything {
         return this.arrayProp;
     }
 
-    public @NonNull Boolean getBooleanProp() {
+    @NonNull
+    public Boolean getBooleanProp() {
         return this.booleanProp == null ? Boolean.FALSE : this.booleanProp;
     }
 
@@ -302,7 +303,8 @@ public class Everything {
         return this.intEnum;
     }
 
-    public @NonNull Integer getIntProp() {
+    @NonNull
+    public Integer getIntProp() {
         return this.intProp == null ? 0 : this.intProp;
     }
 
@@ -358,7 +360,8 @@ public class Everything {
         return this.mapWithPrimitiveValues;
     }
 
-    public @NonNull Double getNumberProp() {
+    @NonNull
+    public Double getNumberProp() {
         return this.numberProp == null ? 0 : this.numberProp;
     }
 

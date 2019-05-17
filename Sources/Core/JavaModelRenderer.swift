@@ -10,10 +10,21 @@ import Foundation
 public struct JavaModelRenderer: JavaFileRenderer {
     let rootSchema: SchemaObjectRoot
     let params: GenerationParameters
+    let customAnnotations: JavaCustomAnnotations
 
     init(rootSchema: SchemaObjectRoot, params: GenerationParameters) {
         self.rootSchema = rootSchema
         self.params = params
+
+        if let annotationsFile = self.params[.javaAnnotations] {
+            do {
+                customAnnotations = try JSONDecoder().decode(JavaCustomAnnotations.self, from: Data(contentsOf: URL(fileURLWithPath: annotationsFile)))
+            } catch {
+                fatalError("Unable to parse custom Java annotations file with error: \(error)")
+            }
+        } else {
+            customAnnotations = JavaCustomAnnotations()
+        }
     }
 
     // MARK: - Top-level Model
@@ -23,7 +34,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             self.typeFromSchema(param, schemaObj) + " " + Languages.java.snakeCaseToPropertyName(param) + ","
         } + ["int _bits"])
 
-        return JavaIR.method([.private], className + "(\n" + args + "\n)") {
+        return JavaIR.method(annotations: customAnnotations.forConstructor(), [.private], className + "(\n" + args + "\n)") {
             self.transitiveProperties.map { param, _ in
                 "this." + Languages.java.snakeCaseToPropertyName(param) + " = " + Languages.java.snakeCaseToPropertyName(param) + ";"
             } + ["this._bits = _bits;"]
@@ -65,7 +76,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderModelProperties(modifiers _: JavaModifier = [.private]) -> [[JavaIR.Property]] {
         let props = transitiveProperties.map { param, schemaObj in
-            JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
+            JavaIR.Property(annotations: Set([.serializedName(name: param)] + self.customAnnotations.forPropertyVariable(param)), modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
         }
 
         let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "int", name: "_bits", initialValue: "0")
@@ -83,27 +94,29 @@ public struct JavaModelRenderer: JavaFileRenderer {
     func propertyGetterForParam(param: String, schemaObj: SchemaObjectProperty) -> JavaIR.Method {
         let propertyName = Languages.java.snakeCaseToPropertyName(param)
         let capitalizedPropertyName = Languages.java.snakeCaseToCapitalizedPropertyName(param)
+        let methodName = "get" + capitalizedPropertyName
+        let annotations = customAnnotations.forPropertyGetter(param)
 
         // For Booleans, Integers and Doubles, make the getter method @NonNull and squash to a default value if necessary.
         // This makes callers less susceptible to null pointer exceptions.
         switch schemaObj.schema {
         case .boolean:
-            return JavaIR.method([.public], "@NonNull Boolean get" + capitalizedPropertyName + "()") { [
+            return JavaIR.method(annotations: Set(annotations + [.nonnull]), [.public], "Boolean " + methodName + "()") { [
                 "return this." + propertyName + " == null ? Boolean.FALSE : this." + propertyName + ";",
             ]
             }
         case .integer:
-            return JavaIR.method([.public], "@NonNull Integer get" + capitalizedPropertyName + "()") { [
+            return JavaIR.method(annotations: Set(annotations + [.nonnull]), [.public], "Integer " + methodName + "()") { [
                 "return this." + propertyName + " == null ? 0 : this." + propertyName + ";",
             ]
             }
         case .float:
-            return JavaIR.method([.public], "@NonNull Double get" + capitalizedPropertyName + "()") { [
+            return JavaIR.method(annotations: Set(annotations + [.nonnull]), [.public], "Double " + methodName + "()") { [
                 "return this." + propertyName + " == null ? 0 : this." + propertyName + ";",
             ]
             }
         default:
-            return JavaIR.method([.public], typeFromSchema(param, schemaObj) + " get" + capitalizedPropertyName + "()") { [
+            return JavaIR.method(annotations: annotations, [.public], typeFromSchema(param, schemaObj) + " " + methodName + "()") { [
                 "return this." + propertyName + ";",
             ]
             }
@@ -127,7 +140,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
 
     func renderModelMergeFrom() -> JavaIR.Method {
-        return JavaIR.method([.public], className + " mergeFrom(" + className + " model)") { [
+        let methodName = "mergeFrom"
+        return JavaIR.method(annotations: customAnnotations.forMethod(methodName), [.public], className + " " + methodName + "(" + className + " model)") { [
             self.className + ".Builder builder = this.toBuilder();",
             "builder.mergeFrom(model);",
             "return builder.build();",
@@ -135,7 +149,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
 
     func renderModelToBuilder() -> JavaIR.Method {
-        return JavaIR.method([.public], className + ".Builder toBuilder()") { ["return new " + self.className + ".Builder(this);"] }
+        let methodName = "toBuilder"
+        return JavaIR.method(annotations: customAnnotations.forMethod(methodName), [.public], className + ".Builder " + methodName + "()") { ["return new " + self.className + ".Builder(this);"] }
     }
 
     func renderModelBuilder() -> JavaIR.Method {
@@ -317,7 +332,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         }
 
         let imports = [
-            JavaIR.Root.imports(names: [
+            JavaIR.Root.imports(names: Set([
                 "com.google.gson.Gson",
                 "com.google.gson.annotations.SerializedName",
                 "com.google.gson.JsonElement",
@@ -337,7 +352,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "java.lang.annotation.RetentionPolicy",
                 nullabilityAnnotationType.package + ".NonNull",
                 nullabilityAnnotationType.package + ".Nullable",
-            ]),
+            ] + self.customAnnotations.imports)),
         ]
 
         let enumProps = properties.flatMap { (param, prop) -> [JavaIR.Enum] in
@@ -426,7 +441,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
         let modelClass = JavaIR.Root.classDecl(
             aClass: JavaIR.Class(
-                annotations: [],
+                annotations: customAnnotations.forClass(),
                 modifiers: [.public],
                 extends: nil,
                 implements: nil,

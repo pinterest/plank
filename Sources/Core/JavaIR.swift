@@ -31,6 +31,7 @@ enum JavaAnnotation: Hashable {
     case nullable
     case nonnull
     case serializedName(name: String)
+    case custom(_ annotation: String)
 
     var rendered: String {
         switch self {
@@ -42,6 +43,8 @@ enum JavaAnnotation: Hashable {
             return "NonNull"
         case let .serializedName(name):
             return "SerializedName(\"\(name)\")"
+        case let .custom(annotation):
+            return annotation
         }
     }
 }
@@ -57,6 +60,76 @@ enum JavaNullabilityAnnotationType: String {
         case .androidx:
             return "androidx.annotation"
         }
+    }
+}
+
+//
+// The json file passed in via java_annotations=custom_annotations.json is deserialized into this.
+//
+struct JavaCustomAnnotations: Codable {
+    var `class`: [String] { return internalClass ?? [] }
+    var constructor: [String] { return internalConstructor ?? [] }
+    var properties: [String: [String: [String]]] { return internalProperties ?? [:] }
+    var methods: [String: [String]] { return internalMethods ?? [:] }
+    var imports: [String] { return internalImports ?? [] }
+
+    private var internalClass: [String]?
+    private var internalConstructor: [String]?
+    private var internalProperties: [String: [String: [String]]]?
+    private var internalMethods: [String: [String]]?
+    private var internalImports: [String]?
+
+    enum CodingKeys: String, CodingKey {
+        case internalClass = "class"
+        case internalConstructor = "constructor"
+        case internalProperties = "properties"
+        case internalMethods = "methods"
+        case internalImports = "imports"
+    }
+
+    func forClass() -> Set<JavaAnnotation> {
+        return Set(`class`.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func forConstructor() -> Set<JavaAnnotation> {
+        return Set(constructor.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func forPropertyVariable(_ property: String) -> Set<JavaAnnotation> {
+        guard let propertyObj = properties[property] else {
+            return []
+        }
+        guard let propertyVariableAnnotations = propertyObj["variable"] else {
+            return []
+        }
+        return Set(propertyVariableAnnotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func forPropertyGetter(_ property: String) -> Set<JavaAnnotation> {
+        guard let propertyObj = properties[property] else {
+            return []
+        }
+        guard let propertyGetterAnnotations = propertyObj["getter"] else {
+            return []
+        }
+        return Set(propertyGetterAnnotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func forMethod(_ method: String) -> Set<JavaAnnotation> {
+        guard let methodAnnotations = methods[method] else {
+            return []
+        }
+        return Set(methodAnnotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
     }
 }
 
