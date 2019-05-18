@@ -162,7 +162,12 @@ public class Model {
                 String name = reader.nextName();
                 switch (name) {
                     case ("id"):
-                        builder.setUid(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setUid(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     default:
                         reader.skipValue();

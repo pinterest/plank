@@ -252,16 +252,36 @@ public class VariableSubtitution {
                 String name = reader.nextName();
                 switch (name) {
                     case ("alloc_prop"):
-                        builder.setAllocProp(integerTypeAdapter.read(reader));
+                        try {
+                            builder.setAllocProp(integerTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("copy_prop"):
-                        builder.setCopyProp(integerTypeAdapter.read(reader));
+                        try {
+                            builder.setCopyProp(integerTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("mutable_copy_prop"):
-                        builder.setMutableCopyProp(integerTypeAdapter.read(reader));
+                        try {
+                            builder.setMutableCopyProp(integerTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("new_prop"):
-                        builder.setNewProp(integerTypeAdapter.read(reader));
+                        try {
+                            builder.setNewProp(integerTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     default:
                         reader.skipValue();

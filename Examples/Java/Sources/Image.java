@@ -224,13 +224,28 @@ public class Image {
                 String name = reader.nextName();
                 switch (name) {
                     case ("height"):
-                        builder.setHeight(integerTypeAdapter.read(reader));
+                        try {
+                            builder.setHeight(integerTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("url"):
-                        builder.setUrl(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setUrl(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("width"):
-                        builder.setWidth(integerTypeAdapter.read(reader));
+                        try {
+                            builder.setWidth(integerTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     default:
                         reader.skipValue();

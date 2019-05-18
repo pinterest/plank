@@ -680,55 +680,140 @@ public class Pin {
                 String name = reader.nextName();
                 switch (name) {
                     case ("attribution"):
-                        builder.setAttribution(map_String__String_TypeAdapter.read(reader));
+                        try {
+                            builder.setAttribution(map_String__String_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("attribution_objects"):
-                        builder.setAttributionObjects(list_PinAttributionObjects_TypeAdapter.read(reader));
+                        try {
+                            builder.setAttributionObjects(list_PinAttributionObjects_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("board"):
-                        builder.setBoard(boardTypeAdapter.read(reader));
+                        try {
+                            builder.setBoard(boardTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("color"):
-                        builder.setColor(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setColor(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("counts"):
-                        builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
+                        try {
+                            builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("created_at"):
-                        builder.setCreatedAt(dateTypeAdapter.read(reader));
+                        try {
+                            builder.setCreatedAt(dateTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("creator"):
-                        builder.setCreator(map_String__User_TypeAdapter.read(reader));
+                        try {
+                            builder.setCreator(map_String__User_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("description"):
-                        builder.setDescription(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setDescription(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("id"):
-                        builder.setUid(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setUid(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("image"):
-                        builder.setImage(imageTypeAdapter.read(reader));
+                        try {
+                            builder.setImage(imageTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("in_stock"):
-                        builder.setInStock(pinInStockTypeAdapter.read(reader));
+                        try {
+                            builder.setInStock(pinInStockTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("link"):
-                        builder.setLink(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setLink(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("media"):
-                        builder.setMedia(map_String__String_TypeAdapter.read(reader));
+                        try {
+                            builder.setMedia(map_String__String_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("note"):
-                        builder.setNote(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setNote(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("tags"):
-                        builder.setTags(list_Map_String__Object__TypeAdapter.read(reader));
+                        try {
+                            builder.setTags(list_Map_String__Object__TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("url"):
-                        builder.setUrl(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setUrl(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("visual_search_attrs"):
-                        builder.setVisualSearchAttrs(map_String__Object_TypeAdapter.read(reader));
+                        try {
+                            builder.setVisualSearchAttrs(map_String__Object_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     default:
                         reader.skipValue();

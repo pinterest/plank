@@ -292,7 +292,9 @@ public struct JavaModelRenderer: JavaFileRenderer {
                         JavaIR.Case(
                             variableEquals: "\"\(param)\"",
                             body: [
-                                "builder.set" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "(" + typeAdapterVariableNameForType(unwrappedTypeFromSchema(param, schemaObj.schema)) + ".read(reader));",
+                                JavaIR.tryCatch(tryBody: ["builder.set" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "(" + typeAdapterVariableNameForType(unwrappedTypeFromSchema(param, schemaObj.schema)) + ".read(reader));"]) { [
+                                    JavaIR.Catch(exceptionClass: "IllegalStateException", exceptionVariable: "e", body: ["// TODO Log Error"]),
+                                ] },
                             ]
                         )
                     }

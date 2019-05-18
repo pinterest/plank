@@ -412,31 +412,76 @@ public class Board {
                 String name = reader.nextName();
                 switch (name) {
                     case ("id"):
-                        builder.setUid(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setUid(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("contributors"):
-                        builder.setContributors(set_User_TypeAdapter.read(reader));
+                        try {
+                            builder.setContributors(set_User_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("counts"):
-                        builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
+                        try {
+                            builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("created_at"):
-                        builder.setCreatedAt(dateTypeAdapter.read(reader));
+                        try {
+                            builder.setCreatedAt(dateTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("creator"):
-                        builder.setCreator(map_String__String_TypeAdapter.read(reader));
+                        try {
+                            builder.setCreator(map_String__String_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("description"):
-                        builder.setDescription(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setDescription(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("image"):
-                        builder.setImage(imageTypeAdapter.read(reader));
+                        try {
+                            builder.setImage(imageTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("name"):
-                        builder.setName(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setName(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("url"):
-                        builder.setUrl(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setUrl(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     default:
                         reader.skipValue();

@@ -178,6 +178,31 @@ public struct JavaIR {
         }
     }
 
+    static func tryCatch(tryBody: [String], catches: () -> [Catch]) -> String {
+        return ([
+            "try {",
+            -->tryBody,
+            "}",
+        ] +
+            catches().map { catchBlock in
+                catchBlock.render().joined(separator: "\n")
+        }).joined(separator: "\n")
+    }
+
+    struct Catch {
+        let exceptionClass: String
+        let exceptionVariable: String
+        let body: [String]
+
+        func render() -> [String] {
+            return [
+                "catch (" + exceptionClass + " " + exceptionVariable + ") {",
+                -->body,
+                "}",
+            ]
+        }
+    }
+
     struct Enum {
         let name: String
         let values: EnumType

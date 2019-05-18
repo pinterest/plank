@@ -444,34 +444,84 @@ public class User {
                 String name = reader.nextName();
                 switch (name) {
                     case ("bio"):
-                        builder.setBio(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setBio(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("counts"):
-                        builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
+                        try {
+                            builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("created_at"):
-                        builder.setCreatedAt(dateTypeAdapter.read(reader));
+                        try {
+                            builder.setCreatedAt(dateTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("email_frequency"):
-                        builder.setEmailFrequency(userEmailFrequencyTypeAdapter.read(reader));
+                        try {
+                            builder.setEmailFrequency(userEmailFrequencyTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("first_name"):
-                        builder.setFirstName(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setFirstName(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("id"):
-                        builder.setUid(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setUid(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("image"):
-                        builder.setImage(imageTypeAdapter.read(reader));
+                        try {
+                            builder.setImage(imageTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("last_name"):
-                        builder.setLastName(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setLastName(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("type"):
-                        builder.setType(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setType(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("username"):
-                        builder.setUsername(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setUsername(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     default:
                         reader.skipValue();

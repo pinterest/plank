@@ -1093,91 +1093,236 @@ public class Everything {
                 String name = reader.nextName();
                 switch (name) {
                     case ("array_prop"):
-                        builder.setArrayProp(list_Object_TypeAdapter.read(reader));
+                        try {
+                            builder.setArrayProp(list_Object_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("boolean_prop"):
-                        builder.setBooleanProp(booleanTypeAdapter.read(reader));
+                        try {
+                            builder.setBooleanProp(booleanTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("date_prop"):
-                        builder.setDateProp(dateTypeAdapter.read(reader));
+                        try {
+                            builder.setDateProp(dateTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("int_enum"):
-                        builder.setIntEnum(everythingIntEnumTypeAdapter.read(reader));
+                        try {
+                            builder.setIntEnum(everythingIntEnumTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("int_prop"):
-                        builder.setIntProp(integerTypeAdapter.read(reader));
+                        try {
+                            builder.setIntProp(integerTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("list_polymorphic_values"):
-                        builder.setListPolymorphicValues(list_Object_TypeAdapter.read(reader));
+                        try {
+                            builder.setListPolymorphicValues(list_Object_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("list_with_list_and_other_model_values"):
-                        builder.setListWithListAndOtherModelValues(list_List_User__TypeAdapter.read(reader));
+                        try {
+                            builder.setListWithListAndOtherModelValues(list_List_User__TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("list_with_map_and_other_model_values"):
-                        builder.setListWithMapAndOtherModelValues(list_Map_String__User__TypeAdapter.read(reader));
+                        try {
+                            builder.setListWithMapAndOtherModelValues(list_Map_String__User__TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("list_with_object_values"):
-                        builder.setListWithObjectValues(list_String_TypeAdapter.read(reader));
+                        try {
+                            builder.setListWithObjectValues(list_String_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("list_with_other_model_values"):
-                        builder.setListWithOtherModelValues(list_User_TypeAdapter.read(reader));
+                        try {
+                            builder.setListWithOtherModelValues(list_User_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("list_with_primitive_values"):
-                        builder.setListWithPrimitiveValues(list_Integer_TypeAdapter.read(reader));
+                        try {
+                            builder.setListWithPrimitiveValues(list_Integer_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("map_polymorphic_values"):
-                        builder.setMapPolymorphicValues(map_String__EverythingMapPolymorphicValues_TypeAdapter.read(reader));
+                        try {
+                            builder.setMapPolymorphicValues(map_String__EverythingMapPolymorphicValues_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("map_prop"):
-                        builder.setMapProp(map_String__Object_TypeAdapter.read(reader));
+                        try {
+                            builder.setMapProp(map_String__Object_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("map_with_list_and_other_model_values"):
-                        builder.setMapWithListAndOtherModelValues(map_String__List_User__TypeAdapter.read(reader));
+                        try {
+                            builder.setMapWithListAndOtherModelValues(map_String__List_User__TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("map_with_map_and_other_model_values"):
-                        builder.setMapWithMapAndOtherModelValues(map_String__Map_String__Object__TypeAdapter.read(reader));
+                        try {
+                            builder.setMapWithMapAndOtherModelValues(map_String__Map_String__Object__TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("map_with_object_values"):
-                        builder.setMapWithObjectValues(map_String__String_TypeAdapter.read(reader));
+                        try {
+                            builder.setMapWithObjectValues(map_String__String_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("map_with_other_model_values"):
-                        builder.setMapWithOtherModelValues(map_String__User_TypeAdapter.read(reader));
+                        try {
+                            builder.setMapWithOtherModelValues(map_String__User_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("map_with_primitive_values"):
-                        builder.setMapWithPrimitiveValues(map_String__Integer_TypeAdapter.read(reader));
+                        try {
+                            builder.setMapWithPrimitiveValues(map_String__Integer_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("number_prop"):
-                        builder.setNumberProp(doubleTypeAdapter.read(reader));
+                        try {
+                            builder.setNumberProp(doubleTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("other_model_prop"):
-                        builder.setOtherModelProp(userTypeAdapter.read(reader));
+                        try {
+                            builder.setOtherModelProp(userTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("polymorphic_prop"):
-                        builder.setPolymorphicProp(everythingPolymorphicPropTypeAdapter.read(reader));
+                        try {
+                            builder.setPolymorphicProp(everythingPolymorphicPropTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("set_prop"):
-                        builder.setSetProp(set_Object_TypeAdapter.read(reader));
+                        try {
+                            builder.setSetProp(set_Object_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("set_prop_with_other_model_values"):
-                        builder.setSetPropWithOtherModelValues(set_User_TypeAdapter.read(reader));
+                        try {
+                            builder.setSetPropWithOtherModelValues(set_User_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("set_prop_with_primitive_values"):
-                        builder.setSetPropWithPrimitiveValues(set_Integer_TypeAdapter.read(reader));
+                        try {
+                            builder.setSetPropWithPrimitiveValues(set_Integer_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("set_prop_with_values"):
-                        builder.setSetPropWithValues(set_String_TypeAdapter.read(reader));
+                        try {
+                            builder.setSetPropWithValues(set_String_TypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("string_enum"):
-                        builder.setStringEnum(everythingStringEnumTypeAdapter.read(reader));
+                        try {
+                            builder.setStringEnum(everythingStringEnumTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("string_prop"):
-                        builder.setStringProp(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setStringProp(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("type"):
-                        builder.setType(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setType(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     case ("uri_prop"):
-                        builder.setUriProp(stringTypeAdapter.read(reader));
+                        try {
+                            builder.setUriProp(stringTypeAdapter.read(reader));
+                        }
+                        catch (IllegalStateException e) {
+                            // TODO Log Error
+                        }
                         break;
                     default:
                         reader.skipValue();
