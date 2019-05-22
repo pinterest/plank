@@ -18,6 +18,7 @@ enum FlagOptions: String {
     case objectiveCClassPrefix = "objc_class_prefix"
     case javaPackageName = "java_package_name"
     case javaNullabilityAnnotationType = "java_nullability_annotation_type"
+    case javaGeneratePackagePrivateSetters = "java_generate_package_private_setters_beta"
     case printDeps = "print_deps"
     case noRecursive = "no_recursive"
     case noRuntime = "no_runtime"
@@ -41,6 +42,7 @@ enum FlagOptions: String {
         case .version: return false
         case .javaPackageName: return true
         case .javaNullabilityAnnotationType: return true
+        case .javaGeneratePackagePrivateSetters: return false
         }
     }
 }
@@ -64,6 +66,7 @@ extension FlagOptions: HelpCommandOutput {
             "    Java:",
             "    --\(FlagOptions.javaPackageName.rawValue) - The package name to associate with generated Java sources",
             "    --\(FlagOptions.javaNullabilityAnnotationType.rawValue) - The type of nullability annotations to use. Can be either \"android-support\" (default) or \"androidx\".",
+            "    --\(FlagOptions.javaGeneratePackagePrivateSetters.rawValue) - Generate package-private setter methods (beta)",
         ].joined(separator: "\n")
     }
 }
@@ -148,6 +151,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let indent: String? = flags[.indent]
     let packageName: String? = flags[.javaPackageName]
     let javaNullabilityAnnotationType: String? = flags[.javaNullabilityAnnotationType]
+    let javaGeneratePackagePrivateSetters: String? = (flags[.javaGeneratePackagePrivateSetters] == nil) ? .none : .some("")
 
     let generationParameters: GenerationParameters = [
         (.recursive, recursive),
@@ -156,6 +160,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         (.indent, indent),
         (.packageName, packageName),
         (.javaNullabilityAnnotationType, javaNullabilityAnnotationType),
+        (.javaGeneratePackagePrivateSetters, javaGeneratePackagePrivateSetters),
     ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
         var mutableDict = dict
         if let val = tuple.1 {
