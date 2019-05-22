@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readonly) NSDate * createdAt;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * creator;
+@property (nullable, nonatomic, copy, readonly) NSURL * creatorURL;
 @property (nullable, nonatomic, copy, readonly) NSString * descriptionText;
 @property (nonnull, nonatomic, strong, readonly) Image * image;
 @property (nullable, nonatomic, copy, readonly) NSString * name;
@@ -34,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isCountsSet;
 - (BOOL)isCreatedAtSet;
 - (BOOL)isCreatorSet;
+- (BOOL)isCreatorUrlSet;
 - (BOOL)isDescriptionTextSet;
 - (BOOL)isImageSet;
 - (BOOL)isNameSet;
@@ -45,6 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * counts;
 @property (nullable, nonatomic, copy, readwrite) NSDate * createdAt;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * creator;
+@property (nullable, nonatomic, copy, readwrite) NSURL * creatorURL;
 @property (nullable, nonatomic, copy, readwrite) NSString * descriptionText;
 @property (nonnull, nonatomic, strong, readwrite) Image * image;
 @property (nullable, nonatomic, copy, readwrite) NSString * name;

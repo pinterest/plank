@@ -15,6 +15,7 @@ struct BoardDirtyProperties {
     unsigned int BoardDirtyPropertyCounts:1;
     unsigned int BoardDirtyPropertyCreatedAt:1;
     unsigned int BoardDirtyPropertyCreator:1;
+    unsigned int BoardDirtyPropertyCreatorURL:1;
     unsigned int BoardDirtyPropertyDescriptionText:1;
     unsigned int BoardDirtyPropertyImage:1;
     unsigned int BoardDirtyPropertyName:1;
@@ -108,6 +109,15 @@ struct BoardDirtyProperties {
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"creator_url"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_creatorURL = [NSURL URLWithString:value];
+                }
+                self->_boardDirtyProperties.BoardDirtyPropertyCreatorURL = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"description"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -163,6 +173,7 @@ struct BoardDirtyProperties {
     _counts = builder.counts;
     _createdAt = builder.createdAt;
     _creator = builder.creator;
+    _creatorURL = builder.creatorURL;
     _descriptionText = builder.descriptionText;
     _image = builder.image;
     _name = builder.name;
@@ -176,7 +187,7 @@ struct BoardDirtyProperties {
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
-    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:8];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:9];
     [descriptionFields addObject:parentDebugDescription];
     struct BoardDirtyProperties props = _boardDirtyProperties;
     if (props.BoardDirtyPropertyContributors) {
@@ -190,6 +201,9 @@ struct BoardDirtyProperties {
     }
     if (props.BoardDirtyPropertyCreator) {
         [descriptionFields addObject:[@"_creator = " stringByAppendingFormat:@"%@", _creator]];
+    }
+    if (props.BoardDirtyPropertyCreatorURL) {
+        [descriptionFields addObject:[@"_creatorURL = " stringByAppendingFormat:@"%@", _creatorURL]];
     }
     if (props.BoardDirtyPropertyDescriptionText) {
         [descriptionFields addObject:[@"_descriptionText = " stringByAppendingFormat:@"%@", _descriptionText]];
@@ -234,6 +248,7 @@ struct BoardDirtyProperties {
         (_counts == anObject.counts || [_counts isEqualToDictionary:anObject.counts]) &&
         (_createdAt == anObject.createdAt || [_createdAt isEqualToDate:anObject.createdAt]) &&
         (_creator == anObject.creator || [_creator isEqualToDictionary:anObject.creator]) &&
+        (_creatorURL == anObject.creatorURL || [_creatorURL isEqual:anObject.creatorURL]) &&
         (_descriptionText == anObject.descriptionText || [_descriptionText isEqualToString:anObject.descriptionText]) &&
         (_image == anObject.image || [_image isEqual:anObject.image]) &&
         (_name == anObject.name || [_name isEqualToString:anObject.name]) &&
@@ -248,6 +263,7 @@ struct BoardDirtyProperties {
         [_counts hash],
         [_createdAt hash],
         [_creator hash],
+        [_creatorURL hash],
         [_descriptionText hash],
         [_image hash],
         [_name hash],
@@ -307,6 +323,13 @@ struct BoardDirtyProperties {
             [dict setObject:[NSNull null] forKey:@"creator"];
         }
     }
+    if (_boardDirtyProperties.BoardDirtyPropertyCreatorURL) {
+        if (_creatorURL != nil) {
+            [dict setObject:[_creatorURL absoluteString] forKey:@"creator_url"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"creator_url"];
+        }
+    }
     if (_boardDirtyProperties.BoardDirtyPropertyDescriptionText) {
         if (_descriptionText != nil) {
             [dict setObject:_descriptionText forKey:@"description"];
@@ -353,6 +376,10 @@ struct BoardDirtyProperties {
 {
     return _boardDirtyProperties.BoardDirtyPropertyCreator == 1;
 }
+- (BOOL)isCreatorUrlSet
+{
+    return _boardDirtyProperties.BoardDirtyPropertyCreatorURL == 1;
+}
 - (BOOL)isDescriptionTextSet
 {
     return _boardDirtyProperties.BoardDirtyPropertyDescriptionText == 1;
@@ -386,6 +413,7 @@ struct BoardDirtyProperties {
     _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
     _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
     _creator = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"creator"];
+    _creatorURL = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"creator_url"];
     _descriptionText = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"description"];
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];
     _name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"];
@@ -394,6 +422,7 @@ struct BoardDirtyProperties {
     _boardDirtyProperties.BoardDirtyPropertyCounts = [aDecoder decodeIntForKey:@"counts_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyCreatedAt = [aDecoder decodeIntForKey:@"created_at_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyCreator = [aDecoder decodeIntForKey:@"creator_dirty_property"] & 0x1;
+    _boardDirtyProperties.BoardDirtyPropertyCreatorURL = [aDecoder decodeIntForKey:@"creator_url_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyDescriptionText = [aDecoder decodeIntForKey:@"description_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyImage = [aDecoder decodeIntForKey:@"image_dirty_property"] & 0x1;
     _boardDirtyProperties.BoardDirtyPropertyName = [aDecoder decodeIntForKey:@"name_dirty_property"] & 0x1;
@@ -410,6 +439,7 @@ struct BoardDirtyProperties {
     [aCoder encodeObject:self.counts forKey:@"counts"];
     [aCoder encodeObject:self.createdAt forKey:@"created_at"];
     [aCoder encodeObject:self.creator forKey:@"creator"];
+    [aCoder encodeObject:self.creatorURL forKey:@"creator_url"];
     [aCoder encodeObject:self.descriptionText forKey:@"description"];
     [aCoder encodeObject:self.image forKey:@"image"];
     [aCoder encodeObject:self.name forKey:@"name"];
@@ -418,6 +448,7 @@ struct BoardDirtyProperties {
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyCounts forKey:@"counts_dirty_property"];
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyCreatedAt forKey:@"created_at_dirty_property"];
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyCreator forKey:@"creator_dirty_property"];
+    [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyCreatorURL forKey:@"creator_url_dirty_property"];
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyDescriptionText forKey:@"description_dirty_property"];
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyImage forKey:@"image_dirty_property"];
     [aCoder encodeInt:_boardDirtyProperties.BoardDirtyPropertyName forKey:@"name_dirty_property"];
@@ -442,6 +473,9 @@ struct BoardDirtyProperties {
     }
     if (boardDirtyProperties.BoardDirtyPropertyCreator) {
         _creator = modelObject.creator;
+    }
+    if (boardDirtyProperties.BoardDirtyPropertyCreatorURL) {
+        _creatorURL = modelObject.creatorURL;
     }
     if (boardDirtyProperties.BoardDirtyPropertyDescriptionText) {
         _descriptionText = modelObject.descriptionText;
@@ -478,6 +512,9 @@ struct BoardDirtyProperties {
     }
     if (modelObject.boardDirtyProperties.BoardDirtyPropertyCreator) {
         builder.creator = modelObject.creator;
+    }
+    if (modelObject.boardDirtyProperties.BoardDirtyPropertyCreatorURL) {
+        builder.creatorURL = modelObject.creatorURL;
     }
     if (modelObject.boardDirtyProperties.BoardDirtyPropertyDescriptionText) {
         builder.descriptionText = modelObject.descriptionText;
@@ -516,6 +553,11 @@ struct BoardDirtyProperties {
 {
     _creator = creator;
     _boardDirtyProperties.BoardDirtyPropertyCreator = 1;
+}
+- (void)setCreatorURL:(NSURL *)creatorURL
+{
+    _creatorURL = [creatorURL copy];
+    _boardDirtyProperties.BoardDirtyPropertyCreatorURL = 1;
 }
 - (void)setDescriptionText:(NSString *)descriptionText
 {

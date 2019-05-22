@@ -11,6 +11,10 @@
 			"type": "string",
 			"format": "uri"
 		},
+        "creator_url" : {
+            "type": "string",
+            "format": "uri"
+        },
 		"description" : { "type": "string" },
 		"creator": {
 			"type": "object",
