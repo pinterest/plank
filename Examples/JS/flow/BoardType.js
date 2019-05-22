@@ -16,6 +16,7 @@ export type BoardType = $Shape<{|
   +counts: ?{ +[string]: number } /* Integer */,
   +created_at: ?PlankDate,
   +creator: ?{ +[string]: string },
+  +creator_url: ?PlankURI,
   +description: ?string,
   +image: ImageType,
   +name: ?string,

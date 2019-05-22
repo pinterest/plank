@@ -176,7 +176,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderSetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
         let setters = transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, "Builder set\(Languages.java.snakeCaseToCamelCase(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
+            JavaIR.method(modifiers, "Builder set\(Languages.java.snakeCaseToCapitalizedPropertyName(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
                 "this." + Languages.java.snakeCaseToPropertyName(param) + " = value;",
                 "this._bits |= " + param.uppercased() + "_SET;",
                 "return this;",
