@@ -438,9 +438,9 @@ public struct ObjCIR {
                 let variableDeclarations: String
                 if !variables.isEmpty {
                     let vars: [String] = variables.map { (param, typeName) -> String in
-                        "\t\(typeName) _\(Languages.objectiveC.snakeCaseToPropertyName(param));"
+                        "\(typeName) _\(Languages.objectiveC.snakeCaseToPropertyName(param));"
                     }
-                    variableDeclarations = (["{"] + vars + ["}"]).joined(separator: "\n")
+                    variableDeclarations = ["{", -->vars, "}"].joined(separator: "\n")
                 } else {
                     variableDeclarations = ""
                 }
