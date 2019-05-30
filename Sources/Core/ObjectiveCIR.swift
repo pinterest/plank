@@ -94,7 +94,7 @@ enum EnumerationIntegralType: String {
     // 2 enumerations will only take 8 bytes in the heap. This is because the compiler will best fit
     // the two unsigned char enumerations to fit into the 8 bytes natural alignment of the platform.
     // As more enumerations are found in a class, the better this best fitting code will save memory.
-    static func enumerationIntegralTypeFor(_ values: EnumType) -> EnumerationIntegralType {
+    static func forValue(_ values: EnumType) -> EnumerationIntegralType {
         let minimum: Int
         let maximum: Int
         switch values {
@@ -391,7 +391,7 @@ public struct ObjCIR {
             case let .function(method):
                 return ["\(method.signature);"]
             case let .enumDecl(name, values):
-                return [ObjCIR.enumStmt(name, underlyingIntegralType: EnumerationIntegralType.enumerationIntegralTypeFor(values)) {
+                return [ObjCIR.enumStmt(name, underlyingIntegralType: EnumerationIntegralType.forValue(values)) {
                     switch values {
                     case let .integer(options):
                         return options.map { "\(name + $0.camelCaseDescription) = \($0.defaultValue)" }
