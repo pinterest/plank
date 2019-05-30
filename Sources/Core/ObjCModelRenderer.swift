@@ -129,10 +129,10 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                 return false
             }
         }
-        let enumIVarDeclarations: [(Parameter, TypeName)] = !enumProperties.isEmpty ? enumProperties.compactMap { (arg) -> (Parameter, TypeName) in
+        let enumIVarDeclarations: [(Parameter, TypeName)] = enumProperties.compactMap { (arg) -> (Parameter, TypeName) in
             let (param, prop) = arg
             return (param, enumTypeName(propertyName: param, className: self.className))
-        } : []
+        }
 
         let protocols: [String: [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
