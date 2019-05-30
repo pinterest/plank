@@ -12,6 +12,27 @@ extension LanguagesTests {
        ("testReservedKeywordSubstitution", testReservedKeywordSubstitution)
    ]
 }
+// Generated Test Extension for ObjectiveCEnumTests
+extension ObjectiveCEnumTests {
+   static var allTests = [
+       ("testEnumChar_Negative", testEnumChar_Negative),
+       ("testEnumUnsignedChar_UInt8Max_Subtract1", testEnumUnsignedChar_UInt8Max_Subtract1),
+       ("testEnumUnsignedChar_UInt8Max", testEnumUnsignedChar_UInt8Max),
+       ("testEnumUnsignedShort_UInt8Max_Add1", testEnumUnsignedShort_UInt8Max_Add1),
+       ("testEnumShort_Negative_UInt8Max", testEnumShort_Negative_UInt8Max),
+       ("testEnumUnsignedShort_UInt16Max_Subtract1", testEnumUnsignedShort_UInt16Max_Subtract1),
+       ("testEnumUnsignedShort_UInt16Max", testEnumUnsignedShort_UInt16Max),
+       ("testEnumUnsignedInt_UInt16Max_Add1", testEnumUnsignedInt_UInt16Max_Add1),
+       ("testEnumInt_Negative_UInt16Max", testEnumInt_Negative_UInt16Max),
+       ("testEnumUnsignedInt_UInt32Max_Subtract1", testEnumUnsignedInt_UInt32Max_Subtract1),
+       ("testEnumUnsignedInt_UInt32Max", testEnumUnsignedInt_UInt32Max),
+       ("testEnumNSUInteger_UInt16Max_Add1", testEnumNSUInteger_UInt16Max_Add1),
+       ("testEnumNSInteger_Negative_UInt32Max", testEnumNSInteger_Negative_UInt32Max),
+       ("testEnumNSInteger_Int64Max_Subtract1", testEnumNSInteger_Int64Max_Subtract1),
+       ("testEnumNSUInteger_Int64Max", testEnumNSUInteger_Int64Max),
+       ("testEnumNSInteger_Negative_Int64Max", testEnumNSInteger_Negative_Int64Max)
+   ]
+}
 // Generated Test Extension for ObjectiveCIRTests
 extension ObjectiveCIRTests {
    static var allTests = [
@@ -28,8 +49,7 @@ extension ObjectiveCIRTests {
        ("testIfStmt", testIfStmt),
        ("testElseIfStmt", testElseIfStmt),
        ("testElseStmt", testElseStmt),
-       ("testIfElseStmt", testIfElseStmt),
-       ("testEnumIntegralTypes", testEnumIntegralTypes)
+       ("testIfElseStmt", testIfElseStmt)
    ]
 }
 // Generated Test Extension for ObjectiveCInitTests
