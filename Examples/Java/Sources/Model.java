@@ -34,13 +34,13 @@ public class Model {
 
     @SerializedName("id") private @Nullable String uid;
 
-    static final private int ID_SET = 1 << 0;
+    static final private int ID_INDEX = 0;
 
-    private int _bits = 0;
+    private boolean[] _bits = new boolean[1];
 
     private Model(
         @Nullable String uid,
-        int _bits
+        boolean[] _bits
     ) {
         this.uid = uid;
         this._bits = _bits;
@@ -82,14 +82,14 @@ public class Model {
     }
 
     public boolean getUidIsSet() {
-        return (this._bits & ID_SET) == ID_SET;
+        return this._bits.length > ID_INDEX && this._bits[ID_INDEX];
     }
 
     public static class Builder {
 
         @SerializedName("id") private @Nullable String uid;
 
-        private int _bits = 0;
+        private boolean[] _bits = new boolean[1];
 
         private Builder() {
         }
@@ -101,7 +101,9 @@ public class Model {
 
         public Builder setUid(@Nullable String value) {
             this.uid = value;
-            this._bits |= ID_SET;
+            if (this._bits.length > ID_INDEX) {
+                this._bits[ID_INDEX] = true;
+            }
             return this;
         }
 
