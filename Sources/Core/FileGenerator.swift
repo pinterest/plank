@@ -19,6 +19,7 @@ public enum GenerationParameterType {
     case includeRuntime
     case indent
     case packageName
+    case javaNullabilityAnnotationType
 }
 
 // Most of these are derived from https://www.binpress.com/tutorial/objective-c-reserved-keywords/43

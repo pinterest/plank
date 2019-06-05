@@ -8,8 +8,8 @@
 
 package com.pinterest.models;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
@@ -47,6 +47,8 @@ public class Pin {
             return this.value;
         }
     }
+
+    public static final String TYPE = "pin";
 
     @SerializedName("attribution") private @Nullable Map<String, String> attribution;
     @SerializedName("attribution_objects") private @Nullable List<PinAttributionObjects> attributionObjects;

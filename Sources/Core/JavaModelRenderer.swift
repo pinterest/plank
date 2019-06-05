@@ -30,6 +30,10 @@ public struct JavaModelRenderer: JavaFileRenderer {
         }
     }
 
+    func renderStaticTypeString() -> JavaIR.Property {
+        return JavaIR.Property(annotations: [], modifiers: [.public, .static, .final], type: "String", name: "TYPE", initialValue: "\"" + rootSchema.typeIdentifier + "\"")
+    }
+
     func renderModelHashCode() -> JavaIR.Method {
         let bodyHashCode = transitiveProperties.map { param, _ in
             Languages.java.snakeCaseToPropertyName(param)
@@ -73,7 +77,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             index += 1
         }
 
-        return [props, bitmasks, [bits]]
+        return [[renderStaticTypeString()], props, bitmasks, [bits]]
     }
 
     func propertyGetterForParam(param: String, schemaObj: SchemaObjectProperty) -> JavaIR.Method {
@@ -172,7 +176,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderSetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
         let setters = transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, "Builder set\(Languages.java.snakeCaseToCamelCase(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
+            JavaIR.method(modifiers, "Builder set\(Languages.java.snakeCaseToCapitalizedPropertyName(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
                 "this." + Languages.java.snakeCaseToPropertyName(param) + " = value;",
                 "this._bits |= " + param.uppercased() + "_SET;",
                 "return this;",
@@ -308,6 +312,10 @@ public struct JavaModelRenderer: JavaFileRenderer {
             [JavaIR.Root.packages(names: [$0])]
         } ?? []
 
+        guard let nullabilityAnnotationType = JavaNullabilityAnnotationType(rawValue: params[.javaNullabilityAnnotationType] ?? "android-support") else {
+            fatalError("java_nullability_annotation_type must be either android-support or androidx. Invalid type provided: " + params[.javaNullabilityAnnotationType]!)
+        }
+
         let imports = [
             JavaIR.Root.imports(names: [
                 "com.google.gson.Gson",
@@ -327,8 +335,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "java.util.Objects",
                 "java.lang.annotation.Retention",
                 "java.lang.annotation.RetentionPolicy",
-                "android.support.annotation.NonNull",
-                "android.support.annotation.Nullable",
+                nullabilityAnnotationType.package + ".NonNull",
+                nullabilityAnnotationType.package + ".Nullable",
             ]),
         ]
 

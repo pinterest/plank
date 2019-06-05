@@ -16,7 +16,7 @@ mv Examples/Cocoa/Sources/Objective_C/*.h Examples/Cocoa/Sources/Objective_C/inc
 $PLANK_BIN --lang flow  --output_dir=Examples/JS/flow/ $JSON_FILES
 
 # Generate flow types for models
-$PLANK_BIN --lang java --java_package_name com.pinterest.models --output_dir=Examples/Java/Sources/ $JSON_FILES
+$PLANK_BIN --lang java --java_package_name com.pinterest.models --java_nullability_annotation_type androidx --output_dir=Examples/Java/Sources/ $JSON_FILES
 
 ROOT_DIR="${PWD}"
 
