@@ -46,6 +46,20 @@ enum JavaAnnotation: Hashable {
     }
 }
 
+enum JavaNullabilityAnnotationType: String {
+    case androidSupport = "android-support"
+    case androidx
+
+    var package: String {
+        switch self {
+        case .androidSupport:
+            return "android.support.annotation"
+        case .androidx:
+            return "androidx.annotation"
+        }
+    }
+}
+
 extension Schema {
     var isJavaCollection: Bool {
         switch self {

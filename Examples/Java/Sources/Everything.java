@@ -8,8 +8,8 @@
 
 package com.pinterest.models;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
@@ -70,6 +70,8 @@ public class Everything {
     public enum EverythingStringEnum {
         @SerializedName("case1") CASE1, @SerializedName("case2") CASE2, @SerializedName("case3") CASE3;
     }
+
+    public static final String TYPE = "everything";
 
     @SerializedName("array_prop") private @Nullable List<Object> arrayProp;
     @SerializedName("boolean_prop") private @Nullable Boolean booleanProp;

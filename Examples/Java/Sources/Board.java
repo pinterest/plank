@@ -8,8 +8,8 @@
 
 package com.pinterest.models;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
@@ -30,11 +30,14 @@ import java.util.Set;
 
 public class Board {
 
+    public static final String TYPE = "board";
+
     @SerializedName("id") private @Nullable String uid;
     @SerializedName("contributors") private @Nullable Set<User> contributors;
     @SerializedName("counts") private @Nullable Map<String, Integer> counts;
     @SerializedName("created_at") private @Nullable Date createdAt;
     @SerializedName("creator") private @Nullable Map<String, String> creator;
+    @SerializedName("creator_url") private @Nullable String creatorURL;
     @SerializedName("description") private @Nullable String description;
     @SerializedName("image") private @NonNull Image image;
     @SerializedName("name") private @Nullable String name;
@@ -45,10 +48,11 @@ public class Board {
     static final private int COUNTS_SET = 1 << 2;
     static final private int CREATED_AT_SET = 1 << 3;
     static final private int CREATOR_SET = 1 << 4;
-    static final private int DESCRIPTION_SET = 1 << 5;
-    static final private int IMAGE_SET = 1 << 6;
-    static final private int NAME_SET = 1 << 7;
-    static final private int URL_SET = 1 << 8;
+    static final private int CREATOR_URL_SET = 1 << 5;
+    static final private int DESCRIPTION_SET = 1 << 6;
+    static final private int IMAGE_SET = 1 << 7;
+    static final private int NAME_SET = 1 << 8;
+    static final private int URL_SET = 1 << 9;
 
     private int _bits = 0;
 
@@ -58,6 +62,7 @@ public class Board {
         @Nullable Map<String, Integer> counts,
         @Nullable Date createdAt,
         @Nullable Map<String, String> creator,
+        @Nullable String creatorURL,
         @Nullable String description,
         @NonNull Image image,
         @Nullable String name,
@@ -69,6 +74,7 @@ public class Board {
         this.counts = counts;
         this.createdAt = createdAt;
         this.creator = creator;
+        this.creatorURL = creatorURL;
         this.description = description;
         this.image = image;
         this.name = name;
@@ -104,6 +110,7 @@ public class Board {
         Objects.equals(this.counts, that.counts) &&
         Objects.equals(this.createdAt, that.createdAt) &&
         Objects.equals(this.creator, that.creator) &&
+        Objects.equals(this.creatorURL, that.creatorURL) &&
         Objects.equals(this.description, that.description) &&
         Objects.equals(this.image, that.image) &&
         Objects.equals(this.name, that.name) &&
@@ -117,6 +124,7 @@ public class Board {
         counts,
         createdAt,
         creator,
+        creatorURL,
         description,
         image,
         name,
@@ -141,6 +149,10 @@ public class Board {
 
     public @Nullable Map<String, String> getCreator() {
         return this.creator;
+    }
+
+    public @Nullable String getCreatorURL() {
+        return this.creatorURL;
     }
 
     public @Nullable String getDescription() {
@@ -179,6 +191,10 @@ public class Board {
         return (this._bits & CREATOR_SET) == CREATOR_SET;
     }
 
+    public boolean getCreatorURLIsSet() {
+        return (this._bits & CREATOR_URL_SET) == CREATOR_URL_SET;
+    }
+
     public boolean getDescriptionIsSet() {
         return (this._bits & DESCRIPTION_SET) == DESCRIPTION_SET;
     }
@@ -202,6 +218,7 @@ public class Board {
         @SerializedName("counts") private @Nullable Map<String, Integer> counts;
         @SerializedName("created_at") private @Nullable Date createdAt;
         @SerializedName("creator") private @Nullable Map<String, String> creator;
+        @SerializedName("creator_url") private @Nullable String creatorURL;
         @SerializedName("description") private @Nullable String description;
         @SerializedName("image") private @NonNull Image image;
         @SerializedName("name") private @Nullable String name;
@@ -218,6 +235,7 @@ public class Board {
             this.counts = model.counts;
             this.createdAt = model.createdAt;
             this.creator = model.creator;
+            this.creatorURL = model.creatorURL;
             this.description = model.description;
             this.image = model.image;
             this.name = model.name;
@@ -252,6 +270,12 @@ public class Board {
         public Builder setCreator(@Nullable Map<String, String> value) {
             this.creator = value;
             this._bits |= CREATOR_SET;
+            return this;
+        }
+
+        public Builder setCreatorURL(@Nullable String value) {
+            this.creatorURL = value;
+            this._bits |= CREATOR_URL_SET;
             return this;
         }
 
@@ -299,6 +323,10 @@ public class Board {
             return this.creator;
         }
 
+        public @Nullable String getCreatorURL() {
+            return this.creatorURL;
+        }
+
         public @Nullable String getDescription() {
             return this.description;
         }
@@ -322,6 +350,7 @@ public class Board {
             this.counts,
             this.createdAt,
             this.creator,
+            this.creatorURL,
             this.description,
             this.image,
             this.name,
@@ -345,6 +374,9 @@ public class Board {
             }
             if (model.getCreatorIsSet()) {
                 this.creator = model.creator;
+            }
+            if (model.getCreatorURLIsSet()) {
+                this.creatorURL = model.creatorURL;
             }
             if (model.getDescriptionIsSet()) {
                 this.description = model.description;
@@ -423,6 +455,9 @@ public class Board {
                         break;
                     case ("creator"):
                         builder.setCreator(map_String__String_TypeAdapter.read(reader));
+                        break;
+                    case ("creator_url"):
+                        builder.setCreatorURL(stringTypeAdapter.read(reader));
                         break;
                     case ("description"):
                         builder.setDescription(stringTypeAdapter.read(reader));
