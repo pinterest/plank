@@ -117,6 +117,22 @@ public struct JavaModelRenderer: JavaFileRenderer {
         return getters
     }
 
+    // Package-private setters are generated with if the flag --java_generate_package_private_setters is set
+    func renderModelPropertySetters() -> [JavaIR.Method] {
+        if params[.javaGeneratePackagePrivateSetters] == nil {
+            return []
+        }
+
+        let setters = transitiveProperties.map { param, schemaObj in
+            JavaIR.method([], "void set\(Languages.java.snakeCaseToCapitalizedPropertyName(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
+                "this." + Languages.java.snakeCaseToPropertyName(param) + " = value;",
+            ] }
+        }
+        return setters + [JavaIR.method([], "set_bits(int bits)") { [
+            "this._bits = bits;",
+        ] }]
+    }
+
     func renderModelIsSetCheckers(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
         let getters = transitiveProperties.map { param, _ in
             JavaIR.method(modifiers, "boolean get" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "IsSet()") { [
@@ -440,6 +456,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                     self.renderModelHashCode(),
                 ] +
                     renderModelPropertyGetters() +
+                    renderModelPropertySetters() +
                     renderModelIsSetCheckers(),
                 enums: enumProps,
                 innerClasses: [
