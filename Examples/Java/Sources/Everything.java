@@ -103,37 +103,37 @@ public class Everything {
     @SerializedName("type") private @Nullable String type;
     @SerializedName("uri_prop") private @Nullable String uriProp;
 
-    static final private int ARRAY_PROP_SET = 1 << 0;
-    static final private int BOOLEAN_PROP_SET = 1 << 1;
-    static final private int DATE_PROP_SET = 1 << 2;
-    static final private int INT_ENUM_SET = 1 << 3;
-    static final private int INT_PROP_SET = 1 << 4;
-    static final private int LIST_POLYMORPHIC_VALUES_SET = 1 << 5;
-    static final private int LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET = 1 << 6;
-    static final private int LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET = 1 << 7;
-    static final private int LIST_WITH_OBJECT_VALUES_SET = 1 << 8;
-    static final private int LIST_WITH_OTHER_MODEL_VALUES_SET = 1 << 9;
-    static final private int LIST_WITH_PRIMITIVE_VALUES_SET = 1 << 10;
-    static final private int MAP_POLYMORPHIC_VALUES_SET = 1 << 11;
-    static final private int MAP_PROP_SET = 1 << 12;
-    static final private int MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET = 1 << 13;
-    static final private int MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET = 1 << 14;
-    static final private int MAP_WITH_OBJECT_VALUES_SET = 1 << 15;
-    static final private int MAP_WITH_OTHER_MODEL_VALUES_SET = 1 << 16;
-    static final private int MAP_WITH_PRIMITIVE_VALUES_SET = 1 << 17;
-    static final private int NUMBER_PROP_SET = 1 << 18;
-    static final private int OTHER_MODEL_PROP_SET = 1 << 19;
-    static final private int POLYMORPHIC_PROP_SET = 1 << 20;
-    static final private int SET_PROP_SET = 1 << 21;
-    static final private int SET_PROP_WITH_OTHER_MODEL_VALUES_SET = 1 << 22;
-    static final private int SET_PROP_WITH_PRIMITIVE_VALUES_SET = 1 << 23;
-    static final private int SET_PROP_WITH_VALUES_SET = 1 << 24;
-    static final private int STRING_ENUM_SET = 1 << 25;
-    static final private int STRING_PROP_SET = 1 << 26;
-    static final private int TYPE_SET = 1 << 27;
-    static final private int URI_PROP_SET = 1 << 28;
+    static final private int ARRAY_PROP_INDEX = 0;
+    static final private int BOOLEAN_PROP_INDEX = 1;
+    static final private int DATE_PROP_INDEX = 2;
+    static final private int INT_ENUM_INDEX = 3;
+    static final private int INT_PROP_INDEX = 4;
+    static final private int LIST_POLYMORPHIC_VALUES_INDEX = 5;
+    static final private int LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 6;
+    static final private int LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 7;
+    static final private int LIST_WITH_OBJECT_VALUES_INDEX = 8;
+    static final private int LIST_WITH_OTHER_MODEL_VALUES_INDEX = 9;
+    static final private int LIST_WITH_PRIMITIVE_VALUES_INDEX = 10;
+    static final private int MAP_POLYMORPHIC_VALUES_INDEX = 11;
+    static final private int MAP_PROP_INDEX = 12;
+    static final private int MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 13;
+    static final private int MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 14;
+    static final private int MAP_WITH_OBJECT_VALUES_INDEX = 15;
+    static final private int MAP_WITH_OTHER_MODEL_VALUES_INDEX = 16;
+    static final private int MAP_WITH_PRIMITIVE_VALUES_INDEX = 17;
+    static final private int NUMBER_PROP_INDEX = 18;
+    static final private int OTHER_MODEL_PROP_INDEX = 19;
+    static final private int POLYMORPHIC_PROP_INDEX = 20;
+    static final private int SET_PROP_INDEX = 21;
+    static final private int SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX = 22;
+    static final private int SET_PROP_WITH_PRIMITIVE_VALUES_INDEX = 23;
+    static final private int SET_PROP_WITH_VALUES_INDEX = 24;
+    static final private int STRING_ENUM_INDEX = 25;
+    static final private int STRING_PROP_INDEX = 26;
+    static final private int TYPE_INDEX = 27;
+    static final private int URI_PROP_INDEX = 28;
 
-    private int _bits = 0;
+    private boolean[] _bits = new boolean[29];
 
     private Everything(
         @Nullable List<Object> arrayProp,
@@ -165,7 +165,7 @@ public class Everything {
         @Nullable String stringProp,
         @Nullable String type,
         @Nullable String uriProp,
-        int _bits
+        boolean[] _bits
     ) {
         this.arrayProp = arrayProp;
         this.booleanProp = booleanProp;
@@ -403,119 +403,119 @@ public class Everything {
     }
 
     public boolean getArrayPropIsSet() {
-        return (this._bits & ARRAY_PROP_SET) == ARRAY_PROP_SET;
+        return this._bits.length > ARRAY_PROP_INDEX && this._bits[ARRAY_PROP_INDEX];
     }
 
     public boolean getBooleanPropIsSet() {
-        return (this._bits & BOOLEAN_PROP_SET) == BOOLEAN_PROP_SET;
+        return this._bits.length > BOOLEAN_PROP_INDEX && this._bits[BOOLEAN_PROP_INDEX];
     }
 
     public boolean getDatePropIsSet() {
-        return (this._bits & DATE_PROP_SET) == DATE_PROP_SET;
+        return this._bits.length > DATE_PROP_INDEX && this._bits[DATE_PROP_INDEX];
     }
 
     public boolean getIntEnumIsSet() {
-        return (this._bits & INT_ENUM_SET) == INT_ENUM_SET;
+        return this._bits.length > INT_ENUM_INDEX && this._bits[INT_ENUM_INDEX];
     }
 
     public boolean getIntPropIsSet() {
-        return (this._bits & INT_PROP_SET) == INT_PROP_SET;
+        return this._bits.length > INT_PROP_INDEX && this._bits[INT_PROP_INDEX];
     }
 
     public boolean getListPolymorphicValuesIsSet() {
-        return (this._bits & LIST_POLYMORPHIC_VALUES_SET) == LIST_POLYMORPHIC_VALUES_SET;
+        return this._bits.length > LIST_POLYMORPHIC_VALUES_INDEX && this._bits[LIST_POLYMORPHIC_VALUES_INDEX];
     }
 
     public boolean getListWithListAndOtherModelValuesIsSet() {
-        return (this._bits & LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET) == LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+        return this._bits.length > LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX && this._bits[LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX];
     }
 
     public boolean getListWithMapAndOtherModelValuesIsSet() {
-        return (this._bits & LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET) == LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+        return this._bits.length > LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX && this._bits[LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX];
     }
 
     public boolean getListWithObjectValuesIsSet() {
-        return (this._bits & LIST_WITH_OBJECT_VALUES_SET) == LIST_WITH_OBJECT_VALUES_SET;
+        return this._bits.length > LIST_WITH_OBJECT_VALUES_INDEX && this._bits[LIST_WITH_OBJECT_VALUES_INDEX];
     }
 
     public boolean getListWithOtherModelValuesIsSet() {
-        return (this._bits & LIST_WITH_OTHER_MODEL_VALUES_SET) == LIST_WITH_OTHER_MODEL_VALUES_SET;
+        return this._bits.length > LIST_WITH_OTHER_MODEL_VALUES_INDEX && this._bits[LIST_WITH_OTHER_MODEL_VALUES_INDEX];
     }
 
     public boolean getListWithPrimitiveValuesIsSet() {
-        return (this._bits & LIST_WITH_PRIMITIVE_VALUES_SET) == LIST_WITH_PRIMITIVE_VALUES_SET;
+        return this._bits.length > LIST_WITH_PRIMITIVE_VALUES_INDEX && this._bits[LIST_WITH_PRIMITIVE_VALUES_INDEX];
     }
 
     public boolean getMapPolymorphicValuesIsSet() {
-        return (this._bits & MAP_POLYMORPHIC_VALUES_SET) == MAP_POLYMORPHIC_VALUES_SET;
+        return this._bits.length > MAP_POLYMORPHIC_VALUES_INDEX && this._bits[MAP_POLYMORPHIC_VALUES_INDEX];
     }
 
     public boolean getMapPropIsSet() {
-        return (this._bits & MAP_PROP_SET) == MAP_PROP_SET;
+        return this._bits.length > MAP_PROP_INDEX && this._bits[MAP_PROP_INDEX];
     }
 
     public boolean getMapWithListAndOtherModelValuesIsSet() {
-        return (this._bits & MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET) == MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+        return this._bits.length > MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX && this._bits[MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX];
     }
 
     public boolean getMapWithMapAndOtherModelValuesIsSet() {
-        return (this._bits & MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET) == MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+        return this._bits.length > MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX && this._bits[MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX];
     }
 
     public boolean getMapWithObjectValuesIsSet() {
-        return (this._bits & MAP_WITH_OBJECT_VALUES_SET) == MAP_WITH_OBJECT_VALUES_SET;
+        return this._bits.length > MAP_WITH_OBJECT_VALUES_INDEX && this._bits[MAP_WITH_OBJECT_VALUES_INDEX];
     }
 
     public boolean getMapWithOtherModelValuesIsSet() {
-        return (this._bits & MAP_WITH_OTHER_MODEL_VALUES_SET) == MAP_WITH_OTHER_MODEL_VALUES_SET;
+        return this._bits.length > MAP_WITH_OTHER_MODEL_VALUES_INDEX && this._bits[MAP_WITH_OTHER_MODEL_VALUES_INDEX];
     }
 
     public boolean getMapWithPrimitiveValuesIsSet() {
-        return (this._bits & MAP_WITH_PRIMITIVE_VALUES_SET) == MAP_WITH_PRIMITIVE_VALUES_SET;
+        return this._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX && this._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX];
     }
 
     public boolean getNumberPropIsSet() {
-        return (this._bits & NUMBER_PROP_SET) == NUMBER_PROP_SET;
+        return this._bits.length > NUMBER_PROP_INDEX && this._bits[NUMBER_PROP_INDEX];
     }
 
     public boolean getOtherModelPropIsSet() {
-        return (this._bits & OTHER_MODEL_PROP_SET) == OTHER_MODEL_PROP_SET;
+        return this._bits.length > OTHER_MODEL_PROP_INDEX && this._bits[OTHER_MODEL_PROP_INDEX];
     }
 
     public boolean getPolymorphicPropIsSet() {
-        return (this._bits & POLYMORPHIC_PROP_SET) == POLYMORPHIC_PROP_SET;
+        return this._bits.length > POLYMORPHIC_PROP_INDEX && this._bits[POLYMORPHIC_PROP_INDEX];
     }
 
     public boolean getSetPropIsSet() {
-        return (this._bits & SET_PROP_SET) == SET_PROP_SET;
+        return this._bits.length > SET_PROP_INDEX && this._bits[SET_PROP_INDEX];
     }
 
     public boolean getSetPropWithOtherModelValuesIsSet() {
-        return (this._bits & SET_PROP_WITH_OTHER_MODEL_VALUES_SET) == SET_PROP_WITH_OTHER_MODEL_VALUES_SET;
+        return this._bits.length > SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX && this._bits[SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX];
     }
 
     public boolean getSetPropWithPrimitiveValuesIsSet() {
-        return (this._bits & SET_PROP_WITH_PRIMITIVE_VALUES_SET) == SET_PROP_WITH_PRIMITIVE_VALUES_SET;
+        return this._bits.length > SET_PROP_WITH_PRIMITIVE_VALUES_INDEX && this._bits[SET_PROP_WITH_PRIMITIVE_VALUES_INDEX];
     }
 
     public boolean getSetPropWithValuesIsSet() {
-        return (this._bits & SET_PROP_WITH_VALUES_SET) == SET_PROP_WITH_VALUES_SET;
+        return this._bits.length > SET_PROP_WITH_VALUES_INDEX && this._bits[SET_PROP_WITH_VALUES_INDEX];
     }
 
     public boolean getStringEnumIsSet() {
-        return (this._bits & STRING_ENUM_SET) == STRING_ENUM_SET;
+        return this._bits.length > STRING_ENUM_INDEX && this._bits[STRING_ENUM_INDEX];
     }
 
     public boolean getStringPropIsSet() {
-        return (this._bits & STRING_PROP_SET) == STRING_PROP_SET;
+        return this._bits.length > STRING_PROP_INDEX && this._bits[STRING_PROP_INDEX];
     }
 
     public boolean getTypeIsSet() {
-        return (this._bits & TYPE_SET) == TYPE_SET;
+        return this._bits.length > TYPE_INDEX && this._bits[TYPE_INDEX];
     }
 
     public boolean getUriPropIsSet() {
-        return (this._bits & URI_PROP_SET) == URI_PROP_SET;
+        return this._bits.length > URI_PROP_INDEX && this._bits[URI_PROP_INDEX];
     }
 
     public static class Builder {
@@ -550,7 +550,7 @@ public class Everything {
         @SerializedName("type") private @Nullable String type;
         @SerializedName("uri_prop") private @Nullable String uriProp;
 
-        private int _bits = 0;
+        private boolean[] _bits = new boolean[29];
 
         private Builder() {
         }
@@ -590,175 +590,233 @@ public class Everything {
 
         public Builder setArrayProp(@Nullable List<Object> value) {
             this.arrayProp = value;
-            this._bits |= ARRAY_PROP_SET;
+            if (this._bits.length > ARRAY_PROP_INDEX) {
+                this._bits[ARRAY_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setBooleanProp(@Nullable Boolean value) {
             this.booleanProp = value;
-            this._bits |= BOOLEAN_PROP_SET;
+            if (this._bits.length > BOOLEAN_PROP_INDEX) {
+                this._bits[BOOLEAN_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setDateProp(@Nullable Date value) {
             this.dateProp = value;
-            this._bits |= DATE_PROP_SET;
+            if (this._bits.length > DATE_PROP_INDEX) {
+                this._bits[DATE_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setIntEnum(@Nullable EverythingIntEnum value) {
             this.intEnum = value;
-            this._bits |= INT_ENUM_SET;
+            if (this._bits.length > INT_ENUM_INDEX) {
+                this._bits[INT_ENUM_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setIntProp(@Nullable Integer value) {
             this.intProp = value;
-            this._bits |= INT_PROP_SET;
+            if (this._bits.length > INT_PROP_INDEX) {
+                this._bits[INT_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setListPolymorphicValues(@Nullable List<Object> value) {
             this.listPolymorphicValues = value;
-            this._bits |= LIST_POLYMORPHIC_VALUES_SET;
+            if (this._bits.length > LIST_POLYMORPHIC_VALUES_INDEX) {
+                this._bits[LIST_POLYMORPHIC_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setListWithListAndOtherModelValues(@Nullable List<List<User>> value) {
             this.listWithListAndOtherModelValues = value;
-            this._bits |= LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+            if (this._bits.length > LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX) {
+                this._bits[LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setListWithMapAndOtherModelValues(@Nullable List<Map<String, User>> value) {
             this.listWithMapAndOtherModelValues = value;
-            this._bits |= LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+            if (this._bits.length > LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX) {
+                this._bits[LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setListWithObjectValues(@Nullable List<String> value) {
             this.listWithObjectValues = value;
-            this._bits |= LIST_WITH_OBJECT_VALUES_SET;
+            if (this._bits.length > LIST_WITH_OBJECT_VALUES_INDEX) {
+                this._bits[LIST_WITH_OBJECT_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setListWithOtherModelValues(@Nullable List<User> value) {
             this.listWithOtherModelValues = value;
-            this._bits |= LIST_WITH_OTHER_MODEL_VALUES_SET;
+            if (this._bits.length > LIST_WITH_OTHER_MODEL_VALUES_INDEX) {
+                this._bits[LIST_WITH_OTHER_MODEL_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setListWithPrimitiveValues(@Nullable List<Integer> value) {
             this.listWithPrimitiveValues = value;
-            this._bits |= LIST_WITH_PRIMITIVE_VALUES_SET;
+            if (this._bits.length > LIST_WITH_PRIMITIVE_VALUES_INDEX) {
+                this._bits[LIST_WITH_PRIMITIVE_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setMapPolymorphicValues(@Nullable Map<String, EverythingMapPolymorphicValues> value) {
             this.mapPolymorphicValues = value;
-            this._bits |= MAP_POLYMORPHIC_VALUES_SET;
+            if (this._bits.length > MAP_POLYMORPHIC_VALUES_INDEX) {
+                this._bits[MAP_POLYMORPHIC_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setMapProp(@Nullable Map<String, Object> value) {
             this.mapProp = value;
-            this._bits |= MAP_PROP_SET;
+            if (this._bits.length > MAP_PROP_INDEX) {
+                this._bits[MAP_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setMapWithListAndOtherModelValues(@Nullable Map<String, List<User>> value) {
             this.mapWithListAndOtherModelValues = value;
-            this._bits |= MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_SET;
+            if (this._bits.length > MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX) {
+                this._bits[MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setMapWithMapAndOtherModelValues(@Nullable Map<String, Map<String, Object>> value) {
             this.mapWithMapAndOtherModelValues = value;
-            this._bits |= MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_SET;
+            if (this._bits.length > MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX) {
+                this._bits[MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setMapWithObjectValues(@Nullable Map<String, String> value) {
             this.mapWithObjectValues = value;
-            this._bits |= MAP_WITH_OBJECT_VALUES_SET;
+            if (this._bits.length > MAP_WITH_OBJECT_VALUES_INDEX) {
+                this._bits[MAP_WITH_OBJECT_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setMapWithOtherModelValues(@Nullable Map<String, User> value) {
             this.mapWithOtherModelValues = value;
-            this._bits |= MAP_WITH_OTHER_MODEL_VALUES_SET;
+            if (this._bits.length > MAP_WITH_OTHER_MODEL_VALUES_INDEX) {
+                this._bits[MAP_WITH_OTHER_MODEL_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setMapWithPrimitiveValues(@Nullable Map<String, Integer> value) {
             this.mapWithPrimitiveValues = value;
-            this._bits |= MAP_WITH_PRIMITIVE_VALUES_SET;
+            if (this._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX) {
+                this._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setNumberProp(@Nullable Double value) {
             this.numberProp = value;
-            this._bits |= NUMBER_PROP_SET;
+            if (this._bits.length > NUMBER_PROP_INDEX) {
+                this._bits[NUMBER_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setOtherModelProp(@Nullable User value) {
             this.otherModelProp = value;
-            this._bits |= OTHER_MODEL_PROP_SET;
+            if (this._bits.length > OTHER_MODEL_PROP_INDEX) {
+                this._bits[OTHER_MODEL_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setPolymorphicProp(@Nullable EverythingPolymorphicProp value) {
             this.polymorphicProp = value;
-            this._bits |= POLYMORPHIC_PROP_SET;
+            if (this._bits.length > POLYMORPHIC_PROP_INDEX) {
+                this._bits[POLYMORPHIC_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setSetProp(@Nullable Set<Object> value) {
             this.setProp = value;
-            this._bits |= SET_PROP_SET;
+            if (this._bits.length > SET_PROP_INDEX) {
+                this._bits[SET_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setSetPropWithOtherModelValues(@Nullable Set<User> value) {
             this.setPropWithOtherModelValues = value;
-            this._bits |= SET_PROP_WITH_OTHER_MODEL_VALUES_SET;
+            if (this._bits.length > SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX) {
+                this._bits[SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setSetPropWithPrimitiveValues(@Nullable Set<Integer> value) {
             this.setPropWithPrimitiveValues = value;
-            this._bits |= SET_PROP_WITH_PRIMITIVE_VALUES_SET;
+            if (this._bits.length > SET_PROP_WITH_PRIMITIVE_VALUES_INDEX) {
+                this._bits[SET_PROP_WITH_PRIMITIVE_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setSetPropWithValues(@Nullable Set<String> value) {
             this.setPropWithValues = value;
-            this._bits |= SET_PROP_WITH_VALUES_SET;
+            if (this._bits.length > SET_PROP_WITH_VALUES_INDEX) {
+                this._bits[SET_PROP_WITH_VALUES_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setStringEnum(@Nullable EverythingStringEnum value) {
             this.stringEnum = value;
-            this._bits |= STRING_ENUM_SET;
+            if (this._bits.length > STRING_ENUM_INDEX) {
+                this._bits[STRING_ENUM_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setStringProp(@Nullable String value) {
             this.stringProp = value;
-            this._bits |= STRING_PROP_SET;
+            if (this._bits.length > STRING_PROP_INDEX) {
+                this._bits[STRING_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setType(@Nullable String value) {
             this.type = value;
-            this._bits |= TYPE_SET;
+            if (this._bits.length > TYPE_INDEX) {
+                this._bits[TYPE_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setUriProp(@Nullable String value) {
             this.uriProp = value;
-            this._bits |= URI_PROP_SET;
+            if (this._bits.length > URI_PROP_INDEX) {
+                this._bits[URI_PROP_INDEX] = true;
+            }
             return this;
         }
 
