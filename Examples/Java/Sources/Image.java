@@ -36,17 +36,17 @@ public class Image {
     @SerializedName("url") private @Nullable String url;
     @SerializedName("width") private @Nullable Integer width;
 
-    static final private int HEIGHT_SET = 1 << 0;
-    static final private int URL_SET = 1 << 1;
-    static final private int WIDTH_SET = 1 << 2;
+    static final private int HEIGHT_INDEX = 0;
+    static final private int URL_INDEX = 1;
+    static final private int WIDTH_INDEX = 2;
 
-    private int _bits = 0;
+    private boolean[] _bits = new boolean[3];
 
     private Image(
         @Nullable Integer height,
         @Nullable String url,
         @Nullable Integer width,
-        int _bits
+        boolean[] _bits
     ) {
         this.height = height;
         this.url = url;
@@ -102,15 +102,15 @@ public class Image {
     }
 
     public boolean getHeightIsSet() {
-        return (this._bits & HEIGHT_SET) == HEIGHT_SET;
+        return this._bits.length > HEIGHT_INDEX && this._bits[HEIGHT_INDEX];
     }
 
     public boolean getUrlIsSet() {
-        return (this._bits & URL_SET) == URL_SET;
+        return this._bits.length > URL_INDEX && this._bits[URL_INDEX];
     }
 
     public boolean getWidthIsSet() {
-        return (this._bits & WIDTH_SET) == WIDTH_SET;
+        return this._bits.length > WIDTH_INDEX && this._bits[WIDTH_INDEX];
     }
 
     public static class Builder {
@@ -119,7 +119,7 @@ public class Image {
         @SerializedName("url") private @Nullable String url;
         @SerializedName("width") private @Nullable Integer width;
 
-        private int _bits = 0;
+        private boolean[] _bits = new boolean[3];
 
         private Builder() {
         }
@@ -133,19 +133,25 @@ public class Image {
 
         public Builder setHeight(@Nullable Integer value) {
             this.height = value;
-            this._bits |= HEIGHT_SET;
+            if (this._bits.length > HEIGHT_INDEX) {
+                this._bits[HEIGHT_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setUrl(@Nullable String value) {
             this.url = value;
-            this._bits |= URL_SET;
+            if (this._bits.length > URL_INDEX) {
+                this._bits[URL_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setWidth(@Nullable Integer value) {
             this.width = value;
-            this._bits |= WIDTH_SET;
+            if (this._bits.length > WIDTH_INDEX) {
+                this._bits[WIDTH_INDEX] = true;
+            }
             return this;
         }
 

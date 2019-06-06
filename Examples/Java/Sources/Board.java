@@ -43,18 +43,18 @@ public class Board {
     @SerializedName("name") private @Nullable String name;
     @SerializedName("url") private @Nullable String url;
 
-    static final private int ID_SET = 1 << 0;
-    static final private int CONTRIBUTORS_SET = 1 << 1;
-    static final private int COUNTS_SET = 1 << 2;
-    static final private int CREATED_AT_SET = 1 << 3;
-    static final private int CREATOR_SET = 1 << 4;
-    static final private int CREATOR_URL_SET = 1 << 5;
-    static final private int DESCRIPTION_SET = 1 << 6;
-    static final private int IMAGE_SET = 1 << 7;
-    static final private int NAME_SET = 1 << 8;
-    static final private int URL_SET = 1 << 9;
+    static final private int ID_INDEX = 0;
+    static final private int CONTRIBUTORS_INDEX = 1;
+    static final private int COUNTS_INDEX = 2;
+    static final private int CREATED_AT_INDEX = 3;
+    static final private int CREATOR_INDEX = 4;
+    static final private int CREATOR_URL_INDEX = 5;
+    static final private int DESCRIPTION_INDEX = 6;
+    static final private int IMAGE_INDEX = 7;
+    static final private int NAME_INDEX = 8;
+    static final private int URL_INDEX = 9;
 
-    private int _bits = 0;
+    private boolean[] _bits = new boolean[10];
 
     private Board(
         @Nullable String uid,
@@ -67,7 +67,7 @@ public class Board {
         @NonNull Image image,
         @Nullable String name,
         @Nullable String url,
-        int _bits
+        boolean[] _bits
     ) {
         this.uid = uid;
         this.contributors = contributors;
@@ -172,43 +172,43 @@ public class Board {
     }
 
     public boolean getUidIsSet() {
-        return (this._bits & ID_SET) == ID_SET;
+        return this._bits.length > ID_INDEX && this._bits[ID_INDEX];
     }
 
     public boolean getContributorsIsSet() {
-        return (this._bits & CONTRIBUTORS_SET) == CONTRIBUTORS_SET;
+        return this._bits.length > CONTRIBUTORS_INDEX && this._bits[CONTRIBUTORS_INDEX];
     }
 
     public boolean getCountsIsSet() {
-        return (this._bits & COUNTS_SET) == COUNTS_SET;
+        return this._bits.length > COUNTS_INDEX && this._bits[COUNTS_INDEX];
     }
 
     public boolean getCreatedAtIsSet() {
-        return (this._bits & CREATED_AT_SET) == CREATED_AT_SET;
+        return this._bits.length > CREATED_AT_INDEX && this._bits[CREATED_AT_INDEX];
     }
 
     public boolean getCreatorIsSet() {
-        return (this._bits & CREATOR_SET) == CREATOR_SET;
+        return this._bits.length > CREATOR_INDEX && this._bits[CREATOR_INDEX];
     }
 
     public boolean getCreatorURLIsSet() {
-        return (this._bits & CREATOR_URL_SET) == CREATOR_URL_SET;
+        return this._bits.length > CREATOR_URL_INDEX && this._bits[CREATOR_URL_INDEX];
     }
 
     public boolean getDescriptionIsSet() {
-        return (this._bits & DESCRIPTION_SET) == DESCRIPTION_SET;
+        return this._bits.length > DESCRIPTION_INDEX && this._bits[DESCRIPTION_INDEX];
     }
 
     public boolean getImageIsSet() {
-        return (this._bits & IMAGE_SET) == IMAGE_SET;
+        return this._bits.length > IMAGE_INDEX && this._bits[IMAGE_INDEX];
     }
 
     public boolean getNameIsSet() {
-        return (this._bits & NAME_SET) == NAME_SET;
+        return this._bits.length > NAME_INDEX && this._bits[NAME_INDEX];
     }
 
     public boolean getUrlIsSet() {
-        return (this._bits & URL_SET) == URL_SET;
+        return this._bits.length > URL_INDEX && this._bits[URL_INDEX];
     }
 
     public static class Builder {
@@ -224,7 +224,7 @@ public class Board {
         @SerializedName("name") private @Nullable String name;
         @SerializedName("url") private @Nullable String url;
 
-        private int _bits = 0;
+        private boolean[] _bits = new boolean[10];
 
         private Builder() {
         }
@@ -245,61 +245,81 @@ public class Board {
 
         public Builder setUid(@Nullable String value) {
             this.uid = value;
-            this._bits |= ID_SET;
+            if (this._bits.length > ID_INDEX) {
+                this._bits[ID_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setContributors(@Nullable Set<User> value) {
             this.contributors = value;
-            this._bits |= CONTRIBUTORS_SET;
+            if (this._bits.length > CONTRIBUTORS_INDEX) {
+                this._bits[CONTRIBUTORS_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
-            this._bits |= COUNTS_SET;
+            if (this._bits.length > COUNTS_INDEX) {
+                this._bits[COUNTS_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCreatedAt(@Nullable Date value) {
             this.createdAt = value;
-            this._bits |= CREATED_AT_SET;
+            if (this._bits.length > CREATED_AT_INDEX) {
+                this._bits[CREATED_AT_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCreator(@Nullable Map<String, String> value) {
             this.creator = value;
-            this._bits |= CREATOR_SET;
+            if (this._bits.length > CREATOR_INDEX) {
+                this._bits[CREATOR_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCreatorURL(@Nullable String value) {
             this.creatorURL = value;
-            this._bits |= CREATOR_URL_SET;
+            if (this._bits.length > CREATOR_URL_INDEX) {
+                this._bits[CREATOR_URL_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setDescription(@Nullable String value) {
             this.description = value;
-            this._bits |= DESCRIPTION_SET;
+            if (this._bits.length > DESCRIPTION_INDEX) {
+                this._bits[DESCRIPTION_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setImage(@NonNull Image value) {
             this.image = value;
-            this._bits |= IMAGE_SET;
+            if (this._bits.length > IMAGE_INDEX) {
+                this._bits[IMAGE_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setName(@Nullable String value) {
             this.name = value;
-            this._bits |= NAME_SET;
+            if (this._bits.length > NAME_INDEX) {
+                this._bits[NAME_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setUrl(@Nullable String value) {
             this.url = value;
-            this._bits |= URL_SET;
+            if (this._bits.length > URL_INDEX) {
+                this._bits[URL_INDEX] = true;
+            }
             return this;
         }
 

@@ -68,25 +68,25 @@ public class Pin {
     @SerializedName("url") private @Nullable String url;
     @SerializedName("visual_search_attrs") private @Nullable Map<String, Object> visualSearchAttrs;
 
-    static final private int ATTRIBUTION_SET = 1 << 0;
-    static final private int ATTRIBUTION_OBJECTS_SET = 1 << 1;
-    static final private int BOARD_SET = 1 << 2;
-    static final private int COLOR_SET = 1 << 3;
-    static final private int COUNTS_SET = 1 << 4;
-    static final private int CREATED_AT_SET = 1 << 5;
-    static final private int CREATOR_SET = 1 << 6;
-    static final private int DESCRIPTION_SET = 1 << 7;
-    static final private int ID_SET = 1 << 8;
-    static final private int IMAGE_SET = 1 << 9;
-    static final private int IN_STOCK_SET = 1 << 10;
-    static final private int LINK_SET = 1 << 11;
-    static final private int MEDIA_SET = 1 << 12;
-    static final private int NOTE_SET = 1 << 13;
-    static final private int TAGS_SET = 1 << 14;
-    static final private int URL_SET = 1 << 15;
-    static final private int VISUAL_SEARCH_ATTRS_SET = 1 << 16;
+    static final private int ATTRIBUTION_INDEX = 0;
+    static final private int ATTRIBUTION_OBJECTS_INDEX = 1;
+    static final private int BOARD_INDEX = 2;
+    static final private int COLOR_INDEX = 3;
+    static final private int COUNTS_INDEX = 4;
+    static final private int CREATED_AT_INDEX = 5;
+    static final private int CREATOR_INDEX = 6;
+    static final private int DESCRIPTION_INDEX = 7;
+    static final private int ID_INDEX = 8;
+    static final private int IMAGE_INDEX = 9;
+    static final private int IN_STOCK_INDEX = 10;
+    static final private int LINK_INDEX = 11;
+    static final private int MEDIA_INDEX = 12;
+    static final private int NOTE_INDEX = 13;
+    static final private int TAGS_INDEX = 14;
+    static final private int URL_INDEX = 15;
+    static final private int VISUAL_SEARCH_ATTRS_INDEX = 16;
 
-    private int _bits = 0;
+    private boolean[] _bits = new boolean[17];
 
     private Pin(
         @Nullable Map<String, String> attribution,
@@ -106,7 +106,7 @@ public class Pin {
         @Nullable List<Map<String, Object>> tags,
         @Nullable String url,
         @Nullable Map<String, Object> visualSearchAttrs,
-        int _bits
+        boolean[] _bits
     ) {
         this.attribution = attribution;
         this.attributionObjects = attributionObjects;
@@ -260,71 +260,71 @@ public class Pin {
     }
 
     public boolean getAttributionIsSet() {
-        return (this._bits & ATTRIBUTION_SET) == ATTRIBUTION_SET;
+        return this._bits.length > ATTRIBUTION_INDEX && this._bits[ATTRIBUTION_INDEX];
     }
 
     public boolean getAttributionObjectsIsSet() {
-        return (this._bits & ATTRIBUTION_OBJECTS_SET) == ATTRIBUTION_OBJECTS_SET;
+        return this._bits.length > ATTRIBUTION_OBJECTS_INDEX && this._bits[ATTRIBUTION_OBJECTS_INDEX];
     }
 
     public boolean getBoardIsSet() {
-        return (this._bits & BOARD_SET) == BOARD_SET;
+        return this._bits.length > BOARD_INDEX && this._bits[BOARD_INDEX];
     }
 
     public boolean getColorIsSet() {
-        return (this._bits & COLOR_SET) == COLOR_SET;
+        return this._bits.length > COLOR_INDEX && this._bits[COLOR_INDEX];
     }
 
     public boolean getCountsIsSet() {
-        return (this._bits & COUNTS_SET) == COUNTS_SET;
+        return this._bits.length > COUNTS_INDEX && this._bits[COUNTS_INDEX];
     }
 
     public boolean getCreatedAtIsSet() {
-        return (this._bits & CREATED_AT_SET) == CREATED_AT_SET;
+        return this._bits.length > CREATED_AT_INDEX && this._bits[CREATED_AT_INDEX];
     }
 
     public boolean getCreatorIsSet() {
-        return (this._bits & CREATOR_SET) == CREATOR_SET;
+        return this._bits.length > CREATOR_INDEX && this._bits[CREATOR_INDEX];
     }
 
     public boolean getDescriptionIsSet() {
-        return (this._bits & DESCRIPTION_SET) == DESCRIPTION_SET;
+        return this._bits.length > DESCRIPTION_INDEX && this._bits[DESCRIPTION_INDEX];
     }
 
     public boolean getUidIsSet() {
-        return (this._bits & ID_SET) == ID_SET;
+        return this._bits.length > ID_INDEX && this._bits[ID_INDEX];
     }
 
     public boolean getImageIsSet() {
-        return (this._bits & IMAGE_SET) == IMAGE_SET;
+        return this._bits.length > IMAGE_INDEX && this._bits[IMAGE_INDEX];
     }
 
     public boolean getInStockIsSet() {
-        return (this._bits & IN_STOCK_SET) == IN_STOCK_SET;
+        return this._bits.length > IN_STOCK_INDEX && this._bits[IN_STOCK_INDEX];
     }
 
     public boolean getLinkIsSet() {
-        return (this._bits & LINK_SET) == LINK_SET;
+        return this._bits.length > LINK_INDEX && this._bits[LINK_INDEX];
     }
 
     public boolean getMediaIsSet() {
-        return (this._bits & MEDIA_SET) == MEDIA_SET;
+        return this._bits.length > MEDIA_INDEX && this._bits[MEDIA_INDEX];
     }
 
     public boolean getNoteIsSet() {
-        return (this._bits & NOTE_SET) == NOTE_SET;
+        return this._bits.length > NOTE_INDEX && this._bits[NOTE_INDEX];
     }
 
     public boolean getTagsIsSet() {
-        return (this._bits & TAGS_SET) == TAGS_SET;
+        return this._bits.length > TAGS_INDEX && this._bits[TAGS_INDEX];
     }
 
     public boolean getUrlIsSet() {
-        return (this._bits & URL_SET) == URL_SET;
+        return this._bits.length > URL_INDEX && this._bits[URL_INDEX];
     }
 
     public boolean getVisualSearchAttrsIsSet() {
-        return (this._bits & VISUAL_SEARCH_ATTRS_SET) == VISUAL_SEARCH_ATTRS_SET;
+        return this._bits.length > VISUAL_SEARCH_ATTRS_INDEX && this._bits[VISUAL_SEARCH_ATTRS_INDEX];
     }
 
     public static class Builder {
@@ -347,7 +347,7 @@ public class Pin {
         @SerializedName("url") private @Nullable String url;
         @SerializedName("visual_search_attrs") private @Nullable Map<String, Object> visualSearchAttrs;
 
-        private int _bits = 0;
+        private boolean[] _bits = new boolean[17];
 
         private Builder() {
         }
@@ -375,103 +375,137 @@ public class Pin {
 
         public Builder setAttribution(@Nullable Map<String, String> value) {
             this.attribution = value;
-            this._bits |= ATTRIBUTION_SET;
+            if (this._bits.length > ATTRIBUTION_INDEX) {
+                this._bits[ATTRIBUTION_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setAttributionObjects(@Nullable List<PinAttributionObjects> value) {
             this.attributionObjects = value;
-            this._bits |= ATTRIBUTION_OBJECTS_SET;
+            if (this._bits.length > ATTRIBUTION_OBJECTS_INDEX) {
+                this._bits[ATTRIBUTION_OBJECTS_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setBoard(@Nullable Board value) {
             this.board = value;
-            this._bits |= BOARD_SET;
+            if (this._bits.length > BOARD_INDEX) {
+                this._bits[BOARD_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setColor(@Nullable String value) {
             this.color = value;
-            this._bits |= COLOR_SET;
+            if (this._bits.length > COLOR_INDEX) {
+                this._bits[COLOR_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
-            this._bits |= COUNTS_SET;
+            if (this._bits.length > COUNTS_INDEX) {
+                this._bits[COUNTS_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCreatedAt(@NonNull Date value) {
             this.createdAt = value;
-            this._bits |= CREATED_AT_SET;
+            if (this._bits.length > CREATED_AT_INDEX) {
+                this._bits[CREATED_AT_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCreator(@NonNull Map<String, User> value) {
             this.creator = value;
-            this._bits |= CREATOR_SET;
+            if (this._bits.length > CREATOR_INDEX) {
+                this._bits[CREATOR_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setDescription(@Nullable String value) {
             this.description = value;
-            this._bits |= DESCRIPTION_SET;
+            if (this._bits.length > DESCRIPTION_INDEX) {
+                this._bits[DESCRIPTION_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setUid(@NonNull String value) {
             this.uid = value;
-            this._bits |= ID_SET;
+            if (this._bits.length > ID_INDEX) {
+                this._bits[ID_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setImage(@Nullable Image value) {
             this.image = value;
-            this._bits |= IMAGE_SET;
+            if (this._bits.length > IMAGE_INDEX) {
+                this._bits[IMAGE_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setInStock(@Nullable PinInStock value) {
             this.inStock = value;
-            this._bits |= IN_STOCK_SET;
+            if (this._bits.length > IN_STOCK_INDEX) {
+                this._bits[IN_STOCK_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setLink(@Nullable String value) {
             this.link = value;
-            this._bits |= LINK_SET;
+            if (this._bits.length > LINK_INDEX) {
+                this._bits[LINK_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setMedia(@Nullable Map<String, String> value) {
             this.media = value;
-            this._bits |= MEDIA_SET;
+            if (this._bits.length > MEDIA_INDEX) {
+                this._bits[MEDIA_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setNote(@Nullable String value) {
             this.note = value;
-            this._bits |= NOTE_SET;
+            if (this._bits.length > NOTE_INDEX) {
+                this._bits[NOTE_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setTags(@Nullable List<Map<String, Object>> value) {
             this.tags = value;
-            this._bits |= TAGS_SET;
+            if (this._bits.length > TAGS_INDEX) {
+                this._bits[TAGS_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setUrl(@Nullable String value) {
             this.url = value;
-            this._bits |= URL_SET;
+            if (this._bits.length > URL_INDEX) {
+                this._bits[URL_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setVisualSearchAttrs(@Nullable Map<String, Object> value) {
             this.visualSearchAttrs = value;
-            this._bits |= VISUAL_SEARCH_ATTRS_SET;
+            if (this._bits.length > VISUAL_SEARCH_ATTRS_INDEX) {
+                this._bits[VISUAL_SEARCH_ATTRS_INDEX] = true;
+            }
             return this;
         }
 

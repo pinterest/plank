@@ -21,7 +21,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     func renderModelConstructor() -> JavaIR.Method {
         let args = -->(transitiveProperties.map { param, schemaObj in
             self.typeFromSchema(param, schemaObj) + " " + Languages.java.snakeCaseToPropertyName(param) + ","
-        } + ["int _bits"])
+        } + ["boolean[] _bits"])
 
         return JavaIR.method([.private], className + "(\n" + args + "\n)") {
             self.transitiveProperties.map { param, _ in
@@ -68,12 +68,12 @@ public struct JavaModelRenderer: JavaFileRenderer {
             JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
         }
 
-        let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "int", name: "_bits", initialValue: "0")
+        let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "boolean[]", name: "_bits", initialValue: "new boolean[" + String(props.count) + "]")
 
         var bitmasks: [JavaIR.Property] = []
         var index = 0
         transitiveProperties.forEach { param, _ in
-            bitmasks.append(JavaIR.Property(annotations: [], modifiers: [.private, .static, .final], type: "int", name: param.uppercased() + "_SET", initialValue: "1 << " + String(index)))
+            bitmasks.append(JavaIR.Property(annotations: [], modifiers: [.private, .static, .final], type: "int", name: param.uppercased() + "_INDEX", initialValue: String(index)))
             index += 1
         }
 
@@ -117,10 +117,26 @@ public struct JavaModelRenderer: JavaFileRenderer {
         return getters
     }
 
+    // Package-private setters are generated with if the flag --java_generate_package_private_setters is set
+    func renderModelPropertySetters() -> [JavaIR.Method] {
+        if params[.javaGeneratePackagePrivateSetters] == nil {
+            return []
+        }
+
+        let setters = transitiveProperties.map { param, schemaObj in
+            JavaIR.method([], "void set\(Languages.java.snakeCaseToCapitalizedPropertyName(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
+                "this." + Languages.java.snakeCaseToPropertyName(param) + " = value;",
+            ] }
+        }
+        return setters + [JavaIR.method([], "set_bits(int bits)") { [
+            "this._bits = bits;",
+        ] }]
+    }
+
     func renderModelIsSetCheckers(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
         let getters = transitiveProperties.map { param, _ in
             JavaIR.method(modifiers, "boolean get" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "IsSet()") { [
-                "return (this._bits & " + param.uppercased() + "_SET) == " + param.uppercased() + "_SET;",
+                "return this._bits.length > " + param.uppercased() + "_INDEX && this._bits[" + param.uppercased() + "_INDEX];",
             ] }
         }
         return getters
@@ -178,7 +194,9 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let setters = transitiveProperties.map { param, schemaObj in
             JavaIR.method(modifiers, "Builder set\(Languages.java.snakeCaseToCapitalizedPropertyName(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
                 "this." + Languages.java.snakeCaseToPropertyName(param) + " = value;",
-                "this._bits |= " + param.uppercased() + "_SET;",
+                JavaIR.ifBlock(condition: "this._bits.length > " + param.uppercased() + "_INDEX") { [
+                    "this._bits[" + param.uppercased() + "_INDEX] = true;",
+                ] },
                 "return this;",
             ] }
         }
@@ -199,7 +217,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
         }
 
-        let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "int", name: "_bits", initialValue: "0")
+        let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "boolean[]", name: "_bits", initialValue: "new boolean[" + String(props.count) + "]")
 
         return [props, [bits]]
     }
@@ -440,6 +458,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                     self.renderModelHashCode(),
                 ] +
                     renderModelPropertyGetters() +
+                    renderModelPropertySetters() +
                     renderModelIsSetCheckers(),
                 enums: enumProps,
                 innerClasses: [

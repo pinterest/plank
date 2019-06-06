@@ -14,6 +14,7 @@ struct JavaModifier: OptionSet {
     static let final = JavaModifier(rawValue: 1 << 2)
     static let `static` = JavaModifier(rawValue: 1 << 3)
     static let `private` = JavaModifier(rawValue: 1 << 4)
+    static let transient = JavaModifier(rawValue: 1 << 5)
 
     func render() -> String {
         return [
@@ -22,6 +23,7 @@ struct JavaModifier: OptionSet {
             self.contains(.static) ? "static" : "",
             self.contains(.final) ? "final" : "",
             self.contains(.private) ? "private" : "",
+            self.contains(.transient) ? "transient" : "",
         ].filter { $0 != "" }.joined(separator: " ")
     }
 }

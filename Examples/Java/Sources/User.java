@@ -47,18 +47,18 @@ public class User {
     @SerializedName("type") private @Nullable String type;
     @SerializedName("username") private @Nullable String username;
 
-    static final private int BIO_SET = 1 << 0;
-    static final private int COUNTS_SET = 1 << 1;
-    static final private int CREATED_AT_SET = 1 << 2;
-    static final private int EMAIL_FREQUENCY_SET = 1 << 3;
-    static final private int FIRST_NAME_SET = 1 << 4;
-    static final private int ID_SET = 1 << 5;
-    static final private int IMAGE_SET = 1 << 6;
-    static final private int LAST_NAME_SET = 1 << 7;
-    static final private int TYPE_SET = 1 << 8;
-    static final private int USERNAME_SET = 1 << 9;
+    static final private int BIO_INDEX = 0;
+    static final private int COUNTS_INDEX = 1;
+    static final private int CREATED_AT_INDEX = 2;
+    static final private int EMAIL_FREQUENCY_INDEX = 3;
+    static final private int FIRST_NAME_INDEX = 4;
+    static final private int ID_INDEX = 5;
+    static final private int IMAGE_INDEX = 6;
+    static final private int LAST_NAME_INDEX = 7;
+    static final private int TYPE_INDEX = 8;
+    static final private int USERNAME_INDEX = 9;
 
-    private int _bits = 0;
+    private boolean[] _bits = new boolean[10];
 
     private User(
         @Nullable String bio,
@@ -71,7 +71,7 @@ public class User {
         @Nullable String lastName,
         @Nullable String type,
         @Nullable String username,
-        int _bits
+        boolean[] _bits
     ) {
         this.bio = bio;
         this.counts = counts;
@@ -176,43 +176,43 @@ public class User {
     }
 
     public boolean getBioIsSet() {
-        return (this._bits & BIO_SET) == BIO_SET;
+        return this._bits.length > BIO_INDEX && this._bits[BIO_INDEX];
     }
 
     public boolean getCountsIsSet() {
-        return (this._bits & COUNTS_SET) == COUNTS_SET;
+        return this._bits.length > COUNTS_INDEX && this._bits[COUNTS_INDEX];
     }
 
     public boolean getCreatedAtIsSet() {
-        return (this._bits & CREATED_AT_SET) == CREATED_AT_SET;
+        return this._bits.length > CREATED_AT_INDEX && this._bits[CREATED_AT_INDEX];
     }
 
     public boolean getEmailFrequencyIsSet() {
-        return (this._bits & EMAIL_FREQUENCY_SET) == EMAIL_FREQUENCY_SET;
+        return this._bits.length > EMAIL_FREQUENCY_INDEX && this._bits[EMAIL_FREQUENCY_INDEX];
     }
 
     public boolean getFirstNameIsSet() {
-        return (this._bits & FIRST_NAME_SET) == FIRST_NAME_SET;
+        return this._bits.length > FIRST_NAME_INDEX && this._bits[FIRST_NAME_INDEX];
     }
 
     public boolean getUidIsSet() {
-        return (this._bits & ID_SET) == ID_SET;
+        return this._bits.length > ID_INDEX && this._bits[ID_INDEX];
     }
 
     public boolean getImageIsSet() {
-        return (this._bits & IMAGE_SET) == IMAGE_SET;
+        return this._bits.length > IMAGE_INDEX && this._bits[IMAGE_INDEX];
     }
 
     public boolean getLastNameIsSet() {
-        return (this._bits & LAST_NAME_SET) == LAST_NAME_SET;
+        return this._bits.length > LAST_NAME_INDEX && this._bits[LAST_NAME_INDEX];
     }
 
     public boolean getTypeIsSet() {
-        return (this._bits & TYPE_SET) == TYPE_SET;
+        return this._bits.length > TYPE_INDEX && this._bits[TYPE_INDEX];
     }
 
     public boolean getUsernameIsSet() {
-        return (this._bits & USERNAME_SET) == USERNAME_SET;
+        return this._bits.length > USERNAME_INDEX && this._bits[USERNAME_INDEX];
     }
 
     public static class Builder {
@@ -228,7 +228,7 @@ public class User {
         @SerializedName("type") private @Nullable String type;
         @SerializedName("username") private @Nullable String username;
 
-        private int _bits = 0;
+        private boolean[] _bits = new boolean[10];
 
         private Builder() {
         }
@@ -249,61 +249,81 @@ public class User {
 
         public Builder setBio(@Nullable String value) {
             this.bio = value;
-            this._bits |= BIO_SET;
+            if (this._bits.length > BIO_INDEX) {
+                this._bits[BIO_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
-            this._bits |= COUNTS_SET;
+            if (this._bits.length > COUNTS_INDEX) {
+                this._bits[COUNTS_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCreatedAt(@Nullable Date value) {
             this.createdAt = value;
-            this._bits |= CREATED_AT_SET;
+            if (this._bits.length > CREATED_AT_INDEX) {
+                this._bits[CREATED_AT_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setEmailFrequency(@Nullable UserEmailFrequency value) {
             this.emailFrequency = value;
-            this._bits |= EMAIL_FREQUENCY_SET;
+            if (this._bits.length > EMAIL_FREQUENCY_INDEX) {
+                this._bits[EMAIL_FREQUENCY_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setFirstName(@Nullable String value) {
             this.firstName = value;
-            this._bits |= FIRST_NAME_SET;
+            if (this._bits.length > FIRST_NAME_INDEX) {
+                this._bits[FIRST_NAME_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setUid(@Nullable String value) {
             this.uid = value;
-            this._bits |= ID_SET;
+            if (this._bits.length > ID_INDEX) {
+                this._bits[ID_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setImage(@Nullable Image value) {
             this.image = value;
-            this._bits |= IMAGE_SET;
+            if (this._bits.length > IMAGE_INDEX) {
+                this._bits[IMAGE_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setLastName(@Nullable String value) {
             this.lastName = value;
-            this._bits |= LAST_NAME_SET;
+            if (this._bits.length > LAST_NAME_INDEX) {
+                this._bits[LAST_NAME_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setType(@Nullable String value) {
             this.type = value;
-            this._bits |= TYPE_SET;
+            if (this._bits.length > TYPE_INDEX) {
+                this._bits[TYPE_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setUsername(@Nullable String value) {
             this.username = value;
-            this._bits |= USERNAME_SET;
+            if (this._bits.length > USERNAME_INDEX) {
+                this._bits[USERNAME_INDEX] = true;
+            }
             return this;
         }
 
