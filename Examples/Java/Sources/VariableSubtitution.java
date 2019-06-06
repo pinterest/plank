@@ -37,19 +37,19 @@ public class VariableSubtitution {
     @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
     @SerializedName("new_prop") private @Nullable Integer newProp;
 
-    static final private int ALLOC_PROP_SET = 1 << 0;
-    static final private int COPY_PROP_SET = 1 << 1;
-    static final private int MUTABLE_COPY_PROP_SET = 1 << 2;
-    static final private int NEW_PROP_SET = 1 << 3;
+    static final private int ALLOC_PROP_INDEX = 0;
+    static final private int COPY_PROP_INDEX = 1;
+    static final private int MUTABLE_COPY_PROP_INDEX = 2;
+    static final private int NEW_PROP_INDEX = 3;
 
-    private int _bits = 0;
+    private boolean[] _bits = new boolean[4];
 
     private VariableSubtitution(
         @Nullable Integer allocProp,
         @Nullable Integer copyProp,
         @Nullable Integer mutableCopyProp,
         @Nullable Integer newProp,
-        int _bits
+        boolean[] _bits
     ) {
         this.allocProp = allocProp;
         this.copyProp = copyProp;
@@ -112,19 +112,19 @@ public class VariableSubtitution {
     }
 
     public boolean getAllocPropIsSet() {
-        return (this._bits & ALLOC_PROP_SET) == ALLOC_PROP_SET;
+        return this._bits.length > ALLOC_PROP_INDEX && this._bits[ALLOC_PROP_INDEX];
     }
 
     public boolean getCopyPropIsSet() {
-        return (this._bits & COPY_PROP_SET) == COPY_PROP_SET;
+        return this._bits.length > COPY_PROP_INDEX && this._bits[COPY_PROP_INDEX];
     }
 
     public boolean getMutableCopyPropIsSet() {
-        return (this._bits & MUTABLE_COPY_PROP_SET) == MUTABLE_COPY_PROP_SET;
+        return this._bits.length > MUTABLE_COPY_PROP_INDEX && this._bits[MUTABLE_COPY_PROP_INDEX];
     }
 
     public boolean getNewPropIsSet() {
-        return (this._bits & NEW_PROP_SET) == NEW_PROP_SET;
+        return this._bits.length > NEW_PROP_INDEX && this._bits[NEW_PROP_INDEX];
     }
 
     public static class Builder {
@@ -134,7 +134,7 @@ public class VariableSubtitution {
         @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
         @SerializedName("new_prop") private @Nullable Integer newProp;
 
-        private int _bits = 0;
+        private boolean[] _bits = new boolean[4];
 
         private Builder() {
         }
@@ -149,25 +149,33 @@ public class VariableSubtitution {
 
         public Builder setAllocProp(@Nullable Integer value) {
             this.allocProp = value;
-            this._bits |= ALLOC_PROP_SET;
+            if (this._bits.length > ALLOC_PROP_INDEX) {
+                this._bits[ALLOC_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setCopyProp(@Nullable Integer value) {
             this.copyProp = value;
-            this._bits |= COPY_PROP_SET;
+            if (this._bits.length > COPY_PROP_INDEX) {
+                this._bits[COPY_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setMutableCopyProp(@Nullable Integer value) {
             this.mutableCopyProp = value;
-            this._bits |= MUTABLE_COPY_PROP_SET;
+            if (this._bits.length > MUTABLE_COPY_PROP_INDEX) {
+                this._bits[MUTABLE_COPY_PROP_INDEX] = true;
+            }
             return this;
         }
 
         public Builder setNewProp(@Nullable Integer value) {
             this.newProp = value;
-            this._bits |= NEW_PROP_SET;
+            if (this._bits.length > NEW_PROP_INDEX) {
+                this._bits[NEW_PROP_INDEX] = true;
+            }
             return this;
         }
 

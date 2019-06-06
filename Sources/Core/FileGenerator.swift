@@ -20,6 +20,7 @@ public enum GenerationParameterType {
     case indent
     case packageName
     case javaNullabilityAnnotationType
+    case javaGeneratePackagePrivateSetters
 }
 
 // Most of these are derived from https://www.binpress.com/tutorial/objective-c-reserved-keywords/43
