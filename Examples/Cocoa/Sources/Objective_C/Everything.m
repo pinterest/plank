@@ -1417,7 +1417,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         (_intProp == anObject.intProp) &&
         (_intEnum == anObject.intEnum) &&
         (_charEnum == anObject.charEnum) &&
-        (_booleanProp == anObject.booleanProp) &&
+        (_everythingBooleanProperties.EverythingBooleanBooleanProp == anObject.booleanProp) &&
         (_arrayProp == anObject.arrayProp || [_arrayProp isEqualToArray:anObject.arrayProp]) &&
         (_dateProp == anObject.dateProp || [_dateProp isEqualToDate:anObject.dateProp]) &&
         (_listPolymorphicValues == anObject.listPolymorphicValues || [_listPolymorphicValues isEqualToArray:anObject.listPolymorphicValues]) &&
@@ -1449,7 +1449,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     NSUInteger subhashes[] = {
         17,
         [_arrayProp hash],
-        (_booleanProp ? 1231 : 1237),
+        (_everythingBooleanProperties.EverythingBooleanBooleanProp ? 1231 : 1237),
         (NSUInteger)_charEnum,
         [_dateProp hash],
         (NSUInteger)_intEnum,
@@ -1941,6 +1941,10 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 - (BOOL)isUriPropSet
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyUriProp == 1;
+}
+- (BOOL)booleanProp
+{
+    return _everythingBooleanProperties.EverythingBooleanBooleanProp;
 }
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone

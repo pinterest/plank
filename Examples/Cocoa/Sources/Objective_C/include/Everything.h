@@ -213,6 +213,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isUnsignedIntEnumSet;
 - (BOOL)isUnsignedShortEnumSet;
 - (BOOL)isUriPropSet;
+- (BOOL)booleanProp;
 @end
 
 @interface EverythingBuilder : NSObject
