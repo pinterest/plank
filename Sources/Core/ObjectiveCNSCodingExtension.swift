@@ -15,13 +15,13 @@ extension ObjCModelRenderer {
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                     "if (!(self = [super initWithCoder:aDecoder])) { return self; }",
                 self.properties.filter { (_, schema) -> Bool in
-                    return !schema.schema.isBoolean()
+                    !schema.schema.isBoolean()
                 }.map { ($0.0, $0.1.schema) }
                     .map(decodeStatement)
                     .joined(separator: "\n"),
             ] +
                 self.properties.filter { (_, schema) -> Bool in
-                    return schema.schema.isBoolean()
+                    schema.schema.isBoolean()
                 }.map { (arg: (Parameter, SchemaObjectProperty)) -> String in
                     let (param, _) = arg
                     return "_\(booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: param, className: self.className)) = [aDecoder decodeBoolForKey:\(param.objcLiteral())] & 0x1;"

@@ -13,7 +13,7 @@ extension ObjCModelRenderer {
         let dictionary = "dict"
 
         let props = properties.filter { (_, schema) -> Bool in
-            return !schema.schema.isBoolean()
+            !schema.schema.isBoolean()
         }.map { (param, schemaObj) -> String in
             ObjCIR.ifStmt("_" + "\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") { [
                 schemaObj.schema.isObjCPrimitiveType ?
@@ -27,7 +27,7 @@ extension ObjCModelRenderer {
         }.joined(separator: "\n")
 
         let boolProps = properties.filter { (_, schema) -> Bool in
-            return schema.schema.isBoolean()
+            schema.schema.isBoolean()
         }.map { (param, _) -> String in
             let ivarName = "_\(booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: param, className: self.className))"
             return ObjCIR.ifStmt("_" + "\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") { [

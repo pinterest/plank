@@ -9,7 +9,7 @@
 import Foundation
 
 extension ObjCModelRenderer {
-    func renderDebugDescription() -> ObjCIR.Method {
+    func renderDebugDescription() -> ObjCIR.Method 
         let props = properties.filter { (_, schema) -> Bool in
             return !schema.schema.isBoolean()
         }.map { (param, prop) -> String in

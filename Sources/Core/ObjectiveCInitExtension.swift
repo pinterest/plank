@@ -47,13 +47,13 @@ extension ObjCModelRenderer {
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                     ObjCIR.ifStmt("!(self = [super initWithBuilder:builder initType:initType])") { ["return self;"] },
                 self.properties.filter { (_, schema) -> Bool in
-                    return !schema.schema.isBoolean()
+                    !schema.schema.isBoolean()
                 }.map { name, _ in
                     "_\(Languages.objectiveC.snakeCaseToPropertyName(name)) = builder.\(Languages.objectiveC.snakeCaseToPropertyName(name));"
                 }.joined(separator: "\n"),
             ] +
                 self.properties.filter { (_, schema) -> Bool in
-                    return schema.schema.isBoolean()
+                    schema.schema.isBoolean()
                 }.map { name, _ in
                     "_\(self.booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: name, className: self.className)) = builder.\(Languages.objectiveC.snakeCaseToPropertyName(name)) == 1;"
                 } + [
