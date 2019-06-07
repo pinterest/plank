@@ -141,12 +141,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     func renderRoots() -> [ObjCIR.Root] {
         let booleanProperties = rootSchema.properties.filter { (arg) -> Bool in
             let (_, schema) = arg
-            switch schema.schema {
-            case .boolean:
-                return true
-            default:
-                return false
-            }
+            return schema.schema.isBoolean()
         }
 
         let booleanStructDeclaration = !booleanProperties.isEmpty ? [ObjCIR.Root.structDecl(name: self.booleanPropertiesStructName,
