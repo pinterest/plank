@@ -97,13 +97,56 @@
       ],
       "default" : "case1"
     },
-    "int_enum" : {
+    "char_enum" : {
       "type" : "integer",
       "enum": [
-        { "default" : 1, "description" : "int_case_1" },
-        { "default" : 2, "description" : "int_case_2" },
-        { "default" : 3, "description" : "int_case_3" }
+        { "default" : -1, "description" : "char_case_1" },
       ]
+    },
+    "unsigned_char_enum" : {
+        "type" : "integer",
+        "enum": [
+            { "default" : 255, "description" : "unsigned_char_case_2" },
+        ]
+    },
+    "short_enum" : {
+        "type" : "integer",
+        "enum": [
+            { "default" : -1, "description" : "short_case_1" },
+            { "default" : 256, "description" : "short_case_2" },
+        ]
+    },
+    "unsigned_short_enum" : {
+        "type" : "integer",
+        "enum": [
+            { "default" : 256, "description" : "char_case_2" },
+        ]
+    },
+    "int_enum" : {
+        "type" : "integer",
+        "enum": [
+            { "default" : -1, "description" : "int_case_1" },
+            { "default" : 65536, "description" : "int_case_2" },
+        ]
+    },
+    "unsigned_int_enum" : {
+        "type" : "integer",
+        "enum": [
+            { "default" : 65536, "description" : "unsigned_int_case_2" },
+        ]
+    },
+    "nsinteger_enum" : {
+        "type" : "integer",
+        "enum": [
+            { "default" : -1, "description" : "nsinteger_case_1" },
+            { "default" : 4294967295, "description" : "nsinteger_case_2" },
+        ]
+    },
+    "nsuinteger_enum" : {
+        "type" : "integer",
+        "enum": [
+            { "default" : 4294967296, "description" : "nsuinteger_case_2" },
+        ]
     },
     "polymorphic_prop": {
       "oneOf" : [

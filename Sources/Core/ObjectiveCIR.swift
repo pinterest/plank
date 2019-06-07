@@ -82,6 +82,58 @@ func enumTypeName(propertyName: String, className: String) -> String {
     return "\(className)\(Languages.objectiveC.snakeCaseToCamelCase(propertyName))"
 }
 
+// ObjC integreal types for NS_ENUM declarations in generated code.
+enum EnumerationIntegralType: String {
+    case char
+    case unsignedChar = "unsigned char"
+    case short
+    case unsignedShort = "unsigned short"
+    case int
+    case unsignedInt = "unsigned int"
+    case NSInteger
+    case NSUInteger
+
+    // Return the best fitting and smallest EnumerationIntegralType for the given EnumType.
+    // In ObjC not all NS_ENUM declarations need to be NSInteger in size. Using smaller integral types
+    // can allow the code that plank generates to use less memory in the resulting application.
+    // As an example with an object with 2 enumerations values, each of NSInteger size,
+    // those 2 enumerations will take 16 bytes of the objects instance size in the heap. However,
+    // if the enumeration storage is smaller, in this case 1 byte long for an unsigned char, the
+    // 2 enumerations will only take 8 bytes in the heap. This is because the compiler will best fit
+    // the two unsigned char enumerations to fit into the 8 bytes natural alignment of the platform.
+    // As more enumerations are found in a class, the better this best fitting code will save memory.
+    static func forValue(_ values: EnumType) -> EnumerationIntegralType {
+        let minimum: Int
+        let maximum: Int
+        switch values {
+        case let .integer(options):
+            let values = options.map { $0.defaultValue }
+            minimum = values.min() ?? 0
+            maximum = values.max() ?? Int.max
+        case let .string(options, _):
+            minimum = 0
+            maximum = options.count
+        }
+        let underlyingIntegralType: EnumerationIntegralType
+        let (_, overflow) = maximum.subtractingReportingOverflow(minimum)
+        if overflow {
+            underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
+        } else {
+            switch max(maximum, abs(maximum - minimum)) {
+            case 0 ... Int(UInt8.max):
+                underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.char : EnumerationIntegralType.unsignedChar
+            case Int(UInt8.max) ... Int(UInt16.max):
+                underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.short : EnumerationIntegralType.unsignedShort
+            case Int(UInt16.max) ... Int(UInt32.max):
+                underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.int : EnumerationIntegralType.unsignedInt
+            default:
+                underlyingIntegralType = minimum < 0 ? EnumerationIntegralType.NSInteger : EnumerationIntegralType.NSUInteger
+            }
+        }
+        return underlyingIntegralType
+    }
+}
+
 extension SchemaObjectRoot {
     func className(with params: GenerationParameters) -> String {
         if let classPrefix = params[GenerationParameterType.classPrefix] as String? {
@@ -253,9 +305,9 @@ public struct ObjCIR {
         return "#import \"\(filename).h\""
     }
 
-    static func enumStmt(_ enumName: String, body: () -> [String]) -> String {
+    static func enumStmt(_ enumName: String, underlyingIntegralType: EnumerationIntegralType, body: () -> [String]) -> String {
         return [
-            "typedef NS_ENUM(NSInteger, \(enumName)) {",
+            "typedef NS_ENUM(\(underlyingIntegralType.rawValue), \(enumName)) {",
             -->[body().joined(separator: ",\n")],
             "};",
         ].joined(separator: "\n")
@@ -287,7 +339,8 @@ public struct ObjCIR {
         case structDecl(name: String, fields: [String])
         case imports(classNames: Set<String>, myName: String, parentName: String?)
         case category(className: String, categoryName: String?, methods: [ObjCIR.Method],
-                      properties: [SimpleProperty])
+                      properties: [SimpleProperty],
+                      variables: [(Parameter, TypeName)])
         case macro(String)
         case function(ObjCIR.Method)
         case classDecl(
@@ -340,13 +393,13 @@ public struct ObjCIR {
                         .map { $1 }.map { $0.signature + ";" }.joined(separator: "\n"),
                     "@end",
                 ]
-            case .category(className: _, categoryName: _, methods: _, properties: _):
+            case .category(className: _, categoryName: _, methods: _, properties: _, variables: _):
                 // skip categories in header
                 return []
             case let .function(method):
                 return ["\(method.signature);"]
             case let .enumDecl(name, values):
-                return [ObjCIR.enumStmt(name) {
+                return [ObjCIR.enumStmt(name, underlyingIntegralType: EnumerationIntegralType.forValue(values)) {
                     switch values {
                     case let .integer(options):
                         return options.map { "\(name + $0.camelCaseDescription) = \($0.defaultValue)" }
@@ -387,11 +440,21 @@ public struct ObjCIR {
                     }).joined(separator: "\n"),
                     "@end",
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
-            case let .category(className: className, categoryName: categoryName, methods: methods, properties: properties):
+            case let .category(className: className, categoryName: categoryName, methods: methods, properties: properties, variables: variables):
                 // Only render anonymous categories in the implementation
                 guard categoryName == nil else { return [] }
+                let variableDeclarations: String
+                if !variables.isEmpty {
+                    let vars: [String] = variables.map { (param, typeName) -> String in
+                        "\(typeName) _\(Languages.objectiveC.snakeCaseToPropertyName(param));"
+                    }
+                    variableDeclarations = ["{", -->vars, "}"].joined(separator: "\n")
+                } else {
+                    variableDeclarations = ""
+                }
                 return [
                     "@interface \(className) ()",
+                    variableDeclarations,
                     properties.map { param, typeName, prop, access in
                         "@property (nonatomic, \(prop.schema.memoryAssignmentType().rawValue), \(access.rawValue)) \(typeName) \(Languages.objectiveC.snakeCaseToPropertyName(param));"
                     }.joined(separator: "\n"),

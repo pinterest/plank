@@ -132,7 +132,8 @@ extension ObjCFileRenderer {
         return "\(propIVarName) = " + {
             switch schema {
             case .enumT:
-                return "[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
+                let typeName = enumTypeName(propertyName: param, className: self.className)
+                return "(\(typeName))[aDecoder decodeIntegerForKey:\(param.objcLiteral())];"
             case .boolean:
                 return "[aDecoder decodeBoolForKey:\(param.objcLiteral())];"
             case .float:

@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		1583A8BC2241A3E80010C80B /* LanguagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1583A8BB2241A3E80010C80B /* LanguagesTests.swift */; };
+		D924952422A0493400AC9555 /* ObjectiveCEnumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D924952322A0493400AC9555 /* ObjectiveCEnumTests.swift */; };
 		OBJ_106 /* Cli.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* Cli.swift */; };
 		OBJ_107 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* Version.swift */; };
 		OBJ_108 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* main.swift */; };
@@ -88,6 +89,7 @@
 
 /* Begin PBXFileReference section */
 		1583A8BB2241A3E80010C80B /* LanguagesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagesTests.swift; sourceTree = "<group>"; };
+		D924952322A0493400AC9555 /* ObjectiveCEnumTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectiveCEnumTests.swift; sourceTree = "<group>"; };
 		OBJ_10 /* JSADTExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSADTExtension.swift; sourceTree = "<group>"; };
 		OBJ_11 /* JSFileGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSFileGenerator.swift; sourceTree = "<group>"; };
 		OBJ_12 /* JSFileRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSFileRenderer.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				OBJ_41 /* LinuxTestIndex.swift */,
 				OBJ_42 /* MockSchemaLoader.swift */,
 				OBJ_43 /* ObjectiveCIRTests.swift */,
+				D924952322A0493400AC9555 /* ObjectiveCEnumTests.swift */,
 				OBJ_44 /* ObjectiveCInitTests.swift */,
 				OBJ_45 /* PlankTestExtension.swift */,
 				OBJ_46 /* StringExtensionsTests.swift */,
@@ -427,6 +430,7 @@
 			files = (
 				1583A8BC2241A3E80010C80B /* LanguagesTests.swift in Sources */,
 				OBJ_92 /* LinuxTestIndex.swift in Sources */,
+				D924952422A0493400AC9555 /* ObjectiveCEnumTests.swift in Sources */,
 				OBJ_93 /* MockSchemaLoader.swift in Sources */,
 				OBJ_94 /* ObjectiveCIRTests.swift in Sources */,
 				OBJ_95 /* ObjectiveCInitTests.swift in Sources */,

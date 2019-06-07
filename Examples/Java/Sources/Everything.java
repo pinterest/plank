@@ -54,12 +54,57 @@ interface EverythingPolymorphicPropMatcher<R> {
 
 public class Everything {
 
+    public enum EverythingCharEnum {
+        CHAR_CASE_1(-1);
+        private final int value;
+        EverythingCharEnum(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
+    }
+
     public enum EverythingIntEnum {
-        INT_CASE_1(1), 
-        INT_CASE_2(2), 
-        INT_CASE_3(3);
+        INT_CASE_1(-1), 
+        INT_CASE_2(65536);
         private final int value;
         EverythingIntEnum(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
+    }
+
+    public enum EverythingNsintegerEnum {
+        NSINTEGER_CASE_1(-1), 
+        NSINTEGER_CASE_2(4294967295);
+        private final int value;
+        EverythingNsintegerEnum(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
+    }
+
+    public enum EverythingNsuintegerEnum {
+        NSUINTEGER_CASE_2(4294967296);
+        private final int value;
+        EverythingNsuintegerEnum(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
+    }
+
+    public enum EverythingShortEnum {
+        SHORT_CASE_1(-1), 
+        SHORT_CASE_2(256);
+        private final int value;
+        EverythingShortEnum(int value) {
             this.value = value;
         }
         public int getValue() {
@@ -71,10 +116,44 @@ public class Everything {
         @SerializedName("case1") CASE1, @SerializedName("case2") CASE2, @SerializedName("case3") CASE3;
     }
 
+    public enum EverythingUnsignedCharEnum {
+        UNSIGNED_CHAR_CASE_2(255);
+        private final int value;
+        EverythingUnsignedCharEnum(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
+    }
+
+    public enum EverythingUnsignedIntEnum {
+        UNSIGNED_INT_CASE_2(65536);
+        private final int value;
+        EverythingUnsignedIntEnum(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
+    }
+
+    public enum EverythingUnsignedShortEnum {
+        CHAR_CASE_2(256);
+        private final int value;
+        EverythingUnsignedShortEnum(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
+    }
+
     public static final String TYPE = "everything";
 
     @SerializedName("array_prop") private @Nullable List<Object> arrayProp;
     @SerializedName("boolean_prop") private @Nullable Boolean booleanProp;
+    @SerializedName("char_enum") private @Nullable EverythingCharEnum charEnum;
     @SerializedName("date_prop") private @Nullable Date dateProp;
     @SerializedName("int_enum") private @Nullable EverythingIntEnum intEnum;
     @SerializedName("int_prop") private @Nullable Integer intProp;
@@ -91,6 +170,8 @@ public class Everything {
     @SerializedName("map_with_object_values") private @Nullable Map<String, String> mapWithObjectValues;
     @SerializedName("map_with_other_model_values") private @Nullable Map<String, User> mapWithOtherModelValues;
     @SerializedName("map_with_primitive_values") private @Nullable Map<String, Integer> mapWithPrimitiveValues;
+    @SerializedName("nsinteger_enum") private @Nullable EverythingNsintegerEnum nsintegerEnum;
+    @SerializedName("nsuinteger_enum") private @Nullable EverythingNsuintegerEnum nsuintegerEnum;
     @SerializedName("number_prop") private @Nullable Double numberProp;
     @SerializedName("other_model_prop") private @Nullable User otherModelProp;
     @SerializedName("polymorphic_prop") private @Nullable EverythingPolymorphicProp polymorphicProp;
@@ -98,46 +179,58 @@ public class Everything {
     @SerializedName("set_prop_with_other_model_values") private @Nullable Set<User> setPropWithOtherModelValues;
     @SerializedName("set_prop_with_primitive_values") private @Nullable Set<Integer> setPropWithPrimitiveValues;
     @SerializedName("set_prop_with_values") private @Nullable Set<String> setPropWithValues;
+    @SerializedName("short_enum") private @Nullable EverythingShortEnum shortEnum;
     @SerializedName("string_enum") private @Nullable EverythingStringEnum stringEnum;
     @SerializedName("string_prop") private @Nullable String stringProp;
     @SerializedName("type") private @Nullable String type;
+    @SerializedName("unsigned_char_enum") private @Nullable EverythingUnsignedCharEnum unsignedCharEnum;
+    @SerializedName("unsigned_int_enum") private @Nullable EverythingUnsignedIntEnum unsignedIntEnum;
+    @SerializedName("unsigned_short_enum") private @Nullable EverythingUnsignedShortEnum unsignedShortEnum;
     @SerializedName("uri_prop") private @Nullable String uriProp;
 
     static final private int ARRAY_PROP_INDEX = 0;
     static final private int BOOLEAN_PROP_INDEX = 1;
-    static final private int DATE_PROP_INDEX = 2;
-    static final private int INT_ENUM_INDEX = 3;
-    static final private int INT_PROP_INDEX = 4;
-    static final private int LIST_POLYMORPHIC_VALUES_INDEX = 5;
-    static final private int LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 6;
-    static final private int LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 7;
-    static final private int LIST_WITH_OBJECT_VALUES_INDEX = 8;
-    static final private int LIST_WITH_OTHER_MODEL_VALUES_INDEX = 9;
-    static final private int LIST_WITH_PRIMITIVE_VALUES_INDEX = 10;
-    static final private int MAP_POLYMORPHIC_VALUES_INDEX = 11;
-    static final private int MAP_PROP_INDEX = 12;
-    static final private int MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 13;
-    static final private int MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 14;
-    static final private int MAP_WITH_OBJECT_VALUES_INDEX = 15;
-    static final private int MAP_WITH_OTHER_MODEL_VALUES_INDEX = 16;
-    static final private int MAP_WITH_PRIMITIVE_VALUES_INDEX = 17;
-    static final private int NUMBER_PROP_INDEX = 18;
-    static final private int OTHER_MODEL_PROP_INDEX = 19;
-    static final private int POLYMORPHIC_PROP_INDEX = 20;
-    static final private int SET_PROP_INDEX = 21;
-    static final private int SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX = 22;
-    static final private int SET_PROP_WITH_PRIMITIVE_VALUES_INDEX = 23;
-    static final private int SET_PROP_WITH_VALUES_INDEX = 24;
-    static final private int STRING_ENUM_INDEX = 25;
-    static final private int STRING_PROP_INDEX = 26;
-    static final private int TYPE_INDEX = 27;
-    static final private int URI_PROP_INDEX = 28;
+    static final private int CHAR_ENUM_INDEX = 2;
+    static final private int DATE_PROP_INDEX = 3;
+    static final private int INT_ENUM_INDEX = 4;
+    static final private int INT_PROP_INDEX = 5;
+    static final private int LIST_POLYMORPHIC_VALUES_INDEX = 6;
+    static final private int LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 7;
+    static final private int LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 8;
+    static final private int LIST_WITH_OBJECT_VALUES_INDEX = 9;
+    static final private int LIST_WITH_OTHER_MODEL_VALUES_INDEX = 10;
+    static final private int LIST_WITH_PRIMITIVE_VALUES_INDEX = 11;
+    static final private int MAP_POLYMORPHIC_VALUES_INDEX = 12;
+    static final private int MAP_PROP_INDEX = 13;
+    static final private int MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 14;
+    static final private int MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 15;
+    static final private int MAP_WITH_OBJECT_VALUES_INDEX = 16;
+    static final private int MAP_WITH_OTHER_MODEL_VALUES_INDEX = 17;
+    static final private int MAP_WITH_PRIMITIVE_VALUES_INDEX = 18;
+    static final private int NSINTEGER_ENUM_INDEX = 19;
+    static final private int NSUINTEGER_ENUM_INDEX = 20;
+    static final private int NUMBER_PROP_INDEX = 21;
+    static final private int OTHER_MODEL_PROP_INDEX = 22;
+    static final private int POLYMORPHIC_PROP_INDEX = 23;
+    static final private int SET_PROP_INDEX = 24;
+    static final private int SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX = 25;
+    static final private int SET_PROP_WITH_PRIMITIVE_VALUES_INDEX = 26;
+    static final private int SET_PROP_WITH_VALUES_INDEX = 27;
+    static final private int SHORT_ENUM_INDEX = 28;
+    static final private int STRING_ENUM_INDEX = 29;
+    static final private int STRING_PROP_INDEX = 30;
+    static final private int TYPE_INDEX = 31;
+    static final private int UNSIGNED_CHAR_ENUM_INDEX = 32;
+    static final private int UNSIGNED_INT_ENUM_INDEX = 33;
+    static final private int UNSIGNED_SHORT_ENUM_INDEX = 34;
+    static final private int URI_PROP_INDEX = 35;
 
-    private boolean[] _bits = new boolean[29];
+    private boolean[] _bits = new boolean[36];
 
     private Everything(
         @Nullable List<Object> arrayProp,
         @Nullable Boolean booleanProp,
+        @Nullable EverythingCharEnum charEnum,
         @Nullable Date dateProp,
         @Nullable EverythingIntEnum intEnum,
         @Nullable Integer intProp,
@@ -154,6 +247,8 @@ public class Everything {
         @Nullable Map<String, String> mapWithObjectValues,
         @Nullable Map<String, User> mapWithOtherModelValues,
         @Nullable Map<String, Integer> mapWithPrimitiveValues,
+        @Nullable EverythingNsintegerEnum nsintegerEnum,
+        @Nullable EverythingNsuintegerEnum nsuintegerEnum,
         @Nullable Double numberProp,
         @Nullable User otherModelProp,
         @Nullable EverythingPolymorphicProp polymorphicProp,
@@ -161,14 +256,19 @@ public class Everything {
         @Nullable Set<User> setPropWithOtherModelValues,
         @Nullable Set<Integer> setPropWithPrimitiveValues,
         @Nullable Set<String> setPropWithValues,
+        @Nullable EverythingShortEnum shortEnum,
         @Nullable EverythingStringEnum stringEnum,
         @Nullable String stringProp,
         @Nullable String type,
+        @Nullable EverythingUnsignedCharEnum unsignedCharEnum,
+        @Nullable EverythingUnsignedIntEnum unsignedIntEnum,
+        @Nullable EverythingUnsignedShortEnum unsignedShortEnum,
         @Nullable String uriProp,
         boolean[] _bits
     ) {
         this.arrayProp = arrayProp;
         this.booleanProp = booleanProp;
+        this.charEnum = charEnum;
         this.dateProp = dateProp;
         this.intEnum = intEnum;
         this.intProp = intProp;
@@ -185,6 +285,8 @@ public class Everything {
         this.mapWithObjectValues = mapWithObjectValues;
         this.mapWithOtherModelValues = mapWithOtherModelValues;
         this.mapWithPrimitiveValues = mapWithPrimitiveValues;
+        this.nsintegerEnum = nsintegerEnum;
+        this.nsuintegerEnum = nsuintegerEnum;
         this.numberProp = numberProp;
         this.otherModelProp = otherModelProp;
         this.polymorphicProp = polymorphicProp;
@@ -192,9 +294,13 @@ public class Everything {
         this.setPropWithOtherModelValues = setPropWithOtherModelValues;
         this.setPropWithPrimitiveValues = setPropWithPrimitiveValues;
         this.setPropWithValues = setPropWithValues;
+        this.shortEnum = shortEnum;
         this.stringEnum = stringEnum;
         this.stringProp = stringProp;
         this.type = type;
+        this.unsignedCharEnum = unsignedCharEnum;
+        this.unsignedIntEnum = unsignedIntEnum;
+        this.unsignedShortEnum = unsignedShortEnum;
         this.uriProp = uriProp;
         this._bits = _bits;
     }
@@ -224,6 +330,7 @@ public class Everything {
         Everything that = (Everything) o;
         return Objects.equals(this.arrayProp, that.arrayProp) &&
         Objects.equals(this.booleanProp, that.booleanProp) &&
+        Objects.equals(this.charEnum, that.charEnum) &&
         Objects.equals(this.dateProp, that.dateProp) &&
         Objects.equals(this.intEnum, that.intEnum) &&
         Objects.equals(this.intProp, that.intProp) &&
@@ -240,6 +347,8 @@ public class Everything {
         Objects.equals(this.mapWithObjectValues, that.mapWithObjectValues) &&
         Objects.equals(this.mapWithOtherModelValues, that.mapWithOtherModelValues) &&
         Objects.equals(this.mapWithPrimitiveValues, that.mapWithPrimitiveValues) &&
+        Objects.equals(this.nsintegerEnum, that.nsintegerEnum) &&
+        Objects.equals(this.nsuintegerEnum, that.nsuintegerEnum) &&
         Objects.equals(this.numberProp, that.numberProp) &&
         Objects.equals(this.otherModelProp, that.otherModelProp) &&
         Objects.equals(this.polymorphicProp, that.polymorphicProp) &&
@@ -247,9 +356,13 @@ public class Everything {
         Objects.equals(this.setPropWithOtherModelValues, that.setPropWithOtherModelValues) &&
         Objects.equals(this.setPropWithPrimitiveValues, that.setPropWithPrimitiveValues) &&
         Objects.equals(this.setPropWithValues, that.setPropWithValues) &&
+        Objects.equals(this.shortEnum, that.shortEnum) &&
         Objects.equals(this.stringEnum, that.stringEnum) &&
         Objects.equals(this.stringProp, that.stringProp) &&
         Objects.equals(this.type, that.type) &&
+        Objects.equals(this.unsignedCharEnum, that.unsignedCharEnum) &&
+        Objects.equals(this.unsignedIntEnum, that.unsignedIntEnum) &&
+        Objects.equals(this.unsignedShortEnum, that.unsignedShortEnum) &&
         Objects.equals(this.uriProp, that.uriProp);
     }
 
@@ -257,6 +370,7 @@ public class Everything {
     public int hashCode() {
         return Objects.hash(arrayProp,
         booleanProp,
+        charEnum,
         dateProp,
         intEnum,
         intProp,
@@ -273,6 +387,8 @@ public class Everything {
         mapWithObjectValues,
         mapWithOtherModelValues,
         mapWithPrimitiveValues,
+        nsintegerEnum,
+        nsuintegerEnum,
         numberProp,
         otherModelProp,
         polymorphicProp,
@@ -280,9 +396,13 @@ public class Everything {
         setPropWithOtherModelValues,
         setPropWithPrimitiveValues,
         setPropWithValues,
+        shortEnum,
         stringEnum,
         stringProp,
         type,
+        unsignedCharEnum,
+        unsignedIntEnum,
+        unsignedShortEnum,
         uriProp);
     }
 
@@ -292,6 +412,10 @@ public class Everything {
 
     public @NonNull Boolean getBooleanProp() {
         return this.booleanProp == null ? Boolean.FALSE : this.booleanProp;
+    }
+
+    public @Nullable EverythingCharEnum getCharEnum() {
+        return this.charEnum;
     }
 
     public @Nullable Date getDateProp() {
@@ -358,6 +482,14 @@ public class Everything {
         return this.mapWithPrimitiveValues;
     }
 
+    public @Nullable EverythingNsintegerEnum getNsintegerEnum() {
+        return this.nsintegerEnum;
+    }
+
+    public @Nullable EverythingNsuintegerEnum getNsuintegerEnum() {
+        return this.nsuintegerEnum;
+    }
+
     public @NonNull Double getNumberProp() {
         return this.numberProp == null ? 0 : this.numberProp;
     }
@@ -386,6 +518,10 @@ public class Everything {
         return this.setPropWithValues;
     }
 
+    public @Nullable EverythingShortEnum getShortEnum() {
+        return this.shortEnum;
+    }
+
     public @Nullable EverythingStringEnum getStringEnum() {
         return this.stringEnum;
     }
@@ -398,6 +534,18 @@ public class Everything {
         return this.type;
     }
 
+    public @Nullable EverythingUnsignedCharEnum getUnsignedCharEnum() {
+        return this.unsignedCharEnum;
+    }
+
+    public @Nullable EverythingUnsignedIntEnum getUnsignedIntEnum() {
+        return this.unsignedIntEnum;
+    }
+
+    public @Nullable EverythingUnsignedShortEnum getUnsignedShortEnum() {
+        return this.unsignedShortEnum;
+    }
+
     public @Nullable String getUriProp() {
         return this.uriProp;
     }
@@ -408,6 +556,10 @@ public class Everything {
 
     public boolean getBooleanPropIsSet() {
         return this._bits.length > BOOLEAN_PROP_INDEX && this._bits[BOOLEAN_PROP_INDEX];
+    }
+
+    public boolean getCharEnumIsSet() {
+        return this._bits.length > CHAR_ENUM_INDEX && this._bits[CHAR_ENUM_INDEX];
     }
 
     public boolean getDatePropIsSet() {
@@ -474,6 +626,14 @@ public class Everything {
         return this._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX && this._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX];
     }
 
+    public boolean getNsintegerEnumIsSet() {
+        return this._bits.length > NSINTEGER_ENUM_INDEX && this._bits[NSINTEGER_ENUM_INDEX];
+    }
+
+    public boolean getNsuintegerEnumIsSet() {
+        return this._bits.length > NSUINTEGER_ENUM_INDEX && this._bits[NSUINTEGER_ENUM_INDEX];
+    }
+
     public boolean getNumberPropIsSet() {
         return this._bits.length > NUMBER_PROP_INDEX && this._bits[NUMBER_PROP_INDEX];
     }
@@ -502,6 +662,10 @@ public class Everything {
         return this._bits.length > SET_PROP_WITH_VALUES_INDEX && this._bits[SET_PROP_WITH_VALUES_INDEX];
     }
 
+    public boolean getShortEnumIsSet() {
+        return this._bits.length > SHORT_ENUM_INDEX && this._bits[SHORT_ENUM_INDEX];
+    }
+
     public boolean getStringEnumIsSet() {
         return this._bits.length > STRING_ENUM_INDEX && this._bits[STRING_ENUM_INDEX];
     }
@@ -514,6 +678,18 @@ public class Everything {
         return this._bits.length > TYPE_INDEX && this._bits[TYPE_INDEX];
     }
 
+    public boolean getUnsignedCharEnumIsSet() {
+        return this._bits.length > UNSIGNED_CHAR_ENUM_INDEX && this._bits[UNSIGNED_CHAR_ENUM_INDEX];
+    }
+
+    public boolean getUnsignedIntEnumIsSet() {
+        return this._bits.length > UNSIGNED_INT_ENUM_INDEX && this._bits[UNSIGNED_INT_ENUM_INDEX];
+    }
+
+    public boolean getUnsignedShortEnumIsSet() {
+        return this._bits.length > UNSIGNED_SHORT_ENUM_INDEX && this._bits[UNSIGNED_SHORT_ENUM_INDEX];
+    }
+
     public boolean getUriPropIsSet() {
         return this._bits.length > URI_PROP_INDEX && this._bits[URI_PROP_INDEX];
     }
@@ -522,6 +698,7 @@ public class Everything {
 
         @SerializedName("array_prop") private @Nullable List<Object> arrayProp;
         @SerializedName("boolean_prop") private @Nullable Boolean booleanProp;
+        @SerializedName("char_enum") private @Nullable EverythingCharEnum charEnum;
         @SerializedName("date_prop") private @Nullable Date dateProp;
         @SerializedName("int_enum") private @Nullable EverythingIntEnum intEnum;
         @SerializedName("int_prop") private @Nullable Integer intProp;
@@ -538,6 +715,8 @@ public class Everything {
         @SerializedName("map_with_object_values") private @Nullable Map<String, String> mapWithObjectValues;
         @SerializedName("map_with_other_model_values") private @Nullable Map<String, User> mapWithOtherModelValues;
         @SerializedName("map_with_primitive_values") private @Nullable Map<String, Integer> mapWithPrimitiveValues;
+        @SerializedName("nsinteger_enum") private @Nullable EverythingNsintegerEnum nsintegerEnum;
+        @SerializedName("nsuinteger_enum") private @Nullable EverythingNsuintegerEnum nsuintegerEnum;
         @SerializedName("number_prop") private @Nullable Double numberProp;
         @SerializedName("other_model_prop") private @Nullable User otherModelProp;
         @SerializedName("polymorphic_prop") private @Nullable EverythingPolymorphicProp polymorphicProp;
@@ -545,12 +724,16 @@ public class Everything {
         @SerializedName("set_prop_with_other_model_values") private @Nullable Set<User> setPropWithOtherModelValues;
         @SerializedName("set_prop_with_primitive_values") private @Nullable Set<Integer> setPropWithPrimitiveValues;
         @SerializedName("set_prop_with_values") private @Nullable Set<String> setPropWithValues;
+        @SerializedName("short_enum") private @Nullable EverythingShortEnum shortEnum;
         @SerializedName("string_enum") private @Nullable EverythingStringEnum stringEnum;
         @SerializedName("string_prop") private @Nullable String stringProp;
         @SerializedName("type") private @Nullable String type;
+        @SerializedName("unsigned_char_enum") private @Nullable EverythingUnsignedCharEnum unsignedCharEnum;
+        @SerializedName("unsigned_int_enum") private @Nullable EverythingUnsignedIntEnum unsignedIntEnum;
+        @SerializedName("unsigned_short_enum") private @Nullable EverythingUnsignedShortEnum unsignedShortEnum;
         @SerializedName("uri_prop") private @Nullable String uriProp;
 
-        private boolean[] _bits = new boolean[29];
+        private boolean[] _bits = new boolean[36];
 
         private Builder() {
         }
@@ -558,6 +741,7 @@ public class Everything {
         private Builder(@NonNull Everything model) {
             this.arrayProp = model.arrayProp;
             this.booleanProp = model.booleanProp;
+            this.charEnum = model.charEnum;
             this.dateProp = model.dateProp;
             this.intEnum = model.intEnum;
             this.intProp = model.intProp;
@@ -574,6 +758,8 @@ public class Everything {
             this.mapWithObjectValues = model.mapWithObjectValues;
             this.mapWithOtherModelValues = model.mapWithOtherModelValues;
             this.mapWithPrimitiveValues = model.mapWithPrimitiveValues;
+            this.nsintegerEnum = model.nsintegerEnum;
+            this.nsuintegerEnum = model.nsuintegerEnum;
             this.numberProp = model.numberProp;
             this.otherModelProp = model.otherModelProp;
             this.polymorphicProp = model.polymorphicProp;
@@ -581,9 +767,13 @@ public class Everything {
             this.setPropWithOtherModelValues = model.setPropWithOtherModelValues;
             this.setPropWithPrimitiveValues = model.setPropWithPrimitiveValues;
             this.setPropWithValues = model.setPropWithValues;
+            this.shortEnum = model.shortEnum;
             this.stringEnum = model.stringEnum;
             this.stringProp = model.stringProp;
             this.type = model.type;
+            this.unsignedCharEnum = model.unsignedCharEnum;
+            this.unsignedIntEnum = model.unsignedIntEnum;
+            this.unsignedShortEnum = model.unsignedShortEnum;
             this.uriProp = model.uriProp;
             this._bits = model._bits;
         }
@@ -600,6 +790,14 @@ public class Everything {
             this.booleanProp = value;
             if (this._bits.length > BOOLEAN_PROP_INDEX) {
                 this._bits[BOOLEAN_PROP_INDEX] = true;
+            }
+            return this;
+        }
+
+        public Builder setCharEnum(@Nullable EverythingCharEnum value) {
+            this.charEnum = value;
+            if (this._bits.length > CHAR_ENUM_INDEX) {
+                this._bits[CHAR_ENUM_INDEX] = true;
             }
             return this;
         }
@@ -732,6 +930,22 @@ public class Everything {
             return this;
         }
 
+        public Builder setNsintegerEnum(@Nullable EverythingNsintegerEnum value) {
+            this.nsintegerEnum = value;
+            if (this._bits.length > NSINTEGER_ENUM_INDEX) {
+                this._bits[NSINTEGER_ENUM_INDEX] = true;
+            }
+            return this;
+        }
+
+        public Builder setNsuintegerEnum(@Nullable EverythingNsuintegerEnum value) {
+            this.nsuintegerEnum = value;
+            if (this._bits.length > NSUINTEGER_ENUM_INDEX) {
+                this._bits[NSUINTEGER_ENUM_INDEX] = true;
+            }
+            return this;
+        }
+
         public Builder setNumberProp(@Nullable Double value) {
             this.numberProp = value;
             if (this._bits.length > NUMBER_PROP_INDEX) {
@@ -788,6 +1002,14 @@ public class Everything {
             return this;
         }
 
+        public Builder setShortEnum(@Nullable EverythingShortEnum value) {
+            this.shortEnum = value;
+            if (this._bits.length > SHORT_ENUM_INDEX) {
+                this._bits[SHORT_ENUM_INDEX] = true;
+            }
+            return this;
+        }
+
         public Builder setStringEnum(@Nullable EverythingStringEnum value) {
             this.stringEnum = value;
             if (this._bits.length > STRING_ENUM_INDEX) {
@@ -812,6 +1034,30 @@ public class Everything {
             return this;
         }
 
+        public Builder setUnsignedCharEnum(@Nullable EverythingUnsignedCharEnum value) {
+            this.unsignedCharEnum = value;
+            if (this._bits.length > UNSIGNED_CHAR_ENUM_INDEX) {
+                this._bits[UNSIGNED_CHAR_ENUM_INDEX] = true;
+            }
+            return this;
+        }
+
+        public Builder setUnsignedIntEnum(@Nullable EverythingUnsignedIntEnum value) {
+            this.unsignedIntEnum = value;
+            if (this._bits.length > UNSIGNED_INT_ENUM_INDEX) {
+                this._bits[UNSIGNED_INT_ENUM_INDEX] = true;
+            }
+            return this;
+        }
+
+        public Builder setUnsignedShortEnum(@Nullable EverythingUnsignedShortEnum value) {
+            this.unsignedShortEnum = value;
+            if (this._bits.length > UNSIGNED_SHORT_ENUM_INDEX) {
+                this._bits[UNSIGNED_SHORT_ENUM_INDEX] = true;
+            }
+            return this;
+        }
+
         public Builder setUriProp(@Nullable String value) {
             this.uriProp = value;
             if (this._bits.length > URI_PROP_INDEX) {
@@ -826,6 +1072,10 @@ public class Everything {
 
         public @Nullable Boolean getBooleanProp() {
             return this.booleanProp;
+        }
+
+        public @Nullable EverythingCharEnum getCharEnum() {
+            return this.charEnum;
         }
 
         public @Nullable Date getDateProp() {
@@ -892,6 +1142,14 @@ public class Everything {
             return this.mapWithPrimitiveValues;
         }
 
+        public @Nullable EverythingNsintegerEnum getNsintegerEnum() {
+            return this.nsintegerEnum;
+        }
+
+        public @Nullable EverythingNsuintegerEnum getNsuintegerEnum() {
+            return this.nsuintegerEnum;
+        }
+
         public @Nullable Double getNumberProp() {
             return this.numberProp;
         }
@@ -920,6 +1178,10 @@ public class Everything {
             return this.setPropWithValues;
         }
 
+        public @Nullable EverythingShortEnum getShortEnum() {
+            return this.shortEnum;
+        }
+
         public @Nullable EverythingStringEnum getStringEnum() {
             return this.stringEnum;
         }
@@ -932,6 +1194,18 @@ public class Everything {
             return this.type;
         }
 
+        public @Nullable EverythingUnsignedCharEnum getUnsignedCharEnum() {
+            return this.unsignedCharEnum;
+        }
+
+        public @Nullable EverythingUnsignedIntEnum getUnsignedIntEnum() {
+            return this.unsignedIntEnum;
+        }
+
+        public @Nullable EverythingUnsignedShortEnum getUnsignedShortEnum() {
+            return this.unsignedShortEnum;
+        }
+
         public @Nullable String getUriProp() {
             return this.uriProp;
         }
@@ -940,6 +1214,7 @@ public class Everything {
             return new Everything(
             this.arrayProp,
             this.booleanProp,
+            this.charEnum,
             this.dateProp,
             this.intEnum,
             this.intProp,
@@ -956,6 +1231,8 @@ public class Everything {
             this.mapWithObjectValues,
             this.mapWithOtherModelValues,
             this.mapWithPrimitiveValues,
+            this.nsintegerEnum,
+            this.nsuintegerEnum,
             this.numberProp,
             this.otherModelProp,
             this.polymorphicProp,
@@ -963,9 +1240,13 @@ public class Everything {
             this.setPropWithOtherModelValues,
             this.setPropWithPrimitiveValues,
             this.setPropWithValues,
+            this.shortEnum,
             this.stringEnum,
             this.stringProp,
             this.type,
+            this.unsignedCharEnum,
+            this.unsignedIntEnum,
+            this.unsignedShortEnum,
             this.uriProp,
             this._bits
             );
@@ -977,6 +1258,9 @@ public class Everything {
             }
             if (model.getBooleanPropIsSet()) {
                 this.booleanProp = model.booleanProp;
+            }
+            if (model.getCharEnumIsSet()) {
+                this.charEnum = model.charEnum;
             }
             if (model.getDatePropIsSet()) {
                 this.dateProp = model.dateProp;
@@ -1026,6 +1310,12 @@ public class Everything {
             if (model.getMapWithPrimitiveValuesIsSet()) {
                 this.mapWithPrimitiveValues = model.mapWithPrimitiveValues;
             }
+            if (model.getNsintegerEnumIsSet()) {
+                this.nsintegerEnum = model.nsintegerEnum;
+            }
+            if (model.getNsuintegerEnumIsSet()) {
+                this.nsuintegerEnum = model.nsuintegerEnum;
+            }
             if (model.getNumberPropIsSet()) {
                 this.numberProp = model.numberProp;
             }
@@ -1047,6 +1337,9 @@ public class Everything {
             if (model.getSetPropWithValuesIsSet()) {
                 this.setPropWithValues = model.setPropWithValues;
             }
+            if (model.getShortEnumIsSet()) {
+                this.shortEnum = model.shortEnum;
+            }
             if (model.getStringEnumIsSet()) {
                 this.stringEnum = model.stringEnum;
             }
@@ -1055,6 +1348,15 @@ public class Everything {
             }
             if (model.getTypeIsSet()) {
                 this.type = model.type;
+            }
+            if (model.getUnsignedCharEnumIsSet()) {
+                this.unsignedCharEnum = model.unsignedCharEnum;
+            }
+            if (model.getUnsignedIntEnumIsSet()) {
+                this.unsignedIntEnum = model.unsignedIntEnum;
+            }
+            if (model.getUnsignedShortEnumIsSet()) {
+                this.unsignedShortEnum = model.unsignedShortEnum;
             }
             if (model.getUriPropIsSet()) {
                 this.uriProp = model.uriProp;
@@ -1080,9 +1382,16 @@ public class Everything {
         final private TypeAdapter<Boolean> booleanTypeAdapter;
         final private TypeAdapter<Date> dateTypeAdapter;
         final private TypeAdapter<Double> doubleTypeAdapter;
+        final private TypeAdapter<EverythingCharEnum> everythingCharEnumTypeAdapter;
         final private TypeAdapter<EverythingIntEnum> everythingIntEnumTypeAdapter;
+        final private TypeAdapter<EverythingNsintegerEnum> everythingNsintegerEnumTypeAdapter;
+        final private TypeAdapter<EverythingNsuintegerEnum> everythingNsuintegerEnumTypeAdapter;
         final private TypeAdapter<EverythingPolymorphicProp> everythingPolymorphicPropTypeAdapter;
+        final private TypeAdapter<EverythingShortEnum> everythingShortEnumTypeAdapter;
         final private TypeAdapter<EverythingStringEnum> everythingStringEnumTypeAdapter;
+        final private TypeAdapter<EverythingUnsignedCharEnum> everythingUnsignedCharEnumTypeAdapter;
+        final private TypeAdapter<EverythingUnsignedIntEnum> everythingUnsignedIntEnumTypeAdapter;
+        final private TypeAdapter<EverythingUnsignedShortEnum> everythingUnsignedShortEnumTypeAdapter;
         final private TypeAdapter<Integer> integerTypeAdapter;
         final private TypeAdapter<List<Integer>> list_Integer_TypeAdapter;
         final private TypeAdapter<List<List<User>>> list_List_User__TypeAdapter;
@@ -1109,9 +1418,16 @@ public class Everything {
             this.booleanTypeAdapter = gson.getAdapter(Boolean.class).nullSafe();
             this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
             this.doubleTypeAdapter = gson.getAdapter(Double.class).nullSafe();
+            this.everythingCharEnumTypeAdapter = gson.getAdapter(EverythingCharEnum.class).nullSafe();
             this.everythingIntEnumTypeAdapter = gson.getAdapter(EverythingIntEnum.class).nullSafe();
+            this.everythingNsintegerEnumTypeAdapter = gson.getAdapter(EverythingNsintegerEnum.class).nullSafe();
+            this.everythingNsuintegerEnumTypeAdapter = gson.getAdapter(EverythingNsuintegerEnum.class).nullSafe();
             this.everythingPolymorphicPropTypeAdapter = gson.getAdapter(EverythingPolymorphicProp.class).nullSafe();
+            this.everythingShortEnumTypeAdapter = gson.getAdapter(EverythingShortEnum.class).nullSafe();
             this.everythingStringEnumTypeAdapter = gson.getAdapter(EverythingStringEnum.class).nullSafe();
+            this.everythingUnsignedCharEnumTypeAdapter = gson.getAdapter(EverythingUnsignedCharEnum.class).nullSafe();
+            this.everythingUnsignedIntEnumTypeAdapter = gson.getAdapter(EverythingUnsignedIntEnum.class).nullSafe();
+            this.everythingUnsignedShortEnumTypeAdapter = gson.getAdapter(EverythingUnsignedShortEnum.class).nullSafe();
             this.integerTypeAdapter = gson.getAdapter(Integer.class).nullSafe();
             this.list_Integer_TypeAdapter = gson.getAdapter(new TypeToken<List<Integer>>(){}).nullSafe();
             this.list_List_User__TypeAdapter = gson.getAdapter(new TypeToken<List<List<User>>>(){}).nullSafe();
@@ -1155,6 +1471,9 @@ public class Everything {
                         break;
                     case ("boolean_prop"):
                         builder.setBooleanProp(booleanTypeAdapter.read(reader));
+                        break;
+                    case ("char_enum"):
+                        builder.setCharEnum(everythingCharEnumTypeAdapter.read(reader));
                         break;
                     case ("date_prop"):
                         builder.setDateProp(dateTypeAdapter.read(reader));
@@ -1204,6 +1523,12 @@ public class Everything {
                     case ("map_with_primitive_values"):
                         builder.setMapWithPrimitiveValues(map_String__Integer_TypeAdapter.read(reader));
                         break;
+                    case ("nsinteger_enum"):
+                        builder.setNsintegerEnum(everythingNsintegerEnumTypeAdapter.read(reader));
+                        break;
+                    case ("nsuinteger_enum"):
+                        builder.setNsuintegerEnum(everythingNsuintegerEnumTypeAdapter.read(reader));
+                        break;
                     case ("number_prop"):
                         builder.setNumberProp(doubleTypeAdapter.read(reader));
                         break;
@@ -1225,6 +1550,9 @@ public class Everything {
                     case ("set_prop_with_values"):
                         builder.setSetPropWithValues(set_String_TypeAdapter.read(reader));
                         break;
+                    case ("short_enum"):
+                        builder.setShortEnum(everythingShortEnumTypeAdapter.read(reader));
+                        break;
                     case ("string_enum"):
                         builder.setStringEnum(everythingStringEnumTypeAdapter.read(reader));
                         break;
@@ -1233,6 +1561,15 @@ public class Everything {
                         break;
                     case ("type"):
                         builder.setType(stringTypeAdapter.read(reader));
+                        break;
+                    case ("unsigned_char_enum"):
+                        builder.setUnsignedCharEnum(everythingUnsignedCharEnumTypeAdapter.read(reader));
+                        break;
+                    case ("unsigned_int_enum"):
+                        builder.setUnsignedIntEnum(everythingUnsignedIntEnumTypeAdapter.read(reader));
+                        break;
+                    case ("unsigned_short_enum"):
+                        builder.setUnsignedShortEnum(everythingUnsignedShortEnumTypeAdapter.read(reader));
                         break;
                     case ("uri_prop"):
                         builder.setUriProp(stringTypeAdapter.read(reader));

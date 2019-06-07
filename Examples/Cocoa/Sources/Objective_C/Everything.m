@@ -222,7 +222,7 @@
     if (!(self = [super init])) {
         return self;
     }
-    _internalType = [aDecoder decodeIntegerForKey:@"internal_type"];
+    _internalType = (EverythingMapPolymorphicValuesInternalType)[aDecoder decodeIntegerForKey:@"internal_type"];
     _value0 = [aDecoder decodeObjectOfClass:[User class] forKey:@"value0"];
     _value1 = [aDecoder decodeObjectOfClass:[Board class] forKey:@"value1"];
     _value2 = [aDecoder decodeObjectOfClass:[Image class] forKey:@"value2"];
@@ -547,7 +547,7 @@
     if (!(self = [super init])) {
         return self;
     }
-    _internalType = [aDecoder decodeIntegerForKey:@"internal_type"];
+    _internalType = (EverythingPolymorphicPropInternalType)[aDecoder decodeIntegerForKey:@"internal_type"];
     _value0 = [aDecoder decodeObjectOfClass:[User class] forKey:@"value0"];
     _value1 = [aDecoder decodeObjectOfClass:[Board class] forKey:@"value1"];
     _value10 = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"value10"];
@@ -581,6 +581,7 @@
 struct EverythingDirtyProperties {
     unsigned int EverythingDirtyPropertyArrayProp:1;
     unsigned int EverythingDirtyPropertyBooleanProp:1;
+    unsigned int EverythingDirtyPropertyCharEnum:1;
     unsigned int EverythingDirtyPropertyDateProp:1;
     unsigned int EverythingDirtyPropertyIntEnum:1;
     unsigned int EverythingDirtyPropertyIntProp:1;
@@ -597,6 +598,8 @@ struct EverythingDirtyProperties {
     unsigned int EverythingDirtyPropertyMapWithObjectValues:1;
     unsigned int EverythingDirtyPropertyMapWithOtherModelValues:1;
     unsigned int EverythingDirtyPropertyMapWithPrimitiveValues:1;
+    unsigned int EverythingDirtyPropertyNsintegerEnum:1;
+    unsigned int EverythingDirtyPropertyNsuintegerEnum:1;
     unsigned int EverythingDirtyPropertyNumberProp:1;
     unsigned int EverythingDirtyPropertyOtherModelProp:1;
     unsigned int EverythingDirtyPropertyPolymorphicProp:1;
@@ -604,9 +607,13 @@ struct EverythingDirtyProperties {
     unsigned int EverythingDirtyPropertySetPropWithOtherModelValues:1;
     unsigned int EverythingDirtyPropertySetPropWithPrimitiveValues:1;
     unsigned int EverythingDirtyPropertySetPropWithValues:1;
+    unsigned int EverythingDirtyPropertyShortEnum:1;
     unsigned int EverythingDirtyPropertyStringEnum:1;
     unsigned int EverythingDirtyPropertyStringProp:1;
     unsigned int EverythingDirtyPropertyType:1;
+    unsigned int EverythingDirtyPropertyUnsignedCharEnum:1;
+    unsigned int EverythingDirtyPropertyUnsignedIntEnum:1;
+    unsigned int EverythingDirtyPropertyUnsignedShortEnum:1;
     unsigned int EverythingDirtyPropertyUriProp:1;
 };
 
@@ -615,6 +622,17 @@ struct EverythingBooleanProperties {
 };
 
 @interface Everything ()
+{
+    EverythingCharEnum _charEnum;
+    EverythingIntEnum _intEnum;
+    EverythingNsintegerEnum _nsintegerEnum;
+    EverythingNsuintegerEnum _nsuintegerEnum;
+    EverythingShortEnum _shortEnum;
+    EverythingStringEnum _stringEnum;
+    EverythingUnsignedCharEnum _unsignedCharEnum;
+    EverythingUnsignedIntEnum _unsignedIntEnum;
+    EverythingUnsignedShortEnum _unsignedShortEnum;
+}
 @property (nonatomic, assign, readwrite) struct EverythingDirtyProperties everythingDirtyProperties;
 @property (nonatomic, assign, readwrite) struct EverythingBooleanProperties everythingBooleanProperties;
 @end
@@ -697,6 +715,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"char_enum"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_charEnum = (EverythingCharEnum)[value integerValue];
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyCharEnum = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"date_prop"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -709,7 +736,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             __unsafe_unretained id value = modelDictionary[@"int_enum"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
-                    self->_intEnum = [value integerValue];
+                    self->_intEnum = (EverythingIntEnum)[value integerValue];
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertyIntEnum = 1;
             }
@@ -969,6 +996,24 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"nsinteger_enum"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_nsintegerEnum = (EverythingNsintegerEnum)[value integerValue];
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"nsuinteger_enum"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_nsuintegerEnum = (EverythingNsuintegerEnum)[value integerValue];
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"number_prop"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -1095,6 +1140,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"short_enum"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_shortEnum = (EverythingShortEnum)[value integerValue];
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyShortEnum = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"string_enum"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -1119,6 +1173,33 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                     self->_type = [value copy];
                 }
                 self->_everythingDirtyProperties.EverythingDirtyPropertyType = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"unsigned_char_enum"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_unsignedCharEnum = (EverythingUnsignedCharEnum)[value integerValue];
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"unsigned_int_enum"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_unsignedIntEnum = (EverythingUnsignedIntEnum)[value integerValue];
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum = 1;
+            }
+        }
+        {
+            __unsafe_unretained id value = modelDictionary[@"unsigned_short_enum"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_unsignedShortEnum = (EverythingUnsignedShortEnum)[value integerValue];
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum = 1;
             }
         }
         {
@@ -1147,6 +1228,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         return self;
     }
     _arrayProp = builder.arrayProp;
+    _charEnum = builder.charEnum;
     _dateProp = builder.dateProp;
     _intEnum = builder.intEnum;
     _intProp = builder.intProp;
@@ -1163,6 +1245,8 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _mapWithObjectValues = builder.mapWithObjectValues;
     _mapWithOtherModelValues = builder.mapWithOtherModelValues;
     _mapWithPrimitiveValues = builder.mapWithPrimitiveValues;
+    _nsintegerEnum = builder.nsintegerEnum;
+    _nsuintegerEnum = builder.nsuintegerEnum;
     _numberProp = builder.numberProp;
     _otherModelProp = builder.otherModelProp;
     _polymorphicProp = builder.polymorphicProp;
@@ -1170,9 +1254,13 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _setPropWithOtherModelValues = builder.setPropWithOtherModelValues;
     _setPropWithPrimitiveValues = builder.setPropWithPrimitiveValues;
     _setPropWithValues = builder.setPropWithValues;
+    _shortEnum = builder.shortEnum;
     _stringEnum = builder.stringEnum;
     _stringProp = builder.stringProp;
     _type = builder.type;
+    _unsignedCharEnum = builder.unsignedCharEnum;
+    _unsignedIntEnum = builder.unsignedIntEnum;
+    _unsignedShortEnum = builder.unsignedShortEnum;
     _uriProp = builder.uriProp;
     _everythingBooleanProperties.EverythingBooleanBooleanProp = builder.booleanProp == 1;
     _everythingDirtyProperties = builder.everythingDirtyProperties;
@@ -1184,11 +1272,14 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
-    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:29];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:36];
     [descriptionFields addObject:parentDebugDescription];
     struct EverythingDirtyProperties props = _everythingDirtyProperties;
     if (props.EverythingDirtyPropertyArrayProp) {
         [descriptionFields addObject:[@"_arrayProp = " stringByAppendingFormat:@"%@", _arrayProp]];
+    }
+    if (props.EverythingDirtyPropertyCharEnum) {
+        [descriptionFields addObject:[@"_charEnum = " stringByAppendingFormat:@"%@", @(_charEnum)]];
     }
     if (props.EverythingDirtyPropertyDateProp) {
         [descriptionFields addObject:[@"_dateProp = " stringByAppendingFormat:@"%@", _dateProp]];
@@ -1238,6 +1329,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (props.EverythingDirtyPropertyMapWithPrimitiveValues) {
         [descriptionFields addObject:[@"_mapWithPrimitiveValues = " stringByAppendingFormat:@"%@", _mapWithPrimitiveValues]];
     }
+    if (props.EverythingDirtyPropertyNsintegerEnum) {
+        [descriptionFields addObject:[@"_nsintegerEnum = " stringByAppendingFormat:@"%@", @(_nsintegerEnum)]];
+    }
+    if (props.EverythingDirtyPropertyNsuintegerEnum) {
+        [descriptionFields addObject:[@"_nsuintegerEnum = " stringByAppendingFormat:@"%@", @(_nsuintegerEnum)]];
+    }
     if (props.EverythingDirtyPropertyNumberProp) {
         [descriptionFields addObject:[@"_numberProp = " stringByAppendingFormat:@"%@", @(_numberProp)]];
     }
@@ -1259,6 +1356,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (props.EverythingDirtyPropertySetPropWithValues) {
         [descriptionFields addObject:[@"_setPropWithValues = " stringByAppendingFormat:@"%@", _setPropWithValues]];
     }
+    if (props.EverythingDirtyPropertyShortEnum) {
+        [descriptionFields addObject:[@"_shortEnum = " stringByAppendingFormat:@"%@", @(_shortEnum)]];
+    }
     if (props.EverythingDirtyPropertyStringEnum) {
         [descriptionFields addObject:[@"_stringEnum = " stringByAppendingFormat:@"%@", EverythingStringEnumToString(_stringEnum)]];
     }
@@ -1267,6 +1367,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (props.EverythingDirtyPropertyType) {
         [descriptionFields addObject:[@"_type = " stringByAppendingFormat:@"%@", _type]];
+    }
+    if (props.EverythingDirtyPropertyUnsignedCharEnum) {
+        [descriptionFields addObject:[@"_unsignedCharEnum = " stringByAppendingFormat:@"%@", @(_unsignedCharEnum)]];
+    }
+    if (props.EverythingDirtyPropertyUnsignedIntEnum) {
+        [descriptionFields addObject:[@"_unsignedIntEnum = " stringByAppendingFormat:@"%@", @(_unsignedIntEnum)]];
+    }
+    if (props.EverythingDirtyPropertyUnsignedShortEnum) {
+        [descriptionFields addObject:[@"_unsignedShortEnum = " stringByAppendingFormat:@"%@", @(_unsignedShortEnum)]];
     }
     if (props.EverythingDirtyPropertyUriProp) {
         [descriptionFields addObject:[@"_uriProp = " stringByAppendingFormat:@"%@", _uriProp]];
@@ -1297,11 +1406,18 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     return (
         (anObject != nil) &&
+        (_unsignedShortEnum == anObject.unsignedShortEnum) &&
+        (_unsignedIntEnum == anObject.unsignedIntEnum) &&
+        (_unsignedCharEnum == anObject.unsignedCharEnum) &&
         (_stringEnum == anObject.stringEnum) &&
+        (_shortEnum == anObject.shortEnum) &&
         (_numberProp == anObject.numberProp) &&
+        (_nsuintegerEnum == anObject.nsuintegerEnum) &&
+        (_nsintegerEnum == anObject.nsintegerEnum) &&
         (_intProp == anObject.intProp) &&
         (_intEnum == anObject.intEnum) &&
-        (_everythingBooleanProperties.EverythingBooleanBooleanProp == anObject.booleanProp) &&
+        (_charEnum == anObject.charEnum) &&
+        (_booleanProp == anObject.booleanProp) &&
         (_arrayProp == anObject.arrayProp || [_arrayProp isEqualToArray:anObject.arrayProp]) &&
         (_dateProp == anObject.dateProp || [_dateProp isEqualToDate:anObject.dateProp]) &&
         (_listPolymorphicValues == anObject.listPolymorphicValues || [_listPolymorphicValues isEqualToArray:anObject.listPolymorphicValues]) &&
@@ -1333,7 +1449,8 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     NSUInteger subhashes[] = {
         17,
         [_arrayProp hash],
-        (_everythingBooleanProperties.EverythingBooleanBooleanProp ? 1231 : 1237),
+        (_booleanProp ? 1231 : 1237),
+        (NSUInteger)_charEnum,
         [_dateProp hash],
         (NSUInteger)_intEnum,
         (NSUInteger)_intProp,
@@ -1350,6 +1467,8 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [_mapWithObjectValues hash],
         [_mapWithOtherModelValues hash],
         [_mapWithPrimitiveValues hash],
+        (NSUInteger)_nsintegerEnum,
+        (NSUInteger)_nsuintegerEnum,
          [@(_numberProp) hash],
         [_otherModelProp hash],
         [_polymorphicProp hash],
@@ -1357,9 +1476,13 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [_setPropWithOtherModelValues hash],
         [_setPropWithPrimitiveValues hash],
         [_setPropWithValues hash],
+        (NSUInteger)_shortEnum,
         (NSUInteger)_stringEnum,
         [_stringProp hash],
         [_type hash],
+        (NSUInteger)_unsignedCharEnum,
+        (NSUInteger)_unsignedIntEnum,
+        (NSUInteger)_unsignedShortEnum,
         [_uriProp hash]
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
@@ -1377,13 +1500,16 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 }
 - (NSDictionary *)dictionaryObjectRepresentation
 {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:29];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:36];
     if (_everythingDirtyProperties.EverythingDirtyPropertyArrayProp) {
         if (_arrayProp != nil) {
             [dict setObject:_arrayProp forKey:@"array_prop"];
         } else {
             [dict setObject:[NSNull null] forKey:@"array_prop"];
         }
+    }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyCharEnum) {
+        [dict setObject:@(_charEnum) forKey:@"char_enum"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyDateProp) {
         if (_dateProp != nil) {
@@ -1565,6 +1691,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             [dict setObject:[NSNull null] forKey:@"map_with_primitive_values"];
         }
     }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum) {
+        [dict setObject:@(_nsintegerEnum) forKey:@"nsinteger_enum"];
+    }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum) {
+        [dict setObject:@(_nsuintegerEnum) forKey:@"nsuinteger_enum"];
+    }
     if (_everythingDirtyProperties.EverythingDirtyPropertyNumberProp) {
         [dict setObject:@(_numberProp) forKey: @"number_prop"];
     }
@@ -1625,6 +1757,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             [dict setObject:[NSNull null] forKey:@"set_prop_with_values"];
         }
     }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyShortEnum) {
+        [dict setObject:@(_shortEnum) forKey:@"short_enum"];
+    }
     if (_everythingDirtyProperties.EverythingDirtyPropertyStringEnum) {
         [dict setObject:EverythingStringEnumToString(_stringEnum) forKey:@"string_enum"];
     }
@@ -1641,6 +1776,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         } else {
             [dict setObject:[NSNull null] forKey:@"type"];
         }
+    }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum) {
+        [dict setObject:@(_unsignedCharEnum) forKey:@"unsigned_char_enum"];
+    }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum) {
+        [dict setObject:@(_unsignedIntEnum) forKey:@"unsigned_int_enum"];
+    }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum) {
+        [dict setObject:@(_unsignedShortEnum) forKey:@"unsigned_short_enum"];
     }
     if (_everythingDirtyProperties.EverythingDirtyPropertyUriProp) {
         if (_uriProp != nil) {
@@ -1661,6 +1805,10 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 - (BOOL)isBooleanPropSet
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyBooleanProp == 1;
+}
+- (BOOL)isCharEnumSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyCharEnum == 1;
 }
 - (BOOL)isDatePropSet
 {
@@ -1726,6 +1874,14 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues == 1;
 }
+- (BOOL)isNsintegerEnumSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum == 1;
+}
+- (BOOL)isNsuintegerEnumSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum == 1;
+}
 - (BOOL)isNumberPropSet
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyNumberProp == 1;
@@ -1754,6 +1910,10 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     return _everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues == 1;
 }
+- (BOOL)isShortEnumSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyShortEnum == 1;
+}
 - (BOOL)isStringEnumSet
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyStringEnum == 1;
@@ -1766,13 +1926,21 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyType == 1;
 }
+- (BOOL)isUnsignedCharEnumSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum == 1;
+}
+- (BOOL)isUnsignedIntEnumSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum == 1;
+}
+- (BOOL)isUnsignedShortEnumSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum == 1;
+}
 - (BOOL)isUriPropSet
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyUriProp == 1;
-}
-- (BOOL)booleanProp
-{
-    return _everythingBooleanProperties.EverythingBooleanBooleanProp;
 }
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone
@@ -1790,8 +1958,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         return self;
     }
     _arrayProp = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@"array_prop"];
+    _charEnum = (EverythingCharEnum)[aDecoder decodeIntegerForKey:@"char_enum"];
     _dateProp = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"date_prop"];
-    _intEnum = [aDecoder decodeIntegerForKey:@"int_enum"];
+    _intEnum = (EverythingIntEnum)[aDecoder decodeIntegerForKey:@"int_enum"];
     _intProp = [aDecoder decodeIntegerForKey:@"int_prop"];
     _listPolymorphicValues = [aDecoder decodeObjectOfClass:[NSArray class] forKey:@"list_polymorphic_values"];
     _listWithListAndOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSArray class], [User class]]] forKey:@"list_with_list_and_other_model_values"];
@@ -1806,6 +1975,8 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _mapWithObjectValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"map_with_object_values"];
     _mapWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class]]] forKey:@"map_with_other_model_values"];
     _mapWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"map_with_primitive_values"];
+    _nsintegerEnum = (EverythingNsintegerEnum)[aDecoder decodeIntegerForKey:@"nsinteger_enum"];
+    _nsuintegerEnum = (EverythingNsuintegerEnum)[aDecoder decodeIntegerForKey:@"nsuinteger_enum"];
     _numberProp = [aDecoder decodeDoubleForKey:@"number_prop"];
     _otherModelProp = [aDecoder decodeObjectOfClass:[User class] forKey:@"other_model_prop"];
     _polymorphicProp = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [Everything class], [Image class], [NSDate class], [NSNumber class], [NSString class], [NSURL class], [Pin class], [User class]]] forKey:@"polymorphic_prop"];
@@ -1813,13 +1984,18 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _setPropWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [User class]]] forKey:@"set_prop_with_other_model_values"];
     _setPropWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSSet class]]] forKey:@"set_prop_with_primitive_values"];
     _setPropWithValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [NSString class]]] forKey:@"set_prop_with_values"];
-    _stringEnum = [aDecoder decodeIntegerForKey:@"string_enum"];
+    _shortEnum = (EverythingShortEnum)[aDecoder decodeIntegerForKey:@"short_enum"];
+    _stringEnum = (EverythingStringEnum)[aDecoder decodeIntegerForKey:@"string_enum"];
     _stringProp = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"string_prop"];
     _type = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"type"];
+    _unsignedCharEnum = (EverythingUnsignedCharEnum)[aDecoder decodeIntegerForKey:@"unsigned_char_enum"];
+    _unsignedIntEnum = (EverythingUnsignedIntEnum)[aDecoder decodeIntegerForKey:@"unsigned_int_enum"];
+    _unsignedShortEnum = (EverythingUnsignedShortEnum)[aDecoder decodeIntegerForKey:@"unsigned_short_enum"];
     _uriProp = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"uri_prop"];
     _everythingBooleanProperties.EverythingBooleanBooleanProp = [aDecoder decodeBoolForKey:@"boolean_prop"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyArrayProp = [aDecoder decodeIntForKey:@"array_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyBooleanProp = [aDecoder decodeIntForKey:@"boolean_prop_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyCharEnum = [aDecoder decodeIntForKey:@"char_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyDateProp = [aDecoder decodeIntForKey:@"date_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyIntEnum = [aDecoder decodeIntForKey:@"int_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyIntProp = [aDecoder decodeIntForKey:@"int_prop_dirty_property"] & 0x1;
@@ -1836,6 +2012,8 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues = [aDecoder decodeIntForKey:@"map_with_object_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues = [aDecoder decodeIntForKey:@"map_with_other_model_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues = [aDecoder decodeIntForKey:@"map_with_primitive_values_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum = [aDecoder decodeIntForKey:@"nsinteger_enum_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum = [aDecoder decodeIntForKey:@"nsuinteger_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyNumberProp = [aDecoder decodeIntForKey:@"number_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyOtherModelProp = [aDecoder decodeIntForKey:@"other_model_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp = [aDecoder decodeIntForKey:@"polymorphic_prop_dirty_property"] & 0x1;
@@ -1843,9 +2021,13 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _everythingDirtyProperties.EverythingDirtyPropertySetPropWithOtherModelValues = [aDecoder decodeIntForKey:@"set_prop_with_other_model_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertySetPropWithPrimitiveValues = [aDecoder decodeIntForKey:@"set_prop_with_primitive_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues = [aDecoder decodeIntForKey:@"set_prop_with_values_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyShortEnum = [aDecoder decodeIntForKey:@"short_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyStringEnum = [aDecoder decodeIntForKey:@"string_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyStringProp = [aDecoder decodeIntForKey:@"string_prop_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyType = [aDecoder decodeIntForKey:@"type_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum = [aDecoder decodeIntForKey:@"unsigned_char_enum_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum = [aDecoder decodeIntForKey:@"unsigned_int_enum_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum = [aDecoder decodeIntForKey:@"unsigned_short_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyUriProp = [aDecoder decodeIntForKey:@"uri_prop_dirty_property"] & 0x1;
     if ([self class] == [Everything class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
@@ -1856,6 +2038,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     [aCoder encodeObject:self.arrayProp forKey:@"array_prop"];
     [aCoder encodeBool:self.booleanProp forKey:@"boolean_prop"];
+    [aCoder encodeInteger:self.charEnum forKey:@"char_enum"];
     [aCoder encodeObject:self.dateProp forKey:@"date_prop"];
     [aCoder encodeInteger:self.intEnum forKey:@"int_enum"];
     [aCoder encodeInteger:self.intProp forKey:@"int_prop"];
@@ -1872,6 +2055,8 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeObject:self.mapWithObjectValues forKey:@"map_with_object_values"];
     [aCoder encodeObject:self.mapWithOtherModelValues forKey:@"map_with_other_model_values"];
     [aCoder encodeObject:self.mapWithPrimitiveValues forKey:@"map_with_primitive_values"];
+    [aCoder encodeInteger:self.nsintegerEnum forKey:@"nsinteger_enum"];
+    [aCoder encodeInteger:self.nsuintegerEnum forKey:@"nsuinteger_enum"];
     [aCoder encodeDouble:self.numberProp forKey:@"number_prop"];
     [aCoder encodeObject:self.otherModelProp forKey:@"other_model_prop"];
     [aCoder encodeObject:self.polymorphicProp forKey:@"polymorphic_prop"];
@@ -1879,12 +2064,17 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeObject:self.setPropWithOtherModelValues forKey:@"set_prop_with_other_model_values"];
     [aCoder encodeObject:self.setPropWithPrimitiveValues forKey:@"set_prop_with_primitive_values"];
     [aCoder encodeObject:self.setPropWithValues forKey:@"set_prop_with_values"];
+    [aCoder encodeInteger:self.shortEnum forKey:@"short_enum"];
     [aCoder encodeInteger:self.stringEnum forKey:@"string_enum"];
     [aCoder encodeObject:self.stringProp forKey:@"string_prop"];
     [aCoder encodeObject:self.type forKey:@"type"];
+    [aCoder encodeInteger:self.unsignedCharEnum forKey:@"unsigned_char_enum"];
+    [aCoder encodeInteger:self.unsignedIntEnum forKey:@"unsigned_int_enum"];
+    [aCoder encodeInteger:self.unsignedShortEnum forKey:@"unsigned_short_enum"];
     [aCoder encodeObject:self.uriProp forKey:@"uri_prop"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyArrayProp forKey:@"array_prop_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyBooleanProp forKey:@"boolean_prop_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyCharEnum forKey:@"char_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyDateProp forKey:@"date_prop_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyIntEnum forKey:@"int_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyIntProp forKey:@"int_prop_dirty_property"];
@@ -1901,6 +2091,8 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues forKey:@"map_with_object_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues forKey:@"map_with_other_model_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues forKey:@"map_with_primitive_values_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum forKey:@"nsinteger_enum_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum forKey:@"nsuinteger_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNumberProp forKey:@"number_prop_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyOtherModelProp forKey:@"other_model_prop_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp forKey:@"polymorphic_prop_dirty_property"];
@@ -1908,9 +2100,13 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertySetPropWithOtherModelValues forKey:@"set_prop_with_other_model_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertySetPropWithPrimitiveValues forKey:@"set_prop_with_primitive_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues forKey:@"set_prop_with_values_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyShortEnum forKey:@"short_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyStringEnum forKey:@"string_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyStringProp forKey:@"string_prop_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyType forKey:@"type_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum forKey:@"unsigned_char_enum_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum forKey:@"unsigned_int_enum_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum forKey:@"unsigned_short_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyUriProp forKey:@"uri_prop_dirty_property"];
 }
 @end
@@ -1928,6 +2124,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyBooleanProp) {
         _booleanProp = modelObject.booleanProp;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyCharEnum) {
+        _charEnum = modelObject.charEnum;
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyDateProp) {
         _dateProp = modelObject.dateProp;
@@ -1977,6 +2176,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues) {
         _mapWithPrimitiveValues = modelObject.mapWithPrimitiveValues;
     }
+    if (everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum) {
+        _nsintegerEnum = modelObject.nsintegerEnum;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum) {
+        _nsuintegerEnum = modelObject.nsuintegerEnum;
+    }
     if (everythingDirtyProperties.EverythingDirtyPropertyNumberProp) {
         _numberProp = modelObject.numberProp;
     }
@@ -1998,6 +2203,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues) {
         _setPropWithValues = modelObject.setPropWithValues;
     }
+    if (everythingDirtyProperties.EverythingDirtyPropertyShortEnum) {
+        _shortEnum = modelObject.shortEnum;
+    }
     if (everythingDirtyProperties.EverythingDirtyPropertyStringEnum) {
         _stringEnum = modelObject.stringEnum;
     }
@@ -2006,6 +2214,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyType) {
         _type = modelObject.type;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum) {
+        _unsignedCharEnum = modelObject.unsignedCharEnum;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum) {
+        _unsignedIntEnum = modelObject.unsignedIntEnum;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum) {
+        _unsignedShortEnum = modelObject.unsignedShortEnum;
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyUriProp) {
         _uriProp = modelObject.uriProp;
@@ -2026,6 +2243,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyBooleanProp) {
         builder.booleanProp = modelObject.booleanProp;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyCharEnum) {
+        builder.charEnum = modelObject.charEnum;
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyDateProp) {
         builder.dateProp = modelObject.dateProp;
@@ -2075,6 +2295,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues) {
         builder.mapWithPrimitiveValues = modelObject.mapWithPrimitiveValues;
     }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum) {
+        builder.nsintegerEnum = modelObject.nsintegerEnum;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum) {
+        builder.nsuintegerEnum = modelObject.nsuintegerEnum;
+    }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyNumberProp) {
         builder.numberProp = modelObject.numberProp;
     }
@@ -2105,6 +2331,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues) {
         builder.setPropWithValues = modelObject.setPropWithValues;
     }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyShortEnum) {
+        builder.shortEnum = modelObject.shortEnum;
+    }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyStringEnum) {
         builder.stringEnum = modelObject.stringEnum;
     }
@@ -2113,6 +2342,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyType) {
         builder.type = modelObject.type;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum) {
+        builder.unsignedCharEnum = modelObject.unsignedCharEnum;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum) {
+        builder.unsignedIntEnum = modelObject.unsignedIntEnum;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum) {
+        builder.unsignedShortEnum = modelObject.unsignedShortEnum;
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyUriProp) {
         builder.uriProp = modelObject.uriProp;
@@ -2127,6 +2365,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     _booleanProp = booleanProp;
     _everythingDirtyProperties.EverythingDirtyPropertyBooleanProp = 1;
+}
+- (void)setCharEnum:(EverythingCharEnum)charEnum
+{
+    _charEnum = charEnum;
+    _everythingDirtyProperties.EverythingDirtyPropertyCharEnum = 1;
 }
 - (void)setDateProp:(NSDate *)dateProp
 {
@@ -2208,6 +2451,16 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _mapWithPrimitiveValues = mapWithPrimitiveValues;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues = 1;
 }
+- (void)setNsintegerEnum:(EverythingNsintegerEnum)nsintegerEnum
+{
+    _nsintegerEnum = nsintegerEnum;
+    _everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum = 1;
+}
+- (void)setNsuintegerEnum:(EverythingNsuintegerEnum)nsuintegerEnum
+{
+    _nsuintegerEnum = nsuintegerEnum;
+    _everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum = 1;
+}
 - (void)setNumberProp:(double)numberProp
 {
     _numberProp = numberProp;
@@ -2243,6 +2496,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _setPropWithValues = setPropWithValues;
     _everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues = 1;
 }
+- (void)setShortEnum:(EverythingShortEnum)shortEnum
+{
+    _shortEnum = shortEnum;
+    _everythingDirtyProperties.EverythingDirtyPropertyShortEnum = 1;
+}
 - (void)setStringEnum:(EverythingStringEnum)stringEnum
 {
     _stringEnum = stringEnum;
@@ -2257,6 +2515,21 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     _type = [type copy];
     _everythingDirtyProperties.EverythingDirtyPropertyType = 1;
+}
+- (void)setUnsignedCharEnum:(EverythingUnsignedCharEnum)unsignedCharEnum
+{
+    _unsignedCharEnum = unsignedCharEnum;
+    _everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum = 1;
+}
+- (void)setUnsignedIntEnum:(EverythingUnsignedIntEnum)unsignedIntEnum
+{
+    _unsignedIntEnum = unsignedIntEnum;
+    _everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum = 1;
+}
+- (void)setUnsignedShortEnum:(EverythingUnsignedShortEnum)unsignedShortEnum
+{
+    _unsignedShortEnum = unsignedShortEnum;
+    _everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum = 1;
 }
 - (void)setUriProp:(NSURL *)uriProp
 {

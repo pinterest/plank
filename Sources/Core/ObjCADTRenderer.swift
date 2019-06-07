@@ -174,7 +174,8 @@ struct ObjCADTRenderer: ObjCFileRenderer {
             ObjCIR.Root.category(className: self.className,
                                  categoryName: nil,
                                  methods: [],
-                                 properties: props),
+                                 properties: props,
+                                 variables: []),
             ObjCIR.Root.classDecl(name: name,
                                   extends: nil,
                                   methods:
