@@ -382,33 +382,63 @@ public class Board {
         public void mergeFrom(Board model) {
             if (model.getUidIsSet()) {
                 this.uid = model.uid;
+                if (this._bits.length > ID_INDEX) {
+                    this._bits[ID_INDEX] = true;
+                }
             }
             if (model.getContributorsIsSet()) {
                 this.contributors = model.contributors;
+                if (this._bits.length > CONTRIBUTORS_INDEX) {
+                    this._bits[CONTRIBUTORS_INDEX] = true;
+                }
             }
             if (model.getCountsIsSet()) {
                 this.counts = model.counts;
+                if (this._bits.length > COUNTS_INDEX) {
+                    this._bits[COUNTS_INDEX] = true;
+                }
             }
             if (model.getCreatedAtIsSet()) {
                 this.createdAt = model.createdAt;
+                if (this._bits.length > CREATED_AT_INDEX) {
+                    this._bits[CREATED_AT_INDEX] = true;
+                }
             }
             if (model.getCreatorIsSet()) {
                 this.creator = model.creator;
+                if (this._bits.length > CREATOR_INDEX) {
+                    this._bits[CREATOR_INDEX] = true;
+                }
             }
             if (model.getCreatorURLIsSet()) {
                 this.creatorURL = model.creatorURL;
+                if (this._bits.length > CREATOR_URL_INDEX) {
+                    this._bits[CREATOR_URL_INDEX] = true;
+                }
             }
             if (model.getDescriptionIsSet()) {
                 this.description = model.description;
+                if (this._bits.length > DESCRIPTION_INDEX) {
+                    this._bits[DESCRIPTION_INDEX] = true;
+                }
             }
             if (model.getImageIsSet()) {
                 this.image = model.image;
+                if (this._bits.length > IMAGE_INDEX) {
+                    this._bits[IMAGE_INDEX] = true;
+                }
             }
             if (model.getNameIsSet()) {
                 this.name = model.name;
+                if (this._bits.length > NAME_INDEX) {
+                    this._bits[NAME_INDEX] = true;
+                }
             }
             if (model.getUrlIsSet()) {
                 this.url = model.url;
+                if (this._bits.length > URL_INDEX) {
+                    this._bits[URL_INDEX] = true;
+                }
             }
         }
     }
