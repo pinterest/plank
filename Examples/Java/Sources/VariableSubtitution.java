@@ -208,15 +208,27 @@ public class VariableSubtitution {
         public void mergeFrom(VariableSubtitution model) {
             if (model.getAllocPropIsSet()) {
                 this.allocProp = model.allocProp;
+                if (this._bits.length > ALLOC_PROP_INDEX) {
+                    this._bits[ALLOC_PROP_INDEX] = true;
+                }
             }
             if (model.getCopyPropIsSet()) {
                 this.copyProp = model.copyProp;
+                if (this._bits.length > COPY_PROP_INDEX) {
+                    this._bits[COPY_PROP_INDEX] = true;
+                }
             }
             if (model.getMutableCopyPropIsSet()) {
                 this.mutableCopyProp = model.mutableCopyProp;
+                if (this._bits.length > MUTABLE_COPY_PROP_INDEX) {
+                    this._bits[MUTABLE_COPY_PROP_INDEX] = true;
+                }
             }
             if (model.getNewPropIsSet()) {
                 this.newProp = model.newProp;
+                if (this._bits.length > NEW_PROP_INDEX) {
+                    this._bits[NEW_PROP_INDEX] = true;
+                }
             }
         }
     }

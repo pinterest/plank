@@ -179,12 +179,21 @@ public class Image {
         public void mergeFrom(Image model) {
             if (model.getHeightIsSet()) {
                 this.height = model.height;
+                if (this._bits.length > HEIGHT_INDEX) {
+                    this._bits[HEIGHT_INDEX] = true;
+                }
             }
             if (model.getUrlIsSet()) {
                 this.url = model.url;
+                if (this._bits.length > URL_INDEX) {
+                    this._bits[URL_INDEX] = true;
+                }
             }
             if (model.getWidthIsSet()) {
                 this.width = model.width;
+                if (this._bits.length > WIDTH_INDEX) {
+                    this._bits[WIDTH_INDEX] = true;
+                }
             }
         }
     }

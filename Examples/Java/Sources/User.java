@@ -386,33 +386,63 @@ public class User {
         public void mergeFrom(User model) {
             if (model.getBioIsSet()) {
                 this.bio = model.bio;
+                if (this._bits.length > BIO_INDEX) {
+                    this._bits[BIO_INDEX] = true;
+                }
             }
             if (model.getCountsIsSet()) {
                 this.counts = model.counts;
+                if (this._bits.length > COUNTS_INDEX) {
+                    this._bits[COUNTS_INDEX] = true;
+                }
             }
             if (model.getCreatedAtIsSet()) {
                 this.createdAt = model.createdAt;
+                if (this._bits.length > CREATED_AT_INDEX) {
+                    this._bits[CREATED_AT_INDEX] = true;
+                }
             }
             if (model.getEmailFrequencyIsSet()) {
                 this.emailFrequency = model.emailFrequency;
+                if (this._bits.length > EMAIL_FREQUENCY_INDEX) {
+                    this._bits[EMAIL_FREQUENCY_INDEX] = true;
+                }
             }
             if (model.getFirstNameIsSet()) {
                 this.firstName = model.firstName;
+                if (this._bits.length > FIRST_NAME_INDEX) {
+                    this._bits[FIRST_NAME_INDEX] = true;
+                }
             }
             if (model.getUidIsSet()) {
                 this.uid = model.uid;
+                if (this._bits.length > ID_INDEX) {
+                    this._bits[ID_INDEX] = true;
+                }
             }
             if (model.getImageIsSet()) {
                 this.image = model.image;
+                if (this._bits.length > IMAGE_INDEX) {
+                    this._bits[IMAGE_INDEX] = true;
+                }
             }
             if (model.getLastNameIsSet()) {
                 this.lastName = model.lastName;
+                if (this._bits.length > LAST_NAME_INDEX) {
+                    this._bits[LAST_NAME_INDEX] = true;
+                }
             }
             if (model.getTypeIsSet()) {
                 this.type = model.type;
+                if (this._bits.length > TYPE_INDEX) {
+                    this._bits[TYPE_INDEX] = true;
+                }
             }
             if (model.getUsernameIsSet()) {
                 this.username = model.username;
+                if (this._bits.length > USERNAME_INDEX) {
+                    this._bits[USERNAME_INDEX] = true;
+                }
             }
         }
     }
