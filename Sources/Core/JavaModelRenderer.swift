@@ -205,9 +205,12 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderMerge() -> JavaIR.Method {
         let body = (transitiveProperties.map { param, _ in
-            JavaIR.ifBlock(condition: "model.get" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "IsSet()") {
-                ["this." + Languages.java.snakeCaseToPropertyName(param) + " = model." + Languages.java.snakeCaseToPropertyName(param) + ";"]
-            }
+            JavaIR.ifBlock(condition: "model.get" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "IsSet()") { [
+                "this." + Languages.java.snakeCaseToPropertyName(param) + " = model." + Languages.java.snakeCaseToPropertyName(param) + ";",
+                JavaIR.ifBlock(condition: "this._bits.length > " + param.uppercased() + "_INDEX") { [
+                    "this._bits[" + param.uppercased() + "_INDEX] = true;",
+                ] },
+            ] }
         })
         return JavaIR.method([.public], "void mergeFrom(" + className + " model)") { body }
     }

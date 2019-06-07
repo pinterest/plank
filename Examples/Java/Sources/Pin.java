@@ -603,54 +603,105 @@ public class Pin {
         public void mergeFrom(Pin model) {
             if (model.getAttributionIsSet()) {
                 this.attribution = model.attribution;
+                if (this._bits.length > ATTRIBUTION_INDEX) {
+                    this._bits[ATTRIBUTION_INDEX] = true;
+                }
             }
             if (model.getAttributionObjectsIsSet()) {
                 this.attributionObjects = model.attributionObjects;
+                if (this._bits.length > ATTRIBUTION_OBJECTS_INDEX) {
+                    this._bits[ATTRIBUTION_OBJECTS_INDEX] = true;
+                }
             }
             if (model.getBoardIsSet()) {
                 this.board = model.board;
+                if (this._bits.length > BOARD_INDEX) {
+                    this._bits[BOARD_INDEX] = true;
+                }
             }
             if (model.getColorIsSet()) {
                 this.color = model.color;
+                if (this._bits.length > COLOR_INDEX) {
+                    this._bits[COLOR_INDEX] = true;
+                }
             }
             if (model.getCountsIsSet()) {
                 this.counts = model.counts;
+                if (this._bits.length > COUNTS_INDEX) {
+                    this._bits[COUNTS_INDEX] = true;
+                }
             }
             if (model.getCreatedAtIsSet()) {
                 this.createdAt = model.createdAt;
+                if (this._bits.length > CREATED_AT_INDEX) {
+                    this._bits[CREATED_AT_INDEX] = true;
+                }
             }
             if (model.getCreatorIsSet()) {
                 this.creator = model.creator;
+                if (this._bits.length > CREATOR_INDEX) {
+                    this._bits[CREATOR_INDEX] = true;
+                }
             }
             if (model.getDescriptionIsSet()) {
                 this.description = model.description;
+                if (this._bits.length > DESCRIPTION_INDEX) {
+                    this._bits[DESCRIPTION_INDEX] = true;
+                }
             }
             if (model.getUidIsSet()) {
                 this.uid = model.uid;
+                if (this._bits.length > ID_INDEX) {
+                    this._bits[ID_INDEX] = true;
+                }
             }
             if (model.getImageIsSet()) {
                 this.image = model.image;
+                if (this._bits.length > IMAGE_INDEX) {
+                    this._bits[IMAGE_INDEX] = true;
+                }
             }
             if (model.getInStockIsSet()) {
                 this.inStock = model.inStock;
+                if (this._bits.length > IN_STOCK_INDEX) {
+                    this._bits[IN_STOCK_INDEX] = true;
+                }
             }
             if (model.getLinkIsSet()) {
                 this.link = model.link;
+                if (this._bits.length > LINK_INDEX) {
+                    this._bits[LINK_INDEX] = true;
+                }
             }
             if (model.getMediaIsSet()) {
                 this.media = model.media;
+                if (this._bits.length > MEDIA_INDEX) {
+                    this._bits[MEDIA_INDEX] = true;
+                }
             }
             if (model.getNoteIsSet()) {
                 this.note = model.note;
+                if (this._bits.length > NOTE_INDEX) {
+                    this._bits[NOTE_INDEX] = true;
+                }
             }
             if (model.getTagsIsSet()) {
                 this.tags = model.tags;
+                if (this._bits.length > TAGS_INDEX) {
+                    this._bits[TAGS_INDEX] = true;
+                }
             }
             if (model.getUrlIsSet()) {
                 this.url = model.url;
+                if (this._bits.length > URL_INDEX) {
+                    this._bits[URL_INDEX] = true;
+                }
             }
             if (model.getVisualSearchAttrsIsSet()) {
                 this.visualSearchAttrs = model.visualSearchAttrs;
+                if (this._bits.length > VISUAL_SEARCH_ATTRS_INDEX) {
+                    this._bits[VISUAL_SEARCH_ATTRS_INDEX] = true;
+                }
             }
         }
     }

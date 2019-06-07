@@ -121,6 +121,9 @@ public class Model {
         public void mergeFrom(Model model) {
             if (model.getUidIsSet()) {
                 this.uid = model.uid;
+                if (this._bits.length > ID_INDEX) {
+                    this._bits[ID_INDEX] = true;
+                }
             }
         }
     }

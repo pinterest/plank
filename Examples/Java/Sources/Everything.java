@@ -1255,111 +1255,219 @@ public class Everything {
         public void mergeFrom(Everything model) {
             if (model.getArrayPropIsSet()) {
                 this.arrayProp = model.arrayProp;
+                if (this._bits.length > ARRAY_PROP_INDEX) {
+                    this._bits[ARRAY_PROP_INDEX] = true;
+                }
             }
             if (model.getBooleanPropIsSet()) {
                 this.booleanProp = model.booleanProp;
+                if (this._bits.length > BOOLEAN_PROP_INDEX) {
+                    this._bits[BOOLEAN_PROP_INDEX] = true;
+                }
             }
             if (model.getCharEnumIsSet()) {
                 this.charEnum = model.charEnum;
+                if (this._bits.length > CHAR_ENUM_INDEX) {
+                    this._bits[CHAR_ENUM_INDEX] = true;
+                }
             }
             if (model.getDatePropIsSet()) {
                 this.dateProp = model.dateProp;
+                if (this._bits.length > DATE_PROP_INDEX) {
+                    this._bits[DATE_PROP_INDEX] = true;
+                }
             }
             if (model.getIntEnumIsSet()) {
                 this.intEnum = model.intEnum;
+                if (this._bits.length > INT_ENUM_INDEX) {
+                    this._bits[INT_ENUM_INDEX] = true;
+                }
             }
             if (model.getIntPropIsSet()) {
                 this.intProp = model.intProp;
+                if (this._bits.length > INT_PROP_INDEX) {
+                    this._bits[INT_PROP_INDEX] = true;
+                }
             }
             if (model.getListPolymorphicValuesIsSet()) {
                 this.listPolymorphicValues = model.listPolymorphicValues;
+                if (this._bits.length > LIST_POLYMORPHIC_VALUES_INDEX) {
+                    this._bits[LIST_POLYMORPHIC_VALUES_INDEX] = true;
+                }
             }
             if (model.getListWithListAndOtherModelValuesIsSet()) {
                 this.listWithListAndOtherModelValues = model.listWithListAndOtherModelValues;
+                if (this._bits.length > LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX) {
+                    this._bits[LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX] = true;
+                }
             }
             if (model.getListWithMapAndOtherModelValuesIsSet()) {
                 this.listWithMapAndOtherModelValues = model.listWithMapAndOtherModelValues;
+                if (this._bits.length > LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX) {
+                    this._bits[LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX] = true;
+                }
             }
             if (model.getListWithObjectValuesIsSet()) {
                 this.listWithObjectValues = model.listWithObjectValues;
+                if (this._bits.length > LIST_WITH_OBJECT_VALUES_INDEX) {
+                    this._bits[LIST_WITH_OBJECT_VALUES_INDEX] = true;
+                }
             }
             if (model.getListWithOtherModelValuesIsSet()) {
                 this.listWithOtherModelValues = model.listWithOtherModelValues;
+                if (this._bits.length > LIST_WITH_OTHER_MODEL_VALUES_INDEX) {
+                    this._bits[LIST_WITH_OTHER_MODEL_VALUES_INDEX] = true;
+                }
             }
             if (model.getListWithPrimitiveValuesIsSet()) {
                 this.listWithPrimitiveValues = model.listWithPrimitiveValues;
+                if (this._bits.length > LIST_WITH_PRIMITIVE_VALUES_INDEX) {
+                    this._bits[LIST_WITH_PRIMITIVE_VALUES_INDEX] = true;
+                }
             }
             if (model.getMapPolymorphicValuesIsSet()) {
                 this.mapPolymorphicValues = model.mapPolymorphicValues;
+                if (this._bits.length > MAP_POLYMORPHIC_VALUES_INDEX) {
+                    this._bits[MAP_POLYMORPHIC_VALUES_INDEX] = true;
+                }
             }
             if (model.getMapPropIsSet()) {
                 this.mapProp = model.mapProp;
+                if (this._bits.length > MAP_PROP_INDEX) {
+                    this._bits[MAP_PROP_INDEX] = true;
+                }
             }
             if (model.getMapWithListAndOtherModelValuesIsSet()) {
                 this.mapWithListAndOtherModelValues = model.mapWithListAndOtherModelValues;
+                if (this._bits.length > MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX) {
+                    this._bits[MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX] = true;
+                }
             }
             if (model.getMapWithMapAndOtherModelValuesIsSet()) {
                 this.mapWithMapAndOtherModelValues = model.mapWithMapAndOtherModelValues;
+                if (this._bits.length > MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX) {
+                    this._bits[MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX] = true;
+                }
             }
             if (model.getMapWithObjectValuesIsSet()) {
                 this.mapWithObjectValues = model.mapWithObjectValues;
+                if (this._bits.length > MAP_WITH_OBJECT_VALUES_INDEX) {
+                    this._bits[MAP_WITH_OBJECT_VALUES_INDEX] = true;
+                }
             }
             if (model.getMapWithOtherModelValuesIsSet()) {
                 this.mapWithOtherModelValues = model.mapWithOtherModelValues;
+                if (this._bits.length > MAP_WITH_OTHER_MODEL_VALUES_INDEX) {
+                    this._bits[MAP_WITH_OTHER_MODEL_VALUES_INDEX] = true;
+                }
             }
             if (model.getMapWithPrimitiveValuesIsSet()) {
                 this.mapWithPrimitiveValues = model.mapWithPrimitiveValues;
+                if (this._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX) {
+                    this._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX] = true;
+                }
             }
             if (model.getNsintegerEnumIsSet()) {
                 this.nsintegerEnum = model.nsintegerEnum;
+                if (this._bits.length > NSINTEGER_ENUM_INDEX) {
+                    this._bits[NSINTEGER_ENUM_INDEX] = true;
+                }
             }
             if (model.getNsuintegerEnumIsSet()) {
                 this.nsuintegerEnum = model.nsuintegerEnum;
+                if (this._bits.length > NSUINTEGER_ENUM_INDEX) {
+                    this._bits[NSUINTEGER_ENUM_INDEX] = true;
+                }
             }
             if (model.getNumberPropIsSet()) {
                 this.numberProp = model.numberProp;
+                if (this._bits.length > NUMBER_PROP_INDEX) {
+                    this._bits[NUMBER_PROP_INDEX] = true;
+                }
             }
             if (model.getOtherModelPropIsSet()) {
                 this.otherModelProp = model.otherModelProp;
+                if (this._bits.length > OTHER_MODEL_PROP_INDEX) {
+                    this._bits[OTHER_MODEL_PROP_INDEX] = true;
+                }
             }
             if (model.getPolymorphicPropIsSet()) {
                 this.polymorphicProp = model.polymorphicProp;
+                if (this._bits.length > POLYMORPHIC_PROP_INDEX) {
+                    this._bits[POLYMORPHIC_PROP_INDEX] = true;
+                }
             }
             if (model.getSetPropIsSet()) {
                 this.setProp = model.setProp;
+                if (this._bits.length > SET_PROP_INDEX) {
+                    this._bits[SET_PROP_INDEX] = true;
+                }
             }
             if (model.getSetPropWithOtherModelValuesIsSet()) {
                 this.setPropWithOtherModelValues = model.setPropWithOtherModelValues;
+                if (this._bits.length > SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX) {
+                    this._bits[SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX] = true;
+                }
             }
             if (model.getSetPropWithPrimitiveValuesIsSet()) {
                 this.setPropWithPrimitiveValues = model.setPropWithPrimitiveValues;
+                if (this._bits.length > SET_PROP_WITH_PRIMITIVE_VALUES_INDEX) {
+                    this._bits[SET_PROP_WITH_PRIMITIVE_VALUES_INDEX] = true;
+                }
             }
             if (model.getSetPropWithValuesIsSet()) {
                 this.setPropWithValues = model.setPropWithValues;
+                if (this._bits.length > SET_PROP_WITH_VALUES_INDEX) {
+                    this._bits[SET_PROP_WITH_VALUES_INDEX] = true;
+                }
             }
             if (model.getShortEnumIsSet()) {
                 this.shortEnum = model.shortEnum;
+                if (this._bits.length > SHORT_ENUM_INDEX) {
+                    this._bits[SHORT_ENUM_INDEX] = true;
+                }
             }
             if (model.getStringEnumIsSet()) {
                 this.stringEnum = model.stringEnum;
+                if (this._bits.length > STRING_ENUM_INDEX) {
+                    this._bits[STRING_ENUM_INDEX] = true;
+                }
             }
             if (model.getStringPropIsSet()) {
                 this.stringProp = model.stringProp;
+                if (this._bits.length > STRING_PROP_INDEX) {
+                    this._bits[STRING_PROP_INDEX] = true;
+                }
             }
             if (model.getTypeIsSet()) {
                 this.type = model.type;
+                if (this._bits.length > TYPE_INDEX) {
+                    this._bits[TYPE_INDEX] = true;
+                }
             }
             if (model.getUnsignedCharEnumIsSet()) {
                 this.unsignedCharEnum = model.unsignedCharEnum;
+                if (this._bits.length > UNSIGNED_CHAR_ENUM_INDEX) {
+                    this._bits[UNSIGNED_CHAR_ENUM_INDEX] = true;
+                }
             }
             if (model.getUnsignedIntEnumIsSet()) {
                 this.unsignedIntEnum = model.unsignedIntEnum;
+                if (this._bits.length > UNSIGNED_INT_ENUM_INDEX) {
+                    this._bits[UNSIGNED_INT_ENUM_INDEX] = true;
+                }
             }
             if (model.getUnsignedShortEnumIsSet()) {
                 this.unsignedShortEnum = model.unsignedShortEnum;
+                if (this._bits.length > UNSIGNED_SHORT_ENUM_INDEX) {
+                    this._bits[UNSIGNED_SHORT_ENUM_INDEX] = true;
+                }
             }
             if (model.getUriPropIsSet()) {
                 this.uriProp = model.uriProp;
+                if (this._bits.length > URI_PROP_INDEX) {
+                    this._bits[URI_PROP_INDEX] = true;
+                }
             }
         }
     }
