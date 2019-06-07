@@ -11,7 +11,7 @@
 @class Image;
 @class UserBuilder;
 
-typedef NS_ENUM(NSInteger, UserEmailFrequency) {
+typedef NS_ENUM(unsigned char, UserEmailFrequency) {
     UserEmailFrequencyUnset /* unset */,
     UserEmailFrequencyImmediate /* immediate */,
     UserEmailFrequencyDaily /* daily */

@@ -17,7 +17,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, EverythingMapPolymorphicValuesInternalType) {
+typedef NS_ENUM(unsigned char, EverythingMapPolymorphicValuesInternalType) {
     EverythingMapPolymorphicValuesInternalTypeUser = 1,
     EverythingMapPolymorphicValuesInternalTypeBoard = 2,
     EverythingMapPolymorphicValuesInternalTypeImage = 3,
@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_END
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, EverythingPolymorphicPropInternalType) {
+typedef NS_ENUM(unsigned char, EverythingPolymorphicPropInternalType) {
     EverythingPolymorphicPropInternalTypeUser = 1,
     EverythingPolymorphicPropInternalTypeBoard = 2,
     EverythingPolymorphicPropInternalTypeImage = 3,
@@ -81,16 +81,45 @@ typedef NS_ENUM(NSInteger, EverythingPolymorphicPropInternalType) {
 
 NS_ASSUME_NONNULL_END
 
-typedef NS_ENUM(NSInteger, EverythingIntEnum) {
-    EverythingIntEnumIntCase1 = 1,
-    EverythingIntEnumIntCase2 = 2,
-    EverythingIntEnumIntCase3 = 3
+typedef NS_ENUM(char, EverythingCharEnum) {
+    EverythingCharEnumCharCase1 = -1
 };
 
-typedef NS_ENUM(NSInteger, EverythingStringEnum) {
+typedef NS_ENUM(int, EverythingIntEnum) {
+    EverythingIntEnumIntCase1 = -1,
+    EverythingIntEnumIntCase2 = 65536
+};
+
+typedef NS_ENUM(NSInteger, EverythingNsintegerEnum) {
+    EverythingNsintegerEnumNsintegerCase1 = -1,
+    EverythingNsintegerEnumNsintegerCase2 = 4294967295
+};
+
+typedef NS_ENUM(NSUInteger, EverythingNsuintegerEnum) {
+    EverythingNsuintegerEnumNsuintegerCase2 = 4294967296
+};
+
+typedef NS_ENUM(short, EverythingShortEnum) {
+    EverythingShortEnumShortCase1 = -1,
+    EverythingShortEnumShortCase2 = 256
+};
+
+typedef NS_ENUM(unsigned char, EverythingStringEnum) {
     EverythingStringEnumCase1 /* case1 */,
     EverythingStringEnumCase2 /* case2 */,
     EverythingStringEnumCase3 /* case3 */
+};
+
+typedef NS_ENUM(unsigned char, EverythingUnsignedCharEnum) {
+    EverythingUnsignedCharEnumUnsignedCharCase2 = 255
+};
+
+typedef NS_ENUM(unsigned int, EverythingUnsignedIntEnum) {
+    EverythingUnsignedIntEnumUnsignedIntCase2 = 65536
+};
+
+typedef NS_ENUM(unsigned short, EverythingUnsignedShortEnum) {
+    EverythingUnsignedShortEnumCharCase2 = 256
 };
 
 extern NSString * _Nonnull EverythingStringEnumToString(EverythingStringEnum enumType);
@@ -102,6 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Everything : NSObject<NSCopying, NSSecureCoding>
 @property (nullable, nonatomic, strong, readonly) NSArray * arrayProp;
 @property (nonatomic, assign, readonly) BOOL booleanProp;
+@property (nonatomic, assign, readonly) EverythingCharEnum charEnum;
 @property (nullable, nonatomic, copy, readonly) NSDate * dateProp;
 @property (nonatomic, assign, readonly) EverythingIntEnum intEnum;
 @property (nonatomic, assign, readonly) NSInteger intProp;
@@ -118,6 +148,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * mapWithObjectValues;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, User *> * mapWithOtherModelValues;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * mapWithPrimitiveValues;
+@property (nonatomic, assign, readonly) EverythingNsintegerEnum nsintegerEnum;
+@property (nonatomic, assign, readonly) EverythingNsuintegerEnum nsuintegerEnum;
 @property (nonatomic, assign, readonly) double numberProp;
 @property (nullable, nonatomic, strong, readonly) User * otherModelProp;
 @property (nullable, nonatomic, strong, readonly) EverythingPolymorphicProp * polymorphicProp;
@@ -125,9 +157,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readonly) NSSet<User *> * setPropWithOtherModelValues;
 @property (nullable, nonatomic, strong, readonly) NSSet<NSNumber /*> Integer */ *> * setPropWithPrimitiveValues;
 @property (nullable, nonatomic, strong, readonly) NSSet<NSString *> * setPropWithValues;
+@property (nonatomic, assign, readonly) EverythingShortEnum shortEnum;
 @property (nonatomic, assign, readonly) EverythingStringEnum stringEnum;
 @property (nullable, nonatomic, copy, readonly) NSString * stringProp;
 @property (nullable, nonatomic, copy, readonly) NSString * type;
+@property (nonatomic, assign, readonly) EverythingUnsignedCharEnum unsignedCharEnum;
+@property (nonatomic, assign, readonly) EverythingUnsignedIntEnum unsignedIntEnum;
+@property (nonatomic, assign, readonly) EverythingUnsignedShortEnum unsignedShortEnum;
 @property (nullable, nonatomic, copy, readonly) NSURL * uriProp;
 
 + (NSString *)className;
@@ -143,6 +179,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSDictionary *)dictionaryObjectRepresentation;
 - (BOOL)isArrayPropSet;
 - (BOOL)isBooleanPropSet;
+- (BOOL)isCharEnumSet;
 - (BOOL)isDatePropSet;
 - (BOOL)isIntEnumSet;
 - (BOOL)isIntPropSet;
@@ -159,6 +196,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isMapWithObjectValuesSet;
 - (BOOL)isMapWithOtherModelValuesSet;
 - (BOOL)isMapWithPrimitiveValuesSet;
+- (BOOL)isNsintegerEnumSet;
+- (BOOL)isNsuintegerEnumSet;
 - (BOOL)isNumberPropSet;
 - (BOOL)isOtherModelPropSet;
 - (BOOL)isPolymorphicPropSet;
@@ -166,15 +205,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isSetPropWithOtherModelValuesSet;
 - (BOOL)isSetPropWithPrimitiveValuesSet;
 - (BOOL)isSetPropWithValuesSet;
+- (BOOL)isShortEnumSet;
 - (BOOL)isStringEnumSet;
 - (BOOL)isStringPropSet;
 - (BOOL)isTypeSet;
+- (BOOL)isUnsignedCharEnumSet;
+- (BOOL)isUnsignedIntEnumSet;
+- (BOOL)isUnsignedShortEnumSet;
 - (BOOL)isUriPropSet;
 @end
 
 @interface EverythingBuilder : NSObject
 @property (nullable, nonatomic, strong, readwrite) NSArray * arrayProp;
 @property (nonatomic, assign, readwrite) BOOL booleanProp;
+@property (nonatomic, assign, readwrite) EverythingCharEnum charEnum;
 @property (nullable, nonatomic, copy, readwrite) NSDate * dateProp;
 @property (nonatomic, assign, readwrite) EverythingIntEnum intEnum;
 @property (nonatomic, assign, readwrite) NSInteger intProp;
@@ -191,6 +235,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * mapWithObjectValues;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, User *> * mapWithOtherModelValues;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * mapWithPrimitiveValues;
+@property (nonatomic, assign, readwrite) EverythingNsintegerEnum nsintegerEnum;
+@property (nonatomic, assign, readwrite) EverythingNsuintegerEnum nsuintegerEnum;
 @property (nonatomic, assign, readwrite) double numberProp;
 @property (nullable, nonatomic, strong, readwrite) User * otherModelProp;
 @property (nullable, nonatomic, strong, readwrite) EverythingPolymorphicProp * polymorphicProp;
@@ -198,9 +244,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readwrite) NSSet<User *> * setPropWithOtherModelValues;
 @property (nullable, nonatomic, strong, readwrite) NSSet<NSNumber /*> Integer */ *> * setPropWithPrimitiveValues;
 @property (nullable, nonatomic, strong, readwrite) NSSet<NSString *> * setPropWithValues;
+@property (nonatomic, assign, readwrite) EverythingShortEnum shortEnum;
 @property (nonatomic, assign, readwrite) EverythingStringEnum stringEnum;
 @property (nullable, nonatomic, copy, readwrite) NSString * stringProp;
 @property (nullable, nonatomic, copy, readwrite) NSString * type;
+@property (nonatomic, assign, readwrite) EverythingUnsignedCharEnum unsignedCharEnum;
+@property (nonatomic, assign, readwrite) EverythingUnsignedIntEnum unsignedIntEnum;
+@property (nonatomic, assign, readwrite) EverythingUnsignedShortEnum unsignedShortEnum;
 @property (nullable, nonatomic, copy, readwrite) NSURL * uriProp;
 
 - (instancetype)initWithModel:(Everything *)modelObject;

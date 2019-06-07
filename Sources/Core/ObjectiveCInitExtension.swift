@@ -157,7 +157,8 @@ extension ObjCModelRenderer {
                     return []
                 }()
             case let .enumT(.integer(variants)):
-                return renderPropertyInit(propertyToAssign, rawObjectName, schema: .integer, firstName: firstName, counter: counter)
+                let typeName = enumTypeName(propertyName: firstName, className: className)
+                return ["\(propertyToAssign) = (\(typeName))[\(rawObjectName) integerValue];"]
             case let .enumT(.string(variants)):
                 return ["\(propertyToAssign) = \(enumFromStringMethodName(propertyName: firstName, className: className))(value);"]
             case let .object(objectRoot):

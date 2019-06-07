@@ -15,7 +15,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, PinAttributionObjectsInternalType) {
+typedef NS_ENUM(unsigned char, PinAttributionObjectsInternalType) {
     PinAttributionObjectsInternalTypeBoard = 1,
     PinAttributionObjectsInternalTypeUser = 2
 };
@@ -32,7 +32,7 @@ typedef NS_ENUM(NSInteger, PinAttributionObjectsInternalType) {
 
 NS_ASSUME_NONNULL_END
 
-typedef NS_ENUM(NSInteger, PinInStock) {
+typedef NS_ENUM(char, PinInStock) {
     PinInStockUnknown = -1,
     PinInStockOutOfStock = 0,
     PinInStockInStock = 1

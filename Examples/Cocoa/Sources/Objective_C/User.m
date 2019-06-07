@@ -23,6 +23,9 @@ struct UserDirtyProperties {
 };
 
 @interface User ()
+{
+    UserEmailFrequency _emailFrequency;
+}
 @property (nonatomic, assign, readwrite) struct UserDirtyProperties userDirtyProperties;
 @end
 
@@ -440,7 +443,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     _bio = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"bio"];
     _counts = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"counts"];
     _createdAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"created_at"];
-    _emailFrequency = [aDecoder decodeIntegerForKey:@"email_frequency"];
+    _emailFrequency = (UserEmailFrequency)[aDecoder decodeIntegerForKey:@"email_frequency"];
     _firstName = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"first_name"];
     _identifier = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"id"];
     _image = [aDecoder decodeObjectOfClass:[Image class] forKey:@"image"];

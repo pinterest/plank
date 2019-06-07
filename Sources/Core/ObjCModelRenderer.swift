@@ -120,6 +120,20 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
     }
 
     func renderRoots() -> [ObjCIR.Root] {
+        let enumProperties = properties.filter { (arg) -> Bool in
+            let (_, schema) = arg
+            switch schema.schema {
+            case .enumT:
+                return true
+            default:
+                return false
+            }
+        }
+        let enumIVarDeclarations: [(Parameter, TypeName)] = enumProperties.compactMap { (arg) -> (Parameter, TypeName) in
+            let (param, prop) = arg
+            return (param, enumTypeName(propertyName: param, className: self.className))
+        }
+
         let protocols: [String: [ObjCIR.Method]] = [
             "NSSecureCoding": [self.renderSupportsSecureCoding(), self.renderInitWithCoder(), self.renderEncodeWithCoder()],
             "NSCopying": [ObjCIR.method("- (id)copyWithZone:(NSZone *)zone") { ["return self;"] }],
@@ -190,13 +204,15 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                                  methods: [],
                                  properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
                                                SchemaObjectProperty(schema: .integer, nullability: nil),
-                                               .readwrite)]),
+                                               .readwrite)],
+                                 variables: enumIVarDeclarations),
             ObjCIR.Root.category(className: self.builderClassName,
                                  categoryName: nil,
                                  methods: [],
                                  properties: [(self.dirtyPropertiesIVarName, "struct \(self.dirtyPropertyOptionName)",
                                                SchemaObjectProperty(schema: .integer, nullability: nil),
-                                               .readwrite)]),
+                                               .readwrite)],
+                                 variables: []),
         ] + renderStringEnumerationMethods().map { ObjCIR.Root.function($0) } + [
             ObjCIR.Root.macro("NS_ASSUME_NONNULL_BEGIN"),
             ObjCIR.Root.classDecl(
