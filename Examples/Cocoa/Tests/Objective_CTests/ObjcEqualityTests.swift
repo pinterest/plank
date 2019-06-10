@@ -83,8 +83,7 @@ class ObjcEqualityTests: XCTestCase {
         XCTAssertEqual(e1.hash, e2.hash)
     }
 
-//    func testEquality_listPolymorphicValues ()
-//    {
+//    func testEquality_listPolymorphicValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.listPolymorphicValues = t
@@ -93,11 +92,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.listPolymorphicValues, t)
 //        XCTAssertEqual(e2.listPolymorphicValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_listWithListAndOtherModelValues ()
-//    {
+//    func testEquality_listWithListAndOtherModelValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.listWithListAndOtherModelValues = t
@@ -106,11 +104,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.listWithListAndOtherModelValues, t)
 //        XCTAssertEqual(e2.listWithListAndOtherModelValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_listWithMapAndOtherModelValues ()
-//    {
+//    func testEquality_listWithMapAndOtherModelValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.listWithMapAndOtherModelValues = t
@@ -119,11 +116,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.listWithMapAndOtherModelValues, t)
 //        XCTAssertEqual(e2.listWithMapAndOtherModelValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_listWithObjectValues ()
-//    {
+//    func testEquality_listWithObjectValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.listWithObjectValues = t
@@ -132,11 +128,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.listWithObjectValues, t)
 //        XCTAssertEqual(e2.listWithObjectValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_listWithOtherModelValues ()
-//    {
+//    func testEquality_listWithOtherModelValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.listWithOtherModelValues = t
@@ -145,11 +140,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.listWithOtherModelValues, t)
 //        XCTAssertEqual(e2.listWithOtherModelValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_listWithPrimitiveValues ()
-//    {
+//    func testEquality_listWithPrimitiveValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.listWithPrimitiveValues = t
@@ -158,11 +152,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.listWithPrimitiveValues, t)
 //        XCTAssertEqual(e2.listWithPrimitiveValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_mapPolymorphicValues ()
-//    {
+//    func testEquality_mapPolymorphicValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.mapPolymorphicValues = t
@@ -171,11 +164,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.mapPolymorphicValues, t)
 //        XCTAssertEqual(e2.mapPolymorphicValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_mapProp ()
-//    {
+//    func testEquality_mapProp() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.mapProp = t
@@ -184,11 +176,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.mapProp, t)
 //        XCTAssertEqual(e2.mapProp, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_mapWithListAndOtherModelValues ()
-//    {
+//    func testEquality_mapWithListAndOtherModelValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.mapWithListAndOtherModelValues = t
@@ -197,11 +188,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.mapWithListAndOtherModelValues, t)
 //        XCTAssertEqual(e2.mapWithListAndOtherModelValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_mapWithMapAndOtherModelValues ()
-//    {
+//    func testEquality_mapWithMapAndOtherModelValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.mapWithMapAndOtherModelValues = t
@@ -210,11 +200,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.mapWithMapAndOtherModelValues, t)
 //        XCTAssertEqual(e2.mapWithMapAndOtherModelValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_mapWithObjectValues ()
-//    {
+//    func testEquality_mapWithObjectValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.mapWithObjectValues = t
@@ -223,11 +212,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.mapWithObjectValues, t)
 //        XCTAssertEqual(e2.mapWithObjectValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_mapWithOtherModelValues ()
-//    {
+//    func testEquality_mapWithOtherModelValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.mapWithOtherModelValues = t
@@ -236,11 +224,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.mapWithOtherModelValues, t)
 //        XCTAssertEqual(e2.mapWithOtherModelValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_mapWithPrimitiveValues ()
-//    {
+//    func testEquality_mapWithPrimitiveValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.mapWithPrimitiveValues = t
@@ -249,7 +236,7 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.mapWithPrimitiveValues, t)
 //        XCTAssertEqual(e2.mapWithPrimitiveValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 
     func testEquality_nsintegerEnum() {
@@ -288,8 +275,7 @@ class ObjcEqualityTests: XCTestCase {
         XCTAssertEqual(e1.hash, e2.hash)
     }
 
-//    func testEquality_otherModelProp ()
-//    {
+//    func testEquality_otherModelProp() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.otherModelProp = t
@@ -298,11 +284,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.otherModelProp, t)
 //        XCTAssertEqual(e2.otherModelProp, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_polymorphicProp ()
-//    {
+//    func testEquality_polymorphicProp() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.polymorphicProp = t
@@ -311,11 +296,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.polymorphicProp, t)
 //        XCTAssertEqual(e2.polymorphicProp, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_setProp ()
-//    {
+//    func testEquality_setProp() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.setProp = t
@@ -324,11 +308,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.setProp, t)
 //        XCTAssertEqual(e2.setProp, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_setPropWithOtherModelValues ()
-//    {
+//    func testEquality_setPropWithOtherModelValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.setPropWithOtherModelValues = t
@@ -337,11 +320,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.setPropWithOtherModelValues, t)
 //        XCTAssertEqual(e2.setPropWithOtherModelValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_setPropWithPrimitiveValues ()
-//    {
+//    func testEquality_setPropWithPrimitiveValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.setPropWithPrimitiveValues = t
@@ -350,11 +332,10 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.setPropWithPrimitiveValues, t)
 //        XCTAssertEqual(e2.setPropWithPrimitiveValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 //
-//    func testEquality_setPropWithValues ()
-//    {
+//    func testEquality_setPropWithValues() {
 //        let t = 0
 //        let builder = EverythingBuilder()
 //        builder.setPropWithValues = t
@@ -363,7 +344,7 @@ class ObjcEqualityTests: XCTestCase {
 //        XCTAssertEqual(e1.setPropWithValues, t)
 //        XCTAssertEqual(e2.setPropWithValues, t)
 //        XCTAssertEqual(e1, e2)
-    // XCTAssertEqual(e1.hash,e2.hash)
+//        XCTAssertEqual(e1.hash, e2.hash)
 //    }
 
     func testEquality_shortEnum() {
