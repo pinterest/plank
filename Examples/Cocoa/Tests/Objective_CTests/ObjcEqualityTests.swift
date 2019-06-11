@@ -10,18 +10,17 @@ import XCTest
 @testable import Objective_C
 
 class ObjcEqualityTests: XCTestCase {
-//    func testEquality_arrayProp ()
-//    {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.arrayProp = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.arrayProp, t)
-//        XCTAssertEqual(e2.arrayProp, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash,e2.hash)
-//    }
+    func testEquality_arrayProp() {
+        let t: [String] = ["String"]
+        let builder = EverythingBuilder()
+        builder.arrayProp = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.arrayProp as? [String], t)
+        XCTAssertEqual(e2.arrayProp as? [String], t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
 
     func testEquality_booleanProp() {
         let t = true
@@ -83,161 +82,161 @@ class ObjcEqualityTests: XCTestCase {
         XCTAssertEqual(e1.hash, e2.hash)
     }
 
-//    func testEquality_listPolymorphicValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.listPolymorphicValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.listPolymorphicValues, t)
-//        XCTAssertEqual(e2.listPolymorphicValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_listWithListAndOtherModelValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.listWithListAndOtherModelValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.listWithListAndOtherModelValues, t)
-//        XCTAssertEqual(e2.listWithListAndOtherModelValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_listWithMapAndOtherModelValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.listWithMapAndOtherModelValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.listWithMapAndOtherModelValues, t)
-//        XCTAssertEqual(e2.listWithMapAndOtherModelValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_listWithObjectValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.listWithObjectValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.listWithObjectValues, t)
-//        XCTAssertEqual(e2.listWithObjectValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_listWithOtherModelValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.listWithOtherModelValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.listWithOtherModelValues, t)
-//        XCTAssertEqual(e2.listWithOtherModelValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_listWithPrimitiveValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.listWithPrimitiveValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.listWithPrimitiveValues, t)
-//        XCTAssertEqual(e2.listWithPrimitiveValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_mapPolymorphicValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.mapPolymorphicValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.mapPolymorphicValues, t)
-//        XCTAssertEqual(e2.mapPolymorphicValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_mapProp() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.mapProp = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.mapProp, t)
-//        XCTAssertEqual(e2.mapProp, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_mapWithListAndOtherModelValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.mapWithListAndOtherModelValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.mapWithListAndOtherModelValues, t)
-//        XCTAssertEqual(e2.mapWithListAndOtherModelValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_mapWithMapAndOtherModelValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.mapWithMapAndOtherModelValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.mapWithMapAndOtherModelValues, t)
-//        XCTAssertEqual(e2.mapWithMapAndOtherModelValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_mapWithObjectValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.mapWithObjectValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.mapWithObjectValues, t)
-//        XCTAssertEqual(e2.mapWithObjectValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_mapWithOtherModelValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.mapWithOtherModelValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.mapWithOtherModelValues, t)
-//        XCTAssertEqual(e2.mapWithOtherModelValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_mapWithPrimitiveValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.mapWithPrimitiveValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.mapWithPrimitiveValues, t)
-//        XCTAssertEqual(e2.mapWithPrimitiveValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
+    func testEquality_listPolymorphicValues() {
+        let t: [String] = ["String"]
+        let builder = EverythingBuilder()
+        builder.listPolymorphicValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.listPolymorphicValues as? [String], t)
+        XCTAssertEqual(e2.listPolymorphicValues as? [String], t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_listWithListAndOtherModelValues() {
+        let t: [[User]] = [[UserBuilder().build()]]
+        let builder = EverythingBuilder()
+        builder.listWithListAndOtherModelValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.listWithListAndOtherModelValues, t)
+        XCTAssertEqual(e2.listWithListAndOtherModelValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_listWithMapAndOtherModelValues() {
+        let t: [[String: User]] = [["k": UserBuilder().build()]]
+        let builder = EverythingBuilder()
+        builder.listWithMapAndOtherModelValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.listWithMapAndOtherModelValues, t)
+        XCTAssertEqual(e2.listWithMapAndOtherModelValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_listWithObjectValues() {
+        let t: [String] = ["String"]
+        let builder = EverythingBuilder()
+        builder.listWithObjectValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.listWithObjectValues, t)
+        XCTAssertEqual(e2.listWithObjectValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_listWithOtherModelValues() {
+        let t: [User] = [UserBuilder().build()]
+        let builder = EverythingBuilder()
+        builder.listWithOtherModelValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.listWithOtherModelValues, t)
+        XCTAssertEqual(e2.listWithOtherModelValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_listWithPrimitiveValues() {
+        let t: [Int] = [23]
+        let builder = EverythingBuilder()
+        builder.listWithPrimitiveValues = t as [NSNumber]
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.listWithPrimitiveValues as? [Int], t)
+        XCTAssertEqual(e2.listWithPrimitiveValues as? [Int], t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_mapPolymorphicValues() {
+        let t: [String: EverythingMapPolymorphicValues] = ["k": EverythingMapPolymorphicValues.object(with: UserBuilder().build())]
+        let builder = EverythingBuilder()
+        builder.mapPolymorphicValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.mapPolymorphicValues, t)
+        XCTAssertEqual(e2.mapPolymorphicValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_mapProp() {
+        let t: [Int: Int] = [23: 45]
+        let builder = EverythingBuilder()
+        builder.mapProp = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.mapProp as? [Int: Int], t)
+        XCTAssertEqual(e2.mapProp as? [Int: Int], t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_mapWithListAndOtherModelValues() {
+        let t: [String: [User]] = ["k": [UserBuilder().build()]]
+        let builder = EverythingBuilder()
+        builder.mapWithListAndOtherModelValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.mapWithListAndOtherModelValues, t)
+        XCTAssertEqual(e2.mapWithListAndOtherModelValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_mapWithMapAndOtherModelValues() {
+        let t: [String: [Int: Int]] = ["k": [23: 45]]
+        let builder = EverythingBuilder()
+        builder.mapWithMapAndOtherModelValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.mapWithMapAndOtherModelValues as? [String: [Int: Int]], t)
+        XCTAssertEqual(e2.mapWithMapAndOtherModelValues as? [String: [Int: Int]], t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_mapWithObjectValues() {
+        let t: [String: String] = ["k": "v"]
+        let builder = EverythingBuilder()
+        builder.mapWithObjectValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.mapWithObjectValues, t)
+        XCTAssertEqual(e2.mapWithObjectValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_mapWithOtherModelValues() {
+        let t: [String: User] = ["k": UserBuilder().build()]
+        let builder = EverythingBuilder()
+        builder.mapWithOtherModelValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.mapWithOtherModelValues, t)
+        XCTAssertEqual(e2.mapWithOtherModelValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_mapWithPrimitiveValues() {
+        let t: [String: Int] = ["k": 23]
+        let builder = EverythingBuilder()
+        builder.mapWithPrimitiveValues = t as [String: NSNumber]
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.mapWithPrimitiveValues as? [String: Int], t)
+        XCTAssertEqual(e2.mapWithPrimitiveValues as? [String: Int], t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
 
     func testEquality_nsintegerEnum() {
         let t = EverythingNsintegerEnum.nsintegerCase1
@@ -275,77 +274,77 @@ class ObjcEqualityTests: XCTestCase {
         XCTAssertEqual(e1.hash, e2.hash)
     }
 
-//    func testEquality_otherModelProp() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.otherModelProp = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.otherModelProp, t)
-//        XCTAssertEqual(e2.otherModelProp, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_polymorphicProp() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.polymorphicProp = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.polymorphicProp, t)
-//        XCTAssertEqual(e2.polymorphicProp, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_setProp() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.setProp = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.setProp, t)
-//        XCTAssertEqual(e2.setProp, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_setPropWithOtherModelValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.setPropWithOtherModelValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.setPropWithOtherModelValues, t)
-//        XCTAssertEqual(e2.setPropWithOtherModelValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_setPropWithPrimitiveValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.setPropWithPrimitiveValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.setPropWithPrimitiveValues, t)
-//        XCTAssertEqual(e2.setPropWithPrimitiveValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
-//
-//    func testEquality_setPropWithValues() {
-//        let t = 0
-//        let builder = EverythingBuilder()
-//        builder.setPropWithValues = t
-//        let e1 = builder.build()
-//        let e2 = builder.build()
-//        XCTAssertEqual(e1.setPropWithValues, t)
-//        XCTAssertEqual(e2.setPropWithValues, t)
-//        XCTAssertEqual(e1, e2)
-//        XCTAssertEqual(e1.hash, e2.hash)
-//    }
+    func testEquality_otherModelProp() {
+        let t = UserBuilder().build()
+        let builder = EverythingBuilder()
+        builder.otherModelProp = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.otherModelProp, t)
+        XCTAssertEqual(e2.otherModelProp, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_polymorphicProp() {
+        let t = EverythingPolymorphicProp.object(withBoolean: true)
+        let builder = EverythingBuilder()
+        builder.polymorphicProp = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.polymorphicProp, t)
+        XCTAssertEqual(e2.polymorphicProp, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_setProp() {
+        let t: Set = [23]
+        let builder = EverythingBuilder()
+        builder.setProp = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.setProp, t)
+        XCTAssertEqual(e2.setProp, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_setPropWithOtherModelValues() {
+        let t: Set = [UserBuilder().build()]
+        let builder = EverythingBuilder()
+        builder.setPropWithOtherModelValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.setPropWithOtherModelValues, t)
+        XCTAssertEqual(e2.setPropWithOtherModelValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_setPropWithPrimitiveValues() {
+        let t: Set = [23]
+        let builder = EverythingBuilder()
+        builder.setPropWithPrimitiveValues = t as Set<NSNumber>
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.setPropWithPrimitiveValues as? Set<Int>, t)
+        XCTAssertEqual(e2.setPropWithPrimitiveValues as? Set<Int>, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
+
+    func testEquality_setPropWithValues() {
+        let t: Set = ["string"]
+        let builder = EverythingBuilder()
+        builder.setPropWithValues = t
+        let e1 = builder.build()
+        let e2 = builder.build()
+        XCTAssertEqual(e1.setPropWithValues, t)
+        XCTAssertEqual(e2.setPropWithValues, t)
+        XCTAssertEqual(e1, e2)
+        XCTAssertEqual(e1.hash, e2.hash)
+    }
 
     func testEquality_shortEnum() {
         let t = EverythingShortEnum.shortCase1
