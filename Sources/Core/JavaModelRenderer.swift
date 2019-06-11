@@ -217,7 +217,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderProperties(modifiers _: JavaModifier = [.private]) -> [[JavaIR.Property]] {
         let props = transitiveProperties.map { param, schemaObj in
-            JavaIR.Property(annotations: [.serializedName(name: param)], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
+            JavaIR.Property(annotations: [], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
         }
 
         let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "boolean[]", name: "_bits", initialValue: "new boolean[" + String(props.count) + "]")

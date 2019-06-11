@@ -329,23 +329,23 @@ public class Pin {
 
     public static class Builder {
 
-        @SerializedName("attribution") private @Nullable Map<String, String> attribution;
-        @SerializedName("attribution_objects") private @Nullable List<PinAttributionObjects> attributionObjects;
-        @SerializedName("board") private @Nullable Board board;
-        @SerializedName("color") private @Nullable String color;
-        @SerializedName("counts") private @Nullable Map<String, Integer> counts;
-        @SerializedName("created_at") private @NonNull Date createdAt;
-        @SerializedName("creator") private @NonNull Map<String, User> creator;
-        @SerializedName("description") private @Nullable String description;
-        @SerializedName("id") private @NonNull String uid;
-        @SerializedName("image") private @Nullable Image image;
-        @SerializedName("in_stock") private @Nullable PinInStock inStock;
-        @SerializedName("link") private @Nullable String link;
-        @SerializedName("media") private @Nullable Map<String, String> media;
-        @SerializedName("note") private @Nullable String note;
-        @SerializedName("tags") private @Nullable List<Map<String, Object>> tags;
-        @SerializedName("url") private @Nullable String url;
-        @SerializedName("visual_search_attrs") private @Nullable Map<String, Object> visualSearchAttrs;
+        private @Nullable Map<String, String> attribution;
+        private @Nullable List<PinAttributionObjects> attributionObjects;
+        private @Nullable Board board;
+        private @Nullable String color;
+        private @Nullable Map<String, Integer> counts;
+        private @NonNull Date createdAt;
+        private @NonNull Map<String, User> creator;
+        private @Nullable String description;
+        private @NonNull String uid;
+        private @Nullable Image image;
+        private @Nullable PinInStock inStock;
+        private @Nullable String link;
+        private @Nullable Map<String, String> media;
+        private @Nullable String note;
+        private @Nullable List<Map<String, Object>> tags;
+        private @Nullable String url;
+        private @Nullable Map<String, Object> visualSearchAttrs;
 
         private boolean[] _bits = new boolean[17];
 

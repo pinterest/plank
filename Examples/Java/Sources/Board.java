@@ -213,16 +213,16 @@ public class Board {
 
     public static class Builder {
 
-        @SerializedName("id") private @Nullable String uid;
-        @SerializedName("contributors") private @Nullable Set<User> contributors;
-        @SerializedName("counts") private @Nullable Map<String, Integer> counts;
-        @SerializedName("created_at") private @Nullable Date createdAt;
-        @SerializedName("creator") private @Nullable Map<String, String> creator;
-        @SerializedName("creator_url") private @Nullable String creatorURL;
-        @SerializedName("description") private @Nullable String description;
-        @SerializedName("image") private @NonNull Image image;
-        @SerializedName("name") private @Nullable String name;
-        @SerializedName("url") private @Nullable String url;
+        private @Nullable String uid;
+        private @Nullable Set<User> contributors;
+        private @Nullable Map<String, Integer> counts;
+        private @Nullable Date createdAt;
+        private @Nullable Map<String, String> creator;
+        private @Nullable String creatorURL;
+        private @Nullable String description;
+        private @NonNull Image image;
+        private @Nullable String name;
+        private @Nullable String url;
 
         private boolean[] _bits = new boolean[10];
 

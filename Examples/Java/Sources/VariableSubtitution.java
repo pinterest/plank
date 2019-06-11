@@ -129,10 +129,10 @@ public class VariableSubtitution {
 
     public static class Builder {
 
-        @SerializedName("alloc_prop") private @Nullable Integer allocProp;
-        @SerializedName("copy_prop") private @Nullable Integer copyProp;
-        @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
-        @SerializedName("new_prop") private @Nullable Integer newProp;
+        private @Nullable Integer allocProp;
+        private @Nullable Integer copyProp;
+        private @Nullable Integer mutableCopyProp;
+        private @Nullable Integer newProp;
 
         private boolean[] _bits = new boolean[4];
 
