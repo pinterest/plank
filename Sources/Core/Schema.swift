@@ -343,3 +343,14 @@ extension Schema {
         return propertyForType
     }
 }
+
+extension Schema {
+    func isBoolean() -> Bool {
+        switch self {
+        case .boolean:
+            return true
+        default:
+            return false
+        }
+    }
+}

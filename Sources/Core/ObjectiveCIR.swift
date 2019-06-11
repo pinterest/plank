@@ -52,14 +52,22 @@ typealias Parameter = String
 typealias TypeName = String
 typealias SimpleProperty = (Parameter, TypeName, SchemaObjectProperty, ObjCMutabilityType)
 
-func dirtyPropertyOption(propertyName aPropertyName: String, className: String) -> String {
+func propertyOption(propertyName aPropertyName: String, className: String, variant: String) -> String {
     guard !className.isEmpty, !aPropertyName.isEmpty else {
-        fatalError("Invalid class name or property name passed to dirtyPropertyOption(propertyName:className)")
+        fatalError("Invalid class name or property name passed propertyOption(propertyName:className:variant)")
     }
     let propertyName = Languages.objectiveC.snakeCaseToPropertyName(aPropertyName)
     let capitalizedFirstLetter = String(propertyName[propertyName.startIndex]).uppercased()
     let capitalizedPropertyName = capitalizedFirstLetter + String(propertyName.dropFirst())
-    return className + "DirtyProperty" + capitalizedPropertyName
+    return className + variant + capitalizedPropertyName
+}
+
+func dirtyPropertyOption(propertyName aPropertyName: String, className: String) -> String {
+    return propertyOption(propertyName: aPropertyName, className: className, variant: "DirtyProperty")
+}
+
+func booleanPropertyOption(propertyName aPropertyName: String, className: String) -> String {
+    return propertyOption(propertyName: aPropertyName, className: className, variant: "Boolean")
 }
 
 func enumFromStringMethodName(propertyName: String, className: String) -> String {

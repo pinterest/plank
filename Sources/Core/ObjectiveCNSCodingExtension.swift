@@ -14,18 +14,27 @@ extension ObjCModelRenderer {
             [
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                     "if (!(self = [super initWithCoder:aDecoder])) { return self; }",
-                self.properties.map { ($0.0, $0.1.schema) }
+                self.properties.filter { (_, schema) -> Bool in
+                    !schema.schema.isBoolean()
+                }.map { ($0.0, $0.1.schema) }
                     .map(decodeStatement)
                     .joined(separator: "\n"),
-                self.properties.map { (param, _) -> String in
-                    "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = [aDecoder decodeIntForKey:\((param + "_dirty_property").objcLiteral())] & 0x1;"
-                }.joined(separator: "\n"),
+            ] +
+                self.properties.filter { (_, schema) -> Bool in
+                    schema.schema.isBoolean()
+                }.map { (arg: (Parameter, SchemaObjectProperty)) -> String in
+                    let (param, _) = arg
+                    return "_\(booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: param, className: self.className)) = [aDecoder decodeBoolForKey:\(param.objcLiteral())] & 0x1;"
+                } + [
+                    self.properties.map { (param, _) -> String in
+                        "_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = [aDecoder decodeIntForKey:\((param + "_dirty_property").objcLiteral())] & 0x1;"
+                    }.joined(separator: "\n"),
 
-                ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
-                    [renderPostInitNotification(type: "PlankModelInitTypeDefault")]
-                },
-                "return self;",
-            ]
+                    ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
+                        [renderPostInitNotification(type: "PlankModelInitTypeDefault")]
+                    },
+                    "return self;",
+                ]
         }
     }
 

@@ -46,15 +46,23 @@ extension ObjCModelRenderer {
                 "NSParameterAssert(builder);",
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                     ObjCIR.ifStmt("!(self = [super initWithBuilder:builder initType:initType])") { ["return self;"] },
-                self.properties.map { name, _ in
+                self.properties.filter { (_, schema) -> Bool in
+                    !schema.schema.isBoolean()
+                }.map { name, _ in
                     "_\(Languages.objectiveC.snakeCaseToPropertyName(name)) = builder.\(Languages.objectiveC.snakeCaseToPropertyName(name));"
                 }.joined(separator: "\n"),
-                "_\(self.dirtyPropertiesIVarName) = builder.\(self.dirtyPropertiesIVarName);",
-                ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
-                    [renderPostInitNotification(type: "initType")]
-                },
-                "return self;",
-            ]
+            ] +
+                self.properties.filter { (_, schema) -> Bool in
+                    schema.schema.isBoolean()
+                }.map { name, _ in
+                    "_\(self.booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: name, className: self.className)) = builder.\(Languages.objectiveC.snakeCaseToPropertyName(name)) == 1;"
+                } + [
+                    "_\(self.dirtyPropertiesIVarName) = builder.\(self.dirtyPropertiesIVarName);",
+                    ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
+                        [renderPostInitNotification(type: "initType")]
+                    },
+                    "return self;",
+                ]
         }
     }
 
@@ -144,7 +152,7 @@ extension ObjCModelRenderer {
             case .integer:
                 return ["\(propertyToAssign) = [\(rawObjectName) integerValue];"]
             case .boolean:
-                return ["\(propertyToAssign) = [\(rawObjectName) boolValue];"]
+                return ["\(propertyToAssign) = [\(rawObjectName) boolValue] & 0x1;"]
             case .string(format: .some(.uri)):
                 return ["\(propertyToAssign) = [NSURL URLWithString:\(rawObjectName)];"]
             case .string(format: .some(.dateTime)):
@@ -269,7 +277,12 @@ extension ObjCModelRenderer {
                         "__unsafe_unretained id value = modelDictionary[\(name.objcLiteral())]; // Collection will retain.",
                         ObjCIR.ifStmt("value != nil") { [
                             ObjCIR.ifStmt("value != (id)kCFNull") {
-                                renderPropertyInit("self->_\(Languages.objectiveC.snakeCaseToPropertyName(name))", "value", schema: prop.schema, firstName: name)
+                                switch prop.schema {
+                                case .boolean:
+                                    return renderPropertyInit("self->_\(booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: name, className: className))", "value", schema: prop.schema, firstName: name)
+                                default:
+                                    return renderPropertyInit("self->_\(Languages.objectiveC.snakeCaseToPropertyName(name))", "value", schema: prop.schema, firstName: name)
+                                }
                             },
                             "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;",
                         ] },

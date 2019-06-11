@@ -12,7 +12,7 @@ extension ObjCFileRenderer {
     // MARK: Hash Method - Inspired from Mike Ash article on Equality / Hashing
 
     // https://www.mikeash.com/pyblog/friday-qa-2010-06-18-implementing-equality-and-hashing.html
-    func renderHash() -> ObjCIR.Method {
+    func renderHash(_ booleanIVarName: String = "") -> ObjCIR.Method {
         func schemaHashStatement(with param: Parameter, for schema: Schema) -> String {
             switch schema {
             case .enumT, .integer:
@@ -24,7 +24,9 @@ extension ObjCFileRenderer {
             case .boolean:
                 // Values 1231 for true and 1237 for false are adopted from the Java hashCode specification
                 // http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html#hashCode
-                return "(_\(param) ? 1231 : 1237)"
+                return !booleanIVarName.isEmpty ?
+                    "(_\(booleanIVarName).\(booleanPropertyOption(propertyName: param, className: className)) ? 1231 : 1237)" :
+                    "(_\(param) ? 1231 : 1237)"
             case let .reference(with: ref):
                 switch ref.force() {
                 case let .some(.object(schemaRoot)):
@@ -53,7 +55,7 @@ extension ObjCFileRenderer {
 
     // MARK: Equality Methods inspired from NSHipster article on Equality: http://nshipster.com/equality/
 
-    func renderIsEqualToClass() -> ObjCIR.Method {
+    func renderIsEqualToClass(_ booleanIVarName: String = "") -> ObjCIR.Method {
         func schemaIsEqualStatement(with param: Parameter, for schema: Schema) -> String {
             switch schema {
             case .integer, .float, .enumT, .boolean:
@@ -93,9 +95,18 @@ extension ObjCFileRenderer {
 
         let propReturnStmts = sortedProps.map { param, prop -> String in
             let formattedParam = Languages.objectiveC.snakeCaseToPropertyName(param)
-            let pointerEqStmt = "_\(formattedParam) == anObject.\(formattedParam)"
-            let deepEqStmt = schemaIsEqualStatement(with: formattedParam, for: prop.schema)
-            return [pointerEqStmt, deepEqStmt].filter { $0 != "" }.joined(separator: " || ")
+            switch prop.schema {
+            case .boolean:
+                if booleanIVarName.isEmpty {
+                    fallthrough
+                } else {
+                    return "_\(booleanIVarName).\(booleanPropertyOption(propertyName: param, className: self.className)) == anObject.\(formattedParam)"
+                }
+            default:
+                let pointerEqStmt = "_\(formattedParam) == anObject.\(formattedParam)"
+                let deepEqStmt = schemaIsEqualStatement(with: formattedParam, for: prop.schema)
+                return [pointerEqStmt, deepEqStmt].filter { $0 != "" }.joined(separator: " || ")
+            }
         }
 
         func parentName(_ schema: Schema?) -> String? {
