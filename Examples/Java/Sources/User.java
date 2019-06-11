@@ -217,16 +217,16 @@ public class User {
 
     public static class Builder {
 
-        @SerializedName("bio") private @Nullable String bio;
-        @SerializedName("counts") private @Nullable Map<String, Integer> counts;
-        @SerializedName("created_at") private @Nullable Date createdAt;
-        @SerializedName("email_frequency") private @Nullable UserEmailFrequency emailFrequency;
-        @SerializedName("first_name") private @Nullable String firstName;
-        @SerializedName("id") private @Nullable String uid;
-        @SerializedName("image") private @Nullable Image image;
-        @SerializedName("last_name") private @Nullable String lastName;
-        @SerializedName("type") private @Nullable String type;
-        @SerializedName("username") private @Nullable String username;
+        private @Nullable String bio;
+        private @Nullable Map<String, Integer> counts;
+        private @Nullable Date createdAt;
+        private @Nullable UserEmailFrequency emailFrequency;
+        private @Nullable String firstName;
+        private @Nullable String uid;
+        private @Nullable Image image;
+        private @Nullable String lastName;
+        private @Nullable String type;
+        private @Nullable String username;
 
         private boolean[] _bits = new boolean[10];
 

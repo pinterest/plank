@@ -87,7 +87,7 @@ public class Model {
 
     public static class Builder {
 
-        @SerializedName("id") private @Nullable String uid;
+        private @Nullable String uid;
 
         private boolean[] _bits = new boolean[1];
 

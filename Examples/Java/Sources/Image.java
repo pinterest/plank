@@ -115,9 +115,9 @@ public class Image {
 
     public static class Builder {
 
-        @SerializedName("height") private @Nullable Integer height;
-        @SerializedName("url") private @Nullable String url;
-        @SerializedName("width") private @Nullable Integer width;
+        private @Nullable Integer height;
+        private @Nullable String url;
+        private @Nullable Integer width;
 
         private boolean[] _bits = new boolean[3];
 
