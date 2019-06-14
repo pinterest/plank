@@ -33,6 +33,7 @@ enum JavaAnnotation: Hashable {
     case nullable
     case nonnull
     case serializedName(name: String)
+    case custom(_ annotation: String)
 
     var rendered: String {
         switch self {
@@ -44,6 +45,8 @@ enum JavaAnnotation: Hashable {
             return "NonNull"
         case let .serializedName(name):
             return "SerializedName(\"\(name)\")"
+        case let .custom(annotation):
+            return annotation
         }
     }
 }
@@ -59,6 +62,127 @@ enum JavaNullabilityAnnotationType: String {
         case .androidx:
             return "androidx.annotation"
         }
+    }
+}
+
+//
+// The json file passed in via java_decorations_beta=model_decorations.json is deserialized into this.
+//
+struct JavaDecorations: Codable {
+    var `class`: ClassDecorations?
+    var constructor: MethodDecorations?
+    var properties: [String: PropertyDecorations]?
+    var methods: [String: MethodDecorations]?
+    var variables: [String: VariableDecorations]?
+    var imports: [String]?
+
+    func annotationsForClass() -> Set<JavaAnnotation> {
+        guard let classDecorations = `class` else {
+            return []
+        }
+        guard let annotations = classDecorations.annotations else {
+            return []
+        }
+        return Set(annotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func annotationsForConstructor() -> Set<JavaAnnotation> {
+        guard let constructorDecorations = constructor else {
+            return []
+        }
+        guard let annotations = constructorDecorations.annotations else {
+            return []
+        }
+        return Set(annotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func annotationsForPropertyVariable(_ property: String) -> Set<JavaAnnotation> {
+        guard let propertiesDict = properties else {
+            return []
+        }
+        guard let property = propertiesDict[property] else {
+            return []
+        }
+        guard let variable = property.variable else {
+            return []
+        }
+        guard let annotations = variable.annotations else {
+            return []
+        }
+        return Set(annotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func annotationsForPropertyGetter(_ property: String) -> Set<JavaAnnotation> {
+        guard let propertiesDict = properties else {
+            return []
+        }
+        guard let property = propertiesDict[property] else {
+            return []
+        }
+        guard let getter = property.getter else {
+            return []
+        }
+        guard let annotations = getter.annotations else {
+            return []
+        }
+        return Set(annotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func annotationsForMethod(_ method: String) -> Set<JavaAnnotation> {
+        guard let methodsDict = methods else {
+            return []
+        }
+        guard let methodDecorations = methodsDict[method] else {
+            return []
+        }
+        guard let annotations = methodDecorations.annotations else {
+            return []
+        }
+        return Set(annotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func annotationsForVariable(_ variable: String) -> Set<JavaAnnotation> {
+        guard let variablesDict = variables else {
+            return []
+        }
+        guard let variable = variablesDict[variable] else {
+            return []
+        }
+        guard let annotations = variable.annotations else {
+            return []
+        }
+        return Set(annotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    struct ClassDecorations: Codable {
+        var annotations: [String]?
+        var implements: [String]?
+        var extends: String?
+    }
+
+    struct VariableDecorations: Codable {
+        var annotations: [String]?
+    }
+
+    struct MethodDecorations: Codable {
+        var annotations: [String]?
+    }
+
+    struct PropertyDecorations: Codable {
+        var variable: VariableDecorations?
+        var getter: MethodDecorations?
     }
 }
 
