@@ -487,6 +487,7 @@ public class Board {
                 return null;
             }
             Builder builder = Board.builder();
+            boolean[] bits = null;
             reader.beginObject();
             while (reader.hasNext()) {
                 String name = reader.nextName();
@@ -521,11 +522,24 @@ public class Board {
                     case ("url"):
                         builder.setUrl(stringTypeAdapter.read(reader));
                         break;
+                    case ("_bits"):
+                        bits = new boolean[10];
+                        int i = 0;
+                        reader.beginArray();
+                        while (reader.hasNext() && i < 10) {
+                            bits[i] = reader.nextBoolean();
+                            i++;
+                        }
+                        reader.endArray();
+                        break;
                     default:
                         reader.skipValue();
                 }
             }
             reader.endObject();
+            if (bits != null) {
+                builder._bits = bits;
+            }
             return builder.build();
         }
     }

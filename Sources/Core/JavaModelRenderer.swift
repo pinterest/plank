@@ -320,6 +320,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "return null;",
             ] },
             "Builder builder = \(className).builder();",
+            "boolean[] bits = null;",
             "reader.beginObject();",
             JavaIR.whileBlock(condition: "reader.hasNext()") { [
                 "String name = reader.nextName();",
@@ -331,10 +332,27 @@ public struct JavaModelRenderer: JavaFileRenderer {
                                 "builder.set" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "(" + typeAdapterVariableNameForType(unwrappedTypeFromSchema(param, schemaObj.schema)) + ".read(reader));",
                             ]
                         )
-                    }
+                    } + [
+                        JavaIR.Case(
+                            variableEquals: "\"_bits\"",
+                            body: [
+                                "bits = new boolean[" + String(transitiveProperties.count) + "];",
+                                "int i = 0;",
+                                "reader.beginArray();",
+                                JavaIR.whileBlock(condition: "reader.hasNext() && i < " + String(transitiveProperties.count)) { [
+                                    "bits[i] = reader.nextBoolean();",
+                                    "i++;",
+                                ] },
+                                "reader.endArray();",
+                            ]
+                        ),
+                    ]
                 },
             ] },
             "reader.endObject();",
+            JavaIR.ifBlock(condition: "bits != null") { [
+                "builder._bits = bits;",
+            ] },
             "return builder.build();",
         ] }
 
