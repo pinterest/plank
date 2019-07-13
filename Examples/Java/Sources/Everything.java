@@ -1573,6 +1573,7 @@ public class Everything {
                 return null;
             }
             Builder builder = Everything.builder();
+            boolean[] bits = null;
             reader.beginObject();
             while (reader.hasNext()) {
                 String name = reader.nextName();
@@ -1685,11 +1686,24 @@ public class Everything {
                     case ("uri_prop"):
                         builder.setUriProp(stringTypeAdapter.read(reader));
                         break;
+                    case ("_bits"):
+                        bits = new boolean[36];
+                        int i = 0;
+                        reader.beginArray();
+                        while (reader.hasNext() && i < 36) {
+                            bits[i] = reader.nextBoolean();
+                            i++;
+                        }
+                        reader.endArray();
+                        break;
                     default:
                         reader.skipValue();
                 }
             }
             reader.endObject();
+            if (bits != null) {
+                builder._bits = bits;
+            }
             return builder.build();
         }
     }
