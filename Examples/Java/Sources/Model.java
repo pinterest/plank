@@ -111,6 +111,7 @@ public class Model {
             return this.uid;
         }
 
+        @NonNull
         public Model build() {
             return new Model(
             this.uid,

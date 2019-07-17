@@ -577,6 +577,7 @@ public class Pin {
             return this.visualSearchAttrs;
         }
 
+        @NonNull
         public Pin build() {
             return new Pin(
             this.attribution,

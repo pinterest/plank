@@ -199,6 +199,7 @@ public class VariableSubtitution {
             return this.newProp;
         }
 
+        @NonNull
         public VariableSubtitution build() {
             return new VariableSubtitution(
             this.allocProp,
