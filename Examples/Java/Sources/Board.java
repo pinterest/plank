@@ -363,6 +363,7 @@ public class Board {
             return this.url;
         }
 
+        @NonNull
         public Board build() {
             return new Board(
             this.uid,

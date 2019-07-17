@@ -169,6 +169,7 @@ public class Image {
             return this.width;
         }
 
+        @NonNull
         public Image build() {
             return new Image(
             this.height,

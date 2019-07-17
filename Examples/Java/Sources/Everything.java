@@ -1213,6 +1213,7 @@ public class Everything {
             return this.uriProp;
         }
 
+        @NonNull
         public Everything build() {
             return new Everything(
             this.arrayProp,

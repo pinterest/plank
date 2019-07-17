@@ -193,7 +193,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let params = (transitiveProperties.map { param, _ in
             "this." + Languages.java.snakeCaseToPropertyName(param)
         } + ["this._bits"]).joined(separator: ",\n")
-        return JavaIR.method([.public], "\(className) build()") { ["return new " + self.className + "(", params, ");"] }
+        return JavaIR.method(annotations: [.nonnull], [.public], "\(className) build()") { ["return new " + self.className + "(", params, ");"] }
     }
 
     func renderBuilderGetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {

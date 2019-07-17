@@ -367,6 +367,7 @@ public class User {
             return this.username;
         }
 
+        @NonNull
         public User build() {
             return new User(
             this.bio,
