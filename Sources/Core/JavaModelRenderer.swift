@@ -258,9 +258,30 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
 
     func renderTypeAdapterProperties() -> [[JavaIR.Property]] {
-        let delegate = JavaIR.Property(
+        let factory = JavaIR.Property(
             annotations: [],
             modifiers: [.final, .private],
+            type: className + "TypeAdapterFactory",
+            name: "factory",
+            initialValue: ""
+        )
+        let gson = JavaIR.Property(
+            annotations: [],
+            modifiers: [.final, .private],
+            type: "Gson",
+            name: "gson",
+            initialValue: ""
+        )
+        let typeToken = JavaIR.Property(
+            annotations: [],
+            modifiers: [.final, .private],
+            type: "TypeToken",
+            name: "typeToken",
+            initialValue: ""
+        )
+        let delegate = JavaIR.Property(
+            annotations: [],
+            modifiers: [.private],
             type: "TypeAdapter<" + className + ">",
             name: "delegateTypeAdapter",
             initialValue: ""
@@ -273,14 +294,14 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let typeAdapters = types.map { type in
             JavaIR.Property(
                 annotations: [],
-                modifiers: [.final, .private],
+                modifiers: [.private],
                 type: "TypeAdapter<\(type)>",
                 name: typeAdapterVariableNameForType(type),
                 initialValue: ""
             )
         }
 
-        return [[delegate], typeAdapters]
+        return [[factory, gson, typeToken, delegate], typeAdapters]
     }
 
     func renderTypeAdapterMethods() -> [JavaIR.Method] {
@@ -288,16 +309,11 @@ public struct JavaModelRenderer: JavaFileRenderer {
             annotations: [],
             [.public],
             className + "TypeAdapter(Gson gson, " + className + "TypeAdapterFactory factory, TypeToken typeToken)"
-        ) { ["this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);"] +
-            Set(transitiveProperties.map { param, schemaObj in
-                let type = unwrappedTypeFromSchema(param, schemaObj.schema)
-                let variableName = typeAdapterVariableNameForType(type)
-                if schemaObj.schema.isJavaCollection {
-                    return "this.\(variableName) = gson.getAdapter(new TypeToken<" + type + ">(){}).nullSafe();"
-                } else {
-                    return "this.\(variableName) = gson.getAdapter(\(type).class).nullSafe();"
-                }
-            }).sorted()
+        ) { [
+            "this.factory = factory;",
+            "this.gson = gson;",
+            "this.typeToken = typeToken;",
+        ]
         }
 
         let write = JavaIR.methodThatThrows(
@@ -306,9 +322,13 @@ public struct JavaModelRenderer: JavaFileRenderer {
             "void write(JsonWriter writer, " + className + " value)",
             ["IOException"]
         ) { [
+            JavaIR.ifBlock(condition: "this.delegateTypeAdapter == null") { [
+                "this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);",
+            ] },
             "writer.setSerializeNulls(false);",
             "this.delegateTypeAdapter.write(writer, value);",
-        ] }
+        ]
+        }
 
         let read = JavaIR.methodThatThrows(
             annotations: [JavaAnnotation.override],
@@ -327,10 +347,21 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "String name = reader.nextName();",
                 JavaIR.switchBlock(variableToCheck: "name", defaultBody: ["reader.skipValue();"]) {
                     transitiveProperties.map { param, schemaObj in
-                        JavaIR.Case(
+                        let type = unwrappedTypeFromSchema(param, schemaObj.schema)
+                        let variableName = typeAdapterVariableNameForType(type)
+                        var line: String
+                        if schemaObj.schema.isJavaCollection {
+                            line = "this.\(variableName) = this.gson.getAdapter(new TypeToken<" + type + ">(){}).nullSafe();"
+                        } else {
+                            line = "this.\(variableName) = this.gson.getAdapter(\(type).class).nullSafe();"
+                        }
+                        return JavaIR.Case(
                             variableEquals: "\"\(param)\"",
                             body: [
-                                "builder.set" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "(" + typeAdapterVariableNameForType(unwrappedTypeFromSchema(param, schemaObj.schema)) + ".read(reader));",
+                                JavaIR.ifBlock(condition: "this." + typeAdapterVariableNameForType(unwrappedTypeFromSchema(param, schemaObj.schema)) + " == null") { [
+                                    line,
+                                ] },
+                                "builder.set" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "(this." + typeAdapterVariableNameForType(unwrappedTypeFromSchema(param, schemaObj.schema)) + ".read(reader));",
                             ]
                         )
                     } + [

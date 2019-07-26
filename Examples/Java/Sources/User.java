@@ -461,25 +461,28 @@ public class User {
 
     public static class UserTypeAdapter extends TypeAdapter<User> {
 
-        final private TypeAdapter<User> delegateTypeAdapter;
+        final private UserTypeAdapterFactory factory;
+        final private Gson gson;
+        final private TypeToken typeToken;
+        private TypeAdapter<User> delegateTypeAdapter;
 
-        final private TypeAdapter<Date> dateTypeAdapter;
-        final private TypeAdapter<Image> imageTypeAdapter;
-        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
-        final private TypeAdapter<String> stringTypeAdapter;
-        final private TypeAdapter<UserEmailFrequency> userEmailFrequencyTypeAdapter;
+        private TypeAdapter<Date> dateTypeAdapter;
+        private TypeAdapter<Image> imageTypeAdapter;
+        private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
+        private TypeAdapter<String> stringTypeAdapter;
+        private TypeAdapter<UserEmailFrequency> userEmailFrequencyTypeAdapter;
 
         public UserTypeAdapter(Gson gson, UserTypeAdapterFactory factory, TypeToken typeToken) {
-            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
-            this.imageTypeAdapter = gson.getAdapter(Image.class).nullSafe();
-            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
-            this.userEmailFrequencyTypeAdapter = gson.getAdapter(UserEmailFrequency.class).nullSafe();
+            this.factory = factory;
+            this.gson = gson;
+            this.typeToken = typeToken;
         }
 
         @Override
         public void write(JsonWriter writer, User value) throws IOException {
+            if (this.delegateTypeAdapter == null) {
+                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            }
             writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
@@ -497,34 +500,64 @@ public class User {
                 String name = reader.nextName();
                 switch (name) {
                     case ("bio"):
-                        builder.setBio(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setBio(this.stringTypeAdapter.read(reader));
                         break;
                     case ("counts"):
-                        builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
+                        if (this.map_String__Integer_TypeAdapter == null) {
+                            this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+                        }
+                        builder.setCounts(this.map_String__Integer_TypeAdapter.read(reader));
                         break;
                     case ("created_at"):
-                        builder.setCreatedAt(dateTypeAdapter.read(reader));
+                        if (this.dateTypeAdapter == null) {
+                            this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
+                        }
+                        builder.setCreatedAt(this.dateTypeAdapter.read(reader));
                         break;
                     case ("email_frequency"):
-                        builder.setEmailFrequency(userEmailFrequencyTypeAdapter.read(reader));
+                        if (this.userEmailFrequencyTypeAdapter == null) {
+                            this.userEmailFrequencyTypeAdapter = this.gson.getAdapter(UserEmailFrequency.class).nullSafe();
+                        }
+                        builder.setEmailFrequency(this.userEmailFrequencyTypeAdapter.read(reader));
                         break;
                     case ("first_name"):
-                        builder.setFirstName(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setFirstName(this.stringTypeAdapter.read(reader));
                         break;
                     case ("id"):
-                        builder.setUid(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setUid(this.stringTypeAdapter.read(reader));
                         break;
                     case ("image"):
-                        builder.setImage(imageTypeAdapter.read(reader));
+                        if (this.imageTypeAdapter == null) {
+                            this.imageTypeAdapter = this.gson.getAdapter(Image.class).nullSafe();
+                        }
+                        builder.setImage(this.imageTypeAdapter.read(reader));
                         break;
                     case ("last_name"):
-                        builder.setLastName(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setLastName(this.stringTypeAdapter.read(reader));
                         break;
                     case ("type"):
-                        builder.setType(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setType(this.stringTypeAdapter.read(reader));
                         break;
                     case ("username"):
-                        builder.setUsername(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setUsername(this.stringTypeAdapter.read(reader));
                         break;
                     case ("_bits"):
                         bits = new boolean[10];

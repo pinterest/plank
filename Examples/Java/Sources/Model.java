@@ -142,17 +142,24 @@ public class Model {
 
     public static class ModelTypeAdapter extends TypeAdapter<Model> {
 
-        final private TypeAdapter<Model> delegateTypeAdapter;
+        final private ModelTypeAdapterFactory factory;
+        final private Gson gson;
+        final private TypeToken typeToken;
+        private TypeAdapter<Model> delegateTypeAdapter;
 
-        final private TypeAdapter<String> stringTypeAdapter;
+        private TypeAdapter<String> stringTypeAdapter;
 
         public ModelTypeAdapter(Gson gson, ModelTypeAdapterFactory factory, TypeToken typeToken) {
-            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
+            this.factory = factory;
+            this.gson = gson;
+            this.typeToken = typeToken;
         }
 
         @Override
         public void write(JsonWriter writer, Model value) throws IOException {
+            if (this.delegateTypeAdapter == null) {
+                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            }
             writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
@@ -170,7 +177,10 @@ public class Model {
                 String name = reader.nextName();
                 switch (name) {
                     case ("id"):
-                        builder.setUid(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setUid(this.stringTypeAdapter.read(reader));
                         break;
                     case ("_bits"):
                         bits = new boolean[1];

@@ -1489,81 +1489,56 @@ public class Everything {
 
     public static class EverythingTypeAdapter extends TypeAdapter<Everything> {
 
-        final private TypeAdapter<Everything> delegateTypeAdapter;
+        final private EverythingTypeAdapterFactory factory;
+        final private Gson gson;
+        final private TypeToken typeToken;
+        private TypeAdapter<Everything> delegateTypeAdapter;
 
-        final private TypeAdapter<Boolean> booleanTypeAdapter;
-        final private TypeAdapter<Date> dateTypeAdapter;
-        final private TypeAdapter<Double> doubleTypeAdapter;
-        final private TypeAdapter<EverythingCharEnum> everythingCharEnumTypeAdapter;
-        final private TypeAdapter<EverythingIntEnum> everythingIntEnumTypeAdapter;
-        final private TypeAdapter<EverythingNsintegerEnum> everythingNsintegerEnumTypeAdapter;
-        final private TypeAdapter<EverythingNsuintegerEnum> everythingNsuintegerEnumTypeAdapter;
-        final private TypeAdapter<EverythingPolymorphicProp> everythingPolymorphicPropTypeAdapter;
-        final private TypeAdapter<EverythingShortEnum> everythingShortEnumTypeAdapter;
-        final private TypeAdapter<EverythingStringEnum> everythingStringEnumTypeAdapter;
-        final private TypeAdapter<EverythingUnsignedCharEnum> everythingUnsignedCharEnumTypeAdapter;
-        final private TypeAdapter<EverythingUnsignedIntEnum> everythingUnsignedIntEnumTypeAdapter;
-        final private TypeAdapter<EverythingUnsignedShortEnum> everythingUnsignedShortEnumTypeAdapter;
-        final private TypeAdapter<Integer> integerTypeAdapter;
-        final private TypeAdapter<List<Integer>> list_Integer_TypeAdapter;
-        final private TypeAdapter<List<List<User>>> list_List_User__TypeAdapter;
-        final private TypeAdapter<List<Map<String, User>>> list_Map_String__User__TypeAdapter;
-        final private TypeAdapter<List<Object>> list_Object_TypeAdapter;
-        final private TypeAdapter<List<String>> list_String_TypeAdapter;
-        final private TypeAdapter<List<User>> list_User_TypeAdapter;
-        final private TypeAdapter<Map<String, EverythingMapPolymorphicValues>> map_String__EverythingMapPolymorphicValues_TypeAdapter;
-        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
-        final private TypeAdapter<Map<String, List<User>>> map_String__List_User__TypeAdapter;
-        final private TypeAdapter<Map<String, Map<String, Object>>> map_String__Map_String__Object__TypeAdapter;
-        final private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
-        final private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
-        final private TypeAdapter<Map<String, User>> map_String__User_TypeAdapter;
-        final private TypeAdapter<Set<Integer>> set_Integer_TypeAdapter;
-        final private TypeAdapter<Set<Object>> set_Object_TypeAdapter;
-        final private TypeAdapter<Set<String>> set_String_TypeAdapter;
-        final private TypeAdapter<Set<User>> set_User_TypeAdapter;
-        final private TypeAdapter<String> stringTypeAdapter;
-        final private TypeAdapter<User> userTypeAdapter;
+        private TypeAdapter<Boolean> booleanTypeAdapter;
+        private TypeAdapter<Date> dateTypeAdapter;
+        private TypeAdapter<Double> doubleTypeAdapter;
+        private TypeAdapter<EverythingCharEnum> everythingCharEnumTypeAdapter;
+        private TypeAdapter<EverythingIntEnum> everythingIntEnumTypeAdapter;
+        private TypeAdapter<EverythingNsintegerEnum> everythingNsintegerEnumTypeAdapter;
+        private TypeAdapter<EverythingNsuintegerEnum> everythingNsuintegerEnumTypeAdapter;
+        private TypeAdapter<EverythingPolymorphicProp> everythingPolymorphicPropTypeAdapter;
+        private TypeAdapter<EverythingShortEnum> everythingShortEnumTypeAdapter;
+        private TypeAdapter<EverythingStringEnum> everythingStringEnumTypeAdapter;
+        private TypeAdapter<EverythingUnsignedCharEnum> everythingUnsignedCharEnumTypeAdapter;
+        private TypeAdapter<EverythingUnsignedIntEnum> everythingUnsignedIntEnumTypeAdapter;
+        private TypeAdapter<EverythingUnsignedShortEnum> everythingUnsignedShortEnumTypeAdapter;
+        private TypeAdapter<Integer> integerTypeAdapter;
+        private TypeAdapter<List<Integer>> list_Integer_TypeAdapter;
+        private TypeAdapter<List<List<User>>> list_List_User__TypeAdapter;
+        private TypeAdapter<List<Map<String, User>>> list_Map_String__User__TypeAdapter;
+        private TypeAdapter<List<Object>> list_Object_TypeAdapter;
+        private TypeAdapter<List<String>> list_String_TypeAdapter;
+        private TypeAdapter<List<User>> list_User_TypeAdapter;
+        private TypeAdapter<Map<String, EverythingMapPolymorphicValues>> map_String__EverythingMapPolymorphicValues_TypeAdapter;
+        private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
+        private TypeAdapter<Map<String, List<User>>> map_String__List_User__TypeAdapter;
+        private TypeAdapter<Map<String, Map<String, Object>>> map_String__Map_String__Object__TypeAdapter;
+        private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
+        private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
+        private TypeAdapter<Map<String, User>> map_String__User_TypeAdapter;
+        private TypeAdapter<Set<Integer>> set_Integer_TypeAdapter;
+        private TypeAdapter<Set<Object>> set_Object_TypeAdapter;
+        private TypeAdapter<Set<String>> set_String_TypeAdapter;
+        private TypeAdapter<Set<User>> set_User_TypeAdapter;
+        private TypeAdapter<String> stringTypeAdapter;
+        private TypeAdapter<User> userTypeAdapter;
 
         public EverythingTypeAdapter(Gson gson, EverythingTypeAdapterFactory factory, TypeToken typeToken) {
-            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.booleanTypeAdapter = gson.getAdapter(Boolean.class).nullSafe();
-            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
-            this.doubleTypeAdapter = gson.getAdapter(Double.class).nullSafe();
-            this.everythingCharEnumTypeAdapter = gson.getAdapter(EverythingCharEnum.class).nullSafe();
-            this.everythingIntEnumTypeAdapter = gson.getAdapter(EverythingIntEnum.class).nullSafe();
-            this.everythingNsintegerEnumTypeAdapter = gson.getAdapter(EverythingNsintegerEnum.class).nullSafe();
-            this.everythingNsuintegerEnumTypeAdapter = gson.getAdapter(EverythingNsuintegerEnum.class).nullSafe();
-            this.everythingPolymorphicPropTypeAdapter = gson.getAdapter(EverythingPolymorphicProp.class).nullSafe();
-            this.everythingShortEnumTypeAdapter = gson.getAdapter(EverythingShortEnum.class).nullSafe();
-            this.everythingStringEnumTypeAdapter = gson.getAdapter(EverythingStringEnum.class).nullSafe();
-            this.everythingUnsignedCharEnumTypeAdapter = gson.getAdapter(EverythingUnsignedCharEnum.class).nullSafe();
-            this.everythingUnsignedIntEnumTypeAdapter = gson.getAdapter(EverythingUnsignedIntEnum.class).nullSafe();
-            this.everythingUnsignedShortEnumTypeAdapter = gson.getAdapter(EverythingUnsignedShortEnum.class).nullSafe();
-            this.integerTypeAdapter = gson.getAdapter(Integer.class).nullSafe();
-            this.list_Integer_TypeAdapter = gson.getAdapter(new TypeToken<List<Integer>>(){}).nullSafe();
-            this.list_List_User__TypeAdapter = gson.getAdapter(new TypeToken<List<List<User>>>(){}).nullSafe();
-            this.list_Map_String__User__TypeAdapter = gson.getAdapter(new TypeToken<List<Map<String, User>>>(){}).nullSafe();
-            this.list_Object_TypeAdapter = gson.getAdapter(new TypeToken<List<Object>>(){}).nullSafe();
-            this.list_String_TypeAdapter = gson.getAdapter(new TypeToken<List<String>>(){}).nullSafe();
-            this.list_User_TypeAdapter = gson.getAdapter(new TypeToken<List<User>>(){}).nullSafe();
-            this.map_String__EverythingMapPolymorphicValues_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, EverythingMapPolymorphicValues>>(){}).nullSafe();
-            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
-            this.map_String__List_User__TypeAdapter = gson.getAdapter(new TypeToken<Map<String, List<User>>>(){}).nullSafe();
-            this.map_String__Map_String__Object__TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Map<String, Object>>>(){}).nullSafe();
-            this.map_String__Object_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
-            this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
-            this.map_String__User_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
-            this.set_Integer_TypeAdapter = gson.getAdapter(new TypeToken<Set<Integer>>(){}).nullSafe();
-            this.set_Object_TypeAdapter = gson.getAdapter(new TypeToken<Set<Object>>(){}).nullSafe();
-            this.set_String_TypeAdapter = gson.getAdapter(new TypeToken<Set<String>>(){}).nullSafe();
-            this.set_User_TypeAdapter = gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
-            this.userTypeAdapter = gson.getAdapter(User.class).nullSafe();
+            this.factory = factory;
+            this.gson = gson;
+            this.typeToken = typeToken;
         }
 
         @Override
         public void write(JsonWriter writer, Everything value) throws IOException {
+            if (this.delegateTypeAdapter == null) {
+                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            }
             writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
@@ -1581,112 +1556,220 @@ public class Everything {
                 String name = reader.nextName();
                 switch (name) {
                     case ("array_prop"):
-                        builder.setArrayProp(list_Object_TypeAdapter.read(reader));
+                        if (this.list_Object_TypeAdapter == null) {
+                            this.list_Object_TypeAdapter = this.gson.getAdapter(new TypeToken<List<Object>>(){}).nullSafe();
+                        }
+                        builder.setArrayProp(this.list_Object_TypeAdapter.read(reader));
                         break;
                     case ("boolean_prop"):
-                        builder.setBooleanProp(booleanTypeAdapter.read(reader));
+                        if (this.booleanTypeAdapter == null) {
+                            this.booleanTypeAdapter = this.gson.getAdapter(Boolean.class).nullSafe();
+                        }
+                        builder.setBooleanProp(this.booleanTypeAdapter.read(reader));
                         break;
                     case ("char_enum"):
-                        builder.setCharEnum(everythingCharEnumTypeAdapter.read(reader));
+                        if (this.everythingCharEnumTypeAdapter == null) {
+                            this.everythingCharEnumTypeAdapter = this.gson.getAdapter(EverythingCharEnum.class).nullSafe();
+                        }
+                        builder.setCharEnum(this.everythingCharEnumTypeAdapter.read(reader));
                         break;
                     case ("date_prop"):
-                        builder.setDateProp(dateTypeAdapter.read(reader));
+                        if (this.dateTypeAdapter == null) {
+                            this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
+                        }
+                        builder.setDateProp(this.dateTypeAdapter.read(reader));
                         break;
                     case ("int_enum"):
-                        builder.setIntEnum(everythingIntEnumTypeAdapter.read(reader));
+                        if (this.everythingIntEnumTypeAdapter == null) {
+                            this.everythingIntEnumTypeAdapter = this.gson.getAdapter(EverythingIntEnum.class).nullSafe();
+                        }
+                        builder.setIntEnum(this.everythingIntEnumTypeAdapter.read(reader));
                         break;
                     case ("int_prop"):
-                        builder.setIntProp(integerTypeAdapter.read(reader));
+                        if (this.integerTypeAdapter == null) {
+                            this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                        }
+                        builder.setIntProp(this.integerTypeAdapter.read(reader));
                         break;
                     case ("list_polymorphic_values"):
-                        builder.setListPolymorphicValues(list_Object_TypeAdapter.read(reader));
+                        if (this.list_Object_TypeAdapter == null) {
+                            this.list_Object_TypeAdapter = this.gson.getAdapter(new TypeToken<List<Object>>(){}).nullSafe();
+                        }
+                        builder.setListPolymorphicValues(this.list_Object_TypeAdapter.read(reader));
                         break;
                     case ("list_with_list_and_other_model_values"):
-                        builder.setListWithListAndOtherModelValues(list_List_User__TypeAdapter.read(reader));
+                        if (this.list_List_User__TypeAdapter == null) {
+                            this.list_List_User__TypeAdapter = this.gson.getAdapter(new TypeToken<List<List<User>>>(){}).nullSafe();
+                        }
+                        builder.setListWithListAndOtherModelValues(this.list_List_User__TypeAdapter.read(reader));
                         break;
                     case ("list_with_map_and_other_model_values"):
-                        builder.setListWithMapAndOtherModelValues(list_Map_String__User__TypeAdapter.read(reader));
+                        if (this.list_Map_String__User__TypeAdapter == null) {
+                            this.list_Map_String__User__TypeAdapter = this.gson.getAdapter(new TypeToken<List<Map<String, User>>>(){}).nullSafe();
+                        }
+                        builder.setListWithMapAndOtherModelValues(this.list_Map_String__User__TypeAdapter.read(reader));
                         break;
                     case ("list_with_object_values"):
-                        builder.setListWithObjectValues(list_String_TypeAdapter.read(reader));
+                        if (this.list_String_TypeAdapter == null) {
+                            this.list_String_TypeAdapter = this.gson.getAdapter(new TypeToken<List<String>>(){}).nullSafe();
+                        }
+                        builder.setListWithObjectValues(this.list_String_TypeAdapter.read(reader));
                         break;
                     case ("list_with_other_model_values"):
-                        builder.setListWithOtherModelValues(list_User_TypeAdapter.read(reader));
+                        if (this.list_User_TypeAdapter == null) {
+                            this.list_User_TypeAdapter = this.gson.getAdapter(new TypeToken<List<User>>(){}).nullSafe();
+                        }
+                        builder.setListWithOtherModelValues(this.list_User_TypeAdapter.read(reader));
                         break;
                     case ("list_with_primitive_values"):
-                        builder.setListWithPrimitiveValues(list_Integer_TypeAdapter.read(reader));
+                        if (this.list_Integer_TypeAdapter == null) {
+                            this.list_Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<List<Integer>>(){}).nullSafe();
+                        }
+                        builder.setListWithPrimitiveValues(this.list_Integer_TypeAdapter.read(reader));
                         break;
                     case ("map_polymorphic_values"):
-                        builder.setMapPolymorphicValues(map_String__EverythingMapPolymorphicValues_TypeAdapter.read(reader));
+                        if (this.map_String__EverythingMapPolymorphicValues_TypeAdapter == null) {
+                            this.map_String__EverythingMapPolymorphicValues_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, EverythingMapPolymorphicValues>>(){}).nullSafe();
+                        }
+                        builder.setMapPolymorphicValues(this.map_String__EverythingMapPolymorphicValues_TypeAdapter.read(reader));
                         break;
                     case ("map_prop"):
-                        builder.setMapProp(map_String__Object_TypeAdapter.read(reader));
+                        if (this.map_String__Object_TypeAdapter == null) {
+                            this.map_String__Object_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
+                        }
+                        builder.setMapProp(this.map_String__Object_TypeAdapter.read(reader));
                         break;
                     case ("map_with_list_and_other_model_values"):
-                        builder.setMapWithListAndOtherModelValues(map_String__List_User__TypeAdapter.read(reader));
+                        if (this.map_String__List_User__TypeAdapter == null) {
+                            this.map_String__List_User__TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, List<User>>>(){}).nullSafe();
+                        }
+                        builder.setMapWithListAndOtherModelValues(this.map_String__List_User__TypeAdapter.read(reader));
                         break;
                     case ("map_with_map_and_other_model_values"):
-                        builder.setMapWithMapAndOtherModelValues(map_String__Map_String__Object__TypeAdapter.read(reader));
+                        if (this.map_String__Map_String__Object__TypeAdapter == null) {
+                            this.map_String__Map_String__Object__TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Map<String, Object>>>(){}).nullSafe();
+                        }
+                        builder.setMapWithMapAndOtherModelValues(this.map_String__Map_String__Object__TypeAdapter.read(reader));
                         break;
                     case ("map_with_object_values"):
-                        builder.setMapWithObjectValues(map_String__String_TypeAdapter.read(reader));
+                        if (this.map_String__String_TypeAdapter == null) {
+                            this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+                        }
+                        builder.setMapWithObjectValues(this.map_String__String_TypeAdapter.read(reader));
                         break;
                     case ("map_with_other_model_values"):
-                        builder.setMapWithOtherModelValues(map_String__User_TypeAdapter.read(reader));
+                        if (this.map_String__User_TypeAdapter == null) {
+                            this.map_String__User_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
+                        }
+                        builder.setMapWithOtherModelValues(this.map_String__User_TypeAdapter.read(reader));
                         break;
                     case ("map_with_primitive_values"):
-                        builder.setMapWithPrimitiveValues(map_String__Integer_TypeAdapter.read(reader));
+                        if (this.map_String__Integer_TypeAdapter == null) {
+                            this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+                        }
+                        builder.setMapWithPrimitiveValues(this.map_String__Integer_TypeAdapter.read(reader));
                         break;
                     case ("nsinteger_enum"):
-                        builder.setNsintegerEnum(everythingNsintegerEnumTypeAdapter.read(reader));
+                        if (this.everythingNsintegerEnumTypeAdapter == null) {
+                            this.everythingNsintegerEnumTypeAdapter = this.gson.getAdapter(EverythingNsintegerEnum.class).nullSafe();
+                        }
+                        builder.setNsintegerEnum(this.everythingNsintegerEnumTypeAdapter.read(reader));
                         break;
                     case ("nsuinteger_enum"):
-                        builder.setNsuintegerEnum(everythingNsuintegerEnumTypeAdapter.read(reader));
+                        if (this.everythingNsuintegerEnumTypeAdapter == null) {
+                            this.everythingNsuintegerEnumTypeAdapter = this.gson.getAdapter(EverythingNsuintegerEnum.class).nullSafe();
+                        }
+                        builder.setNsuintegerEnum(this.everythingNsuintegerEnumTypeAdapter.read(reader));
                         break;
                     case ("number_prop"):
-                        builder.setNumberProp(doubleTypeAdapter.read(reader));
+                        if (this.doubleTypeAdapter == null) {
+                            this.doubleTypeAdapter = this.gson.getAdapter(Double.class).nullSafe();
+                        }
+                        builder.setNumberProp(this.doubleTypeAdapter.read(reader));
                         break;
                     case ("other_model_prop"):
-                        builder.setOtherModelProp(userTypeAdapter.read(reader));
+                        if (this.userTypeAdapter == null) {
+                            this.userTypeAdapter = this.gson.getAdapter(User.class).nullSafe();
+                        }
+                        builder.setOtherModelProp(this.userTypeAdapter.read(reader));
                         break;
                     case ("polymorphic_prop"):
-                        builder.setPolymorphicProp(everythingPolymorphicPropTypeAdapter.read(reader));
+                        if (this.everythingPolymorphicPropTypeAdapter == null) {
+                            this.everythingPolymorphicPropTypeAdapter = this.gson.getAdapter(EverythingPolymorphicProp.class).nullSafe();
+                        }
+                        builder.setPolymorphicProp(this.everythingPolymorphicPropTypeAdapter.read(reader));
                         break;
                     case ("set_prop"):
-                        builder.setSetProp(set_Object_TypeAdapter.read(reader));
+                        if (this.set_Object_TypeAdapter == null) {
+                            this.set_Object_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<Object>>(){}).nullSafe();
+                        }
+                        builder.setSetProp(this.set_Object_TypeAdapter.read(reader));
                         break;
                     case ("set_prop_with_other_model_values"):
-                        builder.setSetPropWithOtherModelValues(set_User_TypeAdapter.read(reader));
+                        if (this.set_User_TypeAdapter == null) {
+                            this.set_User_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
+                        }
+                        builder.setSetPropWithOtherModelValues(this.set_User_TypeAdapter.read(reader));
                         break;
                     case ("set_prop_with_primitive_values"):
-                        builder.setSetPropWithPrimitiveValues(set_Integer_TypeAdapter.read(reader));
+                        if (this.set_Integer_TypeAdapter == null) {
+                            this.set_Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<Integer>>(){}).nullSafe();
+                        }
+                        builder.setSetPropWithPrimitiveValues(this.set_Integer_TypeAdapter.read(reader));
                         break;
                     case ("set_prop_with_values"):
-                        builder.setSetPropWithValues(set_String_TypeAdapter.read(reader));
+                        if (this.set_String_TypeAdapter == null) {
+                            this.set_String_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<String>>(){}).nullSafe();
+                        }
+                        builder.setSetPropWithValues(this.set_String_TypeAdapter.read(reader));
                         break;
                     case ("short_enum"):
-                        builder.setShortEnum(everythingShortEnumTypeAdapter.read(reader));
+                        if (this.everythingShortEnumTypeAdapter == null) {
+                            this.everythingShortEnumTypeAdapter = this.gson.getAdapter(EverythingShortEnum.class).nullSafe();
+                        }
+                        builder.setShortEnum(this.everythingShortEnumTypeAdapter.read(reader));
                         break;
                     case ("string_enum"):
-                        builder.setStringEnum(everythingStringEnumTypeAdapter.read(reader));
+                        if (this.everythingStringEnumTypeAdapter == null) {
+                            this.everythingStringEnumTypeAdapter = this.gson.getAdapter(EverythingStringEnum.class).nullSafe();
+                        }
+                        builder.setStringEnum(this.everythingStringEnumTypeAdapter.read(reader));
                         break;
                     case ("string_prop"):
-                        builder.setStringProp(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setStringProp(this.stringTypeAdapter.read(reader));
                         break;
                     case ("type"):
-                        builder.setType(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setType(this.stringTypeAdapter.read(reader));
                         break;
                     case ("unsigned_char_enum"):
-                        builder.setUnsignedCharEnum(everythingUnsignedCharEnumTypeAdapter.read(reader));
+                        if (this.everythingUnsignedCharEnumTypeAdapter == null) {
+                            this.everythingUnsignedCharEnumTypeAdapter = this.gson.getAdapter(EverythingUnsignedCharEnum.class).nullSafe();
+                        }
+                        builder.setUnsignedCharEnum(this.everythingUnsignedCharEnumTypeAdapter.read(reader));
                         break;
                     case ("unsigned_int_enum"):
-                        builder.setUnsignedIntEnum(everythingUnsignedIntEnumTypeAdapter.read(reader));
+                        if (this.everythingUnsignedIntEnumTypeAdapter == null) {
+                            this.everythingUnsignedIntEnumTypeAdapter = this.gson.getAdapter(EverythingUnsignedIntEnum.class).nullSafe();
+                        }
+                        builder.setUnsignedIntEnum(this.everythingUnsignedIntEnumTypeAdapter.read(reader));
                         break;
                     case ("unsigned_short_enum"):
-                        builder.setUnsignedShortEnum(everythingUnsignedShortEnumTypeAdapter.read(reader));
+                        if (this.everythingUnsignedShortEnumTypeAdapter == null) {
+                            this.everythingUnsignedShortEnumTypeAdapter = this.gson.getAdapter(EverythingUnsignedShortEnum.class).nullSafe();
+                        }
+                        builder.setUnsignedShortEnum(this.everythingUnsignedShortEnumTypeAdapter.read(reader));
                         break;
                     case ("uri_prop"):
-                        builder.setUriProp(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setUriProp(this.stringTypeAdapter.read(reader));
                         break;
                     case ("_bits"):
                         bits = new boolean[36];
