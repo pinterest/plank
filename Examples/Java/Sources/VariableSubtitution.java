@@ -247,8 +247,8 @@ public class VariableSubtitution {
 
     public static class VariableSubtitutionTypeAdapterFactory implements TypeAdapterFactory {
 
-        @Nullable
         @Override
+        @Nullable
         public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!VariableSubtitution.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
@@ -281,8 +281,8 @@ public class VariableSubtitution {
             this.delegateTypeAdapter.write(writer, value);
         }
 
-        @Override
         @Nullable
+        @Override
         public VariableSubtitution read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();

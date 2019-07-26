@@ -773,8 +773,8 @@ public class Pin {
             this.delegateTypeAdapter.write(writer, value);
         }
 
-        @Nullable
         @Override
+        @Nullable
         public Pin read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();

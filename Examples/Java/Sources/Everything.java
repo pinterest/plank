@@ -1583,8 +1583,8 @@ public class Everything {
             this.delegateTypeAdapter.write(writer, value);
         }
 
-        @Override
         @Nullable
+        @Override
         public Everything read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();

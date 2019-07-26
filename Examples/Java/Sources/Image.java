@@ -244,8 +244,8 @@ public class Image {
             this.delegateTypeAdapter.write(writer, value);
         }
 
-        @Nullable
         @Override
+        @Nullable
         public Image read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();

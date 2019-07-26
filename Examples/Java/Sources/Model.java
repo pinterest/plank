@@ -135,8 +135,8 @@ public class Model {
 
     public static class ModelTypeAdapterFactory implements TypeAdapterFactory {
 
-        @Nullable
         @Override
+        @Nullable
         public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!Model.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;

@@ -463,8 +463,8 @@ public class User {
 
     public static class UserTypeAdapterFactory implements TypeAdapterFactory {
 
-        @Nullable
         @Override
+        @Nullable
         public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!User.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
@@ -501,8 +501,8 @@ public class User {
             this.delegateTypeAdapter.write(writer, value);
         }
 
-        @Nullable
         @Override
+        @Nullable
         public User read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
