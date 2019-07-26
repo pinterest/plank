@@ -141,32 +141,33 @@ public class Model {
             if (!Model.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
-            return (TypeAdapter<T>) new ModelTypeAdapter(gson, this, typeToken);
+            return (TypeAdapter<T>) new ModelTypeAdapter(gson);
         }
     }
 
     public static class ModelTypeAdapter extends TypeAdapter<Model> {
 
-        final private ModelTypeAdapterFactory factory;
         final private Gson gson;
-        final private TypeToken typeToken;
-        private TypeAdapter<Model> delegateTypeAdapter;
-
         private TypeAdapter<String> stringTypeAdapter;
 
-        public ModelTypeAdapter(@NonNull Gson gson, ModelTypeAdapterFactory factory, TypeToken typeToken) {
-            this.factory = factory;
+        public ModelTypeAdapter(Gson gson) {
             this.gson = gson;
-            this.typeToken = typeToken;
         }
 
         @Override
         public void write(@NonNull JsonWriter writer, Model value) throws IOException {
-            if (this.delegateTypeAdapter == null) {
-                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            if (value == null) {
+                writer.nullValue();
+                return;
             }
-            writer.setSerializeNulls(false);
-            this.delegateTypeAdapter.write(writer, value);
+            writer.beginObject();
+            if (value.getUidIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("id"), value.uid);
+            }
+            writer.endObject();
         }
 
         @Nullable

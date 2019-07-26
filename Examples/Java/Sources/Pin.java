@@ -735,17 +735,13 @@ public class Pin {
             if (!Pin.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
-            return (TypeAdapter<T>) new PinTypeAdapter(gson, this, typeToken);
+            return (TypeAdapter<T>) new PinTypeAdapter(gson);
         }
     }
 
     public static class PinTypeAdapter extends TypeAdapter<Pin> {
 
-        final private PinTypeAdapterFactory factory;
         final private Gson gson;
-        final private TypeToken typeToken;
-        private TypeAdapter<Pin> delegateTypeAdapter;
-
         private TypeAdapter<Board> boardTypeAdapter;
         private TypeAdapter<Date> dateTypeAdapter;
         private TypeAdapter<Image> imageTypeAdapter;
@@ -758,19 +754,120 @@ public class Pin {
         private TypeAdapter<PinInStock> pinInStockTypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
 
-        public PinTypeAdapter(@NonNull Gson gson, PinTypeAdapterFactory factory, TypeToken typeToken) {
-            this.factory = factory;
+        public PinTypeAdapter(Gson gson) {
             this.gson = gson;
-            this.typeToken = typeToken;
         }
 
         @Override
         public void write(@NonNull JsonWriter writer, Pin value) throws IOException {
-            if (this.delegateTypeAdapter == null) {
-                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            if (value == null) {
+                writer.nullValue();
+                return;
             }
-            writer.setSerializeNulls(false);
-            this.delegateTypeAdapter.write(writer, value);
+            writer.beginObject();
+            if (value.getAttributionIsSet()) {
+                if (this.map_String__String_TypeAdapter == null) {
+                    this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+                }
+                this.map_String__String_TypeAdapter.write(writer.name("attribution"), value.attribution);
+            }
+            if (value.getAttributionObjectsIsSet()) {
+                if (this.list_PinAttributionObjects_TypeAdapter == null) {
+                    this.list_PinAttributionObjects_TypeAdapter = this.gson.getAdapter(new TypeToken<List<PinAttributionObjects>>(){}).nullSafe();
+                }
+                this.list_PinAttributionObjects_TypeAdapter.write(writer.name("attribution_objects"), value.attributionObjects);
+            }
+            if (value.getBoardIsSet()) {
+                if (this.boardTypeAdapter == null) {
+                    this.boardTypeAdapter = this.gson.getAdapter(Board.class).nullSafe();
+                }
+                this.boardTypeAdapter.write(writer.name("board"), value.board);
+            }
+            if (value.getColorIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("color"), value.color);
+            }
+            if (value.getCountsIsSet()) {
+                if (this.map_String__Integer_TypeAdapter == null) {
+                    this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+                }
+                this.map_String__Integer_TypeAdapter.write(writer.name("counts"), value.counts);
+            }
+            if (value.getCreatedAtIsSet()) {
+                if (this.dateTypeAdapter == null) {
+                    this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
+                }
+                this.dateTypeAdapter.write(writer.name("created_at"), value.createdAt);
+            }
+            if (value.getCreatorIsSet()) {
+                if (this.map_String__User_TypeAdapter == null) {
+                    this.map_String__User_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
+                }
+                this.map_String__User_TypeAdapter.write(writer.name("creator"), value.creator);
+            }
+            if (value.getDescriptionIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("description"), value.description);
+            }
+            if (value.getUidIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("id"), value.uid);
+            }
+            if (value.getImageIsSet()) {
+                if (this.imageTypeAdapter == null) {
+                    this.imageTypeAdapter = this.gson.getAdapter(Image.class).nullSafe();
+                }
+                this.imageTypeAdapter.write(writer.name("image"), value.image);
+            }
+            if (value.getInStockIsSet()) {
+                if (this.pinInStockTypeAdapter == null) {
+                    this.pinInStockTypeAdapter = this.gson.getAdapter(PinInStock.class).nullSafe();
+                }
+                this.pinInStockTypeAdapter.write(writer.name("in_stock"), value.inStock);
+            }
+            if (value.getLinkIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("link"), value.link);
+            }
+            if (value.getMediaIsSet()) {
+                if (this.map_String__String_TypeAdapter == null) {
+                    this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+                }
+                this.map_String__String_TypeAdapter.write(writer.name("media"), value.media);
+            }
+            if (value.getNoteIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("note"), value.note);
+            }
+            if (value.getTagsIsSet()) {
+                if (this.list_Map_String__Object__TypeAdapter == null) {
+                    this.list_Map_String__Object__TypeAdapter = this.gson.getAdapter(new TypeToken<List<Map<String, Object>>>(){}).nullSafe();
+                }
+                this.list_Map_String__Object__TypeAdapter.write(writer.name("tags"), value.tags);
+            }
+            if (value.getUrlIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("url"), value.url);
+            }
+            if (value.getVisualSearchAttrsIsSet()) {
+                if (this.map_String__Object_TypeAdapter == null) {
+                    this.map_String__Object_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
+                }
+                this.map_String__Object_TypeAdapter.write(writer.name("visual_search_attrs"), value.visualSearchAttrs);
+            }
+            writer.endObject();
         }
 
         @Nullable

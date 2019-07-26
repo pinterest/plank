@@ -215,33 +215,46 @@ public class Image {
             if (!Image.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
-            return (TypeAdapter<T>) new ImageTypeAdapter(gson, this, typeToken);
+            return (TypeAdapter<T>) new ImageTypeAdapter(gson);
         }
     }
 
     public static class ImageTypeAdapter extends TypeAdapter<Image> {
 
-        final private ImageTypeAdapterFactory factory;
         final private Gson gson;
-        final private TypeToken typeToken;
-        private TypeAdapter<Image> delegateTypeAdapter;
-
         private TypeAdapter<Integer> integerTypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
 
-        public ImageTypeAdapter(@NonNull Gson gson, ImageTypeAdapterFactory factory, TypeToken typeToken) {
-            this.factory = factory;
+        public ImageTypeAdapter(Gson gson) {
             this.gson = gson;
-            this.typeToken = typeToken;
         }
 
         @Override
         public void write(@NonNull JsonWriter writer, Image value) throws IOException {
-            if (this.delegateTypeAdapter == null) {
-                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            if (value == null) {
+                writer.nullValue();
+                return;
             }
-            writer.setSerializeNulls(false);
-            this.delegateTypeAdapter.write(writer, value);
+            writer.beginObject();
+            if (value.getHeightIsSet()) {
+                if (this.integerTypeAdapter == null) {
+                    this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                }
+                this.integerTypeAdapter.write(writer.name("height"), value.height);
+            }
+            if (value.getUrlIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("url"), value.url);
+            }
+            if (value.getWidthIsSet()) {
+                if (this.integerTypeAdapter == null) {
+                    this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                }
+                this.integerTypeAdapter.write(writer.name("width"), value.width);
+            }
+            writer.endObject();
         }
 
         @Nullable
