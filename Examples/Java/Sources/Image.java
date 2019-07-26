@@ -214,19 +214,25 @@ public class Image {
 
     public static class ImageTypeAdapter extends TypeAdapter<Image> {
 
-        final private TypeAdapter<Image> delegateTypeAdapter;
+        final private ImageTypeAdapterFactory factory;
+        final private Gson gson;
+        final private TypeToken typeToken;
+        private TypeAdapter<Image> delegateTypeAdapter;
 
-        final private TypeAdapter<Integer> integerTypeAdapter;
-        final private TypeAdapter<String> stringTypeAdapter;
+        private TypeAdapter<Integer> integerTypeAdapter;
+        private TypeAdapter<String> stringTypeAdapter;
 
         public ImageTypeAdapter(Gson gson, ImageTypeAdapterFactory factory, TypeToken typeToken) {
-            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.integerTypeAdapter = gson.getAdapter(Integer.class).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
+            this.factory = factory;
+            this.gson = gson;
+            this.typeToken = typeToken;
         }
 
         @Override
         public void write(JsonWriter writer, Image value) throws IOException {
+            if (this.delegateTypeAdapter == null) {
+                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            }
             writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
@@ -244,13 +250,22 @@ public class Image {
                 String name = reader.nextName();
                 switch (name) {
                     case ("height"):
-                        builder.setHeight(integerTypeAdapter.read(reader));
+                        if (this.integerTypeAdapter == null) {
+                            this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                        }
+                        builder.setHeight(this.integerTypeAdapter.read(reader));
                         break;
                     case ("url"):
-                        builder.setUrl(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setUrl(this.stringTypeAdapter.read(reader));
                         break;
                     case ("width"):
-                        builder.setWidth(integerTypeAdapter.read(reader));
+                        if (this.integerTypeAdapter == null) {
+                            this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                        }
+                        builder.setWidth(this.integerTypeAdapter.read(reader));
                         break;
                     case ("_bits"):
                         bits = new boolean[3];

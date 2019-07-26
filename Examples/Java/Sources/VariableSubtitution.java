@@ -251,17 +251,24 @@ public class VariableSubtitution {
 
     public static class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution> {
 
-        final private TypeAdapter<VariableSubtitution> delegateTypeAdapter;
+        final private VariableSubtitutionTypeAdapterFactory factory;
+        final private Gson gson;
+        final private TypeToken typeToken;
+        private TypeAdapter<VariableSubtitution> delegateTypeAdapter;
 
-        final private TypeAdapter<Integer> integerTypeAdapter;
+        private TypeAdapter<Integer> integerTypeAdapter;
 
         public VariableSubtitutionTypeAdapter(Gson gson, VariableSubtitutionTypeAdapterFactory factory, TypeToken typeToken) {
-            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.integerTypeAdapter = gson.getAdapter(Integer.class).nullSafe();
+            this.factory = factory;
+            this.gson = gson;
+            this.typeToken = typeToken;
         }
 
         @Override
         public void write(JsonWriter writer, VariableSubtitution value) throws IOException {
+            if (this.delegateTypeAdapter == null) {
+                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            }
             writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
@@ -279,16 +286,28 @@ public class VariableSubtitution {
                 String name = reader.nextName();
                 switch (name) {
                     case ("alloc_prop"):
-                        builder.setAllocProp(integerTypeAdapter.read(reader));
+                        if (this.integerTypeAdapter == null) {
+                            this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                        }
+                        builder.setAllocProp(this.integerTypeAdapter.read(reader));
                         break;
                     case ("copy_prop"):
-                        builder.setCopyProp(integerTypeAdapter.read(reader));
+                        if (this.integerTypeAdapter == null) {
+                            this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                        }
+                        builder.setCopyProp(this.integerTypeAdapter.read(reader));
                         break;
                     case ("mutable_copy_prop"):
-                        builder.setMutableCopyProp(integerTypeAdapter.read(reader));
+                        if (this.integerTypeAdapter == null) {
+                            this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                        }
+                        builder.setMutableCopyProp(this.integerTypeAdapter.read(reader));
                         break;
                     case ("new_prop"):
-                        builder.setNewProp(integerTypeAdapter.read(reader));
+                        if (this.integerTypeAdapter == null) {
+                            this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                        }
+                        builder.setNewProp(this.integerTypeAdapter.read(reader));
                         break;
                     case ("_bits"):
                         bits = new boolean[4];

@@ -457,27 +457,29 @@ public class Board {
 
     public static class BoardTypeAdapter extends TypeAdapter<Board> {
 
-        final private TypeAdapter<Board> delegateTypeAdapter;
+        final private BoardTypeAdapterFactory factory;
+        final private Gson gson;
+        final private TypeToken typeToken;
+        private TypeAdapter<Board> delegateTypeAdapter;
 
-        final private TypeAdapter<Date> dateTypeAdapter;
-        final private TypeAdapter<Image> imageTypeAdapter;
-        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
-        final private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
-        final private TypeAdapter<Set<User>> set_User_TypeAdapter;
-        final private TypeAdapter<String> stringTypeAdapter;
+        private TypeAdapter<Date> dateTypeAdapter;
+        private TypeAdapter<Image> imageTypeAdapter;
+        private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
+        private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
+        private TypeAdapter<Set<User>> set_User_TypeAdapter;
+        private TypeAdapter<String> stringTypeAdapter;
 
         public BoardTypeAdapter(Gson gson, BoardTypeAdapterFactory factory, TypeToken typeToken) {
-            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
-            this.imageTypeAdapter = gson.getAdapter(Image.class).nullSafe();
-            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
-            this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
-            this.set_User_TypeAdapter = gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
+            this.factory = factory;
+            this.gson = gson;
+            this.typeToken = typeToken;
         }
 
         @Override
         public void write(JsonWriter writer, Board value) throws IOException {
+            if (this.delegateTypeAdapter == null) {
+                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            }
             writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
@@ -495,34 +497,64 @@ public class Board {
                 String name = reader.nextName();
                 switch (name) {
                     case ("id"):
-                        builder.setUid(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setUid(this.stringTypeAdapter.read(reader));
                         break;
                     case ("contributors"):
-                        builder.setContributors(set_User_TypeAdapter.read(reader));
+                        if (this.set_User_TypeAdapter == null) {
+                            this.set_User_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
+                        }
+                        builder.setContributors(this.set_User_TypeAdapter.read(reader));
                         break;
                     case ("counts"):
-                        builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
+                        if (this.map_String__Integer_TypeAdapter == null) {
+                            this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+                        }
+                        builder.setCounts(this.map_String__Integer_TypeAdapter.read(reader));
                         break;
                     case ("created_at"):
-                        builder.setCreatedAt(dateTypeAdapter.read(reader));
+                        if (this.dateTypeAdapter == null) {
+                            this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
+                        }
+                        builder.setCreatedAt(this.dateTypeAdapter.read(reader));
                         break;
                     case ("creator"):
-                        builder.setCreator(map_String__String_TypeAdapter.read(reader));
+                        if (this.map_String__String_TypeAdapter == null) {
+                            this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+                        }
+                        builder.setCreator(this.map_String__String_TypeAdapter.read(reader));
                         break;
                     case ("creator_url"):
-                        builder.setCreatorURL(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setCreatorURL(this.stringTypeAdapter.read(reader));
                         break;
                     case ("description"):
-                        builder.setDescription(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setDescription(this.stringTypeAdapter.read(reader));
                         break;
                     case ("image"):
-                        builder.setImage(imageTypeAdapter.read(reader));
+                        if (this.imageTypeAdapter == null) {
+                            this.imageTypeAdapter = this.gson.getAdapter(Image.class).nullSafe();
+                        }
+                        builder.setImage(this.imageTypeAdapter.read(reader));
                         break;
                     case ("name"):
-                        builder.setName(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setName(this.stringTypeAdapter.read(reader));
                         break;
                     case ("url"):
-                        builder.setUrl(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setUrl(this.stringTypeAdapter.read(reader));
                         break;
                     case ("_bits"):
                         bits = new boolean[10];

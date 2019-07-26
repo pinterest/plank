@@ -720,37 +720,34 @@ public class Pin {
 
     public static class PinTypeAdapter extends TypeAdapter<Pin> {
 
-        final private TypeAdapter<Pin> delegateTypeAdapter;
+        final private PinTypeAdapterFactory factory;
+        final private Gson gson;
+        final private TypeToken typeToken;
+        private TypeAdapter<Pin> delegateTypeAdapter;
 
-        final private TypeAdapter<Board> boardTypeAdapter;
-        final private TypeAdapter<Date> dateTypeAdapter;
-        final private TypeAdapter<Image> imageTypeAdapter;
-        final private TypeAdapter<List<Map<String, Object>>> list_Map_String__Object__TypeAdapter;
-        final private TypeAdapter<List<PinAttributionObjects>> list_PinAttributionObjects_TypeAdapter;
-        final private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
-        final private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
-        final private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
-        final private TypeAdapter<Map<String, User>> map_String__User_TypeAdapter;
-        final private TypeAdapter<PinInStock> pinInStockTypeAdapter;
-        final private TypeAdapter<String> stringTypeAdapter;
+        private TypeAdapter<Board> boardTypeAdapter;
+        private TypeAdapter<Date> dateTypeAdapter;
+        private TypeAdapter<Image> imageTypeAdapter;
+        private TypeAdapter<List<Map<String, Object>>> list_Map_String__Object__TypeAdapter;
+        private TypeAdapter<List<PinAttributionObjects>> list_PinAttributionObjects_TypeAdapter;
+        private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
+        private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
+        private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
+        private TypeAdapter<Map<String, User>> map_String__User_TypeAdapter;
+        private TypeAdapter<PinInStock> pinInStockTypeAdapter;
+        private TypeAdapter<String> stringTypeAdapter;
 
         public PinTypeAdapter(Gson gson, PinTypeAdapterFactory factory, TypeToken typeToken) {
-            this.delegateTypeAdapter = gson.getDelegateAdapter(factory, typeToken);
-            this.boardTypeAdapter = gson.getAdapter(Board.class).nullSafe();
-            this.dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
-            this.imageTypeAdapter = gson.getAdapter(Image.class).nullSafe();
-            this.list_Map_String__Object__TypeAdapter = gson.getAdapter(new TypeToken<List<Map<String, Object>>>(){}).nullSafe();
-            this.list_PinAttributionObjects_TypeAdapter = gson.getAdapter(new TypeToken<List<PinAttributionObjects>>(){}).nullSafe();
-            this.map_String__Integer_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
-            this.map_String__Object_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
-            this.map_String__String_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
-            this.map_String__User_TypeAdapter = gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
-            this.pinInStockTypeAdapter = gson.getAdapter(PinInStock.class).nullSafe();
-            this.stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
+            this.factory = factory;
+            this.gson = gson;
+            this.typeToken = typeToken;
         }
 
         @Override
         public void write(JsonWriter writer, Pin value) throws IOException {
+            if (this.delegateTypeAdapter == null) {
+                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            }
             writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
@@ -768,55 +765,106 @@ public class Pin {
                 String name = reader.nextName();
                 switch (name) {
                     case ("attribution"):
-                        builder.setAttribution(map_String__String_TypeAdapter.read(reader));
+                        if (this.map_String__String_TypeAdapter == null) {
+                            this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+                        }
+                        builder.setAttribution(this.map_String__String_TypeAdapter.read(reader));
                         break;
                     case ("attribution_objects"):
-                        builder.setAttributionObjects(list_PinAttributionObjects_TypeAdapter.read(reader));
+                        if (this.list_PinAttributionObjects_TypeAdapter == null) {
+                            this.list_PinAttributionObjects_TypeAdapter = this.gson.getAdapter(new TypeToken<List<PinAttributionObjects>>(){}).nullSafe();
+                        }
+                        builder.setAttributionObjects(this.list_PinAttributionObjects_TypeAdapter.read(reader));
                         break;
                     case ("board"):
-                        builder.setBoard(boardTypeAdapter.read(reader));
+                        if (this.boardTypeAdapter == null) {
+                            this.boardTypeAdapter = this.gson.getAdapter(Board.class).nullSafe();
+                        }
+                        builder.setBoard(this.boardTypeAdapter.read(reader));
                         break;
                     case ("color"):
-                        builder.setColor(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setColor(this.stringTypeAdapter.read(reader));
                         break;
                     case ("counts"):
-                        builder.setCounts(map_String__Integer_TypeAdapter.read(reader));
+                        if (this.map_String__Integer_TypeAdapter == null) {
+                            this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+                        }
+                        builder.setCounts(this.map_String__Integer_TypeAdapter.read(reader));
                         break;
                     case ("created_at"):
-                        builder.setCreatedAt(dateTypeAdapter.read(reader));
+                        if (this.dateTypeAdapter == null) {
+                            this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
+                        }
+                        builder.setCreatedAt(this.dateTypeAdapter.read(reader));
                         break;
                     case ("creator"):
-                        builder.setCreator(map_String__User_TypeAdapter.read(reader));
+                        if (this.map_String__User_TypeAdapter == null) {
+                            this.map_String__User_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
+                        }
+                        builder.setCreator(this.map_String__User_TypeAdapter.read(reader));
                         break;
                     case ("description"):
-                        builder.setDescription(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setDescription(this.stringTypeAdapter.read(reader));
                         break;
                     case ("id"):
-                        builder.setUid(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setUid(this.stringTypeAdapter.read(reader));
                         break;
                     case ("image"):
-                        builder.setImage(imageTypeAdapter.read(reader));
+                        if (this.imageTypeAdapter == null) {
+                            this.imageTypeAdapter = this.gson.getAdapter(Image.class).nullSafe();
+                        }
+                        builder.setImage(this.imageTypeAdapter.read(reader));
                         break;
                     case ("in_stock"):
-                        builder.setInStock(pinInStockTypeAdapter.read(reader));
+                        if (this.pinInStockTypeAdapter == null) {
+                            this.pinInStockTypeAdapter = this.gson.getAdapter(PinInStock.class).nullSafe();
+                        }
+                        builder.setInStock(this.pinInStockTypeAdapter.read(reader));
                         break;
                     case ("link"):
-                        builder.setLink(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setLink(this.stringTypeAdapter.read(reader));
                         break;
                     case ("media"):
-                        builder.setMedia(map_String__String_TypeAdapter.read(reader));
+                        if (this.map_String__String_TypeAdapter == null) {
+                            this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+                        }
+                        builder.setMedia(this.map_String__String_TypeAdapter.read(reader));
                         break;
                     case ("note"):
-                        builder.setNote(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setNote(this.stringTypeAdapter.read(reader));
                         break;
                     case ("tags"):
-                        builder.setTags(list_Map_String__Object__TypeAdapter.read(reader));
+                        if (this.list_Map_String__Object__TypeAdapter == null) {
+                            this.list_Map_String__Object__TypeAdapter = this.gson.getAdapter(new TypeToken<List<Map<String, Object>>>(){}).nullSafe();
+                        }
+                        builder.setTags(this.list_Map_String__Object__TypeAdapter.read(reader));
                         break;
                     case ("url"):
-                        builder.setUrl(stringTypeAdapter.read(reader));
+                        if (this.stringTypeAdapter == null) {
+                            this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                        }
+                        builder.setUrl(this.stringTypeAdapter.read(reader));
                         break;
                     case ("visual_search_attrs"):
-                        builder.setVisualSearchAttrs(map_String__Object_TypeAdapter.read(reader));
+                        if (this.map_String__Object_TypeAdapter == null) {
+                            this.map_String__Object_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
+                        }
+                        builder.setVisualSearchAttrs(this.map_String__Object_TypeAdapter.read(reader));
                         break;
                     case ("_bits"):
                         bits = new boolean[17];
