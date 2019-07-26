@@ -227,6 +227,7 @@ public class Image {
 
         @Override
         public void write(JsonWriter writer, Image value) throws IOException {
+            writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
 

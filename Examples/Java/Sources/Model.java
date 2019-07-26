@@ -153,6 +153,7 @@ public class Model {
 
         @Override
         public void write(JsonWriter writer, Model value) throws IOException {
+            writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
 
