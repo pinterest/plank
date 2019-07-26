@@ -478,6 +478,7 @@ public class Board {
 
         @Override
         public void write(JsonWriter writer, Board value) throws IOException {
+            writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
 

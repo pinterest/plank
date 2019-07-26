@@ -306,6 +306,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             "void write(JsonWriter writer, " + className + " value)",
             ["IOException"]
         ) { [
+            "writer.setSerializeNulls(false);",
             "this.delegateTypeAdapter.write(writer, value);",
         ] }
 

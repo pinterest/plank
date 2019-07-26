@@ -480,6 +480,7 @@ public class User {
 
         @Override
         public void write(JsonWriter writer, User value) throws IOException {
+            writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
 

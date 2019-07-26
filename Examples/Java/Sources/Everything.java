@@ -1564,6 +1564,7 @@ public class Everything {
 
         @Override
         public void write(JsonWriter writer, Everything value) throws IOException {
+            writer.setSerializeNulls(false);
             this.delegateTypeAdapter.write(writer, value);
         }
 
