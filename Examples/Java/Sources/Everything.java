@@ -305,15 +305,18 @@ public class Everything {
         this._bits = _bits;
     }
 
+    @NonNull
     public static Everything.Builder builder() {
         return new Everything.Builder();
     }
 
+    @NonNull
     public Everything.Builder toBuilder() {
         return new Everything.Builder(this);
     }
 
-    public Everything mergeFrom(Everything model) {
+    @NonNull
+    public Everything mergeFrom(@NonNull Everything model) {
         Everything.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
@@ -781,6 +784,7 @@ public class Everything {
             this._bits = model._bits;
         }
 
+        @NonNull
         public Builder setArrayProp(@Nullable List<Object> value) {
             this.arrayProp = value;
             if (this._bits.length > ARRAY_PROP_INDEX) {
@@ -789,6 +793,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setBooleanProp(@Nullable Boolean value) {
             this.booleanProp = value;
             if (this._bits.length > BOOLEAN_PROP_INDEX) {
@@ -797,6 +802,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setCharEnum(@Nullable EverythingCharEnum value) {
             this.charEnum = value;
             if (this._bits.length > CHAR_ENUM_INDEX) {
@@ -805,6 +811,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setDateProp(@Nullable Date value) {
             this.dateProp = value;
             if (this._bits.length > DATE_PROP_INDEX) {
@@ -813,6 +820,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setIntEnum(@Nullable EverythingIntEnum value) {
             this.intEnum = value;
             if (this._bits.length > INT_ENUM_INDEX) {
@@ -821,6 +829,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setIntProp(@Nullable Integer value) {
             this.intProp = value;
             if (this._bits.length > INT_PROP_INDEX) {
@@ -829,6 +838,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setListPolymorphicValues(@Nullable List<Object> value) {
             this.listPolymorphicValues = value;
             if (this._bits.length > LIST_POLYMORPHIC_VALUES_INDEX) {
@@ -837,6 +847,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setListWithListAndOtherModelValues(@Nullable List<List<User>> value) {
             this.listWithListAndOtherModelValues = value;
             if (this._bits.length > LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX) {
@@ -845,6 +856,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setListWithMapAndOtherModelValues(@Nullable List<Map<String, User>> value) {
             this.listWithMapAndOtherModelValues = value;
             if (this._bits.length > LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX) {
@@ -853,6 +865,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setListWithObjectValues(@Nullable List<String> value) {
             this.listWithObjectValues = value;
             if (this._bits.length > LIST_WITH_OBJECT_VALUES_INDEX) {
@@ -861,6 +874,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setListWithOtherModelValues(@Nullable List<User> value) {
             this.listWithOtherModelValues = value;
             if (this._bits.length > LIST_WITH_OTHER_MODEL_VALUES_INDEX) {
@@ -869,6 +883,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setListWithPrimitiveValues(@Nullable List<Integer> value) {
             this.listWithPrimitiveValues = value;
             if (this._bits.length > LIST_WITH_PRIMITIVE_VALUES_INDEX) {
@@ -877,6 +892,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setMapPolymorphicValues(@Nullable Map<String, EverythingMapPolymorphicValues> value) {
             this.mapPolymorphicValues = value;
             if (this._bits.length > MAP_POLYMORPHIC_VALUES_INDEX) {
@@ -885,6 +901,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setMapProp(@Nullable Map<String, Object> value) {
             this.mapProp = value;
             if (this._bits.length > MAP_PROP_INDEX) {
@@ -893,6 +910,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setMapWithListAndOtherModelValues(@Nullable Map<String, List<User>> value) {
             this.mapWithListAndOtherModelValues = value;
             if (this._bits.length > MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX) {
@@ -901,6 +919,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setMapWithMapAndOtherModelValues(@Nullable Map<String, Map<String, Object>> value) {
             this.mapWithMapAndOtherModelValues = value;
             if (this._bits.length > MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX) {
@@ -909,6 +928,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setMapWithObjectValues(@Nullable Map<String, String> value) {
             this.mapWithObjectValues = value;
             if (this._bits.length > MAP_WITH_OBJECT_VALUES_INDEX) {
@@ -917,6 +937,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setMapWithOtherModelValues(@Nullable Map<String, User> value) {
             this.mapWithOtherModelValues = value;
             if (this._bits.length > MAP_WITH_OTHER_MODEL_VALUES_INDEX) {
@@ -925,6 +946,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setMapWithPrimitiveValues(@Nullable Map<String, Integer> value) {
             this.mapWithPrimitiveValues = value;
             if (this._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX) {
@@ -933,6 +955,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setNsintegerEnum(@Nullable EverythingNsintegerEnum value) {
             this.nsintegerEnum = value;
             if (this._bits.length > NSINTEGER_ENUM_INDEX) {
@@ -941,6 +964,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setNsuintegerEnum(@Nullable EverythingNsuintegerEnum value) {
             this.nsuintegerEnum = value;
             if (this._bits.length > NSUINTEGER_ENUM_INDEX) {
@@ -949,6 +973,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setNumberProp(@Nullable Double value) {
             this.numberProp = value;
             if (this._bits.length > NUMBER_PROP_INDEX) {
@@ -957,6 +982,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setOtherModelProp(@Nullable User value) {
             this.otherModelProp = value;
             if (this._bits.length > OTHER_MODEL_PROP_INDEX) {
@@ -965,6 +991,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setPolymorphicProp(@Nullable EverythingPolymorphicProp value) {
             this.polymorphicProp = value;
             if (this._bits.length > POLYMORPHIC_PROP_INDEX) {
@@ -973,6 +1000,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setSetProp(@Nullable Set<Object> value) {
             this.setProp = value;
             if (this._bits.length > SET_PROP_INDEX) {
@@ -981,6 +1009,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setSetPropWithOtherModelValues(@Nullable Set<User> value) {
             this.setPropWithOtherModelValues = value;
             if (this._bits.length > SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX) {
@@ -989,6 +1018,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setSetPropWithPrimitiveValues(@Nullable Set<Integer> value) {
             this.setPropWithPrimitiveValues = value;
             if (this._bits.length > SET_PROP_WITH_PRIMITIVE_VALUES_INDEX) {
@@ -997,6 +1027,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setSetPropWithValues(@Nullable Set<String> value) {
             this.setPropWithValues = value;
             if (this._bits.length > SET_PROP_WITH_VALUES_INDEX) {
@@ -1005,6 +1036,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setShortEnum(@Nullable EverythingShortEnum value) {
             this.shortEnum = value;
             if (this._bits.length > SHORT_ENUM_INDEX) {
@@ -1013,6 +1045,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setStringEnum(@Nullable EverythingStringEnum value) {
             this.stringEnum = value;
             if (this._bits.length > STRING_ENUM_INDEX) {
@@ -1021,6 +1054,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setStringProp(@Nullable String value) {
             this.stringProp = value;
             if (this._bits.length > STRING_PROP_INDEX) {
@@ -1029,6 +1063,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setType(@Nullable String value) {
             this.type = value;
             if (this._bits.length > TYPE_INDEX) {
@@ -1037,6 +1072,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setUnsignedCharEnum(@Nullable EverythingUnsignedCharEnum value) {
             this.unsignedCharEnum = value;
             if (this._bits.length > UNSIGNED_CHAR_ENUM_INDEX) {
@@ -1045,6 +1081,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setUnsignedIntEnum(@Nullable EverythingUnsignedIntEnum value) {
             this.unsignedIntEnum = value;
             if (this._bits.length > UNSIGNED_INT_ENUM_INDEX) {
@@ -1053,6 +1090,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setUnsignedShortEnum(@Nullable EverythingUnsignedShortEnum value) {
             this.unsignedShortEnum = value;
             if (this._bits.length > UNSIGNED_SHORT_ENUM_INDEX) {
@@ -1061,6 +1099,7 @@ public class Everything {
             return this;
         }
 
+        @NonNull
         public Builder setUriProp(@Nullable String value) {
             this.uriProp = value;
             if (this._bits.length > URI_PROP_INDEX) {
@@ -1256,7 +1295,7 @@ public class Everything {
             );
         }
 
-        public void mergeFrom(Everything model) {
+        public void mergeFrom(@NonNull Everything model) {
             if (model.getArrayPropIsSet()) {
                 this.arrayProp = model.arrayProp;
                 if (this._bits.length > ARRAY_PROP_INDEX) {
@@ -1478,8 +1517,9 @@ public class Everything {
 
     public static class EverythingTypeAdapterFactory implements TypeAdapterFactory {
 
+        @Nullable
         @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+        public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!Everything.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
@@ -1528,14 +1568,14 @@ public class Everything {
         private TypeAdapter<String> stringTypeAdapter;
         private TypeAdapter<User> userTypeAdapter;
 
-        public EverythingTypeAdapter(Gson gson, EverythingTypeAdapterFactory factory, TypeToken typeToken) {
+        public EverythingTypeAdapter(@NonNull Gson gson, EverythingTypeAdapterFactory factory, TypeToken typeToken) {
             this.factory = factory;
             this.gson = gson;
             this.typeToken = typeToken;
         }
 
         @Override
-        public void write(JsonWriter writer, Everything value) throws IOException {
+        public void write(@NonNull JsonWriter writer, Everything value) throws IOException {
             if (this.delegateTypeAdapter == null) {
                 this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
             }
@@ -1544,7 +1584,8 @@ public class Everything {
         }
 
         @Override
-        public Everything read(JsonReader reader) throws IOException {
+        @Nullable
+        public Everything read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
                 return null;

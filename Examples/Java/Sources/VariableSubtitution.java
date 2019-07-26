@@ -58,15 +58,18 @@ public class VariableSubtitution {
         this._bits = _bits;
     }
 
+    @NonNull
     public static VariableSubtitution.Builder builder() {
         return new VariableSubtitution.Builder();
     }
 
+    @NonNull
     public VariableSubtitution.Builder toBuilder() {
         return new VariableSubtitution.Builder(this);
     }
 
-    public VariableSubtitution mergeFrom(VariableSubtitution model) {
+    @NonNull
+    public VariableSubtitution mergeFrom(@NonNull VariableSubtitution model) {
         VariableSubtitution.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
@@ -151,6 +154,7 @@ public class VariableSubtitution {
             this._bits = model._bits;
         }
 
+        @NonNull
         public Builder setAllocProp(@Nullable Integer value) {
             this.allocProp = value;
             if (this._bits.length > ALLOC_PROP_INDEX) {
@@ -159,6 +163,7 @@ public class VariableSubtitution {
             return this;
         }
 
+        @NonNull
         public Builder setCopyProp(@Nullable Integer value) {
             this.copyProp = value;
             if (this._bits.length > COPY_PROP_INDEX) {
@@ -167,6 +172,7 @@ public class VariableSubtitution {
             return this;
         }
 
+        @NonNull
         public Builder setMutableCopyProp(@Nullable Integer value) {
             this.mutableCopyProp = value;
             if (this._bits.length > MUTABLE_COPY_PROP_INDEX) {
@@ -175,6 +181,7 @@ public class VariableSubtitution {
             return this;
         }
 
+        @NonNull
         public Builder setNewProp(@Nullable Integer value) {
             this.newProp = value;
             if (this._bits.length > NEW_PROP_INDEX) {
@@ -210,7 +217,7 @@ public class VariableSubtitution {
             );
         }
 
-        public void mergeFrom(VariableSubtitution model) {
+        public void mergeFrom(@NonNull VariableSubtitution model) {
             if (model.getAllocPropIsSet()) {
                 this.allocProp = model.allocProp;
                 if (this._bits.length > ALLOC_PROP_INDEX) {
@@ -240,8 +247,9 @@ public class VariableSubtitution {
 
     public static class VariableSubtitutionTypeAdapterFactory implements TypeAdapterFactory {
 
+        @Nullable
         @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+        public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!VariableSubtitution.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
@@ -258,14 +266,14 @@ public class VariableSubtitution {
 
         private TypeAdapter<Integer> integerTypeAdapter;
 
-        public VariableSubtitutionTypeAdapter(Gson gson, VariableSubtitutionTypeAdapterFactory factory, TypeToken typeToken) {
+        public VariableSubtitutionTypeAdapter(@NonNull Gson gson, VariableSubtitutionTypeAdapterFactory factory, TypeToken typeToken) {
             this.factory = factory;
             this.gson = gson;
             this.typeToken = typeToken;
         }
 
         @Override
-        public void write(JsonWriter writer, VariableSubtitution value) throws IOException {
+        public void write(@NonNull JsonWriter writer, VariableSubtitution value) throws IOException {
             if (this.delegateTypeAdapter == null) {
                 this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
             }
@@ -274,7 +282,8 @@ public class VariableSubtitution {
         }
 
         @Override
-        public VariableSubtitution read(JsonReader reader) throws IOException {
+        @Nullable
+        public VariableSubtitution read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
                 return null;

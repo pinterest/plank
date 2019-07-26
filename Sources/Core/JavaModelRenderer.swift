@@ -157,7 +157,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderModelMergeFrom() -> JavaIR.Method {
         let methodName = "mergeFrom"
-        return JavaIR.method(annotations: decorations.annotationsForMethod(methodName), [.public], className + " " + methodName + "(" + className + " model)") { [
+        return JavaIR.method(annotations: decorations.annotationsForMethod(methodName).union([.nonnull]), [.public], className + " " + methodName + "(@NonNull " + className + " model)") { [
             self.className + ".Builder builder = this.toBuilder();",
             "builder.mergeFrom(model);",
             "return builder.build();",
@@ -166,11 +166,11 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderModelToBuilder() -> JavaIR.Method {
         let methodName = "toBuilder"
-        return JavaIR.method(annotations: decorations.annotationsForMethod(methodName), [.public], className + ".Builder " + methodName + "()") { ["return new " + self.className + ".Builder(this);"] }
+        return JavaIR.method(annotations: decorations.annotationsForMethod(methodName).union([.nonnull]), [.public], className + ".Builder " + methodName + "()") { ["return new " + self.className + ".Builder(this);"] }
     }
 
     func renderModelBuilder() -> JavaIR.Method {
-        return JavaIR.method([.public, .static], className + ".Builder builder()") { [
+        return JavaIR.method(annotations: [.nonnull], [.public, .static], className + ".Builder builder()") { [
             "return new \(className).Builder();",
         ] }
     }
@@ -207,7 +207,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderSetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
         let setters = transitiveProperties.map { param, schemaObj in
-            JavaIR.method(modifiers, "Builder set\(Languages.java.snakeCaseToCapitalizedPropertyName(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
+            JavaIR.method(annotations: [.nonnull], modifiers, "Builder set\(Languages.java.snakeCaseToCapitalizedPropertyName(param))(\(self.typeFromSchema(param, schemaObj)) value)") { [
                 "this." + Languages.java.snakeCaseToPropertyName(param) + " = value;",
                 JavaIR.ifBlock(condition: "this._bits.length > " + param.uppercased() + "_INDEX") { [
                     "this._bits[" + param.uppercased() + "_INDEX] = true;",
@@ -227,7 +227,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 ] },
             ] }
         })
-        return JavaIR.method([.public], "void mergeFrom(" + className + " model)") { body }
+        return JavaIR.method([.public], "void mergeFrom(@NonNull " + className + " model)") { body }
     }
 
     func renderBuilderProperties(modifiers _: JavaModifier = [.private]) -> [[JavaIR.Property]] {
@@ -243,7 +243,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     // MARK: - TypeAdapterFactory
 
     func renderTypeAdapterFactoryMethods() -> [JavaIR.Method] {
-        return [JavaIR.method(annotations: [JavaAnnotation.override], [.public], "<T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken)") { [
+        return [JavaIR.method(annotations: [.nullable, JavaAnnotation.override], [.public], "<T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken)") { [
             JavaIR.ifBlock(condition: "!" + className + ".class.isAssignableFrom(typeToken.getRawType())") { [
                 "return null;",
             ] },
@@ -308,7 +308,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let constructor = JavaIR.method(
             annotations: [],
             [.public],
-            className + "TypeAdapter(Gson gson, " + className + "TypeAdapterFactory factory, TypeToken typeToken)"
+            className + "TypeAdapter(@NonNull Gson gson, " + className + "TypeAdapterFactory factory, TypeToken typeToken)"
         ) { [
             "this.factory = factory;",
             "this.gson = gson;",
@@ -319,7 +319,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let write = JavaIR.methodThatThrows(
             annotations: [JavaAnnotation.override],
             [.public],
-            "void write(JsonWriter writer, " + className + " value)",
+            "void write(@NonNull JsonWriter writer, " + className + " value)",
             ["IOException"]
         ) { [
             JavaIR.ifBlock(condition: "this.delegateTypeAdapter == null") { [
@@ -331,9 +331,9 @@ public struct JavaModelRenderer: JavaFileRenderer {
         }
 
         let read = JavaIR.methodThatThrows(
-            annotations: [JavaAnnotation.override],
+            annotations: [.nullable, JavaAnnotation.override],
             [.public],
-            className + " read(JsonReader reader)",
+            className + " read(@NonNull JsonReader reader)",
             ["IOException"]
         ) { [
             JavaIR.ifBlock(condition: "reader.peek() == JsonToken.NULL") { [

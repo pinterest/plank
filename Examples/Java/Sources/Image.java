@@ -54,15 +54,18 @@ public class Image {
         this._bits = _bits;
     }
 
+    @NonNull
     public static Image.Builder builder() {
         return new Image.Builder();
     }
 
+    @NonNull
     public Image.Builder toBuilder() {
         return new Image.Builder(this);
     }
 
-    public Image mergeFrom(Image model) {
+    @NonNull
+    public Image mergeFrom(@NonNull Image model) {
         Image.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
@@ -133,6 +136,7 @@ public class Image {
             this._bits = model._bits;
         }
 
+        @NonNull
         public Builder setHeight(@Nullable Integer value) {
             this.height = value;
             if (this._bits.length > HEIGHT_INDEX) {
@@ -141,6 +145,7 @@ public class Image {
             return this;
         }
 
+        @NonNull
         public Builder setUrl(@Nullable String value) {
             this.url = value;
             if (this._bits.length > URL_INDEX) {
@@ -149,6 +154,7 @@ public class Image {
             return this;
         }
 
+        @NonNull
         public Builder setWidth(@Nullable Integer value) {
             this.width = value;
             if (this._bits.length > WIDTH_INDEX) {
@@ -179,7 +185,7 @@ public class Image {
             );
         }
 
-        public void mergeFrom(Image model) {
+        public void mergeFrom(@NonNull Image model) {
             if (model.getHeightIsSet()) {
                 this.height = model.height;
                 if (this._bits.length > HEIGHT_INDEX) {
@@ -203,8 +209,9 @@ public class Image {
 
     public static class ImageTypeAdapterFactory implements TypeAdapterFactory {
 
+        @Nullable
         @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+        public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!Image.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
@@ -222,14 +229,14 @@ public class Image {
         private TypeAdapter<Integer> integerTypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
 
-        public ImageTypeAdapter(Gson gson, ImageTypeAdapterFactory factory, TypeToken typeToken) {
+        public ImageTypeAdapter(@NonNull Gson gson, ImageTypeAdapterFactory factory, TypeToken typeToken) {
             this.factory = factory;
             this.gson = gson;
             this.typeToken = typeToken;
         }
 
         @Override
-        public void write(JsonWriter writer, Image value) throws IOException {
+        public void write(@NonNull JsonWriter writer, Image value) throws IOException {
             if (this.delegateTypeAdapter == null) {
                 this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
             }
@@ -237,8 +244,9 @@ public class Image {
             this.delegateTypeAdapter.write(writer, value);
         }
 
+        @Nullable
         @Override
-        public Image read(JsonReader reader) throws IOException {
+        public Image read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
                 return null;

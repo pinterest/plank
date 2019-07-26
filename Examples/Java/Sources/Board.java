@@ -82,15 +82,18 @@ public class Board {
         this._bits = _bits;
     }
 
+    @NonNull
     public static Board.Builder builder() {
         return new Board.Builder();
     }
 
+    @NonNull
     public Board.Builder toBuilder() {
         return new Board.Builder(this);
     }
 
-    public Board mergeFrom(Board model) {
+    @NonNull
+    public Board mergeFrom(@NonNull Board model) {
         Board.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
@@ -243,6 +246,7 @@ public class Board {
             this._bits = model._bits;
         }
 
+        @NonNull
         public Builder setUid(@Nullable String value) {
             this.uid = value;
             if (this._bits.length > ID_INDEX) {
@@ -251,6 +255,7 @@ public class Board {
             return this;
         }
 
+        @NonNull
         public Builder setContributors(@Nullable Set<User> value) {
             this.contributors = value;
             if (this._bits.length > CONTRIBUTORS_INDEX) {
@@ -259,6 +264,7 @@ public class Board {
             return this;
         }
 
+        @NonNull
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
             if (this._bits.length > COUNTS_INDEX) {
@@ -267,6 +273,7 @@ public class Board {
             return this;
         }
 
+        @NonNull
         public Builder setCreatedAt(@Nullable Date value) {
             this.createdAt = value;
             if (this._bits.length > CREATED_AT_INDEX) {
@@ -275,6 +282,7 @@ public class Board {
             return this;
         }
 
+        @NonNull
         public Builder setCreator(@Nullable Map<String, String> value) {
             this.creator = value;
             if (this._bits.length > CREATOR_INDEX) {
@@ -283,6 +291,7 @@ public class Board {
             return this;
         }
 
+        @NonNull
         public Builder setCreatorURL(@Nullable String value) {
             this.creatorURL = value;
             if (this._bits.length > CREATOR_URL_INDEX) {
@@ -291,6 +300,7 @@ public class Board {
             return this;
         }
 
+        @NonNull
         public Builder setDescription(@Nullable String value) {
             this.description = value;
             if (this._bits.length > DESCRIPTION_INDEX) {
@@ -299,6 +309,7 @@ public class Board {
             return this;
         }
 
+        @NonNull
         public Builder setImage(@NonNull Image value) {
             this.image = value;
             if (this._bits.length > IMAGE_INDEX) {
@@ -307,6 +318,7 @@ public class Board {
             return this;
         }
 
+        @NonNull
         public Builder setName(@Nullable String value) {
             this.name = value;
             if (this._bits.length > NAME_INDEX) {
@@ -315,6 +327,7 @@ public class Board {
             return this;
         }
 
+        @NonNull
         public Builder setUrl(@Nullable String value) {
             this.url = value;
             if (this._bits.length > URL_INDEX) {
@@ -380,7 +393,7 @@ public class Board {
             );
         }
 
-        public void mergeFrom(Board model) {
+        public void mergeFrom(@NonNull Board model) {
             if (model.getUidIsSet()) {
                 this.uid = model.uid;
                 if (this._bits.length > ID_INDEX) {
@@ -446,8 +459,9 @@ public class Board {
 
     public static class BoardTypeAdapterFactory implements TypeAdapterFactory {
 
+        @Nullable
         @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+        public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!Board.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
@@ -469,14 +483,14 @@ public class Board {
         private TypeAdapter<Set<User>> set_User_TypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
 
-        public BoardTypeAdapter(Gson gson, BoardTypeAdapterFactory factory, TypeToken typeToken) {
+        public BoardTypeAdapter(@NonNull Gson gson, BoardTypeAdapterFactory factory, TypeToken typeToken) {
             this.factory = factory;
             this.gson = gson;
             this.typeToken = typeToken;
         }
 
         @Override
-        public void write(JsonWriter writer, Board value) throws IOException {
+        public void write(@NonNull JsonWriter writer, Board value) throws IOException {
             if (this.delegateTypeAdapter == null) {
                 this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
             }
@@ -484,8 +498,9 @@ public class Board {
             this.delegateTypeAdapter.write(writer, value);
         }
 
+        @Nullable
         @Override
-        public Board read(JsonReader reader) throws IOException {
+        public Board read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
                 return null;

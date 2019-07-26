@@ -46,15 +46,18 @@ public class Model {
         this._bits = _bits;
     }
 
+    @NonNull
     public static Model.Builder builder() {
         return new Model.Builder();
     }
 
+    @NonNull
     public Model.Builder toBuilder() {
         return new Model.Builder(this);
     }
 
-    public Model mergeFrom(Model model) {
+    @NonNull
+    public Model mergeFrom(@NonNull Model model) {
         Model.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
@@ -99,6 +102,7 @@ public class Model {
             this._bits = model._bits;
         }
 
+        @NonNull
         public Builder setUid(@Nullable String value) {
             this.uid = value;
             if (this._bits.length > ID_INDEX) {
@@ -119,7 +123,7 @@ public class Model {
             );
         }
 
-        public void mergeFrom(Model model) {
+        public void mergeFrom(@NonNull Model model) {
             if (model.getUidIsSet()) {
                 this.uid = model.uid;
                 if (this._bits.length > ID_INDEX) {
@@ -131,8 +135,9 @@ public class Model {
 
     public static class ModelTypeAdapterFactory implements TypeAdapterFactory {
 
+        @Nullable
         @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+        public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!Model.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
@@ -149,14 +154,14 @@ public class Model {
 
         private TypeAdapter<String> stringTypeAdapter;
 
-        public ModelTypeAdapter(Gson gson, ModelTypeAdapterFactory factory, TypeToken typeToken) {
+        public ModelTypeAdapter(@NonNull Gson gson, ModelTypeAdapterFactory factory, TypeToken typeToken) {
             this.factory = factory;
             this.gson = gson;
             this.typeToken = typeToken;
         }
 
         @Override
-        public void write(JsonWriter writer, Model value) throws IOException {
+        public void write(@NonNull JsonWriter writer, Model value) throws IOException {
             if (this.delegateTypeAdapter == null) {
                 this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
             }
@@ -165,7 +170,8 @@ public class Model {
         }
 
         @Override
-        public Model read(JsonReader reader) throws IOException {
+        @Nullable
+        public Model read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
                 return null;

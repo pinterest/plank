@@ -128,15 +128,18 @@ public class Pin {
         this._bits = _bits;
     }
 
+    @NonNull
     public static Pin.Builder builder() {
         return new Pin.Builder();
     }
 
+    @NonNull
     public Pin.Builder toBuilder() {
         return new Pin.Builder(this);
     }
 
-    public Pin mergeFrom(Pin model) {
+    @NonNull
+    public Pin mergeFrom(@NonNull Pin model) {
         Pin.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
@@ -373,6 +376,7 @@ public class Pin {
             this._bits = model._bits;
         }
 
+        @NonNull
         public Builder setAttribution(@Nullable Map<String, String> value) {
             this.attribution = value;
             if (this._bits.length > ATTRIBUTION_INDEX) {
@@ -381,6 +385,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setAttributionObjects(@Nullable List<PinAttributionObjects> value) {
             this.attributionObjects = value;
             if (this._bits.length > ATTRIBUTION_OBJECTS_INDEX) {
@@ -389,6 +394,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setBoard(@Nullable Board value) {
             this.board = value;
             if (this._bits.length > BOARD_INDEX) {
@@ -397,6 +403,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setColor(@Nullable String value) {
             this.color = value;
             if (this._bits.length > COLOR_INDEX) {
@@ -405,6 +412,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
             if (this._bits.length > COUNTS_INDEX) {
@@ -413,6 +421,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setCreatedAt(@NonNull Date value) {
             this.createdAt = value;
             if (this._bits.length > CREATED_AT_INDEX) {
@@ -421,6 +430,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setCreator(@NonNull Map<String, User> value) {
             this.creator = value;
             if (this._bits.length > CREATOR_INDEX) {
@@ -429,6 +439,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setDescription(@Nullable String value) {
             this.description = value;
             if (this._bits.length > DESCRIPTION_INDEX) {
@@ -437,6 +448,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setUid(@NonNull String value) {
             this.uid = value;
             if (this._bits.length > ID_INDEX) {
@@ -445,6 +457,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setImage(@Nullable Image value) {
             this.image = value;
             if (this._bits.length > IMAGE_INDEX) {
@@ -453,6 +466,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setInStock(@Nullable PinInStock value) {
             this.inStock = value;
             if (this._bits.length > IN_STOCK_INDEX) {
@@ -461,6 +475,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setLink(@Nullable String value) {
             this.link = value;
             if (this._bits.length > LINK_INDEX) {
@@ -469,6 +484,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setMedia(@Nullable Map<String, String> value) {
             this.media = value;
             if (this._bits.length > MEDIA_INDEX) {
@@ -477,6 +493,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setNote(@Nullable String value) {
             this.note = value;
             if (this._bits.length > NOTE_INDEX) {
@@ -485,6 +502,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setTags(@Nullable List<Map<String, Object>> value) {
             this.tags = value;
             if (this._bits.length > TAGS_INDEX) {
@@ -493,6 +511,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setUrl(@Nullable String value) {
             this.url = value;
             if (this._bits.length > URL_INDEX) {
@@ -501,6 +520,7 @@ public class Pin {
             return this;
         }
 
+        @NonNull
         public Builder setVisualSearchAttrs(@Nullable Map<String, Object> value) {
             this.visualSearchAttrs = value;
             if (this._bits.length > VISUAL_SEARCH_ATTRS_INDEX) {
@@ -601,7 +621,7 @@ public class Pin {
             );
         }
 
-        public void mergeFrom(Pin model) {
+        public void mergeFrom(@NonNull Pin model) {
             if (model.getAttributionIsSet()) {
                 this.attribution = model.attribution;
                 if (this._bits.length > ATTRIBUTION_INDEX) {
@@ -709,8 +729,9 @@ public class Pin {
 
     public static class PinTypeAdapterFactory implements TypeAdapterFactory {
 
+        @Nullable
         @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+        public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!Pin.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
@@ -737,14 +758,14 @@ public class Pin {
         private TypeAdapter<PinInStock> pinInStockTypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
 
-        public PinTypeAdapter(Gson gson, PinTypeAdapterFactory factory, TypeToken typeToken) {
+        public PinTypeAdapter(@NonNull Gson gson, PinTypeAdapterFactory factory, TypeToken typeToken) {
             this.factory = factory;
             this.gson = gson;
             this.typeToken = typeToken;
         }
 
         @Override
-        public void write(JsonWriter writer, Pin value) throws IOException {
+        public void write(@NonNull JsonWriter writer, Pin value) throws IOException {
             if (this.delegateTypeAdapter == null) {
                 this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
             }
@@ -752,8 +773,9 @@ public class Pin {
             this.delegateTypeAdapter.write(writer, value);
         }
 
+        @Nullable
         @Override
-        public Pin read(JsonReader reader) throws IOException {
+        public Pin read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
                 return null;
