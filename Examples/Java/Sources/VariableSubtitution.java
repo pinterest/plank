@@ -247,8 +247,8 @@ public class VariableSubtitution {
 
     public static class VariableSubtitutionTypeAdapterFactory implements TypeAdapterFactory {
 
-        @Override
         @Nullable
+        @Override
         public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!VariableSubtitution.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;

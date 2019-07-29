@@ -463,8 +463,8 @@ public class User {
 
     public static class UserTypeAdapterFactory implements TypeAdapterFactory {
 
-        @Override
         @Nullable
+        @Override
         public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!User.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
