@@ -86,15 +86,18 @@ public class User {
         this._bits = _bits;
     }
 
+    @NonNull
     public static User.Builder builder() {
         return new User.Builder();
     }
 
+    @NonNull
     public User.Builder toBuilder() {
         return new User.Builder(this);
     }
 
-    public User mergeFrom(User model) {
+    @NonNull
+    public User mergeFrom(@NonNull User model) {
         User.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
@@ -247,6 +250,7 @@ public class User {
             this._bits = model._bits;
         }
 
+        @NonNull
         public Builder setBio(@Nullable String value) {
             this.bio = value;
             if (this._bits.length > BIO_INDEX) {
@@ -255,6 +259,7 @@ public class User {
             return this;
         }
 
+        @NonNull
         public Builder setCounts(@Nullable Map<String, Integer> value) {
             this.counts = value;
             if (this._bits.length > COUNTS_INDEX) {
@@ -263,6 +268,7 @@ public class User {
             return this;
         }
 
+        @NonNull
         public Builder setCreatedAt(@Nullable Date value) {
             this.createdAt = value;
             if (this._bits.length > CREATED_AT_INDEX) {
@@ -271,6 +277,7 @@ public class User {
             return this;
         }
 
+        @NonNull
         public Builder setEmailFrequency(@Nullable UserEmailFrequency value) {
             this.emailFrequency = value;
             if (this._bits.length > EMAIL_FREQUENCY_INDEX) {
@@ -279,6 +286,7 @@ public class User {
             return this;
         }
 
+        @NonNull
         public Builder setFirstName(@Nullable String value) {
             this.firstName = value;
             if (this._bits.length > FIRST_NAME_INDEX) {
@@ -287,6 +295,7 @@ public class User {
             return this;
         }
 
+        @NonNull
         public Builder setUid(@Nullable String value) {
             this.uid = value;
             if (this._bits.length > ID_INDEX) {
@@ -295,6 +304,7 @@ public class User {
             return this;
         }
 
+        @NonNull
         public Builder setImage(@Nullable Image value) {
             this.image = value;
             if (this._bits.length > IMAGE_INDEX) {
@@ -303,6 +313,7 @@ public class User {
             return this;
         }
 
+        @NonNull
         public Builder setLastName(@Nullable String value) {
             this.lastName = value;
             if (this._bits.length > LAST_NAME_INDEX) {
@@ -311,6 +322,7 @@ public class User {
             return this;
         }
 
+        @NonNull
         public Builder setType(@Nullable String value) {
             this.type = value;
             if (this._bits.length > TYPE_INDEX) {
@@ -319,6 +331,7 @@ public class User {
             return this;
         }
 
+        @NonNull
         public Builder setUsername(@Nullable String value) {
             this.username = value;
             if (this._bits.length > USERNAME_INDEX) {
@@ -384,7 +397,7 @@ public class User {
             );
         }
 
-        public void mergeFrom(User model) {
+        public void mergeFrom(@NonNull User model) {
             if (model.getBioIsSet()) {
                 this.bio = model.bio;
                 if (this._bits.length > BIO_INDEX) {
@@ -450,8 +463,9 @@ public class User {
 
     public static class UserTypeAdapterFactory implements TypeAdapterFactory {
 
+        @Nullable
         @Override
-        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+        public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!User.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
@@ -472,14 +486,14 @@ public class User {
         private TypeAdapter<String> stringTypeAdapter;
         private TypeAdapter<UserEmailFrequency> userEmailFrequencyTypeAdapter;
 
-        public UserTypeAdapter(Gson gson, UserTypeAdapterFactory factory, TypeToken typeToken) {
+        public UserTypeAdapter(@NonNull Gson gson, UserTypeAdapterFactory factory, TypeToken typeToken) {
             this.factory = factory;
             this.gson = gson;
             this.typeToken = typeToken;
         }
 
         @Override
-        public void write(JsonWriter writer, User value) throws IOException {
+        public void write(@NonNull JsonWriter writer, User value) throws IOException {
             if (this.delegateTypeAdapter == null) {
                 this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
             }
@@ -487,8 +501,9 @@ public class User {
             this.delegateTypeAdapter.write(writer, value);
         }
 
+        @Nullable
         @Override
-        public User read(JsonReader reader) throws IOException {
+        public User read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
                 return null;

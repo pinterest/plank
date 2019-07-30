@@ -207,7 +207,7 @@ public struct JavaIR {
 
         func render() -> [String] {
             // HACK: We should actually have an enum / optionset that we can check for abstract, static, ...
-            let annotationLines = annotations.map { "@\($0.rendered)" }
+            let annotationLines = annotations.map { "@\($0.rendered)" }.sorted()
 
             let throwsString = throwableExceptions.isEmpty ? "" : " throws " + throwableExceptions.joined(separator: ", ")
 
@@ -359,7 +359,7 @@ public struct JavaIR {
 
             let extendsStmt = extends.map { " extends \($0) " } ?? ""
 
-            var lines = annotations.map { "@\($0.rendered)" } + [
+            var lines = annotations.map { "@\($0.rendered)" }.sorted() + [
                 "\(modifiers.render()) class \(name)\(extendsStmt)\(implementsStmt) {",
             ]
 
