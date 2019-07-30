@@ -1517,8 +1517,8 @@ public class Everything {
 
     public static class EverythingTypeAdapterFactory implements TypeAdapterFactory {
 
-        @Override
         @Nullable
+        @Override
         public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
             if (!Everything.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;

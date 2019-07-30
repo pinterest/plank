@@ -501,8 +501,8 @@ public class User {
             this.delegateTypeAdapter.write(writer, value);
         }
 
-        @Override
         @Nullable
+        @Override
         public User read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();

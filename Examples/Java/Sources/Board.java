@@ -498,8 +498,8 @@ public class Board {
             this.delegateTypeAdapter.write(writer, value);
         }
 
-        @Override
         @Nullable
+        @Override
         public Board read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();

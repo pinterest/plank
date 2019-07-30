@@ -169,8 +169,8 @@ public class Model {
             this.delegateTypeAdapter.write(writer, value);
         }
 
-        @Override
         @Nullable
+        @Override
         public Model read(@NonNull JsonReader reader) throws IOException {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
