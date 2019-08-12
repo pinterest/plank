@@ -469,36 +469,91 @@ public class User {
             if (!User.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
-            return (TypeAdapter<T>) new UserTypeAdapter(gson, this, typeToken);
+            return (TypeAdapter<T>) new UserTypeAdapter(gson);
         }
     }
 
     public static class UserTypeAdapter extends TypeAdapter<User> {
 
-        final private UserTypeAdapterFactory factory;
         final private Gson gson;
-        final private TypeToken typeToken;
-        private TypeAdapter<User> delegateTypeAdapter;
-
         private TypeAdapter<Date> dateTypeAdapter;
         private TypeAdapter<Image> imageTypeAdapter;
         private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
         private TypeAdapter<UserEmailFrequency> userEmailFrequencyTypeAdapter;
 
-        public UserTypeAdapter(@NonNull Gson gson, UserTypeAdapterFactory factory, TypeToken typeToken) {
-            this.factory = factory;
+        public UserTypeAdapter(Gson gson) {
             this.gson = gson;
-            this.typeToken = typeToken;
         }
 
         @Override
         public void write(@NonNull JsonWriter writer, User value) throws IOException {
-            if (this.delegateTypeAdapter == null) {
-                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            if (value == null) {
+                writer.nullValue();
+                return;
             }
-            writer.setSerializeNulls(false);
-            this.delegateTypeAdapter.write(writer, value);
+            writer.beginObject();
+            if (value.getBioIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("bio"), value.bio);
+            }
+            if (value.getCountsIsSet()) {
+                if (this.map_String__Integer_TypeAdapter == null) {
+                    this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+                }
+                this.map_String__Integer_TypeAdapter.write(writer.name("counts"), value.counts);
+            }
+            if (value.getCreatedAtIsSet()) {
+                if (this.dateTypeAdapter == null) {
+                    this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
+                }
+                this.dateTypeAdapter.write(writer.name("created_at"), value.createdAt);
+            }
+            if (value.getEmailFrequencyIsSet()) {
+                if (this.userEmailFrequencyTypeAdapter == null) {
+                    this.userEmailFrequencyTypeAdapter = this.gson.getAdapter(UserEmailFrequency.class).nullSafe();
+                }
+                this.userEmailFrequencyTypeAdapter.write(writer.name("email_frequency"), value.emailFrequency);
+            }
+            if (value.getFirstNameIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("first_name"), value.firstName);
+            }
+            if (value.getUidIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("id"), value.uid);
+            }
+            if (value.getImageIsSet()) {
+                if (this.imageTypeAdapter == null) {
+                    this.imageTypeAdapter = this.gson.getAdapter(Image.class).nullSafe();
+                }
+                this.imageTypeAdapter.write(writer.name("image"), value.image);
+            }
+            if (value.getLastNameIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("last_name"), value.lastName);
+            }
+            if (value.getTypeIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("type"), value.type);
+            }
+            if (value.getUsernameIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("username"), value.username);
+            }
+            writer.endObject();
         }
 
         @Nullable

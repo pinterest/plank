@@ -253,32 +253,51 @@ public class VariableSubtitution {
             if (!VariableSubtitution.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
-            return (TypeAdapter<T>) new VariableSubtitutionTypeAdapter(gson, this, typeToken);
+            return (TypeAdapter<T>) new VariableSubtitutionTypeAdapter(gson);
         }
     }
 
     public static class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution> {
 
-        final private VariableSubtitutionTypeAdapterFactory factory;
         final private Gson gson;
-        final private TypeToken typeToken;
-        private TypeAdapter<VariableSubtitution> delegateTypeAdapter;
-
         private TypeAdapter<Integer> integerTypeAdapter;
 
-        public VariableSubtitutionTypeAdapter(@NonNull Gson gson, VariableSubtitutionTypeAdapterFactory factory, TypeToken typeToken) {
-            this.factory = factory;
+        public VariableSubtitutionTypeAdapter(Gson gson) {
             this.gson = gson;
-            this.typeToken = typeToken;
         }
 
         @Override
         public void write(@NonNull JsonWriter writer, VariableSubtitution value) throws IOException {
-            if (this.delegateTypeAdapter == null) {
-                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            if (value == null) {
+                writer.nullValue();
+                return;
             }
-            writer.setSerializeNulls(false);
-            this.delegateTypeAdapter.write(writer, value);
+            writer.beginObject();
+            if (value.getAllocPropIsSet()) {
+                if (this.integerTypeAdapter == null) {
+                    this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                }
+                this.integerTypeAdapter.write(writer.name("alloc_prop"), value.allocProp);
+            }
+            if (value.getCopyPropIsSet()) {
+                if (this.integerTypeAdapter == null) {
+                    this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                }
+                this.integerTypeAdapter.write(writer.name("copy_prop"), value.copyProp);
+            }
+            if (value.getMutableCopyPropIsSet()) {
+                if (this.integerTypeAdapter == null) {
+                    this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                }
+                this.integerTypeAdapter.write(writer.name("mutable_copy_prop"), value.mutableCopyProp);
+            }
+            if (value.getNewPropIsSet()) {
+                if (this.integerTypeAdapter == null) {
+                    this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                }
+                this.integerTypeAdapter.write(writer.name("new_prop"), value.newProp);
+            }
+            writer.endObject();
         }
 
         @Nullable

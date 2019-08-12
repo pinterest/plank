@@ -1523,17 +1523,13 @@ public class Everything {
             if (!Everything.class.isAssignableFrom(typeToken.getRawType())) {
                 return null;
             }
-            return (TypeAdapter<T>) new EverythingTypeAdapter(gson, this, typeToken);
+            return (TypeAdapter<T>) new EverythingTypeAdapter(gson);
         }
     }
 
     public static class EverythingTypeAdapter extends TypeAdapter<Everything> {
 
-        final private EverythingTypeAdapterFactory factory;
         final private Gson gson;
-        final private TypeToken typeToken;
-        private TypeAdapter<Everything> delegateTypeAdapter;
-
         private TypeAdapter<Boolean> booleanTypeAdapter;
         private TypeAdapter<Date> dateTypeAdapter;
         private TypeAdapter<Double> doubleTypeAdapter;
@@ -1568,19 +1564,234 @@ public class Everything {
         private TypeAdapter<String> stringTypeAdapter;
         private TypeAdapter<User> userTypeAdapter;
 
-        public EverythingTypeAdapter(@NonNull Gson gson, EverythingTypeAdapterFactory factory, TypeToken typeToken) {
-            this.factory = factory;
+        public EverythingTypeAdapter(Gson gson) {
             this.gson = gson;
-            this.typeToken = typeToken;
         }
 
         @Override
         public void write(@NonNull JsonWriter writer, Everything value) throws IOException {
-            if (this.delegateTypeAdapter == null) {
-                this.delegateTypeAdapter = this.gson.getDelegateAdapter(this.factory, this.typeToken);
+            if (value == null) {
+                writer.nullValue();
+                return;
             }
-            writer.setSerializeNulls(false);
-            this.delegateTypeAdapter.write(writer, value);
+            writer.beginObject();
+            if (value.getArrayPropIsSet()) {
+                if (this.list_Object_TypeAdapter == null) {
+                    this.list_Object_TypeAdapter = this.gson.getAdapter(new TypeToken<List<Object>>(){}).nullSafe();
+                }
+                this.list_Object_TypeAdapter.write(writer.name("array_prop"), value.arrayProp);
+            }
+            if (value.getBooleanPropIsSet()) {
+                if (this.booleanTypeAdapter == null) {
+                    this.booleanTypeAdapter = this.gson.getAdapter(Boolean.class).nullSafe();
+                }
+                this.booleanTypeAdapter.write(writer.name("boolean_prop"), value.booleanProp);
+            }
+            if (value.getCharEnumIsSet()) {
+                if (this.everythingCharEnumTypeAdapter == null) {
+                    this.everythingCharEnumTypeAdapter = this.gson.getAdapter(EverythingCharEnum.class).nullSafe();
+                }
+                this.everythingCharEnumTypeAdapter.write(writer.name("char_enum"), value.charEnum);
+            }
+            if (value.getDatePropIsSet()) {
+                if (this.dateTypeAdapter == null) {
+                    this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
+                }
+                this.dateTypeAdapter.write(writer.name("date_prop"), value.dateProp);
+            }
+            if (value.getIntEnumIsSet()) {
+                if (this.everythingIntEnumTypeAdapter == null) {
+                    this.everythingIntEnumTypeAdapter = this.gson.getAdapter(EverythingIntEnum.class).nullSafe();
+                }
+                this.everythingIntEnumTypeAdapter.write(writer.name("int_enum"), value.intEnum);
+            }
+            if (value.getIntPropIsSet()) {
+                if (this.integerTypeAdapter == null) {
+                    this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
+                }
+                this.integerTypeAdapter.write(writer.name("int_prop"), value.intProp);
+            }
+            if (value.getListPolymorphicValuesIsSet()) {
+                if (this.list_Object_TypeAdapter == null) {
+                    this.list_Object_TypeAdapter = this.gson.getAdapter(new TypeToken<List<Object>>(){}).nullSafe();
+                }
+                this.list_Object_TypeAdapter.write(writer.name("list_polymorphic_values"), value.listPolymorphicValues);
+            }
+            if (value.getListWithListAndOtherModelValuesIsSet()) {
+                if (this.list_List_User__TypeAdapter == null) {
+                    this.list_List_User__TypeAdapter = this.gson.getAdapter(new TypeToken<List<List<User>>>(){}).nullSafe();
+                }
+                this.list_List_User__TypeAdapter.write(writer.name("list_with_list_and_other_model_values"), value.listWithListAndOtherModelValues);
+            }
+            if (value.getListWithMapAndOtherModelValuesIsSet()) {
+                if (this.list_Map_String__User__TypeAdapter == null) {
+                    this.list_Map_String__User__TypeAdapter = this.gson.getAdapter(new TypeToken<List<Map<String, User>>>(){}).nullSafe();
+                }
+                this.list_Map_String__User__TypeAdapter.write(writer.name("list_with_map_and_other_model_values"), value.listWithMapAndOtherModelValues);
+            }
+            if (value.getListWithObjectValuesIsSet()) {
+                if (this.list_String_TypeAdapter == null) {
+                    this.list_String_TypeAdapter = this.gson.getAdapter(new TypeToken<List<String>>(){}).nullSafe();
+                }
+                this.list_String_TypeAdapter.write(writer.name("list_with_object_values"), value.listWithObjectValues);
+            }
+            if (value.getListWithOtherModelValuesIsSet()) {
+                if (this.list_User_TypeAdapter == null) {
+                    this.list_User_TypeAdapter = this.gson.getAdapter(new TypeToken<List<User>>(){}).nullSafe();
+                }
+                this.list_User_TypeAdapter.write(writer.name("list_with_other_model_values"), value.listWithOtherModelValues);
+            }
+            if (value.getListWithPrimitiveValuesIsSet()) {
+                if (this.list_Integer_TypeAdapter == null) {
+                    this.list_Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<List<Integer>>(){}).nullSafe();
+                }
+                this.list_Integer_TypeAdapter.write(writer.name("list_with_primitive_values"), value.listWithPrimitiveValues);
+            }
+            if (value.getMapPolymorphicValuesIsSet()) {
+                if (this.map_String__EverythingMapPolymorphicValues_TypeAdapter == null) {
+                    this.map_String__EverythingMapPolymorphicValues_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, EverythingMapPolymorphicValues>>(){}).nullSafe();
+                }
+                this.map_String__EverythingMapPolymorphicValues_TypeAdapter.write(writer.name("map_polymorphic_values"), value.mapPolymorphicValues);
+            }
+            if (value.getMapPropIsSet()) {
+                if (this.map_String__Object_TypeAdapter == null) {
+                    this.map_String__Object_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
+                }
+                this.map_String__Object_TypeAdapter.write(writer.name("map_prop"), value.mapProp);
+            }
+            if (value.getMapWithListAndOtherModelValuesIsSet()) {
+                if (this.map_String__List_User__TypeAdapter == null) {
+                    this.map_String__List_User__TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, List<User>>>(){}).nullSafe();
+                }
+                this.map_String__List_User__TypeAdapter.write(writer.name("map_with_list_and_other_model_values"), value.mapWithListAndOtherModelValues);
+            }
+            if (value.getMapWithMapAndOtherModelValuesIsSet()) {
+                if (this.map_String__Map_String__Object__TypeAdapter == null) {
+                    this.map_String__Map_String__Object__TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Map<String, Object>>>(){}).nullSafe();
+                }
+                this.map_String__Map_String__Object__TypeAdapter.write(writer.name("map_with_map_and_other_model_values"), value.mapWithMapAndOtherModelValues);
+            }
+            if (value.getMapWithObjectValuesIsSet()) {
+                if (this.map_String__String_TypeAdapter == null) {
+                    this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
+                }
+                this.map_String__String_TypeAdapter.write(writer.name("map_with_object_values"), value.mapWithObjectValues);
+            }
+            if (value.getMapWithOtherModelValuesIsSet()) {
+                if (this.map_String__User_TypeAdapter == null) {
+                    this.map_String__User_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
+                }
+                this.map_String__User_TypeAdapter.write(writer.name("map_with_other_model_values"), value.mapWithOtherModelValues);
+            }
+            if (value.getMapWithPrimitiveValuesIsSet()) {
+                if (this.map_String__Integer_TypeAdapter == null) {
+                    this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
+                }
+                this.map_String__Integer_TypeAdapter.write(writer.name("map_with_primitive_values"), value.mapWithPrimitiveValues);
+            }
+            if (value.getNsintegerEnumIsSet()) {
+                if (this.everythingNsintegerEnumTypeAdapter == null) {
+                    this.everythingNsintegerEnumTypeAdapter = this.gson.getAdapter(EverythingNsintegerEnum.class).nullSafe();
+                }
+                this.everythingNsintegerEnumTypeAdapter.write(writer.name("nsinteger_enum"), value.nsintegerEnum);
+            }
+            if (value.getNsuintegerEnumIsSet()) {
+                if (this.everythingNsuintegerEnumTypeAdapter == null) {
+                    this.everythingNsuintegerEnumTypeAdapter = this.gson.getAdapter(EverythingNsuintegerEnum.class).nullSafe();
+                }
+                this.everythingNsuintegerEnumTypeAdapter.write(writer.name("nsuinteger_enum"), value.nsuintegerEnum);
+            }
+            if (value.getNumberPropIsSet()) {
+                if (this.doubleTypeAdapter == null) {
+                    this.doubleTypeAdapter = this.gson.getAdapter(Double.class).nullSafe();
+                }
+                this.doubleTypeAdapter.write(writer.name("number_prop"), value.numberProp);
+            }
+            if (value.getOtherModelPropIsSet()) {
+                if (this.userTypeAdapter == null) {
+                    this.userTypeAdapter = this.gson.getAdapter(User.class).nullSafe();
+                }
+                this.userTypeAdapter.write(writer.name("other_model_prop"), value.otherModelProp);
+            }
+            if (value.getPolymorphicPropIsSet()) {
+                if (this.everythingPolymorphicPropTypeAdapter == null) {
+                    this.everythingPolymorphicPropTypeAdapter = this.gson.getAdapter(EverythingPolymorphicProp.class).nullSafe();
+                }
+                this.everythingPolymorphicPropTypeAdapter.write(writer.name("polymorphic_prop"), value.polymorphicProp);
+            }
+            if (value.getSetPropIsSet()) {
+                if (this.set_Object_TypeAdapter == null) {
+                    this.set_Object_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<Object>>(){}).nullSafe();
+                }
+                this.set_Object_TypeAdapter.write(writer.name("set_prop"), value.setProp);
+            }
+            if (value.getSetPropWithOtherModelValuesIsSet()) {
+                if (this.set_User_TypeAdapter == null) {
+                    this.set_User_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
+                }
+                this.set_User_TypeAdapter.write(writer.name("set_prop_with_other_model_values"), value.setPropWithOtherModelValues);
+            }
+            if (value.getSetPropWithPrimitiveValuesIsSet()) {
+                if (this.set_Integer_TypeAdapter == null) {
+                    this.set_Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<Integer>>(){}).nullSafe();
+                }
+                this.set_Integer_TypeAdapter.write(writer.name("set_prop_with_primitive_values"), value.setPropWithPrimitiveValues);
+            }
+            if (value.getSetPropWithValuesIsSet()) {
+                if (this.set_String_TypeAdapter == null) {
+                    this.set_String_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<String>>(){}).nullSafe();
+                }
+                this.set_String_TypeAdapter.write(writer.name("set_prop_with_values"), value.setPropWithValues);
+            }
+            if (value.getShortEnumIsSet()) {
+                if (this.everythingShortEnumTypeAdapter == null) {
+                    this.everythingShortEnumTypeAdapter = this.gson.getAdapter(EverythingShortEnum.class).nullSafe();
+                }
+                this.everythingShortEnumTypeAdapter.write(writer.name("short_enum"), value.shortEnum);
+            }
+            if (value.getStringEnumIsSet()) {
+                if (this.everythingStringEnumTypeAdapter == null) {
+                    this.everythingStringEnumTypeAdapter = this.gson.getAdapter(EverythingStringEnum.class).nullSafe();
+                }
+                this.everythingStringEnumTypeAdapter.write(writer.name("string_enum"), value.stringEnum);
+            }
+            if (value.getStringPropIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("string_prop"), value.stringProp);
+            }
+            if (value.getTypeIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("type"), value.type);
+            }
+            if (value.getUnsignedCharEnumIsSet()) {
+                if (this.everythingUnsignedCharEnumTypeAdapter == null) {
+                    this.everythingUnsignedCharEnumTypeAdapter = this.gson.getAdapter(EverythingUnsignedCharEnum.class).nullSafe();
+                }
+                this.everythingUnsignedCharEnumTypeAdapter.write(writer.name("unsigned_char_enum"), value.unsignedCharEnum);
+            }
+            if (value.getUnsignedIntEnumIsSet()) {
+                if (this.everythingUnsignedIntEnumTypeAdapter == null) {
+                    this.everythingUnsignedIntEnumTypeAdapter = this.gson.getAdapter(EverythingUnsignedIntEnum.class).nullSafe();
+                }
+                this.everythingUnsignedIntEnumTypeAdapter.write(writer.name("unsigned_int_enum"), value.unsignedIntEnum);
+            }
+            if (value.getUnsignedShortEnumIsSet()) {
+                if (this.everythingUnsignedShortEnumTypeAdapter == null) {
+                    this.everythingUnsignedShortEnumTypeAdapter = this.gson.getAdapter(EverythingUnsignedShortEnum.class).nullSafe();
+                }
+                this.everythingUnsignedShortEnumTypeAdapter.write(writer.name("unsigned_short_enum"), value.unsignedShortEnum);
+            }
+            if (value.getUriPropIsSet()) {
+                if (this.stringTypeAdapter == null) {
+                    this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
+                }
+                this.stringTypeAdapter.write(writer.name("uri_prop"), value.uriProp);
+            }
+            writer.endObject();
         }
 
         @Nullable
