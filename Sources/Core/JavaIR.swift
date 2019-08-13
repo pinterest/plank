@@ -235,7 +235,7 @@ public struct JavaIR {
         func render() -> String {
             var prop = ""
             if !annotations.isEmpty {
-                prop.append(annotations.map { "@\($0.rendered)" }.joined(separator: " ") + " ")
+                prop.append(annotations.map { "@\($0.rendered)" }.sorted().joined(separator: " ") + " ")
             }
             prop.append("\(modifiers.render()) \(type) \(name)")
             if !initialValue.isEmpty {
