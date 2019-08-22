@@ -393,7 +393,6 @@ public struct JavaModelRenderer: JavaFileRenderer {
             JavaIR.Root.imports(names: Set([
                 "com.google.gson.Gson",
                 "com.google.gson.annotations.SerializedName",
-                "com.google.gson.JsonElement",
                 "com.google.gson.TypeAdapter",
                 "com.google.gson.TypeAdapterFactory",
                 "com.google.gson.reflect.TypeToken",
