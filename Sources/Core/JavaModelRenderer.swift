@@ -389,6 +389,16 @@ public struct JavaModelRenderer: JavaFileRenderer {
             fatalError("java_nullability_annotation_type must be either android-support or androidx. Invalid type provided: " + params[.javaNullabilityAnnotationType]!)
         }
 
+        let propertyTypeImports = properties.compactMap { (_, prop) -> String? in
+            switch prop.schema {
+            case .array: return "java.util.List"
+            case .map: return "java.util.Map"
+            case .set: return "java.util.Set"
+            case .string(format: .some(.dateTime)): return "java.util.Date"
+            default: return nil
+            }
+        }
+
         let imports = [
             JavaIR.Root.imports(names: Set([
                 "com.google.gson.Gson",
@@ -400,14 +410,10 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "com.google.gson.stream.JsonToken",
                 "com.google.gson.stream.JsonWriter",
                 "java.io.IOException",
-                "java.util.Date",
-                "java.util.Map",
-                "java.util.Set",
-                "java.util.List",
                 "java.util.Objects",
                 nullabilityAnnotationType.package + ".NonNull",
                 nullabilityAnnotationType.package + ".Nullable",
-            ] + (self.decorations.imports ?? []))),
+            ] + propertyTypeImports + (self.decorations.imports ?? []))),
         ]
 
         let enumProps = properties.flatMap { (param, prop) -> [JavaIR.Enum] in
