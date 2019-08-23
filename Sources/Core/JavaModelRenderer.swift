@@ -389,7 +389,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             fatalError("java_nullability_annotation_type must be either android-support or androidx. Invalid type provided: " + params[.javaNullabilityAnnotationType]!)
         }
 
-        let propertyTypeImports = properties.compactMap { (_, prop) -> String? in
+        let propertyTypeImports = transitiveProperties.compactMap { (_, prop) -> String? in
             switch prop.schema {
             case .array: return "java.util.List"
             case .map: return "java.util.Map"
