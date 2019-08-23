@@ -405,8 +405,6 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "java.util.Set",
                 "java.util.List",
                 "java.util.Objects",
-                "java.lang.annotation.Retention",
-                "java.lang.annotation.RetentionPolicy",
                 nullabilityAnnotationType.package + ".NonNull",
                 nullabilityAnnotationType.package + ".Nullable",
             ] + (self.decorations.imports ?? []))),
