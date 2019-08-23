@@ -11,7 +11,6 @@ package com.pinterest.models;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
