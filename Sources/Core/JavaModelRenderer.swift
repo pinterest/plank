@@ -29,15 +29,25 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     // MARK: - Top-level Model
 
-    func renderModelConstructor() -> JavaIR.Method {
+    func renderModelConstructors() -> [JavaIR.Method] {
         let args = -->(transitiveProperties.map { param, schemaObj in
             self.typeFromSchema(param, schemaObj) + " " + Languages.java.snakeCaseToPropertyName(param) + ","
         } + ["boolean[] _bits"])
 
-        return JavaIR.method(annotations: decorations.annotationsForConstructor(), [.private], className + "(\n" + args + "\n)") {
+        let publicConstructor = JavaIR.method(annotations: decorations.annotationsForConstructor(), [.public], className + "()") {
+            ["this._bits = new boolean[" + String(self.transitiveProperties.count) + "];"]
+        }
+
+        let privateConstructor = JavaIR.method(annotations: decorations.annotationsForConstructor(), [.private], className + "(\n" + args + "\n)") {
             self.transitiveProperties.map { param, _ in
                 "this." + Languages.java.snakeCaseToPropertyName(param) + " = " + Languages.java.snakeCaseToPropertyName(param) + ";"
             } + ["this._bits = _bits;"]
+        }
+
+        if params[.javaGeneratePackagePrivateSetters] == nil {
+            return [privateConstructor]
+        } else {
+            return [publicConstructor, privateConstructor]
         }
     }
 
@@ -79,7 +89,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             JavaIR.Property(annotations: Set([.serializedName(name: param)] + self.decorations.annotationsForPropertyVariable(param)), modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
         }
 
-        let bits = JavaIR.Property(annotations: decorations.annotationsForVariable("_bits"), modifiers: [.private], type: "boolean[]", name: "_bits", initialValue: "new boolean[" + String(props.count) + "]")
+        let bits = JavaIR.Property(annotations: decorations.annotationsForVariable("_bits"), modifiers: [.private], type: "boolean[]", name: "_bits", initialValue: "")
 
         var bitmasks: [JavaIR.Property] = []
         var index = 0
@@ -178,7 +188,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     // MARK: - Model.Builder
 
     func renderBuilderConstructors() -> [JavaIR.Method] {
-        let emptyConstructor = JavaIR.method([.private], "Builder()") { [] }
+        let emptyConstructor = JavaIR.method([.private], "Builder()") { ["this._bits = new boolean[" + String(self.transitiveProperties.count) + "];"] }
 
         let privateConstructor = JavaIR.method([.private], "Builder(@NonNull " + className + " model)") {
             self.transitiveProperties.map { param, _ in
@@ -235,7 +245,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             JavaIR.Property(annotations: [], modifiers: [.private], type: self.typeFromSchema(param, schemaObj), name: Languages.java.snakeCaseToPropertyName(param), initialValue: "")
         }
 
-        let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "boolean[]", name: "_bits", initialValue: "new boolean[" + String(props.count) + "]")
+        let bits = JavaIR.Property(annotations: [], modifiers: [.private], type: "boolean[]", name: "_bits", initialValue: "")
 
         return [props, [bits]]
     }
@@ -332,7 +342,6 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "return null;",
             ] },
             "Builder builder = \(className).builder();",
-            "boolean[] bits = null;",
             "reader.beginObject();",
             JavaIR.whileBlock(condition: "reader.hasNext()") { [
                 "String name = reader.nextName();",
@@ -351,27 +360,10 @@ public struct JavaModelRenderer: JavaFileRenderer {
                                 "builder.set" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "(this." + typeAdapterVariableNameForType(unwrappedTypeFromSchema(param, schemaObj.schema)) + ".read(reader));",
                             ]
                         )
-                    } + [
-                        JavaIR.Case(
-                            variableEquals: "\"_bits\"",
-                            body: [
-                                "bits = new boolean[" + String(transitiveProperties.count) + "];",
-                                "int i = 0;",
-                                "reader.beginArray();",
-                                JavaIR.whileBlock(condition: "reader.hasNext() && i < " + String(transitiveProperties.count)) { [
-                                    "bits[i] = reader.nextBoolean();",
-                                    "i++;",
-                                ] },
-                                "reader.endArray();",
-                            ]
-                        ),
-                    ]
+                    }
                 },
             ] },
             "reader.endObject();",
-            JavaIR.ifBlock(condition: "bits != null") { [
-                "builder._bits = bits;",
-            ] },
             "return builder.build();",
         ] }
 
@@ -507,8 +499,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 extends: decorations.class?.extends,
                 implements: decorations.class?.implements,
                 name: className,
-                methods: [
-                    self.renderModelConstructor(),
+                methods: renderModelConstructors() + [
                     self.renderModelBuilder(),
                     self.renderModelToBuilder(),
                     self.renderModelMergeFrom(),

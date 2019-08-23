@@ -82,7 +82,7 @@ public class Pin {
     static final private int URL_INDEX = 15;
     static final private int VISUAL_SEARCH_ATTRS_INDEX = 16;
 
-    private boolean[] _bits = new boolean[17];
+    private boolean[] _bits;
 
     private Pin(
         @Nullable Map<String, String> attribution,
@@ -346,9 +346,10 @@ public class Pin {
         private @Nullable String url;
         private @Nullable Map<String, Object> visualSearchAttrs;
 
-        private boolean[] _bits = new boolean[17];
+        private boolean[] _bits;
 
         private Builder() {
+            this._bits = new boolean[17];
         }
 
         private Builder(@NonNull Pin model) {
@@ -874,7 +875,6 @@ public class Pin {
                 return null;
             }
             Builder builder = Pin.builder();
-            boolean[] bits = null;
             reader.beginObject();
             while (reader.hasNext()) {
                 String name = reader.nextName();
@@ -981,24 +981,11 @@ public class Pin {
                         }
                         builder.setVisualSearchAttrs(this.map_String__Object_TypeAdapter.read(reader));
                         break;
-                    case ("_bits"):
-                        bits = new boolean[17];
-                        int i = 0;
-                        reader.beginArray();
-                        while (reader.hasNext() && i < 17) {
-                            bits[i] = reader.nextBoolean();
-                            i++;
-                        }
-                        reader.endArray();
-                        break;
                     default:
                         reader.skipValue();
                 }
             }
             reader.endObject();
-            if (bits != null) {
-                builder._bits = bits;
-            }
             return builder.build();
         }
     }

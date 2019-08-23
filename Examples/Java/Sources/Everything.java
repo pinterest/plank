@@ -222,7 +222,7 @@ public class Everything {
     static final private int UNSIGNED_SHORT_ENUM_INDEX = 34;
     static final private int URI_PROP_INDEX = 35;
 
-    private boolean[] _bits = new boolean[36];
+    private boolean[] _bits;
 
     private Everything(
         @Nullable List<Object> arrayProp,
@@ -736,9 +736,10 @@ public class Everything {
         private @Nullable EverythingUnsignedShortEnum unsignedShortEnum;
         private @Nullable String uriProp;
 
-        private boolean[] _bits = new boolean[36];
+        private boolean[] _bits;
 
         private Builder() {
+            this._bits = new boolean[36];
         }
 
         private Builder(@NonNull Everything model) {
@@ -1799,7 +1800,6 @@ public class Everything {
                 return null;
             }
             Builder builder = Everything.builder();
-            boolean[] bits = null;
             reader.beginObject();
             while (reader.hasNext()) {
                 String name = reader.nextName();
@@ -2020,24 +2020,11 @@ public class Everything {
                         }
                         builder.setUriProp(this.stringTypeAdapter.read(reader));
                         break;
-                    case ("_bits"):
-                        bits = new boolean[36];
-                        int i = 0;
-                        reader.beginArray();
-                        while (reader.hasNext() && i < 36) {
-                            bits[i] = reader.nextBoolean();
-                            i++;
-                        }
-                        reader.endArray();
-                        break;
                     default:
                         reader.skipValue();
                 }
             }
             reader.endObject();
-            if (bits != null) {
-                builder._bits = bits;
-            }
             return builder.build();
         }
     }

@@ -35,7 +35,7 @@ public class VariableSubtitution {
     static final private int MUTABLE_COPY_PROP_INDEX = 2;
     static final private int NEW_PROP_INDEX = 3;
 
-    private boolean[] _bits = new boolean[4];
+    private boolean[] _bits;
 
     private VariableSubtitution(
         @Nullable Integer allocProp,
@@ -134,9 +134,10 @@ public class VariableSubtitution {
         private @Nullable Integer mutableCopyProp;
         private @Nullable Integer newProp;
 
-        private boolean[] _bits = new boolean[4];
+        private boolean[] _bits;
 
         private Builder() {
+            this._bits = new boolean[4];
         }
 
         private Builder(@NonNull VariableSubtitution model) {
@@ -301,7 +302,6 @@ public class VariableSubtitution {
                 return null;
             }
             Builder builder = VariableSubtitution.builder();
-            boolean[] bits = null;
             reader.beginObject();
             while (reader.hasNext()) {
                 String name = reader.nextName();
@@ -330,24 +330,11 @@ public class VariableSubtitution {
                         }
                         builder.setNewProp(this.integerTypeAdapter.read(reader));
                         break;
-                    case ("_bits"):
-                        bits = new boolean[4];
-                        int i = 0;
-                        reader.beginArray();
-                        while (reader.hasNext() && i < 4) {
-                            bits[i] = reader.nextBoolean();
-                            i++;
-                        }
-                        reader.endArray();
-                        break;
                     default:
                         reader.skipValue();
                 }
             }
             reader.endObject();
-            if (bits != null) {
-                builder._bits = bits;
-            }
             return builder.build();
         }
     }

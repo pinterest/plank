@@ -29,7 +29,7 @@ public class Model {
 
     static final private int ID_INDEX = 0;
 
-    private boolean[] _bits = new boolean[1];
+    private boolean[] _bits;
 
     private Model(
         @Nullable String uid,
@@ -85,9 +85,10 @@ public class Model {
 
         private @Nullable String uid;
 
-        private boolean[] _bits = new boolean[1];
+        private boolean[] _bits;
 
         private Builder() {
+            this._bits = new boolean[1];
         }
 
         private Builder(@NonNull Model model) {
@@ -171,7 +172,6 @@ public class Model {
                 return null;
             }
             Builder builder = Model.builder();
-            boolean[] bits = null;
             reader.beginObject();
             while (reader.hasNext()) {
                 String name = reader.nextName();
@@ -182,24 +182,11 @@ public class Model {
                         }
                         builder.setUid(this.stringTypeAdapter.read(reader));
                         break;
-                    case ("_bits"):
-                        bits = new boolean[1];
-                        int i = 0;
-                        reader.beginArray();
-                        while (reader.hasNext() && i < 1) {
-                            bits[i] = reader.nextBoolean();
-                            i++;
-                        }
-                        reader.endArray();
-                        break;
                     default:
                         reader.skipValue();
                 }
             }
             reader.endObject();
-            if (bits != null) {
-                builder._bits = bits;
-            }
             return builder.build();
         }
     }
