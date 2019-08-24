@@ -50,7 +50,7 @@ public class Board {
     static final private int NAME_INDEX = 8;
     static final private int URL_INDEX = 9;
 
-    private boolean[] _bits = new boolean[10];
+    private boolean[] _bits;
 
     private Board(
         @Nullable String uid,
@@ -223,9 +223,10 @@ public class Board {
         private @Nullable String name;
         private @Nullable String url;
 
-        private boolean[] _bits = new boolean[10];
+        private boolean[] _bits;
 
         private Builder() {
+            this._bits = new boolean[10];
         }
 
         private Builder(@NonNull Board model) {
@@ -557,7 +558,6 @@ public class Board {
                 return null;
             }
             Builder builder = Board.builder();
-            boolean[] bits = null;
             reader.beginObject();
             while (reader.hasNext()) {
                 String name = reader.nextName();
@@ -622,24 +622,11 @@ public class Board {
                         }
                         builder.setUrl(this.stringTypeAdapter.read(reader));
                         break;
-                    case ("_bits"):
-                        bits = new boolean[10];
-                        int i = 0;
-                        reader.beginArray();
-                        while (reader.hasNext() && i < 10) {
-                            bits[i] = reader.nextBoolean();
-                            i++;
-                        }
-                        reader.endArray();
-                        break;
                     default:
                         reader.skipValue();
                 }
             }
             reader.endObject();
-            if (bits != null) {
-                builder._bits = bits;
-            }
             return builder.build();
         }
     }
