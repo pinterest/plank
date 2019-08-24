@@ -1,0 +1,8 @@
+# Base image from SwiftDocker
+# https://hub.docker.com/r/swiftdocker/swift/
+FROM library/swift
+MAINTAINER Pinterest
+
+# Copy repository contents and run `make ci_tests`
+COPY . /usr/local/plank
+RUN cd /usr/local/plank && make ci_tests

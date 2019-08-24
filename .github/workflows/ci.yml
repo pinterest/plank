@@ -1,0 +1,27 @@
+name: Main workflow 
+
+on: [push, pull_request]
+
+jobs:
+  Lint:
+    name: Lint project
+    runs-on: macOS-latest
+    steps:
+    - name: Checkout the Git repository
+      uses: actions/checkout@v1
+    - run: make lint
+  Test:
+    name: Run Unit and Integration Tests (macOS)
+    runs-on: macOS-latest
+    steps:
+    - name: Checkout the Git repository
+      uses: actions/checkout@v1
+    - run: make ci_tests
+  TestLinux:
+    name: Run Unit and Integration Tests (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the Git repository
+      uses: actions/checkout@v1
+    - name: Run tests in container 
+      run: docker build -f Tests/Dockerfile.ci -t plank .
