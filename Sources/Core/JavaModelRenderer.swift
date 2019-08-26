@@ -296,7 +296,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     func renderTypeAdapterMethods() -> [JavaIR.Method] {
         let constructor = JavaIR.method(
             annotations: [],
-            [.public],
+            [],
             className + "TypeAdapter(Gson gson)"
         ) { [
             "this.gson = gson;",
@@ -482,7 +482,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
         let typeAdapterClass = JavaIR.Class(
             annotations: [],
-            modifiers: [.public, .static],
+            modifiers: [.private, .static],
             extends: "TypeAdapter<" + className + ">",
             implements: nil,
             name: className + "TypeAdapter",

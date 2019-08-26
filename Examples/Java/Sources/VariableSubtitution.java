@@ -251,12 +251,12 @@ public class VariableSubtitution {
         }
     }
 
-    public static class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution> {
+    static private class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution> {
 
         final private Gson gson;
         private TypeAdapter<Integer> integerTypeAdapter;
 
-        public VariableSubtitutionTypeAdapter(Gson gson) {
+        VariableSubtitutionTypeAdapter(Gson gson) {
             this.gson = gson;
         }
 

@@ -736,7 +736,7 @@ public class Pin {
         }
     }
 
-    public static class PinTypeAdapter extends TypeAdapter<Pin> {
+    static private class PinTypeAdapter extends TypeAdapter<Pin> {
 
         final private Gson gson;
         private TypeAdapter<Board> boardTypeAdapter;
@@ -751,7 +751,7 @@ public class Pin {
         private TypeAdapter<PinInStock> pinInStockTypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
 
-        public PinTypeAdapter(Gson gson) {
+        PinTypeAdapter(Gson gson) {
             this.gson = gson;
         }
 
