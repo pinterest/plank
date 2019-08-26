@@ -469,7 +469,7 @@ public class User {
         }
     }
 
-    public static class UserTypeAdapter extends TypeAdapter<User> {
+    static private class UserTypeAdapter extends TypeAdapter<User> {
 
         final private Gson gson;
         private TypeAdapter<Date> dateTypeAdapter;
@@ -478,7 +478,7 @@ public class User {
         private TypeAdapter<String> stringTypeAdapter;
         private TypeAdapter<UserEmailFrequency> userEmailFrequencyTypeAdapter;
 
-        public UserTypeAdapter(Gson gson) {
+        UserTypeAdapter(Gson gson) {
             this.gson = gson;
         }
 

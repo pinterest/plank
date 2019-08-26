@@ -213,13 +213,13 @@ public class Image {
         }
     }
 
-    public static class ImageTypeAdapter extends TypeAdapter<Image> {
+    static private class ImageTypeAdapter extends TypeAdapter<Image> {
 
         final private Gson gson;
         private TypeAdapter<Integer> integerTypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
 
-        public ImageTypeAdapter(Gson gson) {
+        ImageTypeAdapter(Gson gson) {
             this.gson = gson;
         }
 

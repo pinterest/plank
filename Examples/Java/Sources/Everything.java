@@ -1525,7 +1525,7 @@ public class Everything {
         }
     }
 
-    public static class EverythingTypeAdapter extends TypeAdapter<Everything> {
+    static private class EverythingTypeAdapter extends TypeAdapter<Everything> {
 
         final private Gson gson;
         private TypeAdapter<Boolean> booleanTypeAdapter;
@@ -1562,7 +1562,7 @@ public class Everything {
         private TypeAdapter<String> stringTypeAdapter;
         private TypeAdapter<User> userTypeAdapter;
 
-        public EverythingTypeAdapter(Gson gson) {
+        EverythingTypeAdapter(Gson gson) {
             this.gson = gson;
         }
 

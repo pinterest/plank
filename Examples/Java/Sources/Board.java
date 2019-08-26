@@ -466,7 +466,7 @@ public class Board {
         }
     }
 
-    public static class BoardTypeAdapter extends TypeAdapter<Board> {
+    static private class BoardTypeAdapter extends TypeAdapter<Board> {
 
         final private Gson gson;
         private TypeAdapter<Date> dateTypeAdapter;
@@ -476,7 +476,7 @@ public class Board {
         private TypeAdapter<Set<User>> set_User_TypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
 
-        public BoardTypeAdapter(Gson gson) {
+        BoardTypeAdapter(Gson gson) {
             this.gson = gson;
         }
 

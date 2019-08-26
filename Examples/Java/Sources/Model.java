@@ -139,12 +139,12 @@ public class Model {
         }
     }
 
-    public static class ModelTypeAdapter extends TypeAdapter<Model> {
+    static private class ModelTypeAdapter extends TypeAdapter<Model> {
 
         final private Gson gson;
         private TypeAdapter<String> stringTypeAdapter;
 
-        public ModelTypeAdapter(Gson gson) {
+        ModelTypeAdapter(Gson gson) {
             this.gson = gson;
         }
 
