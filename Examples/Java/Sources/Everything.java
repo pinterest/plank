@@ -1950,6 +1950,7 @@ public class Everything {
                         break;
                     default:
                         reader.skipValue();
+                        break;
                 }
             }
             reader.endObject();

@@ -11,6 +11,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     let rootSchema: SchemaObjectRoot
     let params: GenerationParameters
     let decorations: JavaDecorations
+    let unknownPropertyLogging: JavaLoggingType?
 
     init(rootSchema: SchemaObjectRoot, params: GenerationParameters) {
         self.rootSchema = rootSchema
@@ -24,6 +25,12 @@ public struct JavaModelRenderer: JavaFileRenderer {
             }
         } else {
             decorations = JavaDecorations()
+        }
+
+        if let unknownPropertyLoggingParam = self.params[.javaUnknownPropertyLogging] {
+            unknownPropertyLogging = JavaLoggingType(param: unknownPropertyLoggingParam)
+        } else {
+            unknownPropertyLogging = nil
         }
     }
 
@@ -331,6 +338,13 @@ public struct JavaModelRenderer: JavaFileRenderer {
             ]
         }
 
+        let defaultLogging: [String] = {
+            switch self.unknownPropertyLogging {
+            case let .androidLog(level)?: return ["Log.\(level)(\"Plank\", \"Unmapped property for \(className): \" + name);"]
+            default: return []
+            }
+        }()
+
         let read = JavaIR.methodThatThrows(
             annotations: [.nullable, JavaAnnotation.override],
             [.public],
@@ -345,7 +359,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             "reader.beginObject();",
             JavaIR.whileBlock(condition: "reader.hasNext()") { [
                 "String name = reader.nextName();",
-                JavaIR.switchBlock(variableToCheck: "name", defaultBody: ["reader.skipValue();"]) {
+                JavaIR.switchBlock(variableToCheck: "name", defaultBody: defaultLogging + ["reader.skipValue();", "break;"]) {
                     transitiveProperties.map { param, schemaObj in
                         let type = unwrappedTypeFromSchema(param, schemaObj.schema)
                         let typeAdapterVariableName = typeAdapterVariableNameForType(type)
@@ -391,6 +405,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
             }
         }
 
+        let additionalImports = propertyTypeImports + (unknownPropertyLogging?.imports ?? []) + (decorations.imports ?? [])
+
         let imports = [
             JavaIR.Root.imports(names: Set([
                 "com.google.gson.Gson",
@@ -405,7 +421,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "java.util.Objects",
                 nullabilityAnnotationType.package + ".NonNull",
                 nullabilityAnnotationType.package + ".Nullable",
-            ] + propertyTypeImports + (self.decorations.imports ?? []))),
+            ] + additionalImports)),
         ]
 
         let enumProps = properties.flatMap { (param, prop) -> [JavaIR.Enum] in

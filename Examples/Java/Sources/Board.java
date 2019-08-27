@@ -604,6 +604,7 @@ public class Board {
                         break;
                     default:
                         reader.skipValue();
+                        break;
                 }
             }
             reader.endObject();

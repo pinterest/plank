@@ -20,6 +20,7 @@ enum FlagOptions: String {
     case javaNullabilityAnnotationType = "java_nullability_annotation_type"
     case javaGeneratePackagePrivateSetters = "java_generate_package_private_setters_beta"
     case javaDecorations = "java_decorations_beta"
+    case javaUnknownPropertyLogging = "java_unknown_property_logging"
     case printDeps = "print_deps"
     case noRecursive = "no_recursive"
     case noRuntime = "no_runtime"
@@ -45,6 +46,7 @@ enum FlagOptions: String {
         case .javaNullabilityAnnotationType: return true
         case .javaGeneratePackagePrivateSetters: return false
         case .javaDecorations: return true
+        case .javaUnknownPropertyLogging: return true
         }
     }
 }
@@ -70,6 +72,7 @@ extension FlagOptions: HelpCommandOutput {
             "    --\(FlagOptions.javaNullabilityAnnotationType.rawValue) - The type of nullability annotations to use. Can be either \"android-support\" (default) or \"androidx\".",
             "    --\(FlagOptions.javaGeneratePackagePrivateSetters.rawValue) - Generate package-private setter methods (beta)",
             "    --\(FlagOptions.javaDecorations.rawValue) - Custom decorations to apply to the generated Java model (beta).",
+            "    --\(FlagOptions.javaUnknownPropertyLogging.rawValue) - Enable unknown property logging. Can be \"android-log-d\".",
         ].joined(separator: "\n")
     }
 }
@@ -156,6 +159,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let javaNullabilityAnnotationType: String? = flags[.javaNullabilityAnnotationType]
     let javaGeneratePackagePrivateSetters: String? = (flags[.javaGeneratePackagePrivateSetters] == nil) ? .none : .some("")
     let javaDecorations: String? = flags[.javaDecorations]
+    let javaUnknownPropertyLogging: String? = flags[.javaUnknownPropertyLogging]
 
     let generationParameters: GenerationParameters = [
         (.recursive, recursive),
@@ -166,6 +170,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         (.javaNullabilityAnnotationType, javaNullabilityAnnotationType),
         (.javaGeneratePackagePrivateSetters, javaGeneratePackagePrivateSetters),
         (.javaDecorations, javaDecorations),
+        (.javaUnknownPropertyLogging, javaUnknownPropertyLogging),
     ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
         var mutableDict = dict
         if let val = tuple.1 {

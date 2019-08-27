@@ -182,6 +182,7 @@ public class Model {
                         break;
                     default:
                         reader.skipValue();
+                        break;
                 }
             }
             reader.endObject();
