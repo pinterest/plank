@@ -185,42 +185,42 @@ public class Everything {
     @SerializedName("unsigned_short_enum") private @Nullable EverythingUnsignedShortEnum unsignedShortEnum;
     @SerializedName("uri_prop") private @Nullable String uriProp;
 
-    static final private int ARRAY_PROP_INDEX = 0;
-    static final private int BOOLEAN_PROP_INDEX = 1;
-    static final private int CHAR_ENUM_INDEX = 2;
-    static final private int DATE_PROP_INDEX = 3;
-    static final private int INT_ENUM_INDEX = 4;
-    static final private int INT_PROP_INDEX = 5;
-    static final private int LIST_POLYMORPHIC_VALUES_INDEX = 6;
-    static final private int LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 7;
-    static final private int LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 8;
-    static final private int LIST_WITH_OBJECT_VALUES_INDEX = 9;
-    static final private int LIST_WITH_OTHER_MODEL_VALUES_INDEX = 10;
-    static final private int LIST_WITH_PRIMITIVE_VALUES_INDEX = 11;
-    static final private int MAP_POLYMORPHIC_VALUES_INDEX = 12;
-    static final private int MAP_PROP_INDEX = 13;
-    static final private int MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 14;
-    static final private int MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 15;
-    static final private int MAP_WITH_OBJECT_VALUES_INDEX = 16;
-    static final private int MAP_WITH_OTHER_MODEL_VALUES_INDEX = 17;
-    static final private int MAP_WITH_PRIMITIVE_VALUES_INDEX = 18;
-    static final private int NSINTEGER_ENUM_INDEX = 19;
-    static final private int NSUINTEGER_ENUM_INDEX = 20;
-    static final private int NUMBER_PROP_INDEX = 21;
-    static final private int OTHER_MODEL_PROP_INDEX = 22;
-    static final private int POLYMORPHIC_PROP_INDEX = 23;
-    static final private int SET_PROP_INDEX = 24;
-    static final private int SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX = 25;
-    static final private int SET_PROP_WITH_PRIMITIVE_VALUES_INDEX = 26;
-    static final private int SET_PROP_WITH_VALUES_INDEX = 27;
-    static final private int SHORT_ENUM_INDEX = 28;
-    static final private int STRING_ENUM_INDEX = 29;
-    static final private int STRING_PROP_INDEX = 30;
-    static final private int TYPE_INDEX = 31;
-    static final private int UNSIGNED_CHAR_ENUM_INDEX = 32;
-    static final private int UNSIGNED_INT_ENUM_INDEX = 33;
-    static final private int UNSIGNED_SHORT_ENUM_INDEX = 34;
-    static final private int URI_PROP_INDEX = 35;
+    private static final int ARRAY_PROP_INDEX = 0;
+    private static final int BOOLEAN_PROP_INDEX = 1;
+    private static final int CHAR_ENUM_INDEX = 2;
+    private static final int DATE_PROP_INDEX = 3;
+    private static final int INT_ENUM_INDEX = 4;
+    private static final int INT_PROP_INDEX = 5;
+    private static final int LIST_POLYMORPHIC_VALUES_INDEX = 6;
+    private static final int LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 7;
+    private static final int LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 8;
+    private static final int LIST_WITH_OBJECT_VALUES_INDEX = 9;
+    private static final int LIST_WITH_OTHER_MODEL_VALUES_INDEX = 10;
+    private static final int LIST_WITH_PRIMITIVE_VALUES_INDEX = 11;
+    private static final int MAP_POLYMORPHIC_VALUES_INDEX = 12;
+    private static final int MAP_PROP_INDEX = 13;
+    private static final int MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX = 14;
+    private static final int MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX = 15;
+    private static final int MAP_WITH_OBJECT_VALUES_INDEX = 16;
+    private static final int MAP_WITH_OTHER_MODEL_VALUES_INDEX = 17;
+    private static final int MAP_WITH_PRIMITIVE_VALUES_INDEX = 18;
+    private static final int NSINTEGER_ENUM_INDEX = 19;
+    private static final int NSUINTEGER_ENUM_INDEX = 20;
+    private static final int NUMBER_PROP_INDEX = 21;
+    private static final int OTHER_MODEL_PROP_INDEX = 22;
+    private static final int POLYMORPHIC_PROP_INDEX = 23;
+    private static final int SET_PROP_INDEX = 24;
+    private static final int SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX = 25;
+    private static final int SET_PROP_WITH_PRIMITIVE_VALUES_INDEX = 26;
+    private static final int SET_PROP_WITH_VALUES_INDEX = 27;
+    private static final int SHORT_ENUM_INDEX = 28;
+    private static final int STRING_ENUM_INDEX = 29;
+    private static final int STRING_PROP_INDEX = 30;
+    private static final int TYPE_INDEX = 31;
+    private static final int UNSIGNED_CHAR_ENUM_INDEX = 32;
+    private static final int UNSIGNED_INT_ENUM_INDEX = 33;
+    private static final int UNSIGNED_SHORT_ENUM_INDEX = 34;
+    private static final int URI_PROP_INDEX = 35;
 
     private boolean[] _bits;
 
@@ -1525,9 +1525,9 @@ public class Everything {
         }
     }
 
-    static private class EverythingTypeAdapter extends TypeAdapter<Everything> {
+    private static class EverythingTypeAdapter extends TypeAdapter<Everything> {
 
-        final private Gson gson;
+        private final Gson gson;
         private TypeAdapter<Boolean> booleanTypeAdapter;
         private TypeAdapter<Date> dateTypeAdapter;
         private TypeAdapter<Double> doubleTypeAdapter;
@@ -2056,7 +2056,7 @@ public class Everything {
         private @Nullable List<Object> value5;
         private @Nullable Map<String, Object> value6;
 
-        static private InternalStorage internalStorage;
+        private static InternalStorage internalStorage;
 
         private EverythingMapPolymorphicValues() {
         }
@@ -2102,7 +2102,7 @@ public class Everything {
         private @Nullable Date value9;
         private @Nullable String value10;
 
-        static private InternalStorage internalStorage;
+        private static InternalStorage internalStorage;
 
         private EverythingPolymorphicProp() {
         }

@@ -39,16 +39,16 @@ public class Board {
     @SerializedName("name") private @Nullable String name;
     @SerializedName("url") private @Nullable String url;
 
-    static final private int ID_INDEX = 0;
-    static final private int CONTRIBUTORS_INDEX = 1;
-    static final private int COUNTS_INDEX = 2;
-    static final private int CREATED_AT_INDEX = 3;
-    static final private int CREATOR_INDEX = 4;
-    static final private int CREATOR_URL_INDEX = 5;
-    static final private int DESCRIPTION_INDEX = 6;
-    static final private int IMAGE_INDEX = 7;
-    static final private int NAME_INDEX = 8;
-    static final private int URL_INDEX = 9;
+    private static final int ID_INDEX = 0;
+    private static final int CONTRIBUTORS_INDEX = 1;
+    private static final int COUNTS_INDEX = 2;
+    private static final int CREATED_AT_INDEX = 3;
+    private static final int CREATOR_INDEX = 4;
+    private static final int CREATOR_URL_INDEX = 5;
+    private static final int DESCRIPTION_INDEX = 6;
+    private static final int IMAGE_INDEX = 7;
+    private static final int NAME_INDEX = 8;
+    private static final int URL_INDEX = 9;
 
     private boolean[] _bits;
 
@@ -466,9 +466,9 @@ public class Board {
         }
     }
 
-    static private class BoardTypeAdapter extends TypeAdapter<Board> {
+    private static class BoardTypeAdapter extends TypeAdapter<Board> {
 
-        final private Gson gson;
+        private final Gson gson;
         private TypeAdapter<Date> dateTypeAdapter;
         private TypeAdapter<Image> imageTypeAdapter;
         private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;

@@ -42,16 +42,16 @@ public class User {
     @SerializedName("type") private @Nullable String type;
     @SerializedName("username") private @Nullable String username;
 
-    static final private int BIO_INDEX = 0;
-    static final private int COUNTS_INDEX = 1;
-    static final private int CREATED_AT_INDEX = 2;
-    static final private int EMAIL_FREQUENCY_INDEX = 3;
-    static final private int FIRST_NAME_INDEX = 4;
-    static final private int ID_INDEX = 5;
-    static final private int IMAGE_INDEX = 6;
-    static final private int LAST_NAME_INDEX = 7;
-    static final private int TYPE_INDEX = 8;
-    static final private int USERNAME_INDEX = 9;
+    private static final int BIO_INDEX = 0;
+    private static final int COUNTS_INDEX = 1;
+    private static final int CREATED_AT_INDEX = 2;
+    private static final int EMAIL_FREQUENCY_INDEX = 3;
+    private static final int FIRST_NAME_INDEX = 4;
+    private static final int ID_INDEX = 5;
+    private static final int IMAGE_INDEX = 6;
+    private static final int LAST_NAME_INDEX = 7;
+    private static final int TYPE_INDEX = 8;
+    private static final int USERNAME_INDEX = 9;
 
     private boolean[] _bits;
 
@@ -469,9 +469,9 @@ public class User {
         }
     }
 
-    static private class UserTypeAdapter extends TypeAdapter<User> {
+    private static class UserTypeAdapter extends TypeAdapter<User> {
 
-        final private Gson gson;
+        private final Gson gson;
         private TypeAdapter<Date> dateTypeAdapter;
         private TypeAdapter<Image> imageTypeAdapter;
         private TypeAdapter<Map<String, Integer>> map_String__Integer_TypeAdapter;

@@ -16,13 +16,14 @@ struct JavaModifier: OptionSet {
     static let `private` = JavaModifier(rawValue: 1 << 4)
     static let transient = JavaModifier(rawValue: 1 << 5)
 
+    // https://checkstyle.sourceforge.io/config_modifier.html#ModifierOrder
     func render() -> String {
         return [
             self.contains(.public) ? "public" : "",
+            self.contains(.private) ? "private" : "",
             self.contains(.abstract) ? "abstract" : "",
             self.contains(.static) ? "static" : "",
             self.contains(.final) ? "final" : "",
-            self.contains(.private) ? "private" : "",
             self.contains(.transient) ? "transient" : "",
         ].filter { $0 != "" }.joined(separator: " ")
     }

@@ -30,10 +30,10 @@ public class VariableSubtitution {
     @SerializedName("mutable_copy_prop") private @Nullable Integer mutableCopyProp;
     @SerializedName("new_prop") private @Nullable Integer newProp;
 
-    static final private int ALLOC_PROP_INDEX = 0;
-    static final private int COPY_PROP_INDEX = 1;
-    static final private int MUTABLE_COPY_PROP_INDEX = 2;
-    static final private int NEW_PROP_INDEX = 3;
+    private static final int ALLOC_PROP_INDEX = 0;
+    private static final int COPY_PROP_INDEX = 1;
+    private static final int MUTABLE_COPY_PROP_INDEX = 2;
+    private static final int NEW_PROP_INDEX = 3;
 
     private boolean[] _bits;
 
@@ -251,9 +251,9 @@ public class VariableSubtitution {
         }
     }
 
-    static private class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution> {
+    private static class VariableSubtitutionTypeAdapter extends TypeAdapter<VariableSubtitution> {
 
-        final private Gson gson;
+        private final Gson gson;
         private TypeAdapter<Integer> integerTypeAdapter;
 
         VariableSubtitutionTypeAdapter(Gson gson) {
