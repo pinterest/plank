@@ -180,23 +180,17 @@ public class Image {
         }
 
         public void mergeFrom(@NonNull Image model) {
-            if (model.getHeightIsSet()) {
+            if (model._bits.length > HEIGHT_INDEX && model._bits[HEIGHT_INDEX]) {
                 this.height = model.height;
-                if (this._bits.length > HEIGHT_INDEX) {
-                    this._bits[HEIGHT_INDEX] = true;
-                }
+                this._bits[HEIGHT_INDEX] = true;
             }
-            if (model.getUrlIsSet()) {
+            if (model._bits.length > URL_INDEX && model._bits[URL_INDEX]) {
                 this.url = model.url;
-                if (this._bits.length > URL_INDEX) {
-                    this._bits[URL_INDEX] = true;
-                }
+                this._bits[URL_INDEX] = true;
             }
-            if (model.getWidthIsSet()) {
+            if (model._bits.length > WIDTH_INDEX && model._bits[WIDTH_INDEX]) {
                 this.width = model.width;
-                if (this._bits.length > WIDTH_INDEX) {
-                    this._bits[WIDTH_INDEX] = true;
-                }
+                this._bits[WIDTH_INDEX] = true;
             }
         }
     }
@@ -230,19 +224,19 @@ public class Image {
                 return;
             }
             writer.beginObject();
-            if (value.getHeightIsSet()) {
+            if (value._bits.length > HEIGHT_INDEX && value._bits[HEIGHT_INDEX]) {
                 if (this.integerTypeAdapter == null) {
                     this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
                 }
                 this.integerTypeAdapter.write(writer.name("height"), value.height);
             }
-            if (value.getUrlIsSet()) {
+            if (value._bits.length > URL_INDEX && value._bits[URL_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("url"), value.url);
             }
-            if (value.getWidthIsSet()) {
+            if (value._bits.length > WIDTH_INDEX && value._bits[WIDTH_INDEX]) {
                 if (this.integerTypeAdapter == null) {
                     this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
                 }

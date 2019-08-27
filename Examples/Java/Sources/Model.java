@@ -118,11 +118,9 @@ public class Model {
         }
 
         public void mergeFrom(@NonNull Model model) {
-            if (model.getUidIsSet()) {
+            if (model._bits.length > ID_INDEX && model._bits[ID_INDEX]) {
                 this.uid = model.uid;
-                if (this._bits.length > ID_INDEX) {
-                    this._bits[ID_INDEX] = true;
-                }
+                this._bits[ID_INDEX] = true;
             }
         }
     }
@@ -155,7 +153,7 @@ public class Model {
                 return;
             }
             writer.beginObject();
-            if (value.getUidIsSet()) {
+            if (value._bits.length > ID_INDEX && value._bits[ID_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }

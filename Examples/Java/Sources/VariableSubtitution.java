@@ -212,29 +212,21 @@ public class VariableSubtitution {
         }
 
         public void mergeFrom(@NonNull VariableSubtitution model) {
-            if (model.getAllocPropIsSet()) {
+            if (model._bits.length > ALLOC_PROP_INDEX && model._bits[ALLOC_PROP_INDEX]) {
                 this.allocProp = model.allocProp;
-                if (this._bits.length > ALLOC_PROP_INDEX) {
-                    this._bits[ALLOC_PROP_INDEX] = true;
-                }
+                this._bits[ALLOC_PROP_INDEX] = true;
             }
-            if (model.getCopyPropIsSet()) {
+            if (model._bits.length > COPY_PROP_INDEX && model._bits[COPY_PROP_INDEX]) {
                 this.copyProp = model.copyProp;
-                if (this._bits.length > COPY_PROP_INDEX) {
-                    this._bits[COPY_PROP_INDEX] = true;
-                }
+                this._bits[COPY_PROP_INDEX] = true;
             }
-            if (model.getMutableCopyPropIsSet()) {
+            if (model._bits.length > MUTABLE_COPY_PROP_INDEX && model._bits[MUTABLE_COPY_PROP_INDEX]) {
                 this.mutableCopyProp = model.mutableCopyProp;
-                if (this._bits.length > MUTABLE_COPY_PROP_INDEX) {
-                    this._bits[MUTABLE_COPY_PROP_INDEX] = true;
-                }
+                this._bits[MUTABLE_COPY_PROP_INDEX] = true;
             }
-            if (model.getNewPropIsSet()) {
+            if (model._bits.length > NEW_PROP_INDEX && model._bits[NEW_PROP_INDEX]) {
                 this.newProp = model.newProp;
-                if (this._bits.length > NEW_PROP_INDEX) {
-                    this._bits[NEW_PROP_INDEX] = true;
-                }
+                this._bits[NEW_PROP_INDEX] = true;
             }
         }
     }
@@ -267,25 +259,25 @@ public class VariableSubtitution {
                 return;
             }
             writer.beginObject();
-            if (value.getAllocPropIsSet()) {
+            if (value._bits.length > ALLOC_PROP_INDEX && value._bits[ALLOC_PROP_INDEX]) {
                 if (this.integerTypeAdapter == null) {
                     this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
                 }
                 this.integerTypeAdapter.write(writer.name("alloc_prop"), value.allocProp);
             }
-            if (value.getCopyPropIsSet()) {
+            if (value._bits.length > COPY_PROP_INDEX && value._bits[COPY_PROP_INDEX]) {
                 if (this.integerTypeAdapter == null) {
                     this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
                 }
                 this.integerTypeAdapter.write(writer.name("copy_prop"), value.copyProp);
             }
-            if (value.getMutableCopyPropIsSet()) {
+            if (value._bits.length > MUTABLE_COPY_PROP_INDEX && value._bits[MUTABLE_COPY_PROP_INDEX]) {
                 if (this.integerTypeAdapter == null) {
                     this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
                 }
                 this.integerTypeAdapter.write(writer.name("mutable_copy_prop"), value.mutableCopyProp);
             }
-            if (value.getNewPropIsSet()) {
+            if (value._bits.length > NEW_PROP_INDEX && value._bits[NEW_PROP_INDEX]) {
                 if (this.integerTypeAdapter == null) {
                     this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
                 }

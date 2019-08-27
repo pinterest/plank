@@ -1294,221 +1294,149 @@ public class Everything {
         }
 
         public void mergeFrom(@NonNull Everything model) {
-            if (model.getArrayPropIsSet()) {
+            if (model._bits.length > ARRAY_PROP_INDEX && model._bits[ARRAY_PROP_INDEX]) {
                 this.arrayProp = model.arrayProp;
-                if (this._bits.length > ARRAY_PROP_INDEX) {
-                    this._bits[ARRAY_PROP_INDEX] = true;
-                }
+                this._bits[ARRAY_PROP_INDEX] = true;
             }
-            if (model.getBooleanPropIsSet()) {
+            if (model._bits.length > BOOLEAN_PROP_INDEX && model._bits[BOOLEAN_PROP_INDEX]) {
                 this.booleanProp = model.booleanProp;
-                if (this._bits.length > BOOLEAN_PROP_INDEX) {
-                    this._bits[BOOLEAN_PROP_INDEX] = true;
-                }
+                this._bits[BOOLEAN_PROP_INDEX] = true;
             }
-            if (model.getCharEnumIsSet()) {
+            if (model._bits.length > CHAR_ENUM_INDEX && model._bits[CHAR_ENUM_INDEX]) {
                 this.charEnum = model.charEnum;
-                if (this._bits.length > CHAR_ENUM_INDEX) {
-                    this._bits[CHAR_ENUM_INDEX] = true;
-                }
+                this._bits[CHAR_ENUM_INDEX] = true;
             }
-            if (model.getDatePropIsSet()) {
+            if (model._bits.length > DATE_PROP_INDEX && model._bits[DATE_PROP_INDEX]) {
                 this.dateProp = model.dateProp;
-                if (this._bits.length > DATE_PROP_INDEX) {
-                    this._bits[DATE_PROP_INDEX] = true;
-                }
+                this._bits[DATE_PROP_INDEX] = true;
             }
-            if (model.getIntEnumIsSet()) {
+            if (model._bits.length > INT_ENUM_INDEX && model._bits[INT_ENUM_INDEX]) {
                 this.intEnum = model.intEnum;
-                if (this._bits.length > INT_ENUM_INDEX) {
-                    this._bits[INT_ENUM_INDEX] = true;
-                }
+                this._bits[INT_ENUM_INDEX] = true;
             }
-            if (model.getIntPropIsSet()) {
+            if (model._bits.length > INT_PROP_INDEX && model._bits[INT_PROP_INDEX]) {
                 this.intProp = model.intProp;
-                if (this._bits.length > INT_PROP_INDEX) {
-                    this._bits[INT_PROP_INDEX] = true;
-                }
+                this._bits[INT_PROP_INDEX] = true;
             }
-            if (model.getListPolymorphicValuesIsSet()) {
+            if (model._bits.length > LIST_POLYMORPHIC_VALUES_INDEX && model._bits[LIST_POLYMORPHIC_VALUES_INDEX]) {
                 this.listPolymorphicValues = model.listPolymorphicValues;
-                if (this._bits.length > LIST_POLYMORPHIC_VALUES_INDEX) {
-                    this._bits[LIST_POLYMORPHIC_VALUES_INDEX] = true;
-                }
+                this._bits[LIST_POLYMORPHIC_VALUES_INDEX] = true;
             }
-            if (model.getListWithListAndOtherModelValuesIsSet()) {
+            if (model._bits.length > LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX && model._bits[LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX]) {
                 this.listWithListAndOtherModelValues = model.listWithListAndOtherModelValues;
-                if (this._bits.length > LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX) {
-                    this._bits[LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX] = true;
-                }
+                this._bits[LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX] = true;
             }
-            if (model.getListWithMapAndOtherModelValuesIsSet()) {
+            if (model._bits.length > LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX && model._bits[LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX]) {
                 this.listWithMapAndOtherModelValues = model.listWithMapAndOtherModelValues;
-                if (this._bits.length > LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX) {
-                    this._bits[LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX] = true;
-                }
+                this._bits[LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX] = true;
             }
-            if (model.getListWithObjectValuesIsSet()) {
+            if (model._bits.length > LIST_WITH_OBJECT_VALUES_INDEX && model._bits[LIST_WITH_OBJECT_VALUES_INDEX]) {
                 this.listWithObjectValues = model.listWithObjectValues;
-                if (this._bits.length > LIST_WITH_OBJECT_VALUES_INDEX) {
-                    this._bits[LIST_WITH_OBJECT_VALUES_INDEX] = true;
-                }
+                this._bits[LIST_WITH_OBJECT_VALUES_INDEX] = true;
             }
-            if (model.getListWithOtherModelValuesIsSet()) {
+            if (model._bits.length > LIST_WITH_OTHER_MODEL_VALUES_INDEX && model._bits[LIST_WITH_OTHER_MODEL_VALUES_INDEX]) {
                 this.listWithOtherModelValues = model.listWithOtherModelValues;
-                if (this._bits.length > LIST_WITH_OTHER_MODEL_VALUES_INDEX) {
-                    this._bits[LIST_WITH_OTHER_MODEL_VALUES_INDEX] = true;
-                }
+                this._bits[LIST_WITH_OTHER_MODEL_VALUES_INDEX] = true;
             }
-            if (model.getListWithPrimitiveValuesIsSet()) {
+            if (model._bits.length > LIST_WITH_PRIMITIVE_VALUES_INDEX && model._bits[LIST_WITH_PRIMITIVE_VALUES_INDEX]) {
                 this.listWithPrimitiveValues = model.listWithPrimitiveValues;
-                if (this._bits.length > LIST_WITH_PRIMITIVE_VALUES_INDEX) {
-                    this._bits[LIST_WITH_PRIMITIVE_VALUES_INDEX] = true;
-                }
+                this._bits[LIST_WITH_PRIMITIVE_VALUES_INDEX] = true;
             }
-            if (model.getMapPolymorphicValuesIsSet()) {
+            if (model._bits.length > MAP_POLYMORPHIC_VALUES_INDEX && model._bits[MAP_POLYMORPHIC_VALUES_INDEX]) {
                 this.mapPolymorphicValues = model.mapPolymorphicValues;
-                if (this._bits.length > MAP_POLYMORPHIC_VALUES_INDEX) {
-                    this._bits[MAP_POLYMORPHIC_VALUES_INDEX] = true;
-                }
+                this._bits[MAP_POLYMORPHIC_VALUES_INDEX] = true;
             }
-            if (model.getMapPropIsSet()) {
+            if (model._bits.length > MAP_PROP_INDEX && model._bits[MAP_PROP_INDEX]) {
                 this.mapProp = model.mapProp;
-                if (this._bits.length > MAP_PROP_INDEX) {
-                    this._bits[MAP_PROP_INDEX] = true;
-                }
+                this._bits[MAP_PROP_INDEX] = true;
             }
-            if (model.getMapWithListAndOtherModelValuesIsSet()) {
+            if (model._bits.length > MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX && model._bits[MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX]) {
                 this.mapWithListAndOtherModelValues = model.mapWithListAndOtherModelValues;
-                if (this._bits.length > MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX) {
-                    this._bits[MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX] = true;
-                }
+                this._bits[MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX] = true;
             }
-            if (model.getMapWithMapAndOtherModelValuesIsSet()) {
+            if (model._bits.length > MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX && model._bits[MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX]) {
                 this.mapWithMapAndOtherModelValues = model.mapWithMapAndOtherModelValues;
-                if (this._bits.length > MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX) {
-                    this._bits[MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX] = true;
-                }
+                this._bits[MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX] = true;
             }
-            if (model.getMapWithObjectValuesIsSet()) {
+            if (model._bits.length > MAP_WITH_OBJECT_VALUES_INDEX && model._bits[MAP_WITH_OBJECT_VALUES_INDEX]) {
                 this.mapWithObjectValues = model.mapWithObjectValues;
-                if (this._bits.length > MAP_WITH_OBJECT_VALUES_INDEX) {
-                    this._bits[MAP_WITH_OBJECT_VALUES_INDEX] = true;
-                }
+                this._bits[MAP_WITH_OBJECT_VALUES_INDEX] = true;
             }
-            if (model.getMapWithOtherModelValuesIsSet()) {
+            if (model._bits.length > MAP_WITH_OTHER_MODEL_VALUES_INDEX && model._bits[MAP_WITH_OTHER_MODEL_VALUES_INDEX]) {
                 this.mapWithOtherModelValues = model.mapWithOtherModelValues;
-                if (this._bits.length > MAP_WITH_OTHER_MODEL_VALUES_INDEX) {
-                    this._bits[MAP_WITH_OTHER_MODEL_VALUES_INDEX] = true;
-                }
+                this._bits[MAP_WITH_OTHER_MODEL_VALUES_INDEX] = true;
             }
-            if (model.getMapWithPrimitiveValuesIsSet()) {
+            if (model._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX && model._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX]) {
                 this.mapWithPrimitiveValues = model.mapWithPrimitiveValues;
-                if (this._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX) {
-                    this._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX] = true;
-                }
+                this._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX] = true;
             }
-            if (model.getNsintegerEnumIsSet()) {
+            if (model._bits.length > NSINTEGER_ENUM_INDEX && model._bits[NSINTEGER_ENUM_INDEX]) {
                 this.nsintegerEnum = model.nsintegerEnum;
-                if (this._bits.length > NSINTEGER_ENUM_INDEX) {
-                    this._bits[NSINTEGER_ENUM_INDEX] = true;
-                }
+                this._bits[NSINTEGER_ENUM_INDEX] = true;
             }
-            if (model.getNsuintegerEnumIsSet()) {
+            if (model._bits.length > NSUINTEGER_ENUM_INDEX && model._bits[NSUINTEGER_ENUM_INDEX]) {
                 this.nsuintegerEnum = model.nsuintegerEnum;
-                if (this._bits.length > NSUINTEGER_ENUM_INDEX) {
-                    this._bits[NSUINTEGER_ENUM_INDEX] = true;
-                }
+                this._bits[NSUINTEGER_ENUM_INDEX] = true;
             }
-            if (model.getNumberPropIsSet()) {
+            if (model._bits.length > NUMBER_PROP_INDEX && model._bits[NUMBER_PROP_INDEX]) {
                 this.numberProp = model.numberProp;
-                if (this._bits.length > NUMBER_PROP_INDEX) {
-                    this._bits[NUMBER_PROP_INDEX] = true;
-                }
+                this._bits[NUMBER_PROP_INDEX] = true;
             }
-            if (model.getOtherModelPropIsSet()) {
+            if (model._bits.length > OTHER_MODEL_PROP_INDEX && model._bits[OTHER_MODEL_PROP_INDEX]) {
                 this.otherModelProp = model.otherModelProp;
-                if (this._bits.length > OTHER_MODEL_PROP_INDEX) {
-                    this._bits[OTHER_MODEL_PROP_INDEX] = true;
-                }
+                this._bits[OTHER_MODEL_PROP_INDEX] = true;
             }
-            if (model.getPolymorphicPropIsSet()) {
+            if (model._bits.length > POLYMORPHIC_PROP_INDEX && model._bits[POLYMORPHIC_PROP_INDEX]) {
                 this.polymorphicProp = model.polymorphicProp;
-                if (this._bits.length > POLYMORPHIC_PROP_INDEX) {
-                    this._bits[POLYMORPHIC_PROP_INDEX] = true;
-                }
+                this._bits[POLYMORPHIC_PROP_INDEX] = true;
             }
-            if (model.getSetPropIsSet()) {
+            if (model._bits.length > SET_PROP_INDEX && model._bits[SET_PROP_INDEX]) {
                 this.setProp = model.setProp;
-                if (this._bits.length > SET_PROP_INDEX) {
-                    this._bits[SET_PROP_INDEX] = true;
-                }
+                this._bits[SET_PROP_INDEX] = true;
             }
-            if (model.getSetPropWithOtherModelValuesIsSet()) {
+            if (model._bits.length > SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX && model._bits[SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX]) {
                 this.setPropWithOtherModelValues = model.setPropWithOtherModelValues;
-                if (this._bits.length > SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX) {
-                    this._bits[SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX] = true;
-                }
+                this._bits[SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX] = true;
             }
-            if (model.getSetPropWithPrimitiveValuesIsSet()) {
+            if (model._bits.length > SET_PROP_WITH_PRIMITIVE_VALUES_INDEX && model._bits[SET_PROP_WITH_PRIMITIVE_VALUES_INDEX]) {
                 this.setPropWithPrimitiveValues = model.setPropWithPrimitiveValues;
-                if (this._bits.length > SET_PROP_WITH_PRIMITIVE_VALUES_INDEX) {
-                    this._bits[SET_PROP_WITH_PRIMITIVE_VALUES_INDEX] = true;
-                }
+                this._bits[SET_PROP_WITH_PRIMITIVE_VALUES_INDEX] = true;
             }
-            if (model.getSetPropWithValuesIsSet()) {
+            if (model._bits.length > SET_PROP_WITH_VALUES_INDEX && model._bits[SET_PROP_WITH_VALUES_INDEX]) {
                 this.setPropWithValues = model.setPropWithValues;
-                if (this._bits.length > SET_PROP_WITH_VALUES_INDEX) {
-                    this._bits[SET_PROP_WITH_VALUES_INDEX] = true;
-                }
+                this._bits[SET_PROP_WITH_VALUES_INDEX] = true;
             }
-            if (model.getShortEnumIsSet()) {
+            if (model._bits.length > SHORT_ENUM_INDEX && model._bits[SHORT_ENUM_INDEX]) {
                 this.shortEnum = model.shortEnum;
-                if (this._bits.length > SHORT_ENUM_INDEX) {
-                    this._bits[SHORT_ENUM_INDEX] = true;
-                }
+                this._bits[SHORT_ENUM_INDEX] = true;
             }
-            if (model.getStringEnumIsSet()) {
+            if (model._bits.length > STRING_ENUM_INDEX && model._bits[STRING_ENUM_INDEX]) {
                 this.stringEnum = model.stringEnum;
-                if (this._bits.length > STRING_ENUM_INDEX) {
-                    this._bits[STRING_ENUM_INDEX] = true;
-                }
+                this._bits[STRING_ENUM_INDEX] = true;
             }
-            if (model.getStringPropIsSet()) {
+            if (model._bits.length > STRING_PROP_INDEX && model._bits[STRING_PROP_INDEX]) {
                 this.stringProp = model.stringProp;
-                if (this._bits.length > STRING_PROP_INDEX) {
-                    this._bits[STRING_PROP_INDEX] = true;
-                }
+                this._bits[STRING_PROP_INDEX] = true;
             }
-            if (model.getTypeIsSet()) {
+            if (model._bits.length > TYPE_INDEX && model._bits[TYPE_INDEX]) {
                 this.type = model.type;
-                if (this._bits.length > TYPE_INDEX) {
-                    this._bits[TYPE_INDEX] = true;
-                }
+                this._bits[TYPE_INDEX] = true;
             }
-            if (model.getUnsignedCharEnumIsSet()) {
+            if (model._bits.length > UNSIGNED_CHAR_ENUM_INDEX && model._bits[UNSIGNED_CHAR_ENUM_INDEX]) {
                 this.unsignedCharEnum = model.unsignedCharEnum;
-                if (this._bits.length > UNSIGNED_CHAR_ENUM_INDEX) {
-                    this._bits[UNSIGNED_CHAR_ENUM_INDEX] = true;
-                }
+                this._bits[UNSIGNED_CHAR_ENUM_INDEX] = true;
             }
-            if (model.getUnsignedIntEnumIsSet()) {
+            if (model._bits.length > UNSIGNED_INT_ENUM_INDEX && model._bits[UNSIGNED_INT_ENUM_INDEX]) {
                 this.unsignedIntEnum = model.unsignedIntEnum;
-                if (this._bits.length > UNSIGNED_INT_ENUM_INDEX) {
-                    this._bits[UNSIGNED_INT_ENUM_INDEX] = true;
-                }
+                this._bits[UNSIGNED_INT_ENUM_INDEX] = true;
             }
-            if (model.getUnsignedShortEnumIsSet()) {
+            if (model._bits.length > UNSIGNED_SHORT_ENUM_INDEX && model._bits[UNSIGNED_SHORT_ENUM_INDEX]) {
                 this.unsignedShortEnum = model.unsignedShortEnum;
-                if (this._bits.length > UNSIGNED_SHORT_ENUM_INDEX) {
-                    this._bits[UNSIGNED_SHORT_ENUM_INDEX] = true;
-                }
+                this._bits[UNSIGNED_SHORT_ENUM_INDEX] = true;
             }
-            if (model.getUriPropIsSet()) {
+            if (model._bits.length > URI_PROP_INDEX && model._bits[URI_PROP_INDEX]) {
                 this.uriProp = model.uriProp;
-                if (this._bits.length > URI_PROP_INDEX) {
-                    this._bits[URI_PROP_INDEX] = true;
-                }
+                this._bits[URI_PROP_INDEX] = true;
             }
         }
     }
@@ -1573,217 +1501,217 @@ public class Everything {
                 return;
             }
             writer.beginObject();
-            if (value.getArrayPropIsSet()) {
+            if (value._bits.length > ARRAY_PROP_INDEX && value._bits[ARRAY_PROP_INDEX]) {
                 if (this.list_Object_TypeAdapter == null) {
                     this.list_Object_TypeAdapter = this.gson.getAdapter(new TypeToken<List<Object>>(){}).nullSafe();
                 }
                 this.list_Object_TypeAdapter.write(writer.name("array_prop"), value.arrayProp);
             }
-            if (value.getBooleanPropIsSet()) {
+            if (value._bits.length > BOOLEAN_PROP_INDEX && value._bits[BOOLEAN_PROP_INDEX]) {
                 if (this.booleanTypeAdapter == null) {
                     this.booleanTypeAdapter = this.gson.getAdapter(Boolean.class).nullSafe();
                 }
                 this.booleanTypeAdapter.write(writer.name("boolean_prop"), value.booleanProp);
             }
-            if (value.getCharEnumIsSet()) {
+            if (value._bits.length > CHAR_ENUM_INDEX && value._bits[CHAR_ENUM_INDEX]) {
                 if (this.everythingCharEnumTypeAdapter == null) {
                     this.everythingCharEnumTypeAdapter = this.gson.getAdapter(EverythingCharEnum.class).nullSafe();
                 }
                 this.everythingCharEnumTypeAdapter.write(writer.name("char_enum"), value.charEnum);
             }
-            if (value.getDatePropIsSet()) {
+            if (value._bits.length > DATE_PROP_INDEX && value._bits[DATE_PROP_INDEX]) {
                 if (this.dateTypeAdapter == null) {
                     this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
                 }
                 this.dateTypeAdapter.write(writer.name("date_prop"), value.dateProp);
             }
-            if (value.getIntEnumIsSet()) {
+            if (value._bits.length > INT_ENUM_INDEX && value._bits[INT_ENUM_INDEX]) {
                 if (this.everythingIntEnumTypeAdapter == null) {
                     this.everythingIntEnumTypeAdapter = this.gson.getAdapter(EverythingIntEnum.class).nullSafe();
                 }
                 this.everythingIntEnumTypeAdapter.write(writer.name("int_enum"), value.intEnum);
             }
-            if (value.getIntPropIsSet()) {
+            if (value._bits.length > INT_PROP_INDEX && value._bits[INT_PROP_INDEX]) {
                 if (this.integerTypeAdapter == null) {
                     this.integerTypeAdapter = this.gson.getAdapter(Integer.class).nullSafe();
                 }
                 this.integerTypeAdapter.write(writer.name("int_prop"), value.intProp);
             }
-            if (value.getListPolymorphicValuesIsSet()) {
+            if (value._bits.length > LIST_POLYMORPHIC_VALUES_INDEX && value._bits[LIST_POLYMORPHIC_VALUES_INDEX]) {
                 if (this.list_Object_TypeAdapter == null) {
                     this.list_Object_TypeAdapter = this.gson.getAdapter(new TypeToken<List<Object>>(){}).nullSafe();
                 }
                 this.list_Object_TypeAdapter.write(writer.name("list_polymorphic_values"), value.listPolymorphicValues);
             }
-            if (value.getListWithListAndOtherModelValuesIsSet()) {
+            if (value._bits.length > LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX && value._bits[LIST_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX]) {
                 if (this.list_List_User__TypeAdapter == null) {
                     this.list_List_User__TypeAdapter = this.gson.getAdapter(new TypeToken<List<List<User>>>(){}).nullSafe();
                 }
                 this.list_List_User__TypeAdapter.write(writer.name("list_with_list_and_other_model_values"), value.listWithListAndOtherModelValues);
             }
-            if (value.getListWithMapAndOtherModelValuesIsSet()) {
+            if (value._bits.length > LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX && value._bits[LIST_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX]) {
                 if (this.list_Map_String__User__TypeAdapter == null) {
                     this.list_Map_String__User__TypeAdapter = this.gson.getAdapter(new TypeToken<List<Map<String, User>>>(){}).nullSafe();
                 }
                 this.list_Map_String__User__TypeAdapter.write(writer.name("list_with_map_and_other_model_values"), value.listWithMapAndOtherModelValues);
             }
-            if (value.getListWithObjectValuesIsSet()) {
+            if (value._bits.length > LIST_WITH_OBJECT_VALUES_INDEX && value._bits[LIST_WITH_OBJECT_VALUES_INDEX]) {
                 if (this.list_String_TypeAdapter == null) {
                     this.list_String_TypeAdapter = this.gson.getAdapter(new TypeToken<List<String>>(){}).nullSafe();
                 }
                 this.list_String_TypeAdapter.write(writer.name("list_with_object_values"), value.listWithObjectValues);
             }
-            if (value.getListWithOtherModelValuesIsSet()) {
+            if (value._bits.length > LIST_WITH_OTHER_MODEL_VALUES_INDEX && value._bits[LIST_WITH_OTHER_MODEL_VALUES_INDEX]) {
                 if (this.list_User_TypeAdapter == null) {
                     this.list_User_TypeAdapter = this.gson.getAdapter(new TypeToken<List<User>>(){}).nullSafe();
                 }
                 this.list_User_TypeAdapter.write(writer.name("list_with_other_model_values"), value.listWithOtherModelValues);
             }
-            if (value.getListWithPrimitiveValuesIsSet()) {
+            if (value._bits.length > LIST_WITH_PRIMITIVE_VALUES_INDEX && value._bits[LIST_WITH_PRIMITIVE_VALUES_INDEX]) {
                 if (this.list_Integer_TypeAdapter == null) {
                     this.list_Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<List<Integer>>(){}).nullSafe();
                 }
                 this.list_Integer_TypeAdapter.write(writer.name("list_with_primitive_values"), value.listWithPrimitiveValues);
             }
-            if (value.getMapPolymorphicValuesIsSet()) {
+            if (value._bits.length > MAP_POLYMORPHIC_VALUES_INDEX && value._bits[MAP_POLYMORPHIC_VALUES_INDEX]) {
                 if (this.map_String__EverythingMapPolymorphicValues_TypeAdapter == null) {
                     this.map_String__EverythingMapPolymorphicValues_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, EverythingMapPolymorphicValues>>(){}).nullSafe();
                 }
                 this.map_String__EverythingMapPolymorphicValues_TypeAdapter.write(writer.name("map_polymorphic_values"), value.mapPolymorphicValues);
             }
-            if (value.getMapPropIsSet()) {
+            if (value._bits.length > MAP_PROP_INDEX && value._bits[MAP_PROP_INDEX]) {
                 if (this.map_String__Object_TypeAdapter == null) {
                     this.map_String__Object_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
                 }
                 this.map_String__Object_TypeAdapter.write(writer.name("map_prop"), value.mapProp);
             }
-            if (value.getMapWithListAndOtherModelValuesIsSet()) {
+            if (value._bits.length > MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX && value._bits[MAP_WITH_LIST_AND_OTHER_MODEL_VALUES_INDEX]) {
                 if (this.map_String__List_User__TypeAdapter == null) {
                     this.map_String__List_User__TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, List<User>>>(){}).nullSafe();
                 }
                 this.map_String__List_User__TypeAdapter.write(writer.name("map_with_list_and_other_model_values"), value.mapWithListAndOtherModelValues);
             }
-            if (value.getMapWithMapAndOtherModelValuesIsSet()) {
+            if (value._bits.length > MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX && value._bits[MAP_WITH_MAP_AND_OTHER_MODEL_VALUES_INDEX]) {
                 if (this.map_String__Map_String__Object__TypeAdapter == null) {
                     this.map_String__Map_String__Object__TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Map<String, Object>>>(){}).nullSafe();
                 }
                 this.map_String__Map_String__Object__TypeAdapter.write(writer.name("map_with_map_and_other_model_values"), value.mapWithMapAndOtherModelValues);
             }
-            if (value.getMapWithObjectValuesIsSet()) {
+            if (value._bits.length > MAP_WITH_OBJECT_VALUES_INDEX && value._bits[MAP_WITH_OBJECT_VALUES_INDEX]) {
                 if (this.map_String__String_TypeAdapter == null) {
                     this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
                 }
                 this.map_String__String_TypeAdapter.write(writer.name("map_with_object_values"), value.mapWithObjectValues);
             }
-            if (value.getMapWithOtherModelValuesIsSet()) {
+            if (value._bits.length > MAP_WITH_OTHER_MODEL_VALUES_INDEX && value._bits[MAP_WITH_OTHER_MODEL_VALUES_INDEX]) {
                 if (this.map_String__User_TypeAdapter == null) {
                     this.map_String__User_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
                 }
                 this.map_String__User_TypeAdapter.write(writer.name("map_with_other_model_values"), value.mapWithOtherModelValues);
             }
-            if (value.getMapWithPrimitiveValuesIsSet()) {
+            if (value._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX && value._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX]) {
                 if (this.map_String__Integer_TypeAdapter == null) {
                     this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
                 }
                 this.map_String__Integer_TypeAdapter.write(writer.name("map_with_primitive_values"), value.mapWithPrimitiveValues);
             }
-            if (value.getNsintegerEnumIsSet()) {
+            if (value._bits.length > NSINTEGER_ENUM_INDEX && value._bits[NSINTEGER_ENUM_INDEX]) {
                 if (this.everythingNsintegerEnumTypeAdapter == null) {
                     this.everythingNsintegerEnumTypeAdapter = this.gson.getAdapter(EverythingNsintegerEnum.class).nullSafe();
                 }
                 this.everythingNsintegerEnumTypeAdapter.write(writer.name("nsinteger_enum"), value.nsintegerEnum);
             }
-            if (value.getNsuintegerEnumIsSet()) {
+            if (value._bits.length > NSUINTEGER_ENUM_INDEX && value._bits[NSUINTEGER_ENUM_INDEX]) {
                 if (this.everythingNsuintegerEnumTypeAdapter == null) {
                     this.everythingNsuintegerEnumTypeAdapter = this.gson.getAdapter(EverythingNsuintegerEnum.class).nullSafe();
                 }
                 this.everythingNsuintegerEnumTypeAdapter.write(writer.name("nsuinteger_enum"), value.nsuintegerEnum);
             }
-            if (value.getNumberPropIsSet()) {
+            if (value._bits.length > NUMBER_PROP_INDEX && value._bits[NUMBER_PROP_INDEX]) {
                 if (this.doubleTypeAdapter == null) {
                     this.doubleTypeAdapter = this.gson.getAdapter(Double.class).nullSafe();
                 }
                 this.doubleTypeAdapter.write(writer.name("number_prop"), value.numberProp);
             }
-            if (value.getOtherModelPropIsSet()) {
+            if (value._bits.length > OTHER_MODEL_PROP_INDEX && value._bits[OTHER_MODEL_PROP_INDEX]) {
                 if (this.userTypeAdapter == null) {
                     this.userTypeAdapter = this.gson.getAdapter(User.class).nullSafe();
                 }
                 this.userTypeAdapter.write(writer.name("other_model_prop"), value.otherModelProp);
             }
-            if (value.getPolymorphicPropIsSet()) {
+            if (value._bits.length > POLYMORPHIC_PROP_INDEX && value._bits[POLYMORPHIC_PROP_INDEX]) {
                 if (this.everythingPolymorphicPropTypeAdapter == null) {
                     this.everythingPolymorphicPropTypeAdapter = this.gson.getAdapter(EverythingPolymorphicProp.class).nullSafe();
                 }
                 this.everythingPolymorphicPropTypeAdapter.write(writer.name("polymorphic_prop"), value.polymorphicProp);
             }
-            if (value.getSetPropIsSet()) {
+            if (value._bits.length > SET_PROP_INDEX && value._bits[SET_PROP_INDEX]) {
                 if (this.set_Object_TypeAdapter == null) {
                     this.set_Object_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<Object>>(){}).nullSafe();
                 }
                 this.set_Object_TypeAdapter.write(writer.name("set_prop"), value.setProp);
             }
-            if (value.getSetPropWithOtherModelValuesIsSet()) {
+            if (value._bits.length > SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX && value._bits[SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX]) {
                 if (this.set_User_TypeAdapter == null) {
                     this.set_User_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<User>>(){}).nullSafe();
                 }
                 this.set_User_TypeAdapter.write(writer.name("set_prop_with_other_model_values"), value.setPropWithOtherModelValues);
             }
-            if (value.getSetPropWithPrimitiveValuesIsSet()) {
+            if (value._bits.length > SET_PROP_WITH_PRIMITIVE_VALUES_INDEX && value._bits[SET_PROP_WITH_PRIMITIVE_VALUES_INDEX]) {
                 if (this.set_Integer_TypeAdapter == null) {
                     this.set_Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<Integer>>(){}).nullSafe();
                 }
                 this.set_Integer_TypeAdapter.write(writer.name("set_prop_with_primitive_values"), value.setPropWithPrimitiveValues);
             }
-            if (value.getSetPropWithValuesIsSet()) {
+            if (value._bits.length > SET_PROP_WITH_VALUES_INDEX && value._bits[SET_PROP_WITH_VALUES_INDEX]) {
                 if (this.set_String_TypeAdapter == null) {
                     this.set_String_TypeAdapter = this.gson.getAdapter(new TypeToken<Set<String>>(){}).nullSafe();
                 }
                 this.set_String_TypeAdapter.write(writer.name("set_prop_with_values"), value.setPropWithValues);
             }
-            if (value.getShortEnumIsSet()) {
+            if (value._bits.length > SHORT_ENUM_INDEX && value._bits[SHORT_ENUM_INDEX]) {
                 if (this.everythingShortEnumTypeAdapter == null) {
                     this.everythingShortEnumTypeAdapter = this.gson.getAdapter(EverythingShortEnum.class).nullSafe();
                 }
                 this.everythingShortEnumTypeAdapter.write(writer.name("short_enum"), value.shortEnum);
             }
-            if (value.getStringEnumIsSet()) {
+            if (value._bits.length > STRING_ENUM_INDEX && value._bits[STRING_ENUM_INDEX]) {
                 if (this.everythingStringEnumTypeAdapter == null) {
                     this.everythingStringEnumTypeAdapter = this.gson.getAdapter(EverythingStringEnum.class).nullSafe();
                 }
                 this.everythingStringEnumTypeAdapter.write(writer.name("string_enum"), value.stringEnum);
             }
-            if (value.getStringPropIsSet()) {
+            if (value._bits.length > STRING_PROP_INDEX && value._bits[STRING_PROP_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("string_prop"), value.stringProp);
             }
-            if (value.getTypeIsSet()) {
+            if (value._bits.length > TYPE_INDEX && value._bits[TYPE_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("type"), value.type);
             }
-            if (value.getUnsignedCharEnumIsSet()) {
+            if (value._bits.length > UNSIGNED_CHAR_ENUM_INDEX && value._bits[UNSIGNED_CHAR_ENUM_INDEX]) {
                 if (this.everythingUnsignedCharEnumTypeAdapter == null) {
                     this.everythingUnsignedCharEnumTypeAdapter = this.gson.getAdapter(EverythingUnsignedCharEnum.class).nullSafe();
                 }
                 this.everythingUnsignedCharEnumTypeAdapter.write(writer.name("unsigned_char_enum"), value.unsignedCharEnum);
             }
-            if (value.getUnsignedIntEnumIsSet()) {
+            if (value._bits.length > UNSIGNED_INT_ENUM_INDEX && value._bits[UNSIGNED_INT_ENUM_INDEX]) {
                 if (this.everythingUnsignedIntEnumTypeAdapter == null) {
                     this.everythingUnsignedIntEnumTypeAdapter = this.gson.getAdapter(EverythingUnsignedIntEnum.class).nullSafe();
                 }
                 this.everythingUnsignedIntEnumTypeAdapter.write(writer.name("unsigned_int_enum"), value.unsignedIntEnum);
             }
-            if (value.getUnsignedShortEnumIsSet()) {
+            if (value._bits.length > UNSIGNED_SHORT_ENUM_INDEX && value._bits[UNSIGNED_SHORT_ENUM_INDEX]) {
                 if (this.everythingUnsignedShortEnumTypeAdapter == null) {
                     this.everythingUnsignedShortEnumTypeAdapter = this.gson.getAdapter(EverythingUnsignedShortEnum.class).nullSafe();
                 }
                 this.everythingUnsignedShortEnumTypeAdapter.write(writer.name("unsigned_short_enum"), value.unsignedShortEnum);
             }
-            if (value.getUriPropIsSet()) {
+            if (value._bits.length > URI_PROP_INDEX && value._bits[URI_PROP_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }

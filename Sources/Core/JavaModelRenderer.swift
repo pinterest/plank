@@ -230,11 +230,9 @@ public struct JavaModelRenderer: JavaFileRenderer {
 
     func renderBuilderMerge() -> JavaIR.Method {
         let body = (transitiveProperties.map { param, _ in
-            JavaIR.ifBlock(condition: "model.get" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "IsSet()") { [
+            JavaIR.ifBlock(condition: "model._bits.length > " + param.uppercased() + "_INDEX && model._bits[" + param.uppercased() + "_INDEX]") { [
                 "this." + Languages.java.snakeCaseToPropertyName(param) + " = model." + Languages.java.snakeCaseToPropertyName(param) + ";",
-                JavaIR.ifBlock(condition: "this._bits.length > " + param.uppercased() + "_INDEX") { [
-                    "this._bits[" + param.uppercased() + "_INDEX] = true;",
-                ] },
+                "this._bits[" + param.uppercased() + "_INDEX] = true;",
             ] }
         })
         return JavaIR.method([.public], "void mergeFrom(@NonNull " + className + " model)") { body }
@@ -318,7 +316,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             transitiveProperties.map { param, schemaObj in
                 let type = unwrappedTypeFromSchema(param, schemaObj.schema)
                 let typeAdapterVariableName = typeAdapterVariableNameForType(type)
-                return JavaIR.ifBlock(condition: "value.get" + Languages.java.snakeCaseToCapitalizedPropertyName(param) + "IsSet()") { [
+                return JavaIR.ifBlock(condition: "value._bits.length > " + param.uppercased() + "_INDEX && value._bits[" + param.uppercased() + "_INDEX]") { [
                     // Creates TypeAdapter if necessary
                     JavaIR.ifBlock(condition: "this." + typeAdapterVariableName + " == null") { [
                         schemaObj.schema.isJavaCollection ? "this.\(typeAdapterVariableName) = this.gson.getAdapter(new TypeToken<\(type)>(){}).nullSafe();" : "this.\(typeAdapterVariableName) = this.gson.getAdapter(\(type).class).nullSafe();",
