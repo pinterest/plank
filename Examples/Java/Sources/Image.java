@@ -29,9 +29,9 @@ public class Image {
     @SerializedName("url") private @Nullable String url;
     @SerializedName("width") private @Nullable Integer width;
 
-    static final private int HEIGHT_INDEX = 0;
-    static final private int URL_INDEX = 1;
-    static final private int WIDTH_INDEX = 2;
+    private static final int HEIGHT_INDEX = 0;
+    private static final int URL_INDEX = 1;
+    private static final int WIDTH_INDEX = 2;
 
     private boolean[] _bits;
 
@@ -213,9 +213,9 @@ public class Image {
         }
     }
 
-    static private class ImageTypeAdapter extends TypeAdapter<Image> {
+    private static class ImageTypeAdapter extends TypeAdapter<Image> {
 
-        final private Gson gson;
+        private final Gson gson;
         private TypeAdapter<Integer> integerTypeAdapter;
         private TypeAdapter<String> stringTypeAdapter;
 

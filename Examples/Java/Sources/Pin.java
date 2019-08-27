@@ -64,23 +64,23 @@ public class Pin {
     @SerializedName("url") private @Nullable String url;
     @SerializedName("visual_search_attrs") private @Nullable Map<String, Object> visualSearchAttrs;
 
-    static final private int ATTRIBUTION_INDEX = 0;
-    static final private int ATTRIBUTION_OBJECTS_INDEX = 1;
-    static final private int BOARD_INDEX = 2;
-    static final private int COLOR_INDEX = 3;
-    static final private int COUNTS_INDEX = 4;
-    static final private int CREATED_AT_INDEX = 5;
-    static final private int CREATOR_INDEX = 6;
-    static final private int DESCRIPTION_INDEX = 7;
-    static final private int ID_INDEX = 8;
-    static final private int IMAGE_INDEX = 9;
-    static final private int IN_STOCK_INDEX = 10;
-    static final private int LINK_INDEX = 11;
-    static final private int MEDIA_INDEX = 12;
-    static final private int NOTE_INDEX = 13;
-    static final private int TAGS_INDEX = 14;
-    static final private int URL_INDEX = 15;
-    static final private int VISUAL_SEARCH_ATTRS_INDEX = 16;
+    private static final int ATTRIBUTION_INDEX = 0;
+    private static final int ATTRIBUTION_OBJECTS_INDEX = 1;
+    private static final int BOARD_INDEX = 2;
+    private static final int COLOR_INDEX = 3;
+    private static final int COUNTS_INDEX = 4;
+    private static final int CREATED_AT_INDEX = 5;
+    private static final int CREATOR_INDEX = 6;
+    private static final int DESCRIPTION_INDEX = 7;
+    private static final int ID_INDEX = 8;
+    private static final int IMAGE_INDEX = 9;
+    private static final int IN_STOCK_INDEX = 10;
+    private static final int LINK_INDEX = 11;
+    private static final int MEDIA_INDEX = 12;
+    private static final int NOTE_INDEX = 13;
+    private static final int TAGS_INDEX = 14;
+    private static final int URL_INDEX = 15;
+    private static final int VISUAL_SEARCH_ATTRS_INDEX = 16;
 
     private boolean[] _bits;
 
@@ -736,9 +736,9 @@ public class Pin {
         }
     }
 
-    static private class PinTypeAdapter extends TypeAdapter<Pin> {
+    private static class PinTypeAdapter extends TypeAdapter<Pin> {
 
-        final private Gson gson;
+        private final Gson gson;
         private TypeAdapter<Board> boardTypeAdapter;
         private TypeAdapter<Date> dateTypeAdapter;
         private TypeAdapter<Image> imageTypeAdapter;
@@ -1007,7 +1007,7 @@ public class Pin {
         private @Nullable Board value0;
         private @Nullable User value1;
 
-        static private InternalStorage internalStorage;
+        private static InternalStorage internalStorage;
 
         private PinAttributionObjects() {
         }

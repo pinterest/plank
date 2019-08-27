@@ -27,7 +27,7 @@ public class Model {
 
     @SerializedName("id") private @Nullable String uid;
 
-    static final private int ID_INDEX = 0;
+    private static final int ID_INDEX = 0;
 
     private boolean[] _bits;
 
@@ -139,9 +139,9 @@ public class Model {
         }
     }
 
-    static private class ModelTypeAdapter extends TypeAdapter<Model> {
+    private static class ModelTypeAdapter extends TypeAdapter<Model> {
 
-        final private Gson gson;
+        private final Gson gson;
         private TypeAdapter<String> stringTypeAdapter;
 
         ModelTypeAdapter(Gson gson) {
