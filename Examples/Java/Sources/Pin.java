@@ -619,107 +619,73 @@ public class Pin {
         }
 
         public void mergeFrom(@NonNull Pin model) {
-            if (model.getAttributionIsSet()) {
+            if (model._bits.length > ATTRIBUTION_INDEX && model._bits[ATTRIBUTION_INDEX]) {
                 this.attribution = model.attribution;
-                if (this._bits.length > ATTRIBUTION_INDEX) {
-                    this._bits[ATTRIBUTION_INDEX] = true;
-                }
+                this._bits[ATTRIBUTION_INDEX] = true;
             }
-            if (model.getAttributionObjectsIsSet()) {
+            if (model._bits.length > ATTRIBUTION_OBJECTS_INDEX && model._bits[ATTRIBUTION_OBJECTS_INDEX]) {
                 this.attributionObjects = model.attributionObjects;
-                if (this._bits.length > ATTRIBUTION_OBJECTS_INDEX) {
-                    this._bits[ATTRIBUTION_OBJECTS_INDEX] = true;
-                }
+                this._bits[ATTRIBUTION_OBJECTS_INDEX] = true;
             }
-            if (model.getBoardIsSet()) {
+            if (model._bits.length > BOARD_INDEX && model._bits[BOARD_INDEX]) {
                 this.board = model.board;
-                if (this._bits.length > BOARD_INDEX) {
-                    this._bits[BOARD_INDEX] = true;
-                }
+                this._bits[BOARD_INDEX] = true;
             }
-            if (model.getColorIsSet()) {
+            if (model._bits.length > COLOR_INDEX && model._bits[COLOR_INDEX]) {
                 this.color = model.color;
-                if (this._bits.length > COLOR_INDEX) {
-                    this._bits[COLOR_INDEX] = true;
-                }
+                this._bits[COLOR_INDEX] = true;
             }
-            if (model.getCountsIsSet()) {
+            if (model._bits.length > COUNTS_INDEX && model._bits[COUNTS_INDEX]) {
                 this.counts = model.counts;
-                if (this._bits.length > COUNTS_INDEX) {
-                    this._bits[COUNTS_INDEX] = true;
-                }
+                this._bits[COUNTS_INDEX] = true;
             }
-            if (model.getCreatedAtIsSet()) {
+            if (model._bits.length > CREATED_AT_INDEX && model._bits[CREATED_AT_INDEX]) {
                 this.createdAt = model.createdAt;
-                if (this._bits.length > CREATED_AT_INDEX) {
-                    this._bits[CREATED_AT_INDEX] = true;
-                }
+                this._bits[CREATED_AT_INDEX] = true;
             }
-            if (model.getCreatorIsSet()) {
+            if (model._bits.length > CREATOR_INDEX && model._bits[CREATOR_INDEX]) {
                 this.creator = model.creator;
-                if (this._bits.length > CREATOR_INDEX) {
-                    this._bits[CREATOR_INDEX] = true;
-                }
+                this._bits[CREATOR_INDEX] = true;
             }
-            if (model.getDescriptionIsSet()) {
+            if (model._bits.length > DESCRIPTION_INDEX && model._bits[DESCRIPTION_INDEX]) {
                 this.description = model.description;
-                if (this._bits.length > DESCRIPTION_INDEX) {
-                    this._bits[DESCRIPTION_INDEX] = true;
-                }
+                this._bits[DESCRIPTION_INDEX] = true;
             }
-            if (model.getUidIsSet()) {
+            if (model._bits.length > ID_INDEX && model._bits[ID_INDEX]) {
                 this.uid = model.uid;
-                if (this._bits.length > ID_INDEX) {
-                    this._bits[ID_INDEX] = true;
-                }
+                this._bits[ID_INDEX] = true;
             }
-            if (model.getImageIsSet()) {
+            if (model._bits.length > IMAGE_INDEX && model._bits[IMAGE_INDEX]) {
                 this.image = model.image;
-                if (this._bits.length > IMAGE_INDEX) {
-                    this._bits[IMAGE_INDEX] = true;
-                }
+                this._bits[IMAGE_INDEX] = true;
             }
-            if (model.getInStockIsSet()) {
+            if (model._bits.length > IN_STOCK_INDEX && model._bits[IN_STOCK_INDEX]) {
                 this.inStock = model.inStock;
-                if (this._bits.length > IN_STOCK_INDEX) {
-                    this._bits[IN_STOCK_INDEX] = true;
-                }
+                this._bits[IN_STOCK_INDEX] = true;
             }
-            if (model.getLinkIsSet()) {
+            if (model._bits.length > LINK_INDEX && model._bits[LINK_INDEX]) {
                 this.link = model.link;
-                if (this._bits.length > LINK_INDEX) {
-                    this._bits[LINK_INDEX] = true;
-                }
+                this._bits[LINK_INDEX] = true;
             }
-            if (model.getMediaIsSet()) {
+            if (model._bits.length > MEDIA_INDEX && model._bits[MEDIA_INDEX]) {
                 this.media = model.media;
-                if (this._bits.length > MEDIA_INDEX) {
-                    this._bits[MEDIA_INDEX] = true;
-                }
+                this._bits[MEDIA_INDEX] = true;
             }
-            if (model.getNoteIsSet()) {
+            if (model._bits.length > NOTE_INDEX && model._bits[NOTE_INDEX]) {
                 this.note = model.note;
-                if (this._bits.length > NOTE_INDEX) {
-                    this._bits[NOTE_INDEX] = true;
-                }
+                this._bits[NOTE_INDEX] = true;
             }
-            if (model.getTagsIsSet()) {
+            if (model._bits.length > TAGS_INDEX && model._bits[TAGS_INDEX]) {
                 this.tags = model.tags;
-                if (this._bits.length > TAGS_INDEX) {
-                    this._bits[TAGS_INDEX] = true;
-                }
+                this._bits[TAGS_INDEX] = true;
             }
-            if (model.getUrlIsSet()) {
+            if (model._bits.length > URL_INDEX && model._bits[URL_INDEX]) {
                 this.url = model.url;
-                if (this._bits.length > URL_INDEX) {
-                    this._bits[URL_INDEX] = true;
-                }
+                this._bits[URL_INDEX] = true;
             }
-            if (model.getVisualSearchAttrsIsSet()) {
+            if (model._bits.length > VISUAL_SEARCH_ATTRS_INDEX && model._bits[VISUAL_SEARCH_ATTRS_INDEX]) {
                 this.visualSearchAttrs = model.visualSearchAttrs;
-                if (this._bits.length > VISUAL_SEARCH_ATTRS_INDEX) {
-                    this._bits[VISUAL_SEARCH_ATTRS_INDEX] = true;
-                }
+                this._bits[VISUAL_SEARCH_ATTRS_INDEX] = true;
             }
         }
     }
@@ -762,103 +728,103 @@ public class Pin {
                 return;
             }
             writer.beginObject();
-            if (value.getAttributionIsSet()) {
+            if (value._bits.length > ATTRIBUTION_INDEX && value._bits[ATTRIBUTION_INDEX]) {
                 if (this.map_String__String_TypeAdapter == null) {
                     this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
                 }
                 this.map_String__String_TypeAdapter.write(writer.name("attribution"), value.attribution);
             }
-            if (value.getAttributionObjectsIsSet()) {
+            if (value._bits.length > ATTRIBUTION_OBJECTS_INDEX && value._bits[ATTRIBUTION_OBJECTS_INDEX]) {
                 if (this.list_PinAttributionObjects_TypeAdapter == null) {
                     this.list_PinAttributionObjects_TypeAdapter = this.gson.getAdapter(new TypeToken<List<PinAttributionObjects>>(){}).nullSafe();
                 }
                 this.list_PinAttributionObjects_TypeAdapter.write(writer.name("attribution_objects"), value.attributionObjects);
             }
-            if (value.getBoardIsSet()) {
+            if (value._bits.length > BOARD_INDEX && value._bits[BOARD_INDEX]) {
                 if (this.boardTypeAdapter == null) {
                     this.boardTypeAdapter = this.gson.getAdapter(Board.class).nullSafe();
                 }
                 this.boardTypeAdapter.write(writer.name("board"), value.board);
             }
-            if (value.getColorIsSet()) {
+            if (value._bits.length > COLOR_INDEX && value._bits[COLOR_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("color"), value.color);
             }
-            if (value.getCountsIsSet()) {
+            if (value._bits.length > COUNTS_INDEX && value._bits[COUNTS_INDEX]) {
                 if (this.map_String__Integer_TypeAdapter == null) {
                     this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
                 }
                 this.map_String__Integer_TypeAdapter.write(writer.name("counts"), value.counts);
             }
-            if (value.getCreatedAtIsSet()) {
+            if (value._bits.length > CREATED_AT_INDEX && value._bits[CREATED_AT_INDEX]) {
                 if (this.dateTypeAdapter == null) {
                     this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
                 }
                 this.dateTypeAdapter.write(writer.name("created_at"), value.createdAt);
             }
-            if (value.getCreatorIsSet()) {
+            if (value._bits.length > CREATOR_INDEX && value._bits[CREATOR_INDEX]) {
                 if (this.map_String__User_TypeAdapter == null) {
                     this.map_String__User_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, User>>(){}).nullSafe();
                 }
                 this.map_String__User_TypeAdapter.write(writer.name("creator"), value.creator);
             }
-            if (value.getDescriptionIsSet()) {
+            if (value._bits.length > DESCRIPTION_INDEX && value._bits[DESCRIPTION_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("description"), value.description);
             }
-            if (value.getUidIsSet()) {
+            if (value._bits.length > ID_INDEX && value._bits[ID_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("id"), value.uid);
             }
-            if (value.getImageIsSet()) {
+            if (value._bits.length > IMAGE_INDEX && value._bits[IMAGE_INDEX]) {
                 if (this.imageTypeAdapter == null) {
                     this.imageTypeAdapter = this.gson.getAdapter(Image.class).nullSafe();
                 }
                 this.imageTypeAdapter.write(writer.name("image"), value.image);
             }
-            if (value.getInStockIsSet()) {
+            if (value._bits.length > IN_STOCK_INDEX && value._bits[IN_STOCK_INDEX]) {
                 if (this.pinInStockTypeAdapter == null) {
                     this.pinInStockTypeAdapter = this.gson.getAdapter(PinInStock.class).nullSafe();
                 }
                 this.pinInStockTypeAdapter.write(writer.name("in_stock"), value.inStock);
             }
-            if (value.getLinkIsSet()) {
+            if (value._bits.length > LINK_INDEX && value._bits[LINK_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("link"), value.link);
             }
-            if (value.getMediaIsSet()) {
+            if (value._bits.length > MEDIA_INDEX && value._bits[MEDIA_INDEX]) {
                 if (this.map_String__String_TypeAdapter == null) {
                     this.map_String__String_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, String>>(){}).nullSafe();
                 }
                 this.map_String__String_TypeAdapter.write(writer.name("media"), value.media);
             }
-            if (value.getNoteIsSet()) {
+            if (value._bits.length > NOTE_INDEX && value._bits[NOTE_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("note"), value.note);
             }
-            if (value.getTagsIsSet()) {
+            if (value._bits.length > TAGS_INDEX && value._bits[TAGS_INDEX]) {
                 if (this.list_Map_String__Object__TypeAdapter == null) {
                     this.list_Map_String__Object__TypeAdapter = this.gson.getAdapter(new TypeToken<List<Map<String, Object>>>(){}).nullSafe();
                 }
                 this.list_Map_String__Object__TypeAdapter.write(writer.name("tags"), value.tags);
             }
-            if (value.getUrlIsSet()) {
+            if (value._bits.length > URL_INDEX && value._bits[URL_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("url"), value.url);
             }
-            if (value.getVisualSearchAttrsIsSet()) {
+            if (value._bits.length > VISUAL_SEARCH_ATTRS_INDEX && value._bits[VISUAL_SEARCH_ATTRS_INDEX]) {
                 if (this.map_String__Object_TypeAdapter == null) {
                     this.map_String__Object_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Object>>(){}).nullSafe();
                 }

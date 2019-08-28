@@ -394,65 +394,45 @@ public class User {
         }
 
         public void mergeFrom(@NonNull User model) {
-            if (model.getBioIsSet()) {
+            if (model._bits.length > BIO_INDEX && model._bits[BIO_INDEX]) {
                 this.bio = model.bio;
-                if (this._bits.length > BIO_INDEX) {
-                    this._bits[BIO_INDEX] = true;
-                }
+                this._bits[BIO_INDEX] = true;
             }
-            if (model.getCountsIsSet()) {
+            if (model._bits.length > COUNTS_INDEX && model._bits[COUNTS_INDEX]) {
                 this.counts = model.counts;
-                if (this._bits.length > COUNTS_INDEX) {
-                    this._bits[COUNTS_INDEX] = true;
-                }
+                this._bits[COUNTS_INDEX] = true;
             }
-            if (model.getCreatedAtIsSet()) {
+            if (model._bits.length > CREATED_AT_INDEX && model._bits[CREATED_AT_INDEX]) {
                 this.createdAt = model.createdAt;
-                if (this._bits.length > CREATED_AT_INDEX) {
-                    this._bits[CREATED_AT_INDEX] = true;
-                }
+                this._bits[CREATED_AT_INDEX] = true;
             }
-            if (model.getEmailFrequencyIsSet()) {
+            if (model._bits.length > EMAIL_FREQUENCY_INDEX && model._bits[EMAIL_FREQUENCY_INDEX]) {
                 this.emailFrequency = model.emailFrequency;
-                if (this._bits.length > EMAIL_FREQUENCY_INDEX) {
-                    this._bits[EMAIL_FREQUENCY_INDEX] = true;
-                }
+                this._bits[EMAIL_FREQUENCY_INDEX] = true;
             }
-            if (model.getFirstNameIsSet()) {
+            if (model._bits.length > FIRST_NAME_INDEX && model._bits[FIRST_NAME_INDEX]) {
                 this.firstName = model.firstName;
-                if (this._bits.length > FIRST_NAME_INDEX) {
-                    this._bits[FIRST_NAME_INDEX] = true;
-                }
+                this._bits[FIRST_NAME_INDEX] = true;
             }
-            if (model.getUidIsSet()) {
+            if (model._bits.length > ID_INDEX && model._bits[ID_INDEX]) {
                 this.uid = model.uid;
-                if (this._bits.length > ID_INDEX) {
-                    this._bits[ID_INDEX] = true;
-                }
+                this._bits[ID_INDEX] = true;
             }
-            if (model.getImageIsSet()) {
+            if (model._bits.length > IMAGE_INDEX && model._bits[IMAGE_INDEX]) {
                 this.image = model.image;
-                if (this._bits.length > IMAGE_INDEX) {
-                    this._bits[IMAGE_INDEX] = true;
-                }
+                this._bits[IMAGE_INDEX] = true;
             }
-            if (model.getLastNameIsSet()) {
+            if (model._bits.length > LAST_NAME_INDEX && model._bits[LAST_NAME_INDEX]) {
                 this.lastName = model.lastName;
-                if (this._bits.length > LAST_NAME_INDEX) {
-                    this._bits[LAST_NAME_INDEX] = true;
-                }
+                this._bits[LAST_NAME_INDEX] = true;
             }
-            if (model.getTypeIsSet()) {
+            if (model._bits.length > TYPE_INDEX && model._bits[TYPE_INDEX]) {
                 this.type = model.type;
-                if (this._bits.length > TYPE_INDEX) {
-                    this._bits[TYPE_INDEX] = true;
-                }
+                this._bits[TYPE_INDEX] = true;
             }
-            if (model.getUsernameIsSet()) {
+            if (model._bits.length > USERNAME_INDEX && model._bits[USERNAME_INDEX]) {
                 this.username = model.username;
-                if (this._bits.length > USERNAME_INDEX) {
-                    this._bits[USERNAME_INDEX] = true;
-                }
+                this._bits[USERNAME_INDEX] = true;
             }
         }
     }
@@ -489,61 +469,61 @@ public class User {
                 return;
             }
             writer.beginObject();
-            if (value.getBioIsSet()) {
+            if (value._bits.length > BIO_INDEX && value._bits[BIO_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("bio"), value.bio);
             }
-            if (value.getCountsIsSet()) {
+            if (value._bits.length > COUNTS_INDEX && value._bits[COUNTS_INDEX]) {
                 if (this.map_String__Integer_TypeAdapter == null) {
                     this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
                 }
                 this.map_String__Integer_TypeAdapter.write(writer.name("counts"), value.counts);
             }
-            if (value.getCreatedAtIsSet()) {
+            if (value._bits.length > CREATED_AT_INDEX && value._bits[CREATED_AT_INDEX]) {
                 if (this.dateTypeAdapter == null) {
                     this.dateTypeAdapter = this.gson.getAdapter(Date.class).nullSafe();
                 }
                 this.dateTypeAdapter.write(writer.name("created_at"), value.createdAt);
             }
-            if (value.getEmailFrequencyIsSet()) {
+            if (value._bits.length > EMAIL_FREQUENCY_INDEX && value._bits[EMAIL_FREQUENCY_INDEX]) {
                 if (this.userEmailFrequencyTypeAdapter == null) {
                     this.userEmailFrequencyTypeAdapter = this.gson.getAdapter(UserEmailFrequency.class).nullSafe();
                 }
                 this.userEmailFrequencyTypeAdapter.write(writer.name("email_frequency"), value.emailFrequency);
             }
-            if (value.getFirstNameIsSet()) {
+            if (value._bits.length > FIRST_NAME_INDEX && value._bits[FIRST_NAME_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("first_name"), value.firstName);
             }
-            if (value.getUidIsSet()) {
+            if (value._bits.length > ID_INDEX && value._bits[ID_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("id"), value.uid);
             }
-            if (value.getImageIsSet()) {
+            if (value._bits.length > IMAGE_INDEX && value._bits[IMAGE_INDEX]) {
                 if (this.imageTypeAdapter == null) {
                     this.imageTypeAdapter = this.gson.getAdapter(Image.class).nullSafe();
                 }
                 this.imageTypeAdapter.write(writer.name("image"), value.image);
             }
-            if (value.getLastNameIsSet()) {
+            if (value._bits.length > LAST_NAME_INDEX && value._bits[LAST_NAME_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("last_name"), value.lastName);
             }
-            if (value.getTypeIsSet()) {
+            if (value._bits.length > TYPE_INDEX && value._bits[TYPE_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
                 this.stringTypeAdapter.write(writer.name("type"), value.type);
             }
-            if (value.getUsernameIsSet()) {
+            if (value._bits.length > USERNAME_INDEX && value._bits[USERNAME_INDEX]) {
                 if (this.stringTypeAdapter == null) {
                     this.stringTypeAdapter = this.gson.getAdapter(String.class).nullSafe();
                 }
