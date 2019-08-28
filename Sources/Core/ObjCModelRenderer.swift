@@ -196,19 +196,19 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
         let adtRoots = properties.flatMap { (param, prop) -> [ObjCIR.Root] in
             switch prop.schema {
             case let .oneOf(types: possibleTypes):
-                let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable) }
+                let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isPrimitiveType ? nil : .nullable) }
                 return adtRootsForSchema(property: param, schemas: objProps)
             case let .array(itemType: .some(itemType)):
                 switch itemType {
                 case let .oneOf(types: possibleTypes):
-                    let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable) }
+                    let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isPrimitiveType ? nil : .nullable) }
                     return adtRootsForSchema(property: param, schemas: objProps)
                 default: return []
                 }
             case let .map(valueType: .some(additionalProperties)):
                 switch additionalProperties {
                 case let .oneOf(types: possibleTypes):
-                    let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : .nullable) }
+                    let objProps = possibleTypes.map { SchemaObjectProperty(schema: $0, nullability: $0.isPrimitiveType ? nil : .nullable) }
                     return adtRootsForSchema(property: param, schemas: objProps)
                 default: return []
                 }

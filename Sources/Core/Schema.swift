@@ -164,6 +164,15 @@ public indirect enum Schema {
     case oneOf(types: [Schema]) // ADT
     case enumT(EnumType)
     case reference(with: URLSchemaReference)
+
+    var isPrimitiveType: Bool {
+        switch self {
+        case .boolean, .integer, .enumT, .float:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 typealias Property = (Parameter, SchemaObjectProperty)
@@ -306,7 +315,7 @@ extension Schema {
                         }
                         return (key, schemaOpt)
                     }.map { name, optSchema in optSchema.map {
-                        (name, SchemaObjectProperty(schema: $0, nullability: $0.isObjCPrimitiveType ? nil : requiredProps.contains(name) ? .nonnull : .nullable))
+                        (name, SchemaObjectProperty(schema: $0, nullability: $0.isPrimitiveType ? nil : requiredProps.contains(name) ? .nonnull : .nullable))
                     }
                     }
                     let lifted: [Property]? = optTuples.reduce([], { (build: [Property]?, tupleOption: Property?) -> [Property]? in

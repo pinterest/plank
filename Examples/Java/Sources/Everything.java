@@ -328,12 +328,20 @@ public class Everything {
             return false;
         }
         Everything that = (Everything) o;
-        return Objects.equals(this.arrayProp, that.arrayProp) &&
-        Objects.equals(this.booleanProp, that.booleanProp) &&
-        Objects.equals(this.charEnum, that.charEnum) &&
-        Objects.equals(this.dateProp, that.dateProp) &&
-        Objects.equals(this.intEnum, that.intEnum) &&
+        return Objects.equals(this.unsignedShortEnum, that.unsignedShortEnum) &&
+        Objects.equals(this.unsignedIntEnum, that.unsignedIntEnum) &&
+        Objects.equals(this.unsignedCharEnum, that.unsignedCharEnum) &&
+        Objects.equals(this.stringEnum, that.stringEnum) &&
+        Objects.equals(this.shortEnum, that.shortEnum) &&
+        Objects.equals(this.numberProp, that.numberProp) &&
+        Objects.equals(this.nsuintegerEnum, that.nsuintegerEnum) &&
+        Objects.equals(this.nsintegerEnum, that.nsintegerEnum) &&
         Objects.equals(this.intProp, that.intProp) &&
+        Objects.equals(this.intEnum, that.intEnum) &&
+        Objects.equals(this.charEnum, that.charEnum) &&
+        Objects.equals(this.booleanProp, that.booleanProp) &&
+        Objects.equals(this.arrayProp, that.arrayProp) &&
+        Objects.equals(this.dateProp, that.dateProp) &&
         Objects.equals(this.listPolymorphicValues, that.listPolymorphicValues) &&
         Objects.equals(this.listWithListAndOtherModelValues, that.listWithListAndOtherModelValues) &&
         Objects.equals(this.listWithMapAndOtherModelValues, that.listWithMapAndOtherModelValues) &&
@@ -347,22 +355,14 @@ public class Everything {
         Objects.equals(this.mapWithObjectValues, that.mapWithObjectValues) &&
         Objects.equals(this.mapWithOtherModelValues, that.mapWithOtherModelValues) &&
         Objects.equals(this.mapWithPrimitiveValues, that.mapWithPrimitiveValues) &&
-        Objects.equals(this.nsintegerEnum, that.nsintegerEnum) &&
-        Objects.equals(this.nsuintegerEnum, that.nsuintegerEnum) &&
-        Objects.equals(this.numberProp, that.numberProp) &&
         Objects.equals(this.otherModelProp, that.otherModelProp) &&
         Objects.equals(this.polymorphicProp, that.polymorphicProp) &&
         Objects.equals(this.setProp, that.setProp) &&
         Objects.equals(this.setPropWithOtherModelValues, that.setPropWithOtherModelValues) &&
         Objects.equals(this.setPropWithPrimitiveValues, that.setPropWithPrimitiveValues) &&
         Objects.equals(this.setPropWithValues, that.setPropWithValues) &&
-        Objects.equals(this.shortEnum, that.shortEnum) &&
-        Objects.equals(this.stringEnum, that.stringEnum) &&
         Objects.equals(this.stringProp, that.stringProp) &&
         Objects.equals(this.type, that.type) &&
-        Objects.equals(this.unsignedCharEnum, that.unsignedCharEnum) &&
-        Objects.equals(this.unsignedIntEnum, that.unsignedIntEnum) &&
-        Objects.equals(this.unsignedShortEnum, that.unsignedShortEnum) &&
         Objects.equals(this.uriProp, that.uriProp);
     }
 

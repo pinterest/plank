@@ -30,7 +30,7 @@ extension JSModelRenderer {
         case .array(itemType: _): return "Array<*>"
         case .set(itemType: _): return "Set<*>"
         case .map(valueType: .none): return "{}"
-        case let .map(valueType: .some(valueType)) where valueType.isObjCPrimitiveType:
+        case let .map(valueType: .some(valueType)) where valueType.isPrimitiveType:
             return "{ +[string]: number } /* \(valueType.debugDescription) */"
         case let .map(valueType: .some(valueType)):
             return "{ +[string]: \(adtCaseTypeName(valueType)) }"

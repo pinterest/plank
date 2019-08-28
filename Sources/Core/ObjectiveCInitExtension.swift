@@ -79,7 +79,7 @@ extension ObjCModelRenderer {
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
-                if itemType.isObjCPrimitiveType {
+                if itemType.isPrimitiveType {
                     return [
                         "\(propertyToAssign) = \(rawObjectName);",
                     ]
@@ -104,7 +104,7 @@ extension ObjCModelRenderer {
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
 
-                if itemType.isObjCPrimitiveType {
+                if itemType.isPrimitiveType {
                     return [
                         "NSArray *items = \(rawObjectName);",
                         "\(propertyToAssign) = [NSSet setWithArray:items];",
@@ -125,7 +125,7 @@ extension ObjCModelRenderer {
                     ] },
                     "\(propertyToAssign) = \(currentResult);",
                 ]
-            case let .map(valueType: .some(valueType)) where valueType.isObjCPrimitiveType == false:
+            case let .map(valueType: .some(valueType)) where valueType.isPrimitiveType == false:
                 let currentResult = "result\(counter)"
                 let currentItems = "items\(counter)"
                 let (currentKey, currentObj, currentStop) = ("key\(counter)", "obj\(counter)", "stop\(counter)")

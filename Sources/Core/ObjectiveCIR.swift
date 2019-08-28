@@ -149,15 +149,6 @@ extension SchemaObjectRoot {
 }
 
 extension Schema {
-    var isObjCPrimitiveType: Bool {
-        switch self {
-        case .boolean, .integer, .enumT, .float:
-            return true
-        default:
-            return false
-        }
-    }
-
     func memoryAssignmentType() -> ObjCMemoryAssignmentType {
         switch self {
         // Use copy for any string, date, url etc.

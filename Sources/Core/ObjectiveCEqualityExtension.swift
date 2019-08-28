@@ -90,7 +90,7 @@ extension ObjCFileRenderer {
 
         // Performance optimization - compare primitives before resorting to more expensive `isEqual` calls
         let sortedProps = properties.sorted { arg1, _ in
-            arg1.1.schema.isObjCPrimitiveType
+            arg1.1.schema.isPrimitiveType
         }
 
         let propReturnStmts = sortedProps.map { param, prop -> String in

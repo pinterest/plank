@@ -73,9 +73,9 @@ public class Image {
             return false;
         }
         Image that = (Image) o;
-        return Objects.equals(this.height, that.height) &&
-        Objects.equals(this.url, that.url) &&
-        Objects.equals(this.width, that.width);
+        return Objects.equals(this.width, that.width) &&
+        Objects.equals(this.height, that.height) &&
+        Objects.equals(this.url, that.url);
     }
 
     @Override

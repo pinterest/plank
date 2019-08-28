@@ -77,10 +77,10 @@ public class VariableSubtitution {
             return false;
         }
         VariableSubtitution that = (VariableSubtitution) o;
-        return Objects.equals(this.allocProp, that.allocProp) &&
-        Objects.equals(this.copyProp, that.copyProp) &&
+        return Objects.equals(this.newProp, that.newProp) &&
         Objects.equals(this.mutableCopyProp, that.mutableCopyProp) &&
-        Objects.equals(this.newProp, that.newProp);
+        Objects.equals(this.copyProp, that.copyProp) &&
+        Objects.equals(this.allocProp, that.allocProp);
     }
 
     @Override
