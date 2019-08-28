@@ -107,10 +107,10 @@ public class User {
             return false;
         }
         User that = (User) o;
-        return Objects.equals(this.bio, that.bio) &&
+        return Objects.equals(this.emailFrequency, that.emailFrequency) &&
+        Objects.equals(this.bio, that.bio) &&
         Objects.equals(this.counts, that.counts) &&
         Objects.equals(this.createdAt, that.createdAt) &&
-        Objects.equals(this.emailFrequency, that.emailFrequency) &&
         Objects.equals(this.firstName, that.firstName) &&
         Objects.equals(this.uid, that.uid) &&
         Objects.equals(this.image, that.image) &&

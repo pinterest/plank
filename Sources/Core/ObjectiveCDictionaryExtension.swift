@@ -16,7 +16,7 @@ extension ObjCModelRenderer {
             !schema.schema.isBoolean()
         }.map { (param, schemaObj) -> String in
             ObjCIR.ifStmt("_" + "\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") { [
-                schemaObj.schema.isObjCPrimitiveType ?
+                schemaObj.schema.isPrimitiveType ?
                     self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary) :
                     ObjCIR.ifElseStmt("_\(Languages.objectiveC.snakeCaseToPropertyName(param)) != nil") { [
                         self.renderAddToDictionaryStatement(.ivar(param), schemaObj.schema, dictionary),
@@ -202,7 +202,7 @@ extension ObjCFileRenderer {
             }
             let currentResult = "result\(counter)"
             let currentObj = "obj\(counter)"
-            let itemClass = itemType.isObjCPrimitiveType ? "id" : typeFromSchema(param, itemType.nonnullProperty())
+            let itemClass = itemType.isPrimitiveType ? "id" : typeFromSchema(param, itemType.nonnullProperty())
             return [
                 "__auto_type items\(counter) = \(propIVarName);",
                 "\(CollectionClass.array.mutableName()) *\(currentResult) = [\(CollectionClass.array.mutableName()) \(CollectionClass.array.initializer())items\(counter).count];",

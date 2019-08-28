@@ -15,20 +15,20 @@ extension JSFileRenderer {
         switch schema.schema {
         case .array(itemType: .none):
             return "Array<*>"
-        case let .array(itemType: .some(itemType)) where itemType.isObjCPrimitiveType:
+        case let .array(itemType: .some(itemType)) where itemType.isPrimitiveType:
             // JS primitive types are represented as number
             return "Array<number /* \(itemType.debugDescription) */>"
         case let .array(itemType: .some(itemType)):
             return "Array<\(typeFromSchema(param, itemType.nonnullProperty()))>"
         case .set(itemType: .none):
             return "Array<*>"
-        case let .set(itemType: .some(itemType)) where itemType.isObjCPrimitiveType:
+        case let .set(itemType: .some(itemType)) where itemType.isPrimitiveType:
             return "Array<number /* \(itemType.debugDescription)> */>"
         case let .set(itemType: .some(itemType)):
             return "Array<\(typeFromSchema(param, itemType.nonnullProperty()))>"
         case .map(valueType: .none):
             return "{}"
-        case let .map(valueType: .some(valueType)) where valueType.isObjCPrimitiveType:
+        case let .map(valueType: .some(valueType)) where valueType.isPrimitiveType:
             return "{ +[string]: number } /* \(valueType.debugDescription) */"
         case let .map(valueType: .some(valueType)):
             return "{ +[string]: \(typeFromSchema(param, valueType.nonnullProperty())) }"

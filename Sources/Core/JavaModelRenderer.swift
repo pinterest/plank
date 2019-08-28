@@ -67,7 +67,9 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
 
     func renderModelEquals() -> JavaIR.Method {
-        let bodyEquals = transitiveProperties.map { param, _ in
+        let bodyEquals = transitiveProperties.sorted { arg1, _ in
+            arg1.1.schema.isPrimitiveType
+        }.map { param, _ in
             "Objects.equals(this." + Languages.java.snakeCaseToPropertyName(param) + ", that." + Languages.java.snakeCaseToPropertyName(param) + ")"
         }.joined(separator: " &&\n")
 

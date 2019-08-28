@@ -150,7 +150,8 @@ public class Pin {
             return false;
         }
         Pin that = (Pin) o;
-        return Objects.equals(this.attribution, that.attribution) &&
+        return Objects.equals(this.inStock, that.inStock) &&
+        Objects.equals(this.attribution, that.attribution) &&
         Objects.equals(this.attributionObjects, that.attributionObjects) &&
         Objects.equals(this.board, that.board) &&
         Objects.equals(this.color, that.color) &&
@@ -160,7 +161,6 @@ public class Pin {
         Objects.equals(this.description, that.description) &&
         Objects.equals(this.uid, that.uid) &&
         Objects.equals(this.image, that.image) &&
-        Objects.equals(this.inStock, that.inStock) &&
         Objects.equals(this.link, that.link) &&
         Objects.equals(this.media, that.media) &&
         Objects.equals(this.note, that.note) &&

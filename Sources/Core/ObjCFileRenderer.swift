@@ -19,20 +19,20 @@ extension ObjCFileRenderer {
         switch schema.schema {
         case .array(itemType: .none):
             return "NSArray *"
-        case let .array(itemType: .some(itemType)) where itemType.isObjCPrimitiveType:
+        case let .array(itemType: .some(itemType)) where itemType.isPrimitiveType:
             // Objective-C primitive types are represented as NSNumber
             return "NSArray<NSNumber /* \(itemType.debugDescription) */ *> *"
         case let .array(itemType: .some(itemType)):
             return "NSArray<\(typeFromSchema(param, itemType.nonnullProperty()))> *"
         case .set(itemType: .none):
             return "NSSet *"
-        case let .set(itemType: .some(itemType)) where itemType.isObjCPrimitiveType:
+        case let .set(itemType: .some(itemType)) where itemType.isPrimitiveType:
             return "NSSet<NSNumber /*> \(itemType.debugDescription) */ *> *"
         case let .set(itemType: .some(itemType)):
             return "NSSet<\(typeFromSchema(param, itemType.nonnullProperty()))> *"
         case .map(valueType: .none):
             return "NSDictionary *"
-        case let .map(valueType: .some(valueType)) where valueType.isObjCPrimitiveType:
+        case let .map(valueType: .some(valueType)) where valueType.isPrimitiveType:
             return "NSDictionary<NSString *, NSNumber /* \(valueType.debugDescription) */ *> *"
         case let .map(valueType: .some(valueType)):
             return "NSDictionary<NSString *, \(typeFromSchema(param, valueType.nonnullProperty()))> *"
