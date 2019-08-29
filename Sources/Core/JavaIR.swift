@@ -66,6 +66,23 @@ enum JavaNullabilityAnnotationType: String {
     }
 }
 
+enum JavaLoggingType {
+    case androidLog(level: String)
+
+    init?(param: String) {
+        switch param {
+        case "android-log-d": self = .androidLog(level: "d")
+        default: fatalError("Unsupported logging type: " + param)
+        }
+    }
+
+    var imports: [String] {
+        switch self {
+        case .androidLog: return ["android.util.Log"]
+        }
+    }
+}
+
 //
 // The json file passed in via java_decorations_beta=model_decorations.json is deserialized into this.
 //

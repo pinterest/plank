@@ -324,6 +324,7 @@ public class VariableSubtitution {
                         break;
                     default:
                         reader.skipValue();
+                        break;
                 }
             }
             reader.endObject();

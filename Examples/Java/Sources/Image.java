@@ -277,6 +277,7 @@ public class Image {
                         break;
                     default:
                         reader.skipValue();
+                        break;
                 }
             }
             reader.endObject();

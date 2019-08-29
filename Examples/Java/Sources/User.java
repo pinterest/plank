@@ -606,6 +606,7 @@ public class User {
                         break;
                     default:
                         reader.skipValue();
+                        break;
                 }
             }
             reader.endObject();

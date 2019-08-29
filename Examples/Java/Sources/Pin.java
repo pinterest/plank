@@ -949,6 +949,7 @@ public class Pin {
                         break;
                     default:
                         reader.skipValue();
+                        break;
                 }
             }
             reader.endObject();
