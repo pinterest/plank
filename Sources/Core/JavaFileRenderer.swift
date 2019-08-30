@@ -7,7 +7,9 @@
 
 import Foundation
 
-protocol JavaFileRenderer: FileRenderer {}
+protocol JavaFileRenderer: FileRenderer {
+    func renderURIType() -> String
+}
 
 extension JavaFileRenderer {
     func interfaceName() -> String {
@@ -67,9 +69,10 @@ extension JavaFileRenderer {
              .string(format: .some(.email)),
              .string(format: .some(.hostname)),
              .string(format: .some(.ipv4)),
-             .string(format: .some(.ipv6)),
-             .string(format: .some(.uri)):
+             .string(format: .some(.ipv6)):
             return "String"
+        case .string(format: .some(.uri)):
+            return renderURIType()
         case .string(format: .some(.dateTime)):
             return "Date"
         case .integer:

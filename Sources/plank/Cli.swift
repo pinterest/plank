@@ -21,6 +21,7 @@ enum FlagOptions: String {
     case javaGeneratePackagePrivateSetters = "java_generate_package_private_setters_beta"
     case javaDecorations = "java_decorations_beta"
     case javaUnknownPropertyLogging = "java_unknown_property_logging"
+    case javaURIType = "java_uri_type"
     case printDeps = "print_deps"
     case noRecursive = "no_recursive"
     case noRuntime = "no_runtime"
@@ -47,6 +48,7 @@ enum FlagOptions: String {
         case .javaGeneratePackagePrivateSetters: return false
         case .javaDecorations: return true
         case .javaUnknownPropertyLogging: return true
+        case .javaURIType: return true
         }
     }
 }
@@ -73,6 +75,7 @@ extension FlagOptions: HelpCommandOutput {
             "    --\(FlagOptions.javaGeneratePackagePrivateSetters.rawValue) - Generate package-private setter methods (beta)",
             "    --\(FlagOptions.javaDecorations.rawValue) - Custom decorations to apply to the generated Java model (beta).",
             "    --\(FlagOptions.javaUnknownPropertyLogging.rawValue) - Enable unknown property logging. Can be \"android-log-d\".",
+            "    --\(FlagOptions.javaURIType.rawValue) - The type to use for URIs. Can be \"String\" (default), \"java.net.URI\", \"android.net.Uri\", or \"okhttp3.HttpUrl\".",
         ].joined(separator: "\n")
     }
 }
@@ -160,6 +163,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
     let javaGeneratePackagePrivateSetters: String? = (flags[.javaGeneratePackagePrivateSetters] == nil) ? .none : .some("")
     let javaDecorations: String? = flags[.javaDecorations]
     let javaUnknownPropertyLogging: String? = flags[.javaUnknownPropertyLogging]
+    let javaURIType: String? = flags[.javaURIType]
 
     let generationParameters: GenerationParameters = [
         (.recursive, recursive),
@@ -171,6 +175,7 @@ func handleGenerateCommand(withArguments arguments: [String]) {
         (.javaGeneratePackagePrivateSetters, javaGeneratePackagePrivateSetters),
         (.javaDecorations, javaDecorations),
         (.javaUnknownPropertyLogging, javaUnknownPropertyLogging),
+        (.javaURIType, javaURIType),
     ].reduce([:]) { (dict: GenerationParameters, tuple: (GenerationParameterType, String?)) in
         var mutableDict = dict
         if let val = tuple.1 {

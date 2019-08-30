@@ -83,6 +83,33 @@ enum JavaLoggingType {
     }
 }
 
+enum JavaURIType: String, CaseIterable {
+    case androidNetUri = "android.net.Uri"
+    case javaNetURI = "java.net.URI"
+    case okHttp3HttpUrl = "okhttp3.HttpUrl"
+    case string = "String"
+
+    static var options: String {
+        return allCases.map({ "\"\($0.rawValue)\"" }).joined(separator: ", ")
+    }
+
+    var type: String {
+        switch self {
+        case .androidNetUri: return "Uri"
+        case .javaNetURI: return "URI"
+        case .okHttp3HttpUrl: return "HttpUrl"
+        case .string: return "String"
+        }
+    }
+
+    var imports: [String] {
+        switch self {
+        case .string: return []
+        default: return [self.rawValue]
+        }
+    }
+}
+
 //
 // The json file passed in via java_decorations_beta=model_decorations.json is deserialized into this.
 //
