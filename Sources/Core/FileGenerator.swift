@@ -23,6 +23,7 @@ public enum GenerationParameterType {
     case javaGeneratePackagePrivateSetters
     case javaDecorations
     case javaUnknownPropertyLogging
+    case javaURIType
 }
 
 // Most of these are derived from https://www.binpress.com/tutorial/objective-c-reserved-keywords/43

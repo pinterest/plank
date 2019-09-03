@@ -12,6 +12,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
     let params: GenerationParameters
     let decorations: JavaDecorations
     let unknownPropertyLogging: JavaLoggingType?
+    let uriType: JavaURIType
 
     init(rootSchema: SchemaObjectRoot, params: GenerationParameters) {
         self.rootSchema = rootSchema
@@ -32,6 +33,18 @@ public struct JavaModelRenderer: JavaFileRenderer {
         } else {
             unknownPropertyLogging = nil
         }
+
+        if let uriType = JavaURIType(rawValue: params[.javaURIType] ?? JavaURIType.string.rawValue) {
+            self.uriType = uriType
+        } else {
+            fatalError("java_uri_type must be one of " + JavaURIType.options + ". Invalid type provided: " + params[.javaURIType]!)
+        }
+    }
+
+    // MARK: - JavaFileRenderer
+
+    func renderURIType() -> String {
+        return uriType.type
     }
 
     // MARK: - Top-level Model
@@ -405,7 +418,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             }
         }
 
-        let additionalImports = propertyTypeImports + (unknownPropertyLogging?.imports ?? []) + (decorations.imports ?? [])
+        let additionalImports = propertyTypeImports + uriType.imports + (unknownPropertyLogging?.imports ?? []) + (decorations.imports ?? [])
 
         let imports = [
             JavaIR.Root.imports(names: Set([
