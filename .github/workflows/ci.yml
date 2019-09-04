@@ -1,8 +1,8 @@
 name: Main workflow 
 
 on:
-  - pull_request:
-  - push:
+ pull_request
+ push:
     # Sequence of patterns matched against refs/heads
     branches:
       - master         # Push events on master branch
