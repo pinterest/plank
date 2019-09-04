@@ -1,6 +1,11 @@
-name: Main workflow (PR)
+name: Main workflow (push)
 
-on: [pull_request]
+on:
+ push:
+    # Sequence of patterns matched against refs/heads
+    branches:
+      - master         # Push events on master branch
+      - 'releases/*'   # Push events to branches matching refs/heads/releases/*
 
 jobs:
   Lint:
