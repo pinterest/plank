@@ -1,6 +1,10 @@
-name: Main workflow 
+name: Main workflow
 
-on: [push, pull_request]
+on:
+  - push:
+      branches:
+        - master
+  - pull_request
 
 jobs:
   Lint:
@@ -10,7 +14,7 @@ jobs:
     - name: Checkout the Git repository
       uses: actions/checkout@v1
     - run: make lint
-  Test:
+  TestMacOS:
     name: Run Unit and Integration Tests (macOS)
     runs-on: macOS-latest
     steps:
