@@ -1,12 +1,11 @@
-name: Main workflow
+name: Main workflow 
 
-on:
+on: [push, pull_request]
   push:
-      branches:
-        - master
-  pull_request:
-      branches:
-        - * 
+    # Sequence of patterns matched against refs/heads
+    branches:
+      - master         # Push events on master branch
+      - 'releases/*'   # Push events to branches matching refs/heads/releases/*
 
 jobs:
   Lint:
@@ -16,7 +15,7 @@ jobs:
     - name: Checkout the Git repository
       uses: actions/checkout@v1
     - run: make lint
-  TestMacOS:
+  Test:
     name: Run Unit and Integration Tests (macOS)
     runs-on: macOS-latest
     steps:
