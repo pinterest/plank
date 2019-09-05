@@ -19,6 +19,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -375,6 +376,13 @@ public class Board {
 
         @NonNull
         public Board build() {
+            ArrayList<String> missingFields = new ArrayList<>();
+            if (this.image == null) {
+                missingFields.add("image");
+            }
+            if (!missingFields.isEmpty()) {
+                throw new IllegalArgumentException("Board model cannot be built because required fields are missing: " + missingFields.toString());
+            }
             return new Board(
             this.uid,
             this.contributors,

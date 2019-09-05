@@ -222,10 +222,25 @@ public struct JavaModelRenderer: JavaFileRenderer {
     }
 
     func renderBuilderBuild() -> JavaIR.Method {
-        let params = (transitiveProperties.map { param, _ in
+        let constructorParams = (transitiveProperties.map { param, _ in
             "this." + Languages.java.snakeCaseToPropertyName(param)
         } + ["this._bits"]).joined(separator: ",\n")
-        return JavaIR.method(annotations: [.nonnull], [.public], "\(className) build()") { ["return new " + self.className + "(", params, ");"] }
+
+        let missingFieldsCheck = !transitiveProperties.filter { $1.nullability == Nullability.nonnull }.isEmpty
+            ? ["ArrayList<String> missingFields = new ArrayList<>();"] + transitiveProperties.filter {
+                $1.nullability == Nullability.nonnull
+            }.map { param, _ in
+                JavaIR.ifBlock(condition: "this." + Languages.java.snakeCaseToPropertyName(param) + " == null") { [
+                    "missingFields.add(\"" + Languages.java.snakeCaseToPropertyName(param) + "\");",
+                ] }
+            } + [JavaIR.ifBlock(condition: "!missingFields.isEmpty()") { [
+                "throw new IllegalArgumentException(\"\(className) model cannot be built because required fields are missing: \" + missingFields.toString());",
+            ] }]
+            : []
+
+        return JavaIR.method(annotations: [.nonnull], [.public], "\(className) build()") { missingFieldsCheck + [
+            "return new " + self.className + "(", constructorParams, ");",
+        ] }
     }
 
     func renderBuilderGetters(modifiers: JavaModifier = [.public]) -> [JavaIR.Method] {
@@ -408,7 +423,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             fatalError("java_nullability_annotation_type must be either android-support or androidx. Invalid type provided: " + params[.javaNullabilityAnnotationType]!)
         }
 
-        let propertyTypeImports = transitiveProperties.compactMap { (_, prop) -> String? in
+        var additionalImports = transitiveProperties.compactMap { (_, prop) -> String? in
             switch prop.schema {
             case .array: return "java.util.List"
             case .map: return "java.util.Map"
@@ -417,8 +432,10 @@ public struct JavaModelRenderer: JavaFileRenderer {
             default: return nil
             }
         }
-
-        let additionalImports = propertyTypeImports + uriType.imports + (unknownPropertyLogging?.imports ?? []) + (decorations.imports ?? [])
+        additionalImports += uriType.imports
+        additionalImports += unknownPropertyLogging?.imports ?? []
+        additionalImports += decorations.imports ?? []
+        additionalImports += !transitiveProperties.filter { $1.nullability == Nullability.nonnull }.isEmpty ? ["java.util.ArrayList"] : []
 
         let imports = [
             JavaIR.Root.imports(names: Set([

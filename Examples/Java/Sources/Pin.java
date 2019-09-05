@@ -19,6 +19,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -596,6 +597,19 @@ public class Pin {
 
         @NonNull
         public Pin build() {
+            ArrayList<String> missingFields = new ArrayList<>();
+            if (this.createdAt == null) {
+                missingFields.add("createdAt");
+            }
+            if (this.creator == null) {
+                missingFields.add("creator");
+            }
+            if (this.uid == null) {
+                missingFields.add("uid");
+            }
+            if (!missingFields.isEmpty()) {
+                throw new IllegalArgumentException("Pin model cannot be built because required fields are missing: " + missingFields.toString());
+            }
             return new Pin(
             this.attribution,
             this.attributionObjects,
