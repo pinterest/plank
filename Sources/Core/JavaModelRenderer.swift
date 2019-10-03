@@ -408,18 +408,39 @@ public struct JavaModelRenderer: JavaFileRenderer {
             fatalError("java_nullability_annotation_type must be either android-support or androidx. Invalid type provided: " + params[.javaNullabilityAnnotationType]!)
         }
 
-        let propertyTypeImports = transitiveProperties.compactMap { (_, prop) -> String? in
+        let propertyTypeImports: [String] = transitiveProperties.compactMap { (_, prop) -> [String] in
             switch prop.schema {
-            case .array: return "java.util.List"
-            case .map: return "java.util.Map"
-            case .set: return "java.util.Set"
-            case .string(format: .some(.dateTime)): return "java.util.Date"
-            default: return nil
+            case .array(.none):
+                return ["java.util.List"]
+            case let .array(itemType: .some(itemType)):
+                switch itemType {
+                case .oneOf:
+                    return ["java.util.List", "com.google.gson.JsonObject"]
+                default:
+                    return ["java.util.List"]
+                }
+            case .map(.none):
+                return ["java.util.Map"]
+            case let .map(valueType: .some(valueType)):
+                switch valueType {
+                case .oneOf:
+                    return ["java.util.Map", "com.google.gson.JsonObject"]
+                default:
+                    return ["java.util.Map"]
+                }
+            case .set: return ["java.util.Set"]
+            case .string(format: .some(.dateTime)): return ["java.util.Date"]
+            default: return []
             }
+        }.reduce(into: []) {
+            $0.append(contentsOf: $1)
         }
-
-        let additionalImports = propertyTypeImports + uriType.imports + (unknownPropertyLogging?.imports ?? []) + (decorations.imports ?? [])
-
+        
+        var additionalImports = propertyTypeImports
+        additionalImports += uriType.imports
+        additionalImports += (unknownPropertyLogging?.imports ?? [])
+        additionalImports += (decorations.imports ?? [])
+        
         let imports = [
             JavaIR.Root.imports(names: Set([
                 "com.google.gson.Gson",
@@ -494,6 +515,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             ],
             enums: [],
             innerClasses: [],
+            interfaces: [],
             properties: renderBuilderProperties()
         )
 
@@ -506,6 +528,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             methods: renderTypeAdapterFactoryMethods(),
             enums: [],
             innerClasses: [],
+            interfaces: [],
             properties: []
         )
 
@@ -518,6 +541,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             methods: renderTypeAdapterMethods(),
             enums: [],
             innerClasses: [],
+            interfaces: [],
             properties: renderTypeAdapterProperties()
         )
 
@@ -544,6 +568,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                     typeAdapterFactoryClass,
                     typeAdapterClass,
                 ] + adtClasses,
+                interfaces: [],
                 properties: renderModelProperties()
             )
         )

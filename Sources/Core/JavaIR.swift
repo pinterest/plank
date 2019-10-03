@@ -323,6 +323,21 @@ public struct JavaIR {
         ].joined(separator: "\n")
     }
 
+    static func tryCatch(try: [String], catch: Catch) -> String {
+        return [
+            "try {",
+            -->`try`,
+            "} catch (\(`catch`.argument)) {", // TODO allow for multiple catches
+            -->`catch`.body,
+            "}",
+        ].joined(separator: "\n")
+    }
+    
+    struct Catch {
+        let argument: String
+        let body: [String]
+    }
+    
     static func switchBlock(variableToCheck: String, defaultBody: [String], cases: () -> [Case]) -> String {
         return [
             "switch (" + variableToCheck + ") {",
@@ -332,11 +347,18 @@ public struct JavaIR {
         ].joined(separator: "\n")
     }
 
+    
     struct Case {
         let variableEquals: String
         let body: [String]
-        let shouldBreak: Bool = true
-
+        let shouldBreak: Bool
+        
+        init(variableEquals: String, body: [String], shouldBreak: Bool = true) {
+            self.variableEquals = variableEquals
+            self.body = body
+            self.shouldBreak = shouldBreak
+        }
+        
         func render() -> [String] {
             var lines = [
                 "case (" + variableEquals + "):",
@@ -396,6 +418,7 @@ public struct JavaIR {
         let methods: [JavaIR.Method]
         let enums: [Enum]
         let innerClasses: [JavaIR.Class]
+        let interfaces: [JavaIR.Interface]
         let properties: [[JavaIR.Property]]
 
         func render() -> [String] {
@@ -422,6 +445,10 @@ public struct JavaIR {
 
             if !innerClasses.isEmpty {
                 lines.append(-->innerClasses.flatMap { [""] + $0.render() })
+            }
+            
+            if !interfaces.isEmpty {
+                lines.append(-->interfaces.flatMap { [""] + $0.render() })
             }
 
             lines.append("}")

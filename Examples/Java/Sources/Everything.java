@@ -11,6 +11,7 @@ package com.pinterest.models;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
@@ -24,30 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
-interface EverythingMapPolymorphicValuesMatcher<R> {
-    R match(@Nullable User value0);
-    R match(@Nullable Board value1);
-    R match(@Nullable Image value2);
-    R match(@Nullable Pin value3);
-    R match(@Nullable Everything value4);
-    R match(@Nullable List<Object> value5);
-    R match(@Nullable Map<String, Object> value6);
-}
-
-interface EverythingPolymorphicPropMatcher<R> {
-    R match(@Nullable User value0);
-    R match(@Nullable Board value1);
-    R match(@Nullable Image value2);
-    R match(@Nullable Pin value3);
-    R match(@Nullable Everything value4);
-    R match(@Nullable String value5);
-    R match(@Nullable Boolean value6);
-    R match(@Nullable Integer value7);
-    R match(@Nullable Double value8);
-    R match(@Nullable Date value9);
-    R match(@Nullable String value10);
-}
 
 public class Everything {
 
@@ -1958,24 +1935,7 @@ public class Everything {
         }
     }
 
-    public static final class EverythingMapPolymorphicValues<R> {
-
-        public enum InternalStorage {
-            USER(0), 
-            BOARD(1), 
-            IMAGE(2), 
-            PIN(3), 
-            EVERYTHING(4), 
-            LISTOBJECT(5), 
-            MAPSTRING_OBJECT(6);
-            private final int value;
-            InternalStorage(int value) {
-                this.value = value;
-            }
-            public int getValue() {
-                return this.value;
-            }
-        }
+    public static final class EverythingMapPolymorphicValues {
 
         private @Nullable User value0;
         private @Nullable Board value1;
@@ -1985,39 +1945,160 @@ public class Everything {
         private @Nullable List<Object> value5;
         private @Nullable Map<String, Object> value6;
 
-        private static InternalStorage internalStorage;
-
         private EverythingMapPolymorphicValues() {
         }
 
-        public R matchEverythingMapPolymorphicValues(EverythingMapPolymorphicValuesMatcher<R> matcher) {
-            // TODO: Implement this!
+        public EverythingMapPolymorphicValues(@NonNull User value) {
+            this.value0 = value;
+        }
+
+        public EverythingMapPolymorphicValues(@NonNull Board value) {
+            this.value1 = value;
+        }
+
+        public EverythingMapPolymorphicValues(@NonNull Image value) {
+            this.value2 = value;
+        }
+
+        public EverythingMapPolymorphicValues(@NonNull Pin value) {
+            this.value3 = value;
+        }
+
+        public EverythingMapPolymorphicValues(@NonNull Everything value) {
+            this.value4 = value;
+        }
+
+        public EverythingMapPolymorphicValues(@NonNull List<Object> value) {
+            this.value5 = value;
+        }
+
+        public EverythingMapPolymorphicValues(@NonNull Map<String, Object> value) {
+            this.value6 = value;
+        }
+
+        @Nullable
+        public <R> R matchEverythingMapPolymorphicValues(EverythingMapPolymorphicValuesMatcher<R> matcher) {
+            if (value0 != null) {
+                return matcher.match(value0);
+            }
+            if (value1 != null) {
+                return matcher.match(value1);
+            }
+            if (value2 != null) {
+                return matcher.match(value2);
+            }
+            if (value3 != null) {
+                return matcher.match(value3);
+            }
+            if (value4 != null) {
+                return matcher.match(value4);
+            }
+            if (value5 != null) {
+                return matcher.match(value5);
+            }
+            if (value6 != null) {
+                return matcher.match(value6);
+            }
             return null;
+        }
+
+        public static class EverythingMapPolymorphicValuesTypeAdapterFactory implements TypeAdapterFactory {
+
+            @Nullable
+            @Override
+            public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
+                if (!EverythingMapPolymorphicValues.class.isAssignableFrom(typeToken.getRawType())) {
+                    return null;
+                }
+                return (TypeAdapter<T>) new EverythingMapPolymorphicValuesTypeAdapter(gson);
+            }
+        }
+
+        private static class EverythingMapPolymorphicValuesTypeAdapter extends TypeAdapter<EverythingMapPolymorphicValues> {
+
+            private final Gson gson;
+            private TypeAdapter<User> userTypeAdapter;
+            private TypeAdapter<Board> boardTypeAdapter;
+            private TypeAdapter<Image> imageTypeAdapter;
+            private TypeAdapter<Pin> pinTypeAdapter;
+            private TypeAdapter<Everything> everythingTypeAdapter;
+            private TypeAdapter<List<Object>> list_Object_TypeAdapter;
+            private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
+
+            public EverythingMapPolymorphicValuesTypeAdapter(Gson gson) {
+                this.gson = gson;
+            }
+
+            @Override
+            public void write(@NonNull JsonWriter writer, EverythingMapPolymorphicValues value) throws IOException {
+                writer.nullValue();
+            }
+
+            @Nullable
+            @Override
+            public EverythingMapPolymorphicValues read(@NonNull JsonReader reader) throws IOException {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.nextNull();
+                    return null;
+                }
+                if (reader.peek() == JsonToken.BEGIN_OBJECT) {
+                    JsonObject jsonObject = this.gson.fromJson(reader, JsonObject.class);
+                    String type;
+                    try {
+                        type = jsonObject.get("type").getAsString();
+                    } catch (Exception e) {
+                        return new EverythingMapPolymorphicValues();
+                    }
+                    if (type == null) {
+                        return new EverythingMapPolymorphicValues();
+                    }
+                    switch (type) {
+                        case ("user"):
+                            if (this.userTypeAdapter == null) {
+                                this.userTypeAdapter = this.gson.getAdapter(User.class).nullSafe();
+                            }
+                            return new EverythingMapPolymorphicValues(userTypeAdapter.fromJsonTree(jsonObject));
+                        case ("board"):
+                            if (this.boardTypeAdapter == null) {
+                                this.boardTypeAdapter = this.gson.getAdapter(Board.class).nullSafe();
+                            }
+                            return new EverythingMapPolymorphicValues(boardTypeAdapter.fromJsonTree(jsonObject));
+                        case ("image"):
+                            if (this.imageTypeAdapter == null) {
+                                this.imageTypeAdapter = this.gson.getAdapter(Image.class).nullSafe();
+                            }
+                            return new EverythingMapPolymorphicValues(imageTypeAdapter.fromJsonTree(jsonObject));
+                        case ("pin"):
+                            if (this.pinTypeAdapter == null) {
+                                this.pinTypeAdapter = this.gson.getAdapter(Pin.class).nullSafe();
+                            }
+                            return new EverythingMapPolymorphicValues(pinTypeAdapter.fromJsonTree(jsonObject));
+                        case ("everything"):
+                            if (this.everythingTypeAdapter == null) {
+                                this.everythingTypeAdapter = this.gson.getAdapter(Everything.class).nullSafe();
+                            }
+                            return new EverythingMapPolymorphicValues(everythingTypeAdapter.fromJsonTree(jsonObject));
+                        default:
+                            return new EverythingMapPolymorphicValues();
+                    }
+                }
+                reader.skipValue();
+                return new EverythingMapPolymorphicValues();
+            }
+        }
+
+        public interface EverythingMapPolymorphicValuesMatcher<R> {
+            R match(@NonNull User value0);
+            R match(@NonNull Board value1);
+            R match(@NonNull Image value2);
+            R match(@NonNull Pin value3);
+            R match(@NonNull Everything value4);
+            R match(@NonNull List<Object> value5);
+            R match(@NonNull Map<String, Object> value6);
         }
     }
 
-    public static final class EverythingPolymorphicProp<R> {
-
-        public enum InternalStorage {
-            USER(0), 
-            BOARD(1), 
-            IMAGE(2), 
-            PIN(3), 
-            EVERYTHING(4), 
-            STRING(5), 
-            BOOLEAN(6), 
-            INTEGER(7), 
-            DOUBLE(8), 
-            DATE(9), 
-            STRING(10);
-            private final int value;
-            InternalStorage(int value) {
-                this.value = value;
-            }
-            public int getValue() {
-                return this.value;
-            }
-        }
+    public static final class EverythingPolymorphicProp {
 
         private @Nullable User value0;
         private @Nullable Board value1;
@@ -2031,14 +2112,192 @@ public class Everything {
         private @Nullable Date value9;
         private @Nullable String value10;
 
-        private static InternalStorage internalStorage;
-
         private EverythingPolymorphicProp() {
         }
 
-        public R matchEverythingPolymorphicProp(EverythingPolymorphicPropMatcher<R> matcher) {
-            // TODO: Implement this!
+        public EverythingPolymorphicProp(@NonNull User value) {
+            this.value0 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull Board value) {
+            this.value1 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull Image value) {
+            this.value2 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull Pin value) {
+            this.value3 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull Everything value) {
+            this.value4 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull String value) {
+            this.value5 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull Boolean value) {
+            this.value6 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull Integer value) {
+            this.value7 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull Double value) {
+            this.value8 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull Date value) {
+            this.value9 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull String value) {
+            this.value10 = value;
+        }
+
+        @Nullable
+        public <R> R matchEverythingPolymorphicProp(EverythingPolymorphicPropMatcher<R> matcher) {
+            if (value0 != null) {
+                return matcher.match(value0);
+            }
+            if (value1 != null) {
+                return matcher.match(value1);
+            }
+            if (value2 != null) {
+                return matcher.match(value2);
+            }
+            if (value3 != null) {
+                return matcher.match(value3);
+            }
+            if (value4 != null) {
+                return matcher.match(value4);
+            }
+            if (value5 != null) {
+                return matcher.match(value5);
+            }
+            if (value6 != null) {
+                return matcher.match(value6);
+            }
+            if (value7 != null) {
+                return matcher.match(value7);
+            }
+            if (value8 != null) {
+                return matcher.match(value8);
+            }
+            if (value9 != null) {
+                return matcher.match(value9);
+            }
+            if (value10 != null) {
+                return matcher.match(value10);
+            }
             return null;
+        }
+
+        public static class EverythingPolymorphicPropTypeAdapterFactory implements TypeAdapterFactory {
+
+            @Nullable
+            @Override
+            public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
+                if (!EverythingPolymorphicProp.class.isAssignableFrom(typeToken.getRawType())) {
+                    return null;
+                }
+                return (TypeAdapter<T>) new EverythingPolymorphicPropTypeAdapter(gson);
+            }
+        }
+
+        private static class EverythingPolymorphicPropTypeAdapter extends TypeAdapter<EverythingPolymorphicProp> {
+
+            private final Gson gson;
+            private TypeAdapter<User> userTypeAdapter;
+            private TypeAdapter<Board> boardTypeAdapter;
+            private TypeAdapter<Image> imageTypeAdapter;
+            private TypeAdapter<Pin> pinTypeAdapter;
+            private TypeAdapter<Everything> everythingTypeAdapter;
+            private TypeAdapter<String> stringTypeAdapter;
+            private TypeAdapter<Boolean> booleanTypeAdapter;
+            private TypeAdapter<Integer> integerTypeAdapter;
+            private TypeAdapter<Double> doubleTypeAdapter;
+            private TypeAdapter<Date> dateTypeAdapter;
+            private TypeAdapter<String> stringTypeAdapter;
+
+            public EverythingPolymorphicPropTypeAdapter(Gson gson) {
+                this.gson = gson;
+            }
+
+            @Override
+            public void write(@NonNull JsonWriter writer, EverythingPolymorphicProp value) throws IOException {
+                writer.nullValue();
+            }
+
+            @Nullable
+            @Override
+            public EverythingPolymorphicProp read(@NonNull JsonReader reader) throws IOException {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.nextNull();
+                    return null;
+                }
+                if (reader.peek() == JsonToken.BEGIN_OBJECT) {
+                    JsonObject jsonObject = this.gson.fromJson(reader, JsonObject.class);
+                    String type;
+                    try {
+                        type = jsonObject.get("type").getAsString();
+                    } catch (Exception e) {
+                        return new EverythingPolymorphicProp();
+                    }
+                    if (type == null) {
+                        return new EverythingPolymorphicProp();
+                    }
+                    switch (type) {
+                        case ("user"):
+                            if (this.userTypeAdapter == null) {
+                                this.userTypeAdapter = this.gson.getAdapter(User.class).nullSafe();
+                            }
+                            return new EverythingPolymorphicProp(userTypeAdapter.fromJsonTree(jsonObject));
+                        case ("board"):
+                            if (this.boardTypeAdapter == null) {
+                                this.boardTypeAdapter = this.gson.getAdapter(Board.class).nullSafe();
+                            }
+                            return new EverythingPolymorphicProp(boardTypeAdapter.fromJsonTree(jsonObject));
+                        case ("image"):
+                            if (this.imageTypeAdapter == null) {
+                                this.imageTypeAdapter = this.gson.getAdapter(Image.class).nullSafe();
+                            }
+                            return new EverythingPolymorphicProp(imageTypeAdapter.fromJsonTree(jsonObject));
+                        case ("pin"):
+                            if (this.pinTypeAdapter == null) {
+                                this.pinTypeAdapter = this.gson.getAdapter(Pin.class).nullSafe();
+                            }
+                            return new EverythingPolymorphicProp(pinTypeAdapter.fromJsonTree(jsonObject));
+                        case ("everything"):
+                            if (this.everythingTypeAdapter == null) {
+                                this.everythingTypeAdapter = this.gson.getAdapter(Everything.class).nullSafe();
+                            }
+                            return new EverythingPolymorphicProp(everythingTypeAdapter.fromJsonTree(jsonObject));
+                        default:
+                            return new EverythingPolymorphicProp();
+                    }
+                }
+                reader.skipValue();
+                return new EverythingPolymorphicProp();
+            }
+        }
+
+        public interface EverythingPolymorphicPropMatcher<R> {
+            R match(@NonNull User value0);
+            R match(@NonNull Board value1);
+            R match(@NonNull Image value2);
+            R match(@NonNull Pin value3);
+            R match(@NonNull Everything value4);
+            R match(@NonNull String value5);
+            R match(@NonNull Boolean value6);
+            R match(@NonNull Integer value7);
+            R match(@NonNull Double value8);
+            R match(@NonNull Date value9);
+            R match(@NonNull String value10);
         }
     }
 }
