@@ -82,11 +82,11 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
             let enumTypeString = enumTypeName(propertyName: param, className: className)
             return ObjCIR.method("extern NSString * _Nonnull \(enumTypeString)ToString(\(enumTypeString) enumType)") { [
                 ObjCIR.switchStmt("enumType") {
-                    enumValues.map({ (val) -> ObjCIR.SwitchCase in
+                    enumValues.map { (val) -> ObjCIR.SwitchCase in
                         ObjCIR.caseStmt(val.objcOptionName(param: param, className: self.className)) {
                             ["return \(val.defaultValue.objcLiteral());"]
                         }
-                    })
+                    }
                 },
             ] }
         }
@@ -267,10 +267,10 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                                               (.publicM, self.renderMergeWithModel()),
                                               (.publicM, self.renderMergeWithModelWithInitType()),
                                               (self.isBaseClass ? .publicM : .privateM, self.renderGenerateDictionary()),
-                    ] + self.renderIsSetMethods().map { (.publicM, $0) } + self.renderBooleanPropertyAccessorMethods().map { (.publicM, $0) },
+                                          ] + self.renderIsSetMethods().map { (.publicM, $0) } + self.renderBooleanPropertyAccessorMethods().map { (.publicM, $0) },
                                           properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readonly) }.sorted { $0.0 < $1.0 },
                                           protocols: protocols
-                ),
+                                      ),
                                       ObjCIR.Root.classDecl(
                     name: self.builderClassName,
                                           extends: resolveClassName(self.parentDescriptor).map { "\($0)Builder" },
@@ -280,11 +280,11 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
                             ["return [[\(self.className) alloc] initWithBuilder:self];"]
                         }),
                                               (.publicM, self.renderBuilderMergeWithModel()),
-                    ] + self.renderBuilderPropertySetters().map { (.privateM, $0) },
+                                          ] + self.renderBuilderPropertySetters().map { (.privateM, $0) },
                                           properties: properties.map { param, prop in (param, typeFromSchema(param, prop), prop, .readwrite) },
                                           protocols: [:]
-                ),
+                                      ),
                                       ObjCIR.Root.macro("NS_ASSUME_NONNULL_END"),
-            ]
+                                  ]
     }
 }

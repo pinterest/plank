@@ -44,7 +44,8 @@ extension ObjCModelRenderer {
                 self.isBaseClass ? "" : "[super encodeWithCoder:aCoder];",
                 self.properties.map { ($0.0, $0.1.schema) }.map(encodeStatement).joined(separator: "\n"),
                 self.properties.map { (param, _) -> String in
-                    "[aCoder encodeInt:_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) forKey:\((param + "_dirty_property").objcLiteral())];" }.joined(separator: "\n"),
+                    "[aCoder encodeInt:_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) forKey:\((param + "_dirty_property").objcLiteral())];"
+                }.joined(separator: "\n"),
             ].filter { $0 != "" }
         }
     }
@@ -113,7 +114,7 @@ extension ObjCFileRenderer {
                 fatalError("Bad reference found in schema for class: \(className)")
             }
         case let .oneOf(types: schemaTypes):
-            return schemaTypes.map(referencedObjectClasses).reduce(Set(), { set1, set2 in set1.union(set2) })
+            return schemaTypes.map(referencedObjectClasses).reduce(Set()) { set1, set2 in set1.union(set2) }
         }
     }
 

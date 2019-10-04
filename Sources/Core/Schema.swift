@@ -104,7 +104,7 @@ public enum Nullability: String {
 // or if it would be better to have a protocol (i.e. NullabilityProperty) that we would pattern
 // match on to detect nullable constraints.
 public struct SchemaObjectProperty {
-let schema: Schema
+    let schema: Schema
     let nullability: Nullability? // Nullability does not apply for primitive types
 
     init(schema aSchema: Schema, nullability aNullability: Nullability?) {
@@ -318,9 +318,9 @@ extension Schema {
                         (name, SchemaObjectProperty(schema: $0, nullability: $0.isPrimitiveType ? nil : requiredProps.contains(name) ? .nonnull : .nullable))
                     }
                     }
-                    let lifted: [Property]? = optTuples.reduce([], { (build: [Property]?, tupleOption: Property?) -> [Property]? in
+                    let lifted: [Property]? = optTuples.reduce([]) { (build: [Property]?, tupleOption: Property?) -> [Property]? in
                         build.flatMap { (bld: [Property]) -> [Property]? in tupleOption.map { bld + [$0] } }
-                    })
+                    }
                     let extendsDict: JSONObject? = propertyInfo["extends"] as? JSONObject
                     let extends: URLSchemaReference? = extendsDict
                         .flatMap { (obj: JSONObject) in
@@ -328,7 +328,8 @@ extension Schema {
                             return refStr.map { refStr in
                                 let refUrl = decodeRef(from: source, with: refStr)
                                 return URLSchemaReference(url: refUrl, force: {
-                                    loader.loadSchema(refUrl) })
+                                    loader.loadSchema(refUrl)
+                                })
                             }
                         }
                     return lifted.map { Schema.object(SchemaObjectRoot(name: objectTitle,
@@ -343,9 +344,9 @@ extension Schema {
             case JSONType.polymorphic:
                 return (propertyInfo["oneOf"] as? [JSONObject]) // [JSONObject]
                     .map { jsonObjs in jsonObjs.map { propertyForType(propertyInfo: $0, source: source) } } // [Schema?]?
-                    .flatMap { schemas in schemas.reduce([], { (build: [Schema]?, tupleOption: Schema?) -> [Schema]? in
+                    .flatMap { schemas in schemas.reduce([]) { (build: [Schema]?, tupleOption: Schema?) -> [Schema]? in
                         build.flatMap { (bld: [Schema]) -> [Schema]? in tupleOption.map { bld + [$0] } }
-                    }) }
+                    } }
                     .map { Schema.oneOf(types: $0) }
             }
         }

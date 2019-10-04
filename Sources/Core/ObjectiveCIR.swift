@@ -426,9 +426,9 @@ public struct ObjCIR {
                 return [
                     "@implementation \(className)",
                     methods.flatMap { $1.render() }.joined(separator: "\n"),
-                    protocols.sorted { $0.0 < $1.0 }.flatMap({ (protocolName, methods) -> [String] in
+                    protocols.sorted { $0.0 < $1.0 }.flatMap { (protocolName, methods) -> [String] in
                         ["#pragma mark - \(protocolName)"] + methods.flatMap { $0.render() }
-                    }).joined(separator: "\n"),
+                    }.joined(separator: "\n"),
                     "@end",
                 ].map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }.filter { $0 != "" }
             case let .category(className: className, categoryName: categoryName, methods: methods, properties: properties, variables: variables):

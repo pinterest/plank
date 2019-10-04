@@ -22,11 +22,11 @@ extension ObjCModelRenderer {
 
         let props = [internalTypeProp] + schemas.enumerated().map { ("value\($0)", $1) }
 
-        let properties = props.reduce([String: SchemaObjectProperty](), { (acc: [String: SchemaObjectProperty], type: (String, SchemaObjectProperty)) -> [String: SchemaObjectProperty] in
+        let properties = props.reduce([String: SchemaObjectProperty]()) { (acc: [String: SchemaObjectProperty], type: (String, SchemaObjectProperty)) -> [String: SchemaObjectProperty] in
             var mutableDict = acc
             mutableDict[type.0] = type.1
             return mutableDict
-        })
+        }
 
         let root = SchemaObjectRoot(name: adtName,
                                     properties: properties,

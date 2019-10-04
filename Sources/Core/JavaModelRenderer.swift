@@ -435,12 +435,12 @@ public struct JavaModelRenderer: JavaFileRenderer {
         }.reduce(into: []) {
             $0.append(contentsOf: $1)
         }
-        
+
         var additionalImports = propertyTypeImports
         additionalImports += uriType.imports
         additionalImports += (unknownPropertyLogging?.imports ?? [])
         additionalImports += (decorations.imports ?? [])
-        
+
         let imports = [
             JavaIR.Root.imports(names: Set([
                 "com.google.gson.Gson",
