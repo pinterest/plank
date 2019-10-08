@@ -51,7 +51,7 @@ extension JavaFileRenderer {
         }
     }
 
-    func unwrappedTypeFromSchema(_ param: String, _ schema: Schema) -> String {
+func unwrappedTypeFromSchema(_ param: String, _ schema: Schema) -> String {
         switch schema {
         case .array(itemType: .none):
             return "List<Object>"

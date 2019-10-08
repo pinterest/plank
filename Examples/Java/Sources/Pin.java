@@ -11,6 +11,7 @@ package com.pinterest.models;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.SerializedName;
@@ -23,11 +24,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-interface PinAttributionObjectsMatcher<R> {
-    R match(@Nullable Board value0);
-    R match(@Nullable User value1);
-}
 
 public class Pin {
 
@@ -957,31 +953,101 @@ public class Pin {
         }
     }
 
-    public static final class PinAttributionObjects<R> {
-
-        public enum InternalStorage {
-            BOARD(0), 
-            USER(1);
-            private final int value;
-            InternalStorage(int value) {
-                this.value = value;
-            }
-            public int getValue() {
-                return this.value;
-            }
-        }
+    public static final class PinAttributionObjects {
 
         private @Nullable Board value0;
         private @Nullable User value1;
 
-        private static InternalStorage internalStorage;
-
         private PinAttributionObjects() {
         }
 
-        public R matchPinAttributionObjects(PinAttributionObjectsMatcher<R> matcher) {
-            // TODO: Implement this!
+        public PinAttributionObjects(@NonNull Board value) {
+            this.value0 = value;
+        }
+
+        public PinAttributionObjects(@NonNull User value) {
+            this.value1 = value;
+        }
+
+        @Nullable
+        public <R> R matchPinAttributionObjects(PinAttributionObjectsMatcher<R> matcher) {
+            if (value0 != null) {
+                return matcher.match(value0);
+            }
+            if (value1 != null) {
+                return matcher.match(value1);
+            }
             return null;
+        }
+
+        public static class PinAttributionObjectsTypeAdapterFactory implements TypeAdapterFactory {
+
+            @Nullable
+            @Override
+            public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
+                if (!PinAttributionObjects.class.isAssignableFrom(typeToken.getRawType())) {
+                    return null;
+                }
+                return (TypeAdapter<T>) new PinAttributionObjectsTypeAdapter(gson);
+            }
+        }
+
+        private static class PinAttributionObjectsTypeAdapter extends TypeAdapter<PinAttributionObjects> {
+
+            private final Gson gson;
+            private TypeAdapter<Board> boardTypeAdapter;
+            private TypeAdapter<User> userTypeAdapter;
+
+            public PinAttributionObjectsTypeAdapter(Gson gson) {
+                this.gson = gson;
+            }
+
+            @Override
+            public void write(@NonNull JsonWriter writer, PinAttributionObjects value) throws IOException {
+                writer.nullValue();
+            }
+
+            @Nullable
+            @Override
+            public PinAttributionObjects read(@NonNull JsonReader reader) throws IOException {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.nextNull();
+                    return null;
+                }
+                if (reader.peek() == JsonToken.BEGIN_OBJECT) {
+                    JsonObject jsonObject = this.gson.fromJson(reader, JsonObject.class);
+                    String type;
+                    try {
+                        type = jsonObject.get("type").getAsString();
+                    } catch (Exception e) {
+                        return new PinAttributionObjects();
+                    }
+                    if (type == null) {
+                        return new PinAttributionObjects();
+                    }
+                    switch (type) {
+                        case ("board"):
+                            if (this.boardTypeAdapter == null) {
+                                this.boardTypeAdapter = this.gson.getAdapter(Board.class).nullSafe();
+                            }
+                            return new PinAttributionObjects(boardTypeAdapter.fromJsonTree(jsonObject));
+                        case ("user"):
+                            if (this.userTypeAdapter == null) {
+                                this.userTypeAdapter = this.gson.getAdapter(User.class).nullSafe();
+                            }
+                            return new PinAttributionObjects(userTypeAdapter.fromJsonTree(jsonObject));
+                        default:
+                            return new PinAttributionObjects();
+                    }
+                }
+                reader.skipValue();
+                return new PinAttributionObjects();
+            }
+        }
+
+        public interface PinAttributionObjectsMatcher<R> {
+            R match(@NonNull Board value0);
+            R match(@NonNull User value1);
         }
     }
 }

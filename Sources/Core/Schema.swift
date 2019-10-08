@@ -104,7 +104,7 @@ public enum Nullability: String {
 // or if it would be better to have a protocol (i.e. NullabilityProperty) that we would pattern
 // match on to detect nullable constraints.
 public struct SchemaObjectProperty {
-    let schema: Schema
+let schema: Schema
     let nullability: Nullability? // Nullability does not apply for primitive types
 
     init(schema aSchema: Schema, nullability aNullability: Nullability?) {
