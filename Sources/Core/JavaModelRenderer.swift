@@ -408,12 +408,15 @@ public struct JavaModelRenderer: JavaFileRenderer {
             fatalError("java_nullability_annotation_type must be either android-support or androidx. Invalid type provided: " + params[.javaNullabilityAnnotationType]!)
         }
 
+        // TODO: this should recurse through the value types of arrays and maps
         let propertyTypeImports: [String] = transitiveProperties.compactMap { (_, prop) -> [String] in
             switch prop.schema {
             case .array(.none):
                 return ["java.util.List"]
             case let .array(itemType: .some(itemType)):
                 switch itemType {
+                case .map:
+                    return ["java.util.List", "java.util.Map"]
                 case .oneOf:
                     return ["java.util.List", "com.google.gson.JsonObject"]
                 default:
@@ -423,6 +426,8 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 return ["java.util.Map"]
             case let .map(valueType: .some(valueType)):
                 switch valueType {
+                case .array:
+                    return ["java.util.Map", "java.util.List"]
                 case .oneOf:
                     return ["java.util.Map", "com.google.gson.JsonObject"]
                 default:
