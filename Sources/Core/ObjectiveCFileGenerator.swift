@@ -166,7 +166,8 @@ struct ObjCRuntimeHeaderFile: FileGenerator {
         return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", ""] + outputs)
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }
-            .joined(separator: "\n\n") }
+            .joined(separator: "\n\n")
+    }
 }
 
 struct ObjCRuntimeImplementationFile: FileGenerator {

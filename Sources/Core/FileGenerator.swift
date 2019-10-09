@@ -484,7 +484,7 @@ public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParame
     _ = loadSchemasForUrls(urls: urls)
     var processedSchemas = Set<URL>([])
     repeat {
-        _ = FileSchemaLoader.sharedInstance.refs.map({ (url: URL, schema: Schema) -> Void in
+        _ = FileSchemaLoader.sharedInstance.refs.map { (url: URL, schema: Schema) -> Void in
             if processedSchemas.contains(url) {
                 return
             }
@@ -499,7 +499,7 @@ public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParame
             default:
                 assert(false, "Incorrect Schema for root.") // TODO: Better error message.
             }
-        })
+        }
     } while
         generationParameters[.recursive] != nil && processedSchemas.count != FileSchemaLoader.sharedInstance.refs.keys.count
     if generationParameters[.includeRuntime] != nil {

@@ -19,11 +19,11 @@ extension ObjCModelRenderer {
                     "if (!(self = [super initWithModel:modelObject])) { return self; }",
                 "struct \(self.dirtyPropertyOptionName) \(self.dirtyPropertiesIVarName) = modelObject.\(self.dirtyPropertiesIVarName);",
 
-                self.properties.map({ (param, _) -> String in
+                self.properties.map { (param, _) -> String in
                     ObjCIR.ifStmt("\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className))") {
                         ["_\(Languages.objectiveC.snakeCaseToPropertyName(param)) = modelObject.\(Languages.objectiveC.snakeCaseToPropertyName(param));"]
                     }
-                }).joined(separator: "\n"),
+                }.joined(separator: "\n"),
                 "_\(self.dirtyPropertiesIVarName) = \(self.dirtyPropertiesIVarName);",
                 "return self;",
             ]
@@ -40,14 +40,14 @@ extension ObjCModelRenderer {
             }
         }
 
-        return properties.map({ (param, prop) -> ObjCIR.Method in
+        return properties.map { (param, prop) -> ObjCIR.Method in
             ObjCIR.method("- (void)set\(Languages.objectiveC.snakeCaseToCapitalizedPropertyName(param)):(\(typeFromSchema(param, prop)))\(Languages.objectiveC.snakeCaseToPropertyName(param))") {
                 [
                     "_\(Languages.objectiveC.snakeCaseToPropertyName(param)) = \(renderBuilderPropertySetter(param, prop.schema))",
                     "_\(self.dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: param, className: self.className)) = 1;",
                 ]
             }
-        })
+        }
     }
 
     func renderBuilderMergeWithModel() -> ObjCIR.Method {
