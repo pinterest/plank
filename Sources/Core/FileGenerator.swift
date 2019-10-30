@@ -471,11 +471,31 @@ public func loadSchemasForUrls(urls: Set<URL>) -> [(URL, Schema)] {
 
 public func generateDeps(urls: Set<URL>) {
     let urlSchemas = loadSchemasForUrls(urls: urls)
-    let deps = Set(urlSchemas.map { (url, schema) -> String in
-        ([url] + schema.deps()).map { $0.path }.joined(separator: ":")
-    })
-    deps.forEach { dep in
-        print(dep)
+    var depsResult = [String: [String]]()
+
+    for (_, schema) in urlSchemas {
+        switch schema {
+        case .object(let root):
+            depsResult[root.name] = schema.deps().map {
+                FileSchemaLoader.sharedInstance.loadSchema($0)
+            }.compactMap {
+                switch $0 {
+                case .object(let depRoot):
+                    return root.name == depRoot.name ? nil : depRoot.name
+                default:
+                    return ""
+                }
+            }
+        default: continue
+        }
+    }
+
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = JSONEncoder.OutputFormatting.prettyPrinted
+    if let data = try? encoder.encode(depsResult) {
+        if let jsonString = String(data: data, encoding: .utf8) {
+            print(jsonString)
+        }
     }
 }
 
