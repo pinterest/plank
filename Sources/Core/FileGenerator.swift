@@ -475,12 +475,12 @@ public func generateDeps(urls: Set<URL>) {
 
     for (_, schema) in urlSchemas {
         switch schema {
-        case .object(let root):
+        case let .object(root):
             depsResult[root.name] = schema.deps().map {
                 FileSchemaLoader.sharedInstance.loadSchema($0)
             }.compactMap {
                 switch $0 {
-                case .object(let depRoot):
+                case let .object(depRoot):
                     return root.name == depRoot.name ? nil : depRoot.name
                 default:
                     return ""
