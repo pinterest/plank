@@ -379,7 +379,7 @@ public struct JavaIR {
             case let .integer(values):
                 let names = values
                     .map { ($0.description, $0.defaultValue) }
-                    .map { "\($0.0.uppercased())(\($0.1))" }.joined(separator: ", \n")
+                    .map { "@\(JavaAnnotation.serializedName(name: "\($0.1)").rendered) \($0.0.uppercased())(\($0.1))" }.joined(separator: ", \n")
                 let enumInitializer = JavaIR.method([], "\(name)(int value)") { [
                     "this.value = value;",
                 ] }

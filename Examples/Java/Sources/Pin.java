@@ -28,9 +28,9 @@ import java.util.Objects;
 public class Pin {
 
     public enum PinInStock {
-        UNKNOWN(-1), 
-        OUT_OF_STOCK(0), 
-        IN_STOCK(1);
+        @SerializedName("-1") UNKNOWN(-1), 
+        @SerializedName("0") OUT_OF_STOCK(0), 
+        @SerializedName("1") IN_STOCK(1);
         private final int value;
         PinInStock(int value) {
             this.value = value;

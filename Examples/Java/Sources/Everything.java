@@ -29,7 +29,7 @@ import java.util.Set;
 public class Everything {
 
     public enum EverythingCharEnum {
-        CHAR_CASE_1(-1);
+        @SerializedName("-1") CHAR_CASE_1(-1);
         private final int value;
         EverythingCharEnum(int value) {
             this.value = value;
@@ -40,8 +40,8 @@ public class Everything {
     }
 
     public enum EverythingIntEnum {
-        INT_CASE_1(-1), 
-        INT_CASE_2(65536);
+        @SerializedName("-1") INT_CASE_1(-1), 
+        @SerializedName("65536") INT_CASE_2(65536);
         private final int value;
         EverythingIntEnum(int value) {
             this.value = value;
@@ -52,8 +52,8 @@ public class Everything {
     }
 
     public enum EverythingNsintegerEnum {
-        NSINTEGER_CASE_1(-1), 
-        NSINTEGER_CASE_2(4294967295);
+        @SerializedName("-1") NSINTEGER_CASE_1(-1), 
+        @SerializedName("4294967295") NSINTEGER_CASE_2(4294967295);
         private final int value;
         EverythingNsintegerEnum(int value) {
             this.value = value;
@@ -64,7 +64,7 @@ public class Everything {
     }
 
     public enum EverythingNsuintegerEnum {
-        NSUINTEGER_CASE_2(4294967296);
+        @SerializedName("4294967296") NSUINTEGER_CASE_2(4294967296);
         private final int value;
         EverythingNsuintegerEnum(int value) {
             this.value = value;
@@ -75,8 +75,8 @@ public class Everything {
     }
 
     public enum EverythingShortEnum {
-        SHORT_CASE_1(-1), 
-        SHORT_CASE_2(256);
+        @SerializedName("-1") SHORT_CASE_1(-1), 
+        @SerializedName("256") SHORT_CASE_2(256);
         private final int value;
         EverythingShortEnum(int value) {
             this.value = value;
@@ -91,7 +91,7 @@ public class Everything {
     }
 
     public enum EverythingUnsignedCharEnum {
-        UNSIGNED_CHAR_CASE_2(255);
+        @SerializedName("255") UNSIGNED_CHAR_CASE_2(255);
         private final int value;
         EverythingUnsignedCharEnum(int value) {
             this.value = value;
@@ -102,7 +102,7 @@ public class Everything {
     }
 
     public enum EverythingUnsignedIntEnum {
-        UNSIGNED_INT_CASE_2(65536);
+        @SerializedName("65536") UNSIGNED_INT_CASE_2(65536);
         private final int value;
         EverythingUnsignedIntEnum(int value) {
             this.value = value;
@@ -113,7 +113,7 @@ public class Everything {
     }
 
     public enum EverythingUnsignedShortEnum {
-        CHAR_CASE_2(256);
+        @SerializedName("256") CHAR_CASE_2(256);
         private final int value;
         EverythingUnsignedShortEnum(int value) {
             this.value = value;
