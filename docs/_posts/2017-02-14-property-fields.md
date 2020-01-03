@@ -29,6 +29,7 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
 | Set Property with item types        |
 | Object Property                     |
 | Object Property with item types     |
+| Nested Object                       |
 | Algebraic Data Type (`oneOf`)       |
 
 ### Examples
@@ -155,6 +156,19 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
 }
 </code></pre>
 
+- Nested object type
+
+<pre><code class="json">{
+    "some_map" : {
+        "type": "object",
+        "title": "nested",
+        "properties": {
+            "id": {"type": "integer"},
+            "name: {"type": "string"}
+        }
+    }
+}
+</code></pre>
 
 #### Algebraic Data Type (ADT or `oneOf`)
 <pre><code class="json">{
