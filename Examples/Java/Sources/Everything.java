@@ -40,7 +40,7 @@ public class Everything {
     }
 
     public enum EverythingIntEnum {
-        @SerializedName("-1") INT_CASE_1(-1), 
+        @SerializedName("-1") INT_CASE_1(-1),
         @SerializedName("65536") INT_CASE_2(65536);
         private final int value;
         EverythingIntEnum(int value) {
@@ -52,7 +52,7 @@ public class Everything {
     }
 
     public enum EverythingNsintegerEnum {
-        @SerializedName("-1") NSINTEGER_CASE_1(-1), 
+        @SerializedName("-1") NSINTEGER_CASE_1(-1),
         @SerializedName("4294967295") NSINTEGER_CASE_2(4294967295);
         private final int value;
         EverythingNsintegerEnum(int value) {
@@ -75,7 +75,7 @@ public class Everything {
     }
 
     public enum EverythingShortEnum {
-        @SerializedName("-1") SHORT_CASE_1(-1), 
+        @SerializedName("-1") SHORT_CASE_1(-1),
         @SerializedName("256") SHORT_CASE_2(256);
         private final int value;
         EverythingShortEnum(int value) {
