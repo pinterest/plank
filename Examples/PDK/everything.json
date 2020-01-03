@@ -162,6 +162,7 @@
         { "$ref" : "image.json" },
         { "$ref" : "pin.json" },
         { "$ref" : "everything.json" },
+        { "type" : "object", "title": "oneof_object", "properties": {"id": {"type": "integer"} } },
         { "type" : "string" },
         { "type" : "boolean" },
         { "type" : "integer" },

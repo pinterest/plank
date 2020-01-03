@@ -270,6 +270,8 @@ extension Schema {
             return itemType?.objectRoots() ?? []
         case let .map(valueType: valueType):
             return valueType?.objectRoots() ?? []
+        case let .oneOf(types: types):
+            return types.map { type in type.objectRoots() }.reduce([]) { $0.union($1) }
         default:
             return []
         }

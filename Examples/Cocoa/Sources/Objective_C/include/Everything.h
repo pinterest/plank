@@ -13,6 +13,7 @@
 @class EverythingBuilder;
 @class Image;
 @class Nested;
+@class OneofObject;
 @class Pin;
 @class User;
 
@@ -53,12 +54,13 @@ typedef NS_ENUM(unsigned char, EverythingPolymorphicPropInternalType) {
     EverythingPolymorphicPropInternalTypeImage = 3,
     EverythingPolymorphicPropInternalTypePin = 4,
     EverythingPolymorphicPropInternalTypeEverything = 5,
-    EverythingPolymorphicPropInternalTypeString = 6,
-    EverythingPolymorphicPropInternalTypeBoolean = 7,
-    EverythingPolymorphicPropInternalTypeInteger = 8,
-    EverythingPolymorphicPropInternalTypeFloat = 9,
-    EverythingPolymorphicPropInternalTypeDate = 10,
-    EverythingPolymorphicPropInternalTypeURL = 11
+    EverythingPolymorphicPropInternalTypeOneofObject = 6,
+    EverythingPolymorphicPropInternalTypeString = 7,
+    EverythingPolymorphicPropInternalTypeBoolean = 8,
+    EverythingPolymorphicPropInternalTypeInteger = 9,
+    EverythingPolymorphicPropInternalTypeFloat = 10,
+    EverythingPolymorphicPropInternalTypeDate = 11,
+    EverythingPolymorphicPropInternalTypeURL = 12
 };
 
 @interface EverythingPolymorphicProp : NSObject<NSCopying, NSSecureCoding>
@@ -69,13 +71,14 @@ typedef NS_ENUM(unsigned char, EverythingPolymorphicPropInternalType) {
 + (instancetype)objectWithImage:(Image *)image;
 + (instancetype)objectWithPin:(Pin *)pin;
 + (instancetype)objectWithEverything:(Everything *)everything;
++ (instancetype)objectWithOneofObject:(OneofObject *)oneofObject;
 + (instancetype)objectWithString:(NSString *)string;
 + (instancetype)objectWithBoolean:(BOOL)boolean;
 + (instancetype)objectWithInteger:(NSInteger)integer;
 + (instancetype)objectWithFloat:(double)floatProperty;
 + (instancetype)objectWithDate:(NSDate *)date;
 + (instancetype)objectWithURL:(NSURL *)uRL;
-- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler orString:(nullable PLANK_NOESCAPE void (^)(NSString * string))stringMatchHandler orBoolean:(nullable PLANK_NOESCAPE void (^)(BOOL boolean))booleanMatchHandler orInteger:(nullable PLANK_NOESCAPE void (^)(NSInteger integer))integerMatchHandler orFloat:(nullable PLANK_NOESCAPE void (^)(double floatProperty))floatPropertyMatchHandler orDate:(nullable PLANK_NOESCAPE void (^)(NSDate * date))dateMatchHandler orURL:(nullable PLANK_NOESCAPE void (^)(NSURL * uRL))uRLMatchHandler;
+- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler orOneofObject:(nullable PLANK_NOESCAPE void (^)(OneofObject * oneofObject))oneofObjectMatchHandler orString:(nullable PLANK_NOESCAPE void (^)(NSString * string))stringMatchHandler orBoolean:(nullable PLANK_NOESCAPE void (^)(BOOL boolean))booleanMatchHandler orInteger:(nullable PLANK_NOESCAPE void (^)(NSInteger integer))integerMatchHandler orFloat:(nullable PLANK_NOESCAPE void (^)(double floatProperty))floatPropertyMatchHandler orDate:(nullable PLANK_NOESCAPE void (^)(NSDate * date))dateMatchHandler orURL:(nullable PLANK_NOESCAPE void (^)(NSURL * uRL))uRLMatchHandler;
 - (BOOL)isEqualToEverythingPolymorphicProp:(EverythingPolymorphicProp *)anObject;
 - (id)dictionaryObjectRepresentation;
 @end

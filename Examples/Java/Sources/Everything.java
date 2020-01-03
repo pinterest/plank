@@ -2152,12 +2152,13 @@ public class Everything {
         private @Nullable Image value2;
         private @Nullable Pin value3;
         private @Nullable Everything value4;
-        private @Nullable String value5;
-        private @Nullable Boolean value6;
-        private @Nullable Integer value7;
-        private @Nullable Double value8;
-        private @Nullable Date value9;
-        private @Nullable String value10;
+        private @Nullable OneofObject value5;
+        private @Nullable String value6;
+        private @Nullable Boolean value7;
+        private @Nullable Integer value8;
+        private @Nullable Double value9;
+        private @Nullable Date value10;
+        private @Nullable String value11;
 
         private EverythingPolymorphicProp() {
         }
@@ -2182,28 +2183,32 @@ public class Everything {
             this.value4 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull String value) {
+        public EverythingPolymorphicProp(@NonNull OneofObject value) {
             this.value5 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull Boolean value) {
+        public EverythingPolymorphicProp(@NonNull String value) {
             this.value6 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull Integer value) {
+        public EverythingPolymorphicProp(@NonNull Boolean value) {
             this.value7 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull Double value) {
+        public EverythingPolymorphicProp(@NonNull Integer value) {
             this.value8 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull Date value) {
+        public EverythingPolymorphicProp(@NonNull Double value) {
             this.value9 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull String value) {
+        public EverythingPolymorphicProp(@NonNull Date value) {
             this.value10 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull String value) {
+            this.value11 = value;
         }
 
         @Nullable
@@ -2241,6 +2246,9 @@ public class Everything {
             if (value10 != null) {
                 return matcher.match(value10);
             }
+            if (value11 != null) {
+                return matcher.match(value11);
+            }
             return null;
         }
 
@@ -2264,6 +2272,7 @@ public class Everything {
             private TypeAdapter<Image> imageTypeAdapter;
             private TypeAdapter<Pin> pinTypeAdapter;
             private TypeAdapter<Everything> everythingTypeAdapter;
+            private TypeAdapter<OneofObject> oneofObjectTypeAdapter;
             private TypeAdapter<String> stringTypeAdapter;
             private TypeAdapter<Boolean> booleanTypeAdapter;
             private TypeAdapter<Integer> integerTypeAdapter;
@@ -2339,12 +2348,13 @@ public class Everything {
             R match(@NonNull Image value2);
             R match(@NonNull Pin value3);
             R match(@NonNull Everything value4);
-            R match(@NonNull String value5);
-            R match(@NonNull Boolean value6);
-            R match(@NonNull Integer value7);
-            R match(@NonNull Double value8);
-            R match(@NonNull Date value9);
-            R match(@NonNull String value10);
+            R match(@NonNull OneofObject value5);
+            R match(@NonNull String value6);
+            R match(@NonNull Boolean value7);
+            R match(@NonNull Integer value8);
+            R match(@NonNull Double value9);
+            R match(@NonNull Date value10);
+            R match(@NonNull String value11);
         }
     }
 }

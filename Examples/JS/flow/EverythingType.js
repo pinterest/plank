@@ -11,12 +11,13 @@ import type { PlankDate, PlankURI } from './runtime.flow.js';
 import type { BoardType } from './BoardType.js';
 import type { ImageType } from './ImageType.js';
 import type { Nested } from './Nested.js';
+import type { OneofObject } from './OneofObject.js';
 import type { PinType } from './PinType.js';
 import type { UserType } from './UserType.js';
 
 export type EverythingMapPolymorphicValuesType = UserType | BoardType | ImageType | PinType | EverythingType | Array<*> | {};
 
-export type EverythingPolymorphicPropType = UserType | BoardType | ImageType | PinType | EverythingType | string | boolean | number | number | PlankDate | PlankURI;
+export type EverythingPolymorphicPropType = UserType | BoardType | ImageType | PinType | EverythingType | OneofObjectType | string | boolean | number | number | PlankDate | PlankURI;
 
 export type EverythingCharEnum = 
   | -1 /* char_case_1 */
