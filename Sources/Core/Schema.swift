@@ -131,7 +131,7 @@ extension Schema {
     }
 }
 
-public struct SchemaObjectRoot: Equatable {
+public struct SchemaObjectRoot: Hashable {
     let name: String
     let properties: [String: SchemaObjectProperty]
     let extends: URLSchemaReference?
@@ -139,6 +139,10 @@ public struct SchemaObjectRoot: Equatable {
 
     var typeIdentifier: String {
         return algebraicTypeIdentifier ?? name
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(typeIdentifier)
     }
 }
 
@@ -255,6 +259,21 @@ extension Schema {
             return types.map { type in type.deps() }.reduce([]) { $0.union($1) }
         case let .reference(with: ref):
             return [ref.url]
+        }
+    }
+
+    func objectRoots() -> Set<SchemaObjectRoot> {
+        switch self {
+        case let .object(rootObject):
+            return Set([rootObject]).union(rootObject.properties.values.flatMap { $0.schema.objectRoots() })
+        case let .array(itemType: itemType), let .set(itemType: itemType):
+            return itemType?.objectRoots() ?? []
+        case let .map(valueType: valueType):
+            return valueType?.objectRoots() ?? []
+        case let .oneOf(types: types):
+            return types.map { type in type.objectRoots() }.reduce([]) { $0.union($1) }
+        default:
+            return []
         }
     }
 }

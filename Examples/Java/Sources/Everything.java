@@ -144,6 +144,7 @@ public class Everything {
     @SerializedName("map_with_object_values") private @Nullable Map<String, String> mapWithObjectValues;
     @SerializedName("map_with_other_model_values") private @Nullable Map<String, User> mapWithOtherModelValues;
     @SerializedName("map_with_primitive_values") private @Nullable Map<String, Integer> mapWithPrimitiveValues;
+    @SerializedName("nested_object") private @Nullable Nested nestedObject;
     @SerializedName("nsinteger_enum") private @Nullable EverythingNsintegerEnum nsintegerEnum;
     @SerializedName("nsuinteger_enum") private @Nullable EverythingNsuintegerEnum nsuintegerEnum;
     @SerializedName("number_prop") private @Nullable Double numberProp;
@@ -181,23 +182,24 @@ public class Everything {
     private static final int MAP_WITH_OBJECT_VALUES_INDEX = 16;
     private static final int MAP_WITH_OTHER_MODEL_VALUES_INDEX = 17;
     private static final int MAP_WITH_PRIMITIVE_VALUES_INDEX = 18;
-    private static final int NSINTEGER_ENUM_INDEX = 19;
-    private static final int NSUINTEGER_ENUM_INDEX = 20;
-    private static final int NUMBER_PROP_INDEX = 21;
-    private static final int OTHER_MODEL_PROP_INDEX = 22;
-    private static final int POLYMORPHIC_PROP_INDEX = 23;
-    private static final int SET_PROP_INDEX = 24;
-    private static final int SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX = 25;
-    private static final int SET_PROP_WITH_PRIMITIVE_VALUES_INDEX = 26;
-    private static final int SET_PROP_WITH_VALUES_INDEX = 27;
-    private static final int SHORT_ENUM_INDEX = 28;
-    private static final int STRING_ENUM_INDEX = 29;
-    private static final int STRING_PROP_INDEX = 30;
-    private static final int TYPE_INDEX = 31;
-    private static final int UNSIGNED_CHAR_ENUM_INDEX = 32;
-    private static final int UNSIGNED_INT_ENUM_INDEX = 33;
-    private static final int UNSIGNED_SHORT_ENUM_INDEX = 34;
-    private static final int URI_PROP_INDEX = 35;
+    private static final int NESTED_OBJECT_INDEX = 19;
+    private static final int NSINTEGER_ENUM_INDEX = 20;
+    private static final int NSUINTEGER_ENUM_INDEX = 21;
+    private static final int NUMBER_PROP_INDEX = 22;
+    private static final int OTHER_MODEL_PROP_INDEX = 23;
+    private static final int POLYMORPHIC_PROP_INDEX = 24;
+    private static final int SET_PROP_INDEX = 25;
+    private static final int SET_PROP_WITH_OTHER_MODEL_VALUES_INDEX = 26;
+    private static final int SET_PROP_WITH_PRIMITIVE_VALUES_INDEX = 27;
+    private static final int SET_PROP_WITH_VALUES_INDEX = 28;
+    private static final int SHORT_ENUM_INDEX = 29;
+    private static final int STRING_ENUM_INDEX = 30;
+    private static final int STRING_PROP_INDEX = 31;
+    private static final int TYPE_INDEX = 32;
+    private static final int UNSIGNED_CHAR_ENUM_INDEX = 33;
+    private static final int UNSIGNED_INT_ENUM_INDEX = 34;
+    private static final int UNSIGNED_SHORT_ENUM_INDEX = 35;
+    private static final int URI_PROP_INDEX = 36;
 
     private boolean[] _bits;
 
@@ -221,6 +223,7 @@ public class Everything {
         @Nullable Map<String, String> mapWithObjectValues,
         @Nullable Map<String, User> mapWithOtherModelValues,
         @Nullable Map<String, Integer> mapWithPrimitiveValues,
+        @Nullable Nested nestedObject,
         @Nullable EverythingNsintegerEnum nsintegerEnum,
         @Nullable EverythingNsuintegerEnum nsuintegerEnum,
         @Nullable Double numberProp,
@@ -259,6 +262,7 @@ public class Everything {
         this.mapWithObjectValues = mapWithObjectValues;
         this.mapWithOtherModelValues = mapWithOtherModelValues;
         this.mapWithPrimitiveValues = mapWithPrimitiveValues;
+        this.nestedObject = nestedObject;
         this.nsintegerEnum = nsintegerEnum;
         this.nsuintegerEnum = nsuintegerEnum;
         this.numberProp = numberProp;
@@ -332,6 +336,7 @@ public class Everything {
         Objects.equals(this.mapWithObjectValues, that.mapWithObjectValues) &&
         Objects.equals(this.mapWithOtherModelValues, that.mapWithOtherModelValues) &&
         Objects.equals(this.mapWithPrimitiveValues, that.mapWithPrimitiveValues) &&
+        Objects.equals(this.nestedObject, that.nestedObject) &&
         Objects.equals(this.otherModelProp, that.otherModelProp) &&
         Objects.equals(this.polymorphicProp, that.polymorphicProp) &&
         Objects.equals(this.setProp, that.setProp) &&
@@ -364,6 +369,7 @@ public class Everything {
         mapWithObjectValues,
         mapWithOtherModelValues,
         mapWithPrimitiveValues,
+        nestedObject,
         nsintegerEnum,
         nsuintegerEnum,
         numberProp,
@@ -459,6 +465,10 @@ public class Everything {
 
     public @Nullable Map<String, Integer> getMapWithPrimitiveValues() {
         return this.mapWithPrimitiveValues;
+    }
+
+    public @Nullable Nested getNestedObject() {
+        return this.nestedObject;
     }
 
     public @Nullable EverythingNsintegerEnum getNsintegerEnum() {
@@ -606,6 +616,10 @@ public class Everything {
         return this._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX && this._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX];
     }
 
+    public boolean getNestedObjectIsSet() {
+        return this._bits.length > NESTED_OBJECT_INDEX && this._bits[NESTED_OBJECT_INDEX];
+    }
+
     public boolean getNsintegerEnumIsSet() {
         return this._bits.length > NSINTEGER_ENUM_INDEX && this._bits[NSINTEGER_ENUM_INDEX];
     }
@@ -695,6 +709,7 @@ public class Everything {
         private @Nullable Map<String, String> mapWithObjectValues;
         private @Nullable Map<String, User> mapWithOtherModelValues;
         private @Nullable Map<String, Integer> mapWithPrimitiveValues;
+        private @Nullable Nested nestedObject;
         private @Nullable EverythingNsintegerEnum nsintegerEnum;
         private @Nullable EverythingNsuintegerEnum nsuintegerEnum;
         private @Nullable Double numberProp;
@@ -716,7 +731,7 @@ public class Everything {
         private boolean[] _bits;
 
         private Builder() {
-            this._bits = new boolean[36];
+            this._bits = new boolean[37];
         }
 
         private Builder(@NonNull Everything model) {
@@ -739,6 +754,7 @@ public class Everything {
             this.mapWithObjectValues = model.mapWithObjectValues;
             this.mapWithOtherModelValues = model.mapWithOtherModelValues;
             this.mapWithPrimitiveValues = model.mapWithPrimitiveValues;
+            this.nestedObject = model.nestedObject;
             this.nsintegerEnum = model.nsintegerEnum;
             this.nsuintegerEnum = model.nsuintegerEnum;
             this.numberProp = model.numberProp;
@@ -926,6 +942,15 @@ public class Everything {
             this.mapWithPrimitiveValues = value;
             if (this._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX) {
                 this._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX] = true;
+            }
+            return this;
+        }
+
+        @NonNull
+        public Builder setNestedObject(@Nullable Nested value) {
+            this.nestedObject = value;
+            if (this._bits.length > NESTED_OBJECT_INDEX) {
+                this._bits[NESTED_OBJECT_INDEX] = true;
             }
             return this;
         }
@@ -1159,6 +1184,10 @@ public class Everything {
             return this.mapWithPrimitiveValues;
         }
 
+        public @Nullable Nested getNestedObject() {
+            return this.nestedObject;
+        }
+
         public @Nullable EverythingNsintegerEnum getNsintegerEnum() {
             return this.nsintegerEnum;
         }
@@ -1249,6 +1278,7 @@ public class Everything {
             this.mapWithObjectValues,
             this.mapWithOtherModelValues,
             this.mapWithPrimitiveValues,
+            this.nestedObject,
             this.nsintegerEnum,
             this.nsuintegerEnum,
             this.numberProp,
@@ -1346,6 +1376,10 @@ public class Everything {
             if (model._bits.length > MAP_WITH_PRIMITIVE_VALUES_INDEX && model._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX]) {
                 this.mapWithPrimitiveValues = model.mapWithPrimitiveValues;
                 this._bits[MAP_WITH_PRIMITIVE_VALUES_INDEX] = true;
+            }
+            if (model._bits.length > NESTED_OBJECT_INDEX && model._bits[NESTED_OBJECT_INDEX]) {
+                this.nestedObject = model.nestedObject;
+                this._bits[NESTED_OBJECT_INDEX] = true;
             }
             if (model._bits.length > NSINTEGER_ENUM_INDEX && model._bits[NSINTEGER_ENUM_INDEX]) {
                 this.nsintegerEnum = model.nsintegerEnum;
@@ -1460,6 +1494,7 @@ public class Everything {
         private TypeAdapter<Map<String, Object>> map_String__Object_TypeAdapter;
         private TypeAdapter<Map<String, String>> map_String__String_TypeAdapter;
         private TypeAdapter<Map<String, User>> map_String__User_TypeAdapter;
+        private TypeAdapter<Nested> nestedTypeAdapter;
         private TypeAdapter<Set<Integer>> set_Integer_TypeAdapter;
         private TypeAdapter<Set<Object>> set_Object_TypeAdapter;
         private TypeAdapter<Set<String>> set_String_TypeAdapter;
@@ -1591,6 +1626,12 @@ public class Everything {
                     this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
                 }
                 this.map_String__Integer_TypeAdapter.write(writer.name("map_with_primitive_values"), value.mapWithPrimitiveValues);
+            }
+            if (value._bits.length > NESTED_OBJECT_INDEX && value._bits[NESTED_OBJECT_INDEX]) {
+                if (this.nestedTypeAdapter == null) {
+                    this.nestedTypeAdapter = this.gson.getAdapter(Nested.class).nullSafe();
+                }
+                this.nestedTypeAdapter.write(writer.name("nested_object"), value.nestedObject);
             }
             if (value._bits.length > NSINTEGER_ENUM_INDEX && value._bits[NSINTEGER_ENUM_INDEX]) {
                 if (this.everythingNsintegerEnumTypeAdapter == null) {
@@ -1822,6 +1863,12 @@ public class Everything {
                             this.map_String__Integer_TypeAdapter = this.gson.getAdapter(new TypeToken<Map<String, Integer>>(){}).nullSafe();
                         }
                         builder.setMapWithPrimitiveValues(this.map_String__Integer_TypeAdapter.read(reader));
+                        break;
+                    case ("nested_object"):
+                        if (this.nestedTypeAdapter == null) {
+                            this.nestedTypeAdapter = this.gson.getAdapter(Nested.class).nullSafe();
+                        }
+                        builder.setNestedObject(this.nestedTypeAdapter.read(reader));
                         break;
                     case ("nsinteger_enum"):
                         if (this.everythingNsintegerEnumTypeAdapter == null) {
@@ -2105,12 +2152,13 @@ public class Everything {
         private @Nullable Image value2;
         private @Nullable Pin value3;
         private @Nullable Everything value4;
-        private @Nullable String value5;
-        private @Nullable Boolean value6;
-        private @Nullable Integer value7;
-        private @Nullable Double value8;
-        private @Nullable Date value9;
-        private @Nullable String value10;
+        private @Nullable OneofObject value5;
+        private @Nullable String value6;
+        private @Nullable Boolean value7;
+        private @Nullable Integer value8;
+        private @Nullable Double value9;
+        private @Nullable Date value10;
+        private @Nullable String value11;
 
         private EverythingPolymorphicProp() {
         }
@@ -2135,28 +2183,32 @@ public class Everything {
             this.value4 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull String value) {
+        public EverythingPolymorphicProp(@NonNull OneofObject value) {
             this.value5 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull Boolean value) {
+        public EverythingPolymorphicProp(@NonNull String value) {
             this.value6 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull Integer value) {
+        public EverythingPolymorphicProp(@NonNull Boolean value) {
             this.value7 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull Double value) {
+        public EverythingPolymorphicProp(@NonNull Integer value) {
             this.value8 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull Date value) {
+        public EverythingPolymorphicProp(@NonNull Double value) {
             this.value9 = value;
         }
 
-        public EverythingPolymorphicProp(@NonNull String value) {
+        public EverythingPolymorphicProp(@NonNull Date value) {
             this.value10 = value;
+        }
+
+        public EverythingPolymorphicProp(@NonNull String value) {
+            this.value11 = value;
         }
 
         @Nullable
@@ -2194,6 +2246,9 @@ public class Everything {
             if (value10 != null) {
                 return matcher.match(value10);
             }
+            if (value11 != null) {
+                return matcher.match(value11);
+            }
             return null;
         }
 
@@ -2217,6 +2272,7 @@ public class Everything {
             private TypeAdapter<Image> imageTypeAdapter;
             private TypeAdapter<Pin> pinTypeAdapter;
             private TypeAdapter<Everything> everythingTypeAdapter;
+            private TypeAdapter<OneofObject> oneofObjectTypeAdapter;
             private TypeAdapter<String> stringTypeAdapter;
             private TypeAdapter<Boolean> booleanTypeAdapter;
             private TypeAdapter<Integer> integerTypeAdapter;
@@ -2292,12 +2348,13 @@ public class Everything {
             R match(@NonNull Image value2);
             R match(@NonNull Pin value3);
             R match(@NonNull Everything value4);
-            R match(@NonNull String value5);
-            R match(@NonNull Boolean value6);
-            R match(@NonNull Integer value7);
-            R match(@NonNull Double value8);
-            R match(@NonNull Date value9);
-            R match(@NonNull String value10);
+            R match(@NonNull OneofObject value5);
+            R match(@NonNull String value6);
+            R match(@NonNull Boolean value7);
+            R match(@NonNull Integer value8);
+            R match(@NonNull Double value9);
+            R match(@NonNull Date value10);
+            R match(@NonNull String value11);
         }
     }
 }

@@ -10,6 +10,8 @@
 #import "Everything.h"
 #import "Everything.h"
 #import "Image.h"
+#import "Nested.h"
+#import "OneofObject.h"
 #import "Pin.h"
 #import "User.h"
 
@@ -252,12 +254,13 @@
 @property (nonatomic, strong, readwrite) Image * value2;
 @property (nonatomic, strong, readwrite) Pin * value3;
 @property (nonatomic, strong, readwrite) Everything * value4;
-@property (nonatomic, copy, readwrite) NSString * value5;
-@property (nonatomic, assign, readwrite) BOOL value6;
-@property (nonatomic, assign, readwrite) NSInteger value7;
-@property (nonatomic, assign, readwrite) double value8;
-@property (nonatomic, copy, readwrite) NSDate * value9;
-@property (nonatomic, copy, readwrite) NSURL * value10;
+@property (nonatomic, strong, readwrite) OneofObject * value5;
+@property (nonatomic, copy, readwrite) NSString * value6;
+@property (nonatomic, assign, readwrite) BOOL value7;
+@property (nonatomic, assign, readwrite) NSInteger value8;
+@property (nonatomic, assign, readwrite) double value9;
+@property (nonatomic, copy, readwrite) NSDate * value10;
+@property (nonatomic, copy, readwrite) NSURL * value11;
 @end
 
 @implementation EverythingPolymorphicProp
@@ -296,49 +299,56 @@
     obj.internalType = EverythingPolymorphicPropInternalTypeEverything;
     return obj;
 }
++ (instancetype)objectWithOneofObject:(OneofObject *)oneofObject
+{
+    EverythingPolymorphicProp *obj = [[EverythingPolymorphicProp alloc] init];
+    obj.value5 = oneofObject;
+    obj.internalType = EverythingPolymorphicPropInternalTypeOneofObject;
+    return obj;
+}
 + (instancetype)objectWithString:(NSString *)string
 {
     EverythingPolymorphicProp *obj = [[EverythingPolymorphicProp alloc] init];
-    obj.value5 = string;
+    obj.value6 = string;
     obj.internalType = EverythingPolymorphicPropInternalTypeString;
     return obj;
 }
 + (instancetype)objectWithBoolean:(BOOL)boolean
 {
     EverythingPolymorphicProp *obj = [[EverythingPolymorphicProp alloc] init];
-    obj.value6 = boolean;
+    obj.value7 = boolean;
     obj.internalType = EverythingPolymorphicPropInternalTypeBoolean;
     return obj;
 }
 + (instancetype)objectWithInteger:(NSInteger)integer
 {
     EverythingPolymorphicProp *obj = [[EverythingPolymorphicProp alloc] init];
-    obj.value7 = integer;
+    obj.value8 = integer;
     obj.internalType = EverythingPolymorphicPropInternalTypeInteger;
     return obj;
 }
 + (instancetype)objectWithFloat:(double)floatProperty
 {
     EverythingPolymorphicProp *obj = [[EverythingPolymorphicProp alloc] init];
-    obj.value8 = floatProperty;
+    obj.value9 = floatProperty;
     obj.internalType = EverythingPolymorphicPropInternalTypeFloat;
     return obj;
 }
 + (instancetype)objectWithDate:(NSDate *)date
 {
     EverythingPolymorphicProp *obj = [[EverythingPolymorphicProp alloc] init];
-    obj.value9 = date;
+    obj.value10 = date;
     obj.internalType = EverythingPolymorphicPropInternalTypeDate;
     return obj;
 }
 + (instancetype)objectWithURL:(NSURL *)uRL
 {
     EverythingPolymorphicProp *obj = [[EverythingPolymorphicProp alloc] init];
-    obj.value10 = uRL;
+    obj.value11 = uRL;
     obj.internalType = EverythingPolymorphicPropInternalTypeURL;
     return obj;
 }
-- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler orString:(nullable PLANK_NOESCAPE void (^)(NSString * string))stringMatchHandler orBoolean:(nullable PLANK_NOESCAPE void (^)(BOOL boolean))booleanMatchHandler orInteger:(nullable PLANK_NOESCAPE void (^)(NSInteger integer))integerMatchHandler orFloat:(nullable PLANK_NOESCAPE void (^)(double floatProperty))floatPropertyMatchHandler orDate:(nullable PLANK_NOESCAPE void (^)(NSDate * date))dateMatchHandler orURL:(nullable PLANK_NOESCAPE void (^)(NSURL * uRL))uRLMatchHandler
+- (void)matchUser:(nullable PLANK_NOESCAPE void (^)(User * user))userMatchHandler orBoard:(nullable PLANK_NOESCAPE void (^)(Board * board))boardMatchHandler orImage:(nullable PLANK_NOESCAPE void (^)(Image * image))imageMatchHandler orPin:(nullable PLANK_NOESCAPE void (^)(Pin * pin))pinMatchHandler orEverything:(nullable PLANK_NOESCAPE void (^)(Everything * everything))everythingMatchHandler orOneofObject:(nullable PLANK_NOESCAPE void (^)(OneofObject * oneofObject))oneofObjectMatchHandler orString:(nullable PLANK_NOESCAPE void (^)(NSString * string))stringMatchHandler orBoolean:(nullable PLANK_NOESCAPE void (^)(BOOL boolean))booleanMatchHandler orInteger:(nullable PLANK_NOESCAPE void (^)(NSInteger integer))integerMatchHandler orFloat:(nullable PLANK_NOESCAPE void (^)(double floatProperty))floatPropertyMatchHandler orDate:(nullable PLANK_NOESCAPE void (^)(NSDate * date))dateMatchHandler orURL:(nullable PLANK_NOESCAPE void (^)(NSURL * uRL))uRLMatchHandler
 {
     switch (self.internalType) {
     case EverythingPolymorphicPropInternalTypeUser:
@@ -366,34 +376,39 @@
             everythingMatchHandler(self.value4);
         }
         break;
+    case EverythingPolymorphicPropInternalTypeOneofObject:
+        if (oneofObjectMatchHandler != NULL) {
+            oneofObjectMatchHandler(self.value5);
+        }
+        break;
     case EverythingPolymorphicPropInternalTypeString:
         if (stringMatchHandler != NULL) {
-            stringMatchHandler(self.value5);
+            stringMatchHandler(self.value6);
         }
         break;
     case EverythingPolymorphicPropInternalTypeBoolean:
         if (booleanMatchHandler != NULL) {
-            booleanMatchHandler(self.value6);
+            booleanMatchHandler(self.value7);
         }
         break;
     case EverythingPolymorphicPropInternalTypeInteger:
         if (integerMatchHandler != NULL) {
-            integerMatchHandler(self.value7);
+            integerMatchHandler(self.value8);
         }
         break;
     case EverythingPolymorphicPropInternalTypeFloat:
         if (floatPropertyMatchHandler != NULL) {
-            floatPropertyMatchHandler(self.value8);
+            floatPropertyMatchHandler(self.value9);
         }
         break;
     case EverythingPolymorphicPropInternalTypeDate:
         if (dateMatchHandler != NULL) {
-            dateMatchHandler(self.value9);
+            dateMatchHandler(self.value10);
         }
         break;
     case EverythingPolymorphicPropInternalTypeURL:
         if (uRLMatchHandler != NULL) {
-            uRLMatchHandler(self.value10);
+            uRLMatchHandler(self.value11);
         }
         break;
     }
@@ -412,18 +427,19 @@
 {
     return (
         (anObject != nil) &&
+        (_value9 == anObject.value9) &&
         (_value8 == anObject.value8) &&
         (_value7 == anObject.value7) &&
-        (_value6 == anObject.value6) &&
         (_internalType == anObject.internalType) &&
         (_value0 == anObject.value0 || [_value0 isEqual:anObject.value0]) &&
         (_value1 == anObject.value1 || [_value1 isEqual:anObject.value1]) &&
-        (_value10 == anObject.value10 || [_value10 isEqual:anObject.value10]) &&
+        (_value10 == anObject.value10 || [_value10 isEqualToDate:anObject.value10]) &&
+        (_value11 == anObject.value11 || [_value11 isEqual:anObject.value11]) &&
         (_value2 == anObject.value2 || [_value2 isEqual:anObject.value2]) &&
         (_value3 == anObject.value3 || [_value3 isEqual:anObject.value3]) &&
         (_value4 == anObject.value4 || [_value4 isEqual:anObject.value4]) &&
-        (_value5 == anObject.value5 || [_value5 isEqualToString:anObject.value5]) &&
-        (_value9 == anObject.value9 || [_value9 isEqualToDate:anObject.value9])
+        (_value5 == anObject.value5 || [_value5 isEqual:anObject.value5]) &&
+        (_value6 == anObject.value6 || [_value6 isEqualToString:anObject.value6])
     );
 }
 - (NSUInteger)hash
@@ -434,14 +450,15 @@
         [_value0 hash],
         [_value1 hash],
         [_value10 hash],
+        [_value11 hash],
         [_value2 hash],
         [_value3 hash],
         [_value4 hash],
         [_value5 hash],
-        (_value6 ? 1231 : 1237),
-        (NSUInteger)_value7,
-         [@(_value8) hash],
-        [_value9 hash]
+        [_value6 hash],
+        (_value7 ? 1231 : 1237),
+        (NSUInteger)_value8,
+         [@(_value9) hash]
     };
     return PINIntegerArrayHash(subhashes, sizeof(subhashes) / sizeof(subhashes[0]));
 }
@@ -483,32 +500,39 @@
             return resultDict[@"value4"];
         }
         break;
-    case EverythingPolymorphicPropInternalTypeString:
+    case EverythingPolymorphicPropInternalTypeOneofObject:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            [resultDict setObject:_value5 forKey:@"value5"];
+            [resultDict setObject:[_value5 dictionaryObjectRepresentation] forKey:@"value5"];
             return resultDict[@"value5"];
         }
         break;
-    case EverythingPolymorphicPropInternalTypeBoolean:
+    case EverythingPolymorphicPropInternalTypeString:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            [resultDict setObject:@(_value6) forKey: @"value6"];
+            [resultDict setObject:_value6 forKey:@"value6"];
             return resultDict[@"value6"];
         }
         break;
-    case EverythingPolymorphicPropInternalTypeInteger:
+    case EverythingPolymorphicPropInternalTypeBoolean:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
             [resultDict setObject:@(_value7) forKey: @"value7"];
             return resultDict[@"value7"];
         }
         break;
-    case EverythingPolymorphicPropInternalTypeFloat:
+    case EverythingPolymorphicPropInternalTypeInteger:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
             [resultDict setObject:@(_value8) forKey: @"value8"];
             return resultDict[@"value8"];
+        }
+        break;
+    case EverythingPolymorphicPropInternalTypeFloat:
+        {
+            NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
+            [resultDict setObject:@(_value9) forKey: @"value9"];
+            return resultDict[@"value9"];
         }
         break;
     case EverythingPolymorphicPropInternalTypeDate:
@@ -516,18 +540,18 @@
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
             NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey];
             if ([[valueTransformer class] allowsReverseTransformation]) {
-                [resultDict setObject:[valueTransformer reverseTransformedValue:_value9] forKey:@"value9"];
+                [resultDict setObject:[valueTransformer reverseTransformedValue:_value10] forKey:@"value10"];
             } else {
-                [resultDict setObject:[NSNull null] forKey:@"value9"];
+                [resultDict setObject:[NSNull null] forKey:@"value10"];
             }
-            return resultDict[@"value9"];
+            return resultDict[@"value10"];
         }
         break;
     case EverythingPolymorphicPropInternalTypeURL:
         {
             NSMutableDictionary *resultDict = [[NSMutableDictionary alloc] init];
-            [resultDict setObject:[_value10 absoluteString] forKey:@"value10"];
-            return resultDict[@"value10"];
+            [resultDict setObject:[_value11 absoluteString] forKey:@"value11"];
+            return resultDict[@"value11"];
         }
         break;
     }
@@ -550,15 +574,16 @@
     _internalType = (EverythingPolymorphicPropInternalType)[aDecoder decodeIntegerForKey:@"internal_type"];
     _value0 = [aDecoder decodeObjectOfClass:[User class] forKey:@"value0"];
     _value1 = [aDecoder decodeObjectOfClass:[Board class] forKey:@"value1"];
-    _value10 = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"value10"];
+    _value10 = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"value10"];
+    _value11 = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"value11"];
     _value2 = [aDecoder decodeObjectOfClass:[Image class] forKey:@"value2"];
     _value3 = [aDecoder decodeObjectOfClass:[Pin class] forKey:@"value3"];
     _value4 = [aDecoder decodeObjectOfClass:[Everything class] forKey:@"value4"];
-    _value5 = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"value5"];
-    _value6 = [aDecoder decodeBoolForKey:@"value6"];
-    _value7 = [aDecoder decodeIntegerForKey:@"value7"];
-    _value8 = [aDecoder decodeDoubleForKey:@"value8"];
-    _value9 = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"value9"];
+    _value5 = [aDecoder decodeObjectOfClass:[OneofObject class] forKey:@"value5"];
+    _value6 = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"value6"];
+    _value7 = [aDecoder decodeBoolForKey:@"value7"];
+    _value8 = [aDecoder decodeIntegerForKey:@"value8"];
+    _value9 = [aDecoder decodeDoubleForKey:@"value9"];
     return self;
 }
 - (void)encodeWithCoder:(NSCoder *)aCoder
@@ -567,14 +592,15 @@
     [aCoder encodeObject:self.value0 forKey:@"value0"];
     [aCoder encodeObject:self.value1 forKey:@"value1"];
     [aCoder encodeObject:self.value10 forKey:@"value10"];
+    [aCoder encodeObject:self.value11 forKey:@"value11"];
     [aCoder encodeObject:self.value2 forKey:@"value2"];
     [aCoder encodeObject:self.value3 forKey:@"value3"];
     [aCoder encodeObject:self.value4 forKey:@"value4"];
     [aCoder encodeObject:self.value5 forKey:@"value5"];
-    [aCoder encodeBool:self.value6 forKey:@"value6"];
-    [aCoder encodeInteger:self.value7 forKey:@"value7"];
-    [aCoder encodeDouble:self.value8 forKey:@"value8"];
-    [aCoder encodeObject:self.value9 forKey:@"value9"];
+    [aCoder encodeObject:self.value6 forKey:@"value6"];
+    [aCoder encodeBool:self.value7 forKey:@"value7"];
+    [aCoder encodeInteger:self.value8 forKey:@"value8"];
+    [aCoder encodeDouble:self.value9 forKey:@"value9"];
 }
 @end
 
@@ -598,6 +624,7 @@ struct EverythingDirtyProperties {
     unsigned int EverythingDirtyPropertyMapWithObjectValues:1;
     unsigned int EverythingDirtyPropertyMapWithOtherModelValues:1;
     unsigned int EverythingDirtyPropertyMapWithPrimitiveValues:1;
+    unsigned int EverythingDirtyPropertyNestedObject:1;
     unsigned int EverythingDirtyPropertyNsintegerEnum:1;
     unsigned int EverythingDirtyPropertyNsuintegerEnum:1;
     unsigned int EverythingDirtyPropertyNumberProp:1;
@@ -996,6 +1023,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"nested_object"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_nestedObject = [Nested modelObjectWithDictionary:value];
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyNestedObject = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"nsinteger_enum"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -1049,6 +1085,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                     }
                     if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"everything"]) {
                         self->_polymorphicProp = [EverythingPolymorphicProp  objectWithEverything:[Everything modelObjectWithDictionary:value]];
+                    }
+                    if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"oneof_object"]) {
+                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithOneofObject:[OneofObject modelObjectWithDictionary:value]];
                     }
                     if ([value isKindOfClass:[NSString class]]) {
                         self->_polymorphicProp = [EverythingPolymorphicProp  objectWithString:[value copy]];
@@ -1245,6 +1284,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _mapWithObjectValues = builder.mapWithObjectValues;
     _mapWithOtherModelValues = builder.mapWithOtherModelValues;
     _mapWithPrimitiveValues = builder.mapWithPrimitiveValues;
+    _nestedObject = builder.nestedObject;
     _nsintegerEnum = builder.nsintegerEnum;
     _nsuintegerEnum = builder.nsuintegerEnum;
     _numberProp = builder.numberProp;
@@ -1272,7 +1312,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
-    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:36];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:37];
     [descriptionFields addObject:parentDebugDescription];
     struct EverythingDirtyProperties props = _everythingDirtyProperties;
     if (props.EverythingDirtyPropertyArrayProp) {
@@ -1328,6 +1368,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (props.EverythingDirtyPropertyMapWithPrimitiveValues) {
         [descriptionFields addObject:[@"_mapWithPrimitiveValues = " stringByAppendingFormat:@"%@", _mapWithPrimitiveValues]];
+    }
+    if (props.EverythingDirtyPropertyNestedObject) {
+        [descriptionFields addObject:[@"_nestedObject = " stringByAppendingFormat:@"%@", _nestedObject]];
     }
     if (props.EverythingDirtyPropertyNsintegerEnum) {
         [descriptionFields addObject:[@"_nsintegerEnum = " stringByAppendingFormat:@"%@", @(_nsintegerEnum)]];
@@ -1433,6 +1476,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         (_mapWithObjectValues == anObject.mapWithObjectValues || [_mapWithObjectValues isEqualToDictionary:anObject.mapWithObjectValues]) &&
         (_mapWithOtherModelValues == anObject.mapWithOtherModelValues || [_mapWithOtherModelValues isEqualToDictionary:anObject.mapWithOtherModelValues]) &&
         (_mapWithPrimitiveValues == anObject.mapWithPrimitiveValues || [_mapWithPrimitiveValues isEqualToDictionary:anObject.mapWithPrimitiveValues]) &&
+        (_nestedObject == anObject.nestedObject || [_nestedObject isEqual:anObject.nestedObject]) &&
         (_otherModelProp == anObject.otherModelProp || [_otherModelProp isEqual:anObject.otherModelProp]) &&
         (_polymorphicProp == anObject.polymorphicProp || [_polymorphicProp isEqual:anObject.polymorphicProp]) &&
         (_setProp == anObject.setProp || [_setProp isEqualToSet:anObject.setProp]) &&
@@ -1467,6 +1511,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [_mapWithObjectValues hash],
         [_mapWithOtherModelValues hash],
         [_mapWithPrimitiveValues hash],
+        [_nestedObject hash],
         (NSUInteger)_nsintegerEnum,
         (NSUInteger)_nsuintegerEnum,
          [@(_numberProp) hash],
@@ -1500,7 +1545,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 }
 - (NSDictionary *)dictionaryObjectRepresentation
 {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:36];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:37];
     if (_everythingDirtyProperties.EverythingDirtyPropertyArrayProp) {
         if (_arrayProp != nil) {
             [dict setObject:_arrayProp forKey:@"array_prop"];
@@ -1691,6 +1736,13 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             [dict setObject:[NSNull null] forKey:@"map_with_primitive_values"];
         }
     }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyNestedObject) {
+        if (_nestedObject != nil) {
+            [dict setObject:[_nestedObject dictionaryObjectRepresentation] forKey:@"nested_object"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"nested_object"];
+        }
+    }
     if (_everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum) {
         [dict setObject:@(_nsintegerEnum) forKey:@"nsinteger_enum"];
     }
@@ -1874,6 +1926,10 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues == 1;
 }
+- (BOOL)isNestedObjectSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyNestedObject == 1;
+}
 - (BOOL)isNsintegerEnumSet
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum == 1;
@@ -1979,11 +2035,12 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _mapWithObjectValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"map_with_object_values"];
     _mapWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class]]] forKey:@"map_with_other_model_values"];
     _mapWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"map_with_primitive_values"];
+    _nestedObject = [aDecoder decodeObjectOfClass:[Nested class] forKey:@"nested_object"];
     _nsintegerEnum = (EverythingNsintegerEnum)[aDecoder decodeIntegerForKey:@"nsinteger_enum"];
     _nsuintegerEnum = (EverythingNsuintegerEnum)[aDecoder decodeIntegerForKey:@"nsuinteger_enum"];
     _numberProp = [aDecoder decodeDoubleForKey:@"number_prop"];
     _otherModelProp = [aDecoder decodeObjectOfClass:[User class] forKey:@"other_model_prop"];
-    _polymorphicProp = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [Everything class], [Image class], [NSDate class], [NSNumber class], [NSString class], [NSURL class], [Pin class], [User class]]] forKey:@"polymorphic_prop"];
+    _polymorphicProp = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[Board class], [Everything class], [Image class], [NSDate class], [NSNumber class], [NSString class], [NSURL class], [OneofObject class], [Pin class], [User class]]] forKey:@"polymorphic_prop"];
     _setProp = [aDecoder decodeObjectOfClass:[NSSet class] forKey:@"set_prop"];
     _setPropWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSSet class], [User class]]] forKey:@"set_prop_with_other_model_values"];
     _setPropWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSNumber class], [NSSet class]]] forKey:@"set_prop_with_primitive_values"];
@@ -2016,6 +2073,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues = [aDecoder decodeIntForKey:@"map_with_object_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues = [aDecoder decodeIntForKey:@"map_with_other_model_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues = [aDecoder decodeIntForKey:@"map_with_primitive_values_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyNestedObject = [aDecoder decodeIntForKey:@"nested_object_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum = [aDecoder decodeIntForKey:@"nsinteger_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum = [aDecoder decodeIntForKey:@"nsuinteger_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyNumberProp = [aDecoder decodeIntForKey:@"number_prop_dirty_property"] & 0x1;
@@ -2059,6 +2117,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeObject:self.mapWithObjectValues forKey:@"map_with_object_values"];
     [aCoder encodeObject:self.mapWithOtherModelValues forKey:@"map_with_other_model_values"];
     [aCoder encodeObject:self.mapWithPrimitiveValues forKey:@"map_with_primitive_values"];
+    [aCoder encodeObject:self.nestedObject forKey:@"nested_object"];
     [aCoder encodeInteger:self.nsintegerEnum forKey:@"nsinteger_enum"];
     [aCoder encodeInteger:self.nsuintegerEnum forKey:@"nsuinteger_enum"];
     [aCoder encodeDouble:self.numberProp forKey:@"number_prop"];
@@ -2095,6 +2154,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues forKey:@"map_with_object_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues forKey:@"map_with_other_model_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues forKey:@"map_with_primitive_values_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNestedObject forKey:@"nested_object_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum forKey:@"nsinteger_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum forKey:@"nsuinteger_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNumberProp forKey:@"number_prop_dirty_property"];
@@ -2179,6 +2239,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues) {
         _mapWithPrimitiveValues = modelObject.mapWithPrimitiveValues;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyNestedObject) {
+        _nestedObject = modelObject.nestedObject;
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum) {
         _nsintegerEnum = modelObject.nsintegerEnum;
@@ -2298,6 +2361,18 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues) {
         builder.mapWithPrimitiveValues = modelObject.mapWithPrimitiveValues;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyNestedObject) {
+        id value = modelObject.nestedObject;
+        if (value != nil) {
+            if (builder.nestedObject) {
+                builder.nestedObject = [builder.nestedObject mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];
+            } else {
+                builder.nestedObject = value;
+            }
+        } else {
+            builder.nestedObject = nil;
+        }
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum) {
         builder.nsintegerEnum = modelObject.nsintegerEnum;
@@ -2454,6 +2529,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     _mapWithPrimitiveValues = mapWithPrimitiveValues;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues = 1;
+}
+- (void)setNestedObject:(Nested *)nestedObject
+{
+    _nestedObject = nestedObject;
+    _everythingDirtyProperties.EverythingDirtyPropertyNestedObject = 1;
 }
 - (void)setNsintegerEnum:(EverythingNsintegerEnum)nsintegerEnum
 {
