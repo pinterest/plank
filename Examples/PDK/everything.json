@@ -15,6 +15,13 @@
     "set_prop": { "type": "array", "unique": "true" },
     "array_prop": { "type": "array" },
     "other_model_prop": { "$ref": "user.json" },
+    "nested_object": {
+      "title": "nested",
+      "type": "object",
+      "properties": {
+        "id": {"type": "integer"}
+      }
+    },
     "date_prop" : {
       "type": "string",
       "format": "date-time"

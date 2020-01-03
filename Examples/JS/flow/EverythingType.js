@@ -10,6 +10,7 @@
 import type { PlankDate, PlankURI } from './runtime.flow.js';
 import type { BoardType } from './BoardType.js';
 import type { ImageType } from './ImageType.js';
+import type { Nested } from './Nested.js';
 import type { PinType } from './PinType.js';
 import type { UserType } from './UserType.js';
 
@@ -78,6 +79,7 @@ export type EverythingType = $Shape<{|
   +map_with_object_values: ?{ +[string]: string },
   +map_with_other_model_values: ?{ +[string]: UserType },
   +map_with_primitive_values: ?{ +[string]: number } /* Integer */,
+  +nested_object: ?NestedType,
   +nsinteger_enum: EverythingNsintegerEnum,
   +nsuinteger_enum: EverythingNsuintegerEnum,
   +number_prop: number,

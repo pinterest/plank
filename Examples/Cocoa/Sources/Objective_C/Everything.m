@@ -10,6 +10,7 @@
 #import "Everything.h"
 #import "Everything.h"
 #import "Image.h"
+#import "Nested.h"
 #import "Pin.h"
 #import "User.h"
 
@@ -598,6 +599,7 @@ struct EverythingDirtyProperties {
     unsigned int EverythingDirtyPropertyMapWithObjectValues:1;
     unsigned int EverythingDirtyPropertyMapWithOtherModelValues:1;
     unsigned int EverythingDirtyPropertyMapWithPrimitiveValues:1;
+    unsigned int EverythingDirtyPropertyNestedObject:1;
     unsigned int EverythingDirtyPropertyNsintegerEnum:1;
     unsigned int EverythingDirtyPropertyNsuintegerEnum:1;
     unsigned int EverythingDirtyPropertyNumberProp:1;
@@ -996,6 +998,15 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
+            __unsafe_unretained id value = modelDictionary[@"nested_object"]; // Collection will retain.
+            if (value != nil) {
+                if (value != (id)kCFNull) {
+                    self->_nestedObject = [Nested modelObjectWithDictionary:value];
+                }
+                self->_everythingDirtyProperties.EverythingDirtyPropertyNestedObject = 1;
+            }
+        }
+        {
             __unsafe_unretained id value = modelDictionary[@"nsinteger_enum"]; // Collection will retain.
             if (value != nil) {
                 if (value != (id)kCFNull) {
@@ -1245,6 +1256,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _mapWithObjectValues = builder.mapWithObjectValues;
     _mapWithOtherModelValues = builder.mapWithOtherModelValues;
     _mapWithPrimitiveValues = builder.mapWithPrimitiveValues;
+    _nestedObject = builder.nestedObject;
     _nsintegerEnum = builder.nsintegerEnum;
     _nsuintegerEnum = builder.nsuintegerEnum;
     _numberProp = builder.numberProp;
@@ -1272,7 +1284,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
-    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:36];
+    NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:37];
     [descriptionFields addObject:parentDebugDescription];
     struct EverythingDirtyProperties props = _everythingDirtyProperties;
     if (props.EverythingDirtyPropertyArrayProp) {
@@ -1328,6 +1340,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (props.EverythingDirtyPropertyMapWithPrimitiveValues) {
         [descriptionFields addObject:[@"_mapWithPrimitiveValues = " stringByAppendingFormat:@"%@", _mapWithPrimitiveValues]];
+    }
+    if (props.EverythingDirtyPropertyNestedObject) {
+        [descriptionFields addObject:[@"_nestedObject = " stringByAppendingFormat:@"%@", _nestedObject]];
     }
     if (props.EverythingDirtyPropertyNsintegerEnum) {
         [descriptionFields addObject:[@"_nsintegerEnum = " stringByAppendingFormat:@"%@", @(_nsintegerEnum)]];
@@ -1433,6 +1448,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         (_mapWithObjectValues == anObject.mapWithObjectValues || [_mapWithObjectValues isEqualToDictionary:anObject.mapWithObjectValues]) &&
         (_mapWithOtherModelValues == anObject.mapWithOtherModelValues || [_mapWithOtherModelValues isEqualToDictionary:anObject.mapWithOtherModelValues]) &&
         (_mapWithPrimitiveValues == anObject.mapWithPrimitiveValues || [_mapWithPrimitiveValues isEqualToDictionary:anObject.mapWithPrimitiveValues]) &&
+        (_nestedObject == anObject.nestedObject || [_nestedObject isEqual:anObject.nestedObject]) &&
         (_otherModelProp == anObject.otherModelProp || [_otherModelProp isEqual:anObject.otherModelProp]) &&
         (_polymorphicProp == anObject.polymorphicProp || [_polymorphicProp isEqual:anObject.polymorphicProp]) &&
         (_setProp == anObject.setProp || [_setProp isEqualToSet:anObject.setProp]) &&
@@ -1467,6 +1483,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         [_mapWithObjectValues hash],
         [_mapWithOtherModelValues hash],
         [_mapWithPrimitiveValues hash],
+        [_nestedObject hash],
         (NSUInteger)_nsintegerEnum,
         (NSUInteger)_nsuintegerEnum,
          [@(_numberProp) hash],
@@ -1500,7 +1517,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 }
 - (NSDictionary *)dictionaryObjectRepresentation
 {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:36];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:37];
     if (_everythingDirtyProperties.EverythingDirtyPropertyArrayProp) {
         if (_arrayProp != nil) {
             [dict setObject:_arrayProp forKey:@"array_prop"];
@@ -1691,6 +1708,13 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             [dict setObject:[NSNull null] forKey:@"map_with_primitive_values"];
         }
     }
+    if (_everythingDirtyProperties.EverythingDirtyPropertyNestedObject) {
+        if (_nestedObject != nil) {
+            [dict setObject:[_nestedObject dictionaryObjectRepresentation] forKey:@"nested_object"];
+        } else {
+            [dict setObject:[NSNull null] forKey:@"nested_object"];
+        }
+    }
     if (_everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum) {
         [dict setObject:@(_nsintegerEnum) forKey:@"nsinteger_enum"];
     }
@@ -1874,6 +1898,10 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues == 1;
 }
+- (BOOL)isNestedObjectSet
+{
+    return _everythingDirtyProperties.EverythingDirtyPropertyNestedObject == 1;
+}
 - (BOOL)isNsintegerEnumSet
 {
     return _everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum == 1;
@@ -1979,6 +2007,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _mapWithObjectValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSString class]]] forKey:@"map_with_object_values"];
     _mapWithOtherModelValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [User class]]] forKey:@"map_with_other_model_values"];
     _mapWithPrimitiveValues = [aDecoder decodeObjectOfClasses:[NSSet setWithArray:@[[NSDictionary class], [NSNumber class]]] forKey:@"map_with_primitive_values"];
+    _nestedObject = [aDecoder decodeObjectOfClass:[Nested class] forKey:@"nested_object"];
     _nsintegerEnum = (EverythingNsintegerEnum)[aDecoder decodeIntegerForKey:@"nsinteger_enum"];
     _nsuintegerEnum = (EverythingNsuintegerEnum)[aDecoder decodeIntegerForKey:@"nsuinteger_enum"];
     _numberProp = [aDecoder decodeDoubleForKey:@"number_prop"];
@@ -2016,6 +2045,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues = [aDecoder decodeIntForKey:@"map_with_object_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues = [aDecoder decodeIntForKey:@"map_with_other_model_values_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues = [aDecoder decodeIntForKey:@"map_with_primitive_values_dirty_property"] & 0x1;
+    _everythingDirtyProperties.EverythingDirtyPropertyNestedObject = [aDecoder decodeIntForKey:@"nested_object_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum = [aDecoder decodeIntForKey:@"nsinteger_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum = [aDecoder decodeIntForKey:@"nsuinteger_enum_dirty_property"] & 0x1;
     _everythingDirtyProperties.EverythingDirtyPropertyNumberProp = [aDecoder decodeIntForKey:@"number_prop_dirty_property"] & 0x1;
@@ -2059,6 +2089,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeObject:self.mapWithObjectValues forKey:@"map_with_object_values"];
     [aCoder encodeObject:self.mapWithOtherModelValues forKey:@"map_with_other_model_values"];
     [aCoder encodeObject:self.mapWithPrimitiveValues forKey:@"map_with_primitive_values"];
+    [aCoder encodeObject:self.nestedObject forKey:@"nested_object"];
     [aCoder encodeInteger:self.nsintegerEnum forKey:@"nsinteger_enum"];
     [aCoder encodeInteger:self.nsuintegerEnum forKey:@"nsuinteger_enum"];
     [aCoder encodeDouble:self.numberProp forKey:@"number_prop"];
@@ -2095,6 +2126,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues forKey:@"map_with_object_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues forKey:@"map_with_other_model_values_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues forKey:@"map_with_primitive_values_dirty_property"];
+    [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNestedObject forKey:@"nested_object_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum forKey:@"nsinteger_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum forKey:@"nsuinteger_enum_dirty_property"];
     [aCoder encodeInt:_everythingDirtyProperties.EverythingDirtyPropertyNumberProp forKey:@"number_prop_dirty_property"];
@@ -2179,6 +2211,9 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues) {
         _mapWithPrimitiveValues = modelObject.mapWithPrimitiveValues;
+    }
+    if (everythingDirtyProperties.EverythingDirtyPropertyNestedObject) {
+        _nestedObject = modelObject.nestedObject;
     }
     if (everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum) {
         _nsintegerEnum = modelObject.nsintegerEnum;
@@ -2298,6 +2333,18 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues) {
         builder.mapWithPrimitiveValues = modelObject.mapWithPrimitiveValues;
+    }
+    if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyNestedObject) {
+        id value = modelObject.nestedObject;
+        if (value != nil) {
+            if (builder.nestedObject) {
+                builder.nestedObject = [builder.nestedObject mergeWithModel:value initType:PlankModelInitTypeFromSubmerge];
+            } else {
+                builder.nestedObject = value;
+            }
+        } else {
+            builder.nestedObject = nil;
+        }
     }
     if (modelObject.everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum) {
         builder.nsintegerEnum = modelObject.nsintegerEnum;
@@ -2454,6 +2501,11 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
 {
     _mapWithPrimitiveValues = mapWithPrimitiveValues;
     _everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues = 1;
+}
+- (void)setNestedObject:(Nested *)nestedObject
+{
+    _nestedObject = nestedObject;
+    _everythingDirtyProperties.EverythingDirtyPropertyNestedObject = 1;
 }
 - (void)setNsintegerEnum:(EverythingNsintegerEnum)nsintegerEnum
 {

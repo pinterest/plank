@@ -509,15 +509,16 @@ public func generateFiles(urls: Set<URL>, outputDirectory: URL, generationParame
                 return
             }
             processedSchemas.insert(url)
-            switch schema {
-            case let .object(rootObject):
+
+            let objectRoots = schema.objectRoots()
+            assert(!objectRoots.isEmpty, "Incorrect Schema for root.") // TODO: Better error message.
+
+            objectRoots.forEach { rootObject in
                 fileGenerators.forEach { generator in
                     generator.generateFile(rootObject,
                                            outputDirectory: outputDirectory,
                                            generationParameters: generationParameters)
                 }
-            default:
-                assert(false, "Incorrect Schema for root.") // TODO: Better error message.
             }
         }
     } while

@@ -12,6 +12,7 @@
 @class Everything;
 @class EverythingBuilder;
 @class Image;
+@class Nested;
 @class Pin;
 @class User;
 
@@ -148,6 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSString *> * mapWithObjectValues;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, User *> * mapWithOtherModelValues;
 @property (nullable, nonatomic, strong, readonly) NSDictionary<NSString *, NSNumber /* Integer */ *> * mapWithPrimitiveValues;
+@property (nullable, nonatomic, strong, readonly) Nested * nestedObject;
 @property (nonatomic, assign, readonly) EverythingNsintegerEnum nsintegerEnum;
 @property (nonatomic, assign, readonly) EverythingNsuintegerEnum nsuintegerEnum;
 @property (nonatomic, assign, readonly) double numberProp;
@@ -196,6 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isMapWithObjectValuesSet;
 - (BOOL)isMapWithOtherModelValuesSet;
 - (BOOL)isMapWithPrimitiveValuesSet;
+- (BOOL)isNestedObjectSet;
 - (BOOL)isNsintegerEnumSet;
 - (BOOL)isNsuintegerEnumSet;
 - (BOOL)isNumberPropSet;
@@ -236,6 +239,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSString *> * mapWithObjectValues;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, User *> * mapWithOtherModelValues;
 @property (nullable, nonatomic, strong, readwrite) NSDictionary<NSString *, NSNumber /* Integer */ *> * mapWithPrimitiveValues;
+@property (nullable, nonatomic, strong, readwrite) Nested * nestedObject;
 @property (nonatomic, assign, readwrite) EverythingNsintegerEnum nsintegerEnum;
 @property (nonatomic, assign, readwrite) EverythingNsuintegerEnum nsuintegerEnum;
 @property (nonatomic, assign, readwrite) double numberProp;
