@@ -4,6 +4,45 @@ title: "Overview"
 categories: java-reference
 ---
 
+## Dependencies
+
+The Java output currently has external dependencies. 
+
+### Gson
+To support JSON deserialization, we will be utilizing the `@SerializedName` annotation in [Gson](https://github.com/google/gson) to facilitate the conversion between Plank types and JSON objects.
+
+## Implementation Details
+
+### Nullability
+
+For properties that are not required (i.e. nullable), we will annotate them with [`@Nullable`](https://developer.android.com/reference/android/support/annotation/Nullable.html).
+
+Properties that are required, we will annotate them with [`@NonNull`](https://developer.android.com/reference/android/support/annotation/NonNull.html). 
+
+### Builder
+
+A builder class is generated as a subclass. Use builders to create brand new instances of the model, or to make copies of existing instances.
+Construct a new instance: `Pin pin = Pin.builder().build();`
+Generate a builder from an existing model: `Pin anotherPin = pin.toBuilder().build();`
+
+### IsSet Checking
+
+It is sometimes necessary to determine whether a field has been explicitly set. For example, in order to distinguish between a boolean field being explicitly set to false as opposed to just having a default value of false.
+
+`pin.getInStockIsSet() // Returns true only if pin.setInStock(true/false) has been called before`
+
+If the model has been deserialized from Json, `pin.getInStockIsSet()` will return true only if the field was present in the Json.
+
+### TypeAdapters
+
+A Gson TypeAdapterFactory is generated as a sublcass. You should register this TypeAdapterFactory in order in order to guarantee proper behavior for merging and field "is set" checking, as well as for performance benefits.
+
+`gsonBuilder.registerTypeAdapterFactory(new Pin.PinTypeAdapterFactory());`
+
+### Enums
+
+An enum class is created to represent enums defined in the schema.
+
 #### JSON Schema to Java type mapping
 
 | Schema Property Type | Java Type |
@@ -104,92 +143,322 @@ categories: java-reference
 #### Java
 
 ```java
-@AutoValue
-public abstract class Pin {
-    public static final int UNKNOWN = -1;
-    public static final int OUT_OF_STOCK = 0;
-    public static final int IN_STOCK = 1;
-    @IntDef({UNKNOWN, OUT_OF_STOCK, IN_STOCK})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface PinInStock {}
+public class Pin {
 
-    public abstract @SerializedName("attribution") @Nullable Map<String, String> attribution();
-    public abstract @SerializedName("attribution_objects") @Nullable List<PinAttributionObjects> attributionObjects();
-    public abstract @SerializedName("board") @Nullable Board board();
-    public abstract @SerializedName("color") @Nullable String color();
-    public abstract @SerializedName("counts") @Nullable Map<String, Integer> counts();
-    public abstract @SerializedName("created_at") Date createdAt();
-    public abstract @SerializedName("creator") Map<String, User> creator();
-    public abstract @SerializedName("description") @Nullable String descriptionText();
-    public abstract @SerializedName("id") String identifier();
-    public abstract @SerializedName("image") @Nullable Image image();
-    public abstract @SerializedName("in_stock") @Nullable @PinInStock int inStock();
-    public abstract @SerializedName("link") @Nullable String link();
-    public abstract @SerializedName("media") @Nullable Map<String, String> media();
-    public abstract @SerializedName("note") @Nullable String note();
-    public abstract @SerializedName("tags") @Nullable List<Map<String, Object>> tags();
-    public abstract @SerializedName("url") @Nullable String url();
-    public abstract @SerializedName("visual_search_attrs") @Nullable Map<String, Object> visualSearchAttrs();
-    public static Builder builder() {
-        return new AutoValue_Pin.Builder();
+    public enum PinInStock {
+        @SerializedName("-1") UNKNOWN(-1), 
+        @SerializedName("0") OUT_OF_STOCK(0), 
+        @SerializedName("1") IN_STOCK(1);
+        private final int value;
+        PinInStock(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return this.value;
+        }
     }
-    abstract Builder toBuilder();
-    public static TypeAdapter<Pin> jsonAdapter(Gson gson) {
-        return new AutoValue_Pin.GsonTypeAdapter(gson);
+
+    public static final String TYPE = "pin";
+
+    @SerializedName("attribution") private @Nullable Map<String, String> attribution;
+    @SerializedName("attribution_objects") private @Nullable List<PinAttributionObjects> attributionObjects;
+    @SerializedName("board") private @Nullable Board board;
+    @SerializedName("color") private @Nullable String color;
+    @SerializedName("counts") private @Nullable Map<String, Integer> counts;
+    @SerializedName("created_at") private @NonNull Date createdAt;
+    @SerializedName("creator") private @NonNull Map<String, User> creator;
+    @SerializedName("description") private @Nullable String description;
+    @SerializedName("id") private @NonNull String uid;
+    @SerializedName("image") private @Nullable Image image;
+    @SerializedName("in_stock") private @Nullable PinInStock inStock;
+    @SerializedName("link") private @Nullable String link;
+    @SerializedName("media") private @Nullable Map<String, String> media;
+    @SerializedName("note") private @Nullable String note;
+    @SerializedName("tags") private @Nullable List<Map<String, Object>> tags;
+    @SerializedName("url") private @Nullable String url;
+    @SerializedName("visual_search_attrs") private @Nullable Map<String, Object> visualSearchAttrs;
+
+    private static final int ATTRIBUTION_INDEX = 0;
+    private static final int ATTRIBUTION_OBJECTS_INDEX = 1;
+    private static final int BOARD_INDEX = 2;
+    // ... omitted for brevity
+    private static final int VISUAL_SEARCH_ATTRS_INDEX = 16;
+
+    private boolean[] _bits;
+
+    private Pin(
+        @Nullable Map<String, String> attribution,
+        @Nullable List<PinAttributionObjects> attributionObjects,
+        // ... omitted for brevity
+        boolean[] _bits
+    ) {
+        this.attribution = attribution;
+        this.attributionObjects = attributionObjects;
+        // ... omitted for brevity
+        this._bits = _bits;
     }
-    @AutoValue.Builder
-    public abstract static class Builder {
-        public abstract Builder setAttribution(@Nullable Map<String, String> value);
-        public abstract Builder setAttributionObjects(@Nullable List<PinAttributionObjects> value);
-        public abstract Builder setBoard(@Nullable Board value);
-        public abstract Builder setColor(@Nullable String value);
-        public abstract Builder setCounts(@Nullable Map<String, Integer> value);
-        public abstract Builder setCreatedAt(Date value);
-        public abstract Builder setCreator(Map<String, User> value);
-        public abstract Builder setDescriptionText(@Nullable String value);
-        public abstract Builder setIdentifier(String value);
-        public abstract Builder setImage(@Nullable Image value);
-        public abstract Builder setInStock(@Nullable @PinInStock int value);
-        public abstract Builder setLink(@Nullable String value);
-        public abstract Builder setMedia(@Nullable Map<String, String> value);
-        public abstract Builder setNote(@Nullable String value);
-        public abstract Builder setTags(@Nullable List<Map<String, Object>> value);
-        public abstract Builder setUrl(@Nullable String value);
-        public abstract Builder setVisualSearchAttrs(@Nullable Map<String, Object> value);
-        public abstract Pin build();
+
+    @NonNull
+    public static Pin.Builder builder() {
+        return new Pin.Builder();
+    }
+
+    @NonNull
+    public Pin.Builder toBuilder() {
+        return new Pin.Builder(this);
+    }
+
+    @NonNull
+    public Pin mergeFrom(@NonNull Pin model) {
+        Pin.Builder builder = this.toBuilder();
+        builder.mergeFrom(model);
+        return builder.build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Pin that = (Pin) o;
+        return Objects.equals(this.inStock, that.inStock) &&
+        Objects.equals(this.attribution, that.attribution) &&
+        // ... omitted for brevity
+        Objects.equals(this.visualSearchAttrs, that.visualSearchAttrs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(attribution,
+        attributionObjects,
+        // ... omitted for brevity
+        visualSearchAttrs);
+    }
+
+    /**
+     * GETTERS
+     */
+    
+    public @Nullable Map<String, String> getAttribution() {
+        return this.attribution;
+    }
+
+    public @Nullable List<PinAttributionObjects> getAttributionObjects() {
+        return this.attributionObjects;
+    }
+
+    // ...omitted for brevity
+
+    public @Nullable String getUrl() {
+        return this.url;
+    }
+
+    public @Nullable Map<String, Object> getVisualSearchAttrs() {
+        return this.visualSearchAttrs;
+    }
+
+    /**
+     * IsSet CHECKERS
+     */
+
+    public boolean getAttributionIsSet() {
+        return this._bits.length > ATTRIBUTION_INDEX && this._bits[ATTRIBUTION_INDEX];
+    }
+
+    public boolean getAttributionObjectsIsSet() {
+        return this._bits.length > ATTRIBUTION_OBJECTS_INDEX && this._bits[ATTRIBUTION_OBJECTS_INDEX];
+    }
+
+    // ... omitted for brevity
+
+    /**
+     * BUILDER
+     */
+    public static class Builder {
+
+        private @Nullable Map<String, String> attribution;
+        private @Nullable List<PinAttributionObjects> attributionObjects;
+        // ... omitted for brevity
+        private @Nullable Map<String, Object> visualSearchAttrs;
+
+        private boolean[] _bits;
+
+        private Builder() {
+            this._bits = new boolean[17];
+        }
+
+        private Builder(@NonNull Pin model) {
+            this.attribution = model.attribution;
+            this.attributionObjects = model.attributionObjects;
+            // ... omitted for brevity
+            this._bits = model._bits;
+        }
+
+        @NonNull
+        public Builder setAttribution(@Nullable Map<String, String> value) {
+            this.attribution = value;
+            if (this._bits.length > ATTRIBUTION_INDEX) {
+                this._bits[ATTRIBUTION_INDEX] = true;
+            }
+            return this;
+        }
+
+        // ... the rest of the fields are omitted for brevity
+
+        public @Nullable Map<String, String> getAttribution() {
+            return this.attribution;
+        }
+
+        // ... the rest of the fields are omitted for brevity
+
+        @NonNull
+        public Pin build() {
+            return new Pin(
+            this.attribution,
+            this.attributionObjects,
+            // ... omitted for brevity
+            this._bits
+            );
+        }
+
+        public void mergeFrom(@NonNull Pin model) {
+            if (model._bits.length > ATTRIBUTION_INDEX && model._bits[ATTRIBUTION_INDEX]) {
+                this.attribution = model.attribution;
+                this._bits[ATTRIBUTION_INDEX] = true;
+            }
+            if (model._bits.length > ATTRIBUTION_OBJECTS_INDEX && model._bits[ATTRIBUTION_OBJECTS_INDEX]) {
+                this.attributionObjects = model.attributionObjects;
+                this._bits[ATTRIBUTION_OBJECTS_INDEX] = true;
+            }
+            
+            // ... omitted for brevity
+        }
+    }
+
+    /**
+     * TypeAdapterFactory
+     */
+    public static class PinTypeAdapterFactory implements TypeAdapterFactory {
+
+        @Nullable
+        @Override
+        public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
+            if (!Pin.class.isAssignableFrom(typeToken.getRawType())) {
+                return null;
+            }
+            return (TypeAdapter<T>) new PinTypeAdapter(gson);
+        }
+    }
+
+    /**
+     * TypeAdapterFactory
+     */
+    private static class PinTypeAdapter extends TypeAdapter<Pin> {
+        // ... omitted for brevity
+    }
+
+    /**
+     * Algabraeic Data Type
+     */
+    public static final class PinAttributionObjects {
+
+        private @Nullable Board value0;
+        private @Nullable User value1;
+
+        private PinAttributionObjects() {
+        }
+
+        public PinAttributionObjects(@NonNull Board value) {
+            this.value0 = value;
+        }
+
+        public PinAttributionObjects(@NonNull User value) {
+            this.value1 = value;
+        }
+
+        @Nullable
+        public <R> R matchPinAttributionObjects(PinAttributionObjectsMatcher<R> matcher) {
+            if (value0 != null) {
+                return matcher.match(value0);
+            }
+            if (value1 != null) {
+                return matcher.match(value1);
+            }
+            return null;
+        }
+
+        public static class PinAttributionObjectsTypeAdapterFactory implements TypeAdapterFactory {
+
+            @Nullable
+            @Override
+            public <T> TypeAdapter<T> create(@NonNull Gson gson, @NonNull TypeToken<T> typeToken) {
+                if (!PinAttributionObjects.class.isAssignableFrom(typeToken.getRawType())) {
+                    return null;
+                }
+                return (TypeAdapter<T>) new PinAttributionObjectsTypeAdapter(gson);
+            }
+        }
+
+        private static class PinAttributionObjectsTypeAdapter extends TypeAdapter<PinAttributionObjects> {
+
+            private final Gson gson;
+            private TypeAdapter<Board> boardTypeAdapter;
+            private TypeAdapter<User> userTypeAdapter;
+
+            public PinAttributionObjectsTypeAdapter(Gson gson) {
+                this.gson = gson;
+            }
+
+            @Override
+            public void write(@NonNull JsonWriter writer, PinAttributionObjects value) throws IOException {
+                writer.nullValue();
+            }
+
+            @Nullable
+            @Override
+            public PinAttributionObjects read(@NonNull JsonReader reader) throws IOException {
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.nextNull();
+                    return null;
+                }
+                if (reader.peek() == JsonToken.BEGIN_OBJECT) {
+                    JsonObject jsonObject = this.gson.fromJson(reader, JsonObject.class);
+                    String type;
+                    try {
+                        type = jsonObject.get("type").getAsString();
+                    } catch (Exception e) {
+                        return new PinAttributionObjects();
+                    }
+                    if (type == null) {
+                        return new PinAttributionObjects();
+                    }
+                    switch (type) {
+                        case ("board"):
+                            if (this.boardTypeAdapter == null) {
+                                this.boardTypeAdapter = this.gson.getAdapter(Board.class).nullSafe();
+                            }
+                            return new PinAttributionObjects(boardTypeAdapter.fromJsonTree(jsonObject));
+                        case ("user"):
+                            if (this.userTypeAdapter == null) {
+                                this.userTypeAdapter = this.gson.getAdapter(User.class).nullSafe();
+                            }
+                            return new PinAttributionObjects(userTypeAdapter.fromJsonTree(jsonObject));
+                        default:
+                            return new PinAttributionObjects();
+                    }
+                }
+                reader.skipValue();
+                return new PinAttributionObjects();
+            }
+        }
+
+        public interface PinAttributionObjectsMatcher<R> {
+            R match(@NonNull Board value0);
+            R match(@NonNull User value1);
+        }
     }
 }
 ```
-
-
-## Dependencies
-
-The Java output currently has external dependencies. 
-
-### AutoValue
-The generated code will reference annotations from [AutoValue](https://github.com/google/auto/tree/master/value) to automatically create implementations of getters/setters for fields and `equals`, `hashCode` and `toString` implementations. Motivation is to use a well adopted framework that provides compile-time generation of boilerplate code which makes the generated code easier to read and maintain.
-
-### Gson
-To support JSON deserialization, we will be utilizing the `@SerializedName` annotation in [Gson](https://github.com/google/gson) to facilitate the conversion between Plank types and JSON objects.
-
-### AutoValue Gson
-We will be utilizing [AutoValue Gson](https://github.com/rharter/auto-value-gson) to synthesize type adapters from the Gson and AutoValue annotations.
-
-## Implementation Details
-
-### Nullability
-
-For properties that are not required (i.e. nullable), we will annotate them with [`@Nullable`](https://developer.android.com/reference/android/support/annotation/Nullable.html).
-
-Properties that are required, we will annotate them with [`@NonNull`](https://developer.android.com/reference/android/support/annotation/NonNull.html). 
-
-### Enums
-
-Enums are classes in Java. Using Enums over [`@IntDef`](https://developer.android.com/reference/android/support/annotation/IntDef.html) adds about 13x more memory as if you would have used [`@IntDef`](https://developer.android.com/reference/android/support/annotation/IntDef.html).
-
-For similar reasons, we will be utilizing [@StringDef](https://developer.android.com/reference/android/support/annotation/StringDef.html
-) for String enumerations.
-
-For more in-depth information, watch this [video](https://www.youtube.com/watch?v=Hzs6OBcvNQE) by Android Developers.
-
-
