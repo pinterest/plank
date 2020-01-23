@@ -419,6 +419,7 @@ public struct JavaIR {
         let innerClasses: [JavaIR.Class]
         let interfaces: [JavaIR.Interface]
         let properties: [[JavaIR.Property]]
+        var javadoc: [String]?
 
         func render() -> [String] {
             let implementsList = implements?.joined(separator: ", ") ?? ""
@@ -426,7 +427,15 @@ public struct JavaIR {
 
             let extendsStmt = extends.map { " extends \($0) " } ?? ""
 
-            var lines = annotations.map { "@\($0.rendered)" }.sorted() + [
+            var lines: [String] = []
+
+            if let javadoc = javadoc {
+                lines.append("/**")
+                lines += javadoc.map { " * \($0)" }
+                lines.append("**/")
+            }
+
+            lines += annotations.map { "@\($0.rendered)" }.sorted() + [
                 "\(modifiers.render()) class \(name)\(extendsStmt)\(implementsStmt) {",
             ]
 
