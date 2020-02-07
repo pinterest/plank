@@ -207,6 +207,10 @@ public class Everything {
 
     private boolean[] _bits;
 
+    public Everything() {
+        this._bits = new boolean[37];
+    }
+
     private Everything(
         @Nullable List<Object> arrayProp,
         @Nullable Boolean booleanProp,

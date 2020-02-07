@@ -64,11 +64,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
             } + ["this._bits = _bits;"]
         }
 
-        if params[.javaGeneratePackagePrivateSetters] == nil {
-            return [privateConstructor]
-        } else {
-            return [publicConstructor, privateConstructor]
-        }
+        return [publicConstructor, privateConstructor]
     }
 
     func renderStaticTypeString() -> JavaIR.Property {

@@ -35,6 +35,10 @@ public class Nested {
 
     private boolean[] _bits;
 
+    public Nested() {
+        this._bits = new boolean[1];
+    }
+
     private Nested(
         @Nullable Integer uid,
         boolean[] _bits

@@ -35,6 +35,10 @@ public class OneofObject {
 
     private boolean[] _bits;
 
+    public OneofObject() {
+        this._bits = new boolean[1];
+    }
+
     private OneofObject(
         @Nullable Integer uid,
         boolean[] _bits
