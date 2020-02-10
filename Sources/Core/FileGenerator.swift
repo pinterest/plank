@@ -71,6 +71,7 @@ let objectiveCReservedWords = Set<String>([
     "char",
     "const",
     "continue",
+    "copy",
     "default",
     "do",
     "double",

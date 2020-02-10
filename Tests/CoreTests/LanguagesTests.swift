@@ -41,5 +41,8 @@ class LanguagesTests: XCTestCase {
 
         XCTAssert(Languages.objectiveC.snakeCaseToPropertyName("id") == "identifier")
         XCTAssert(Languages.java.snakeCaseToPropertyName("id") == "uid")
+
+        XCTAssertEqual(Languages.objectiveC.snakeCaseToPropertyName("copy"), "copyProperty")
+        XCTAssertEqual(Languages.java.snakeCaseToPropertyName("copy"), "copy")
     }
 }
