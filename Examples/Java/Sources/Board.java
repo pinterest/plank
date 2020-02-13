@@ -56,6 +56,10 @@ public class Board {
 
     private boolean[] _bits;
 
+    public Board() {
+        this._bits = new boolean[10];
+    }
+
     private Board(
         @Nullable String uid,
         @Nullable Set<User> contributors,

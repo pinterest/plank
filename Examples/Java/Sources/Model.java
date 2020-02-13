@@ -35,6 +35,10 @@ public class Model {
 
     private boolean[] _bits;
 
+    public Model() {
+        this._bits = new boolean[1];
+    }
+
     private Model(
         @Nullable String uid,
         boolean[] _bits

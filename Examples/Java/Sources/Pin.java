@@ -84,6 +84,10 @@ public class Pin {
 
     private boolean[] _bits;
 
+    public Pin() {
+        this._bits = new boolean[17];
+    }
+
     private Pin(
         @Nullable Map<String, String> attribution,
         @Nullable List<PinAttributionObjects> attributionObjects,

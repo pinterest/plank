@@ -41,6 +41,10 @@ public class VariableSubtitution {
 
     private boolean[] _bits;
 
+    public VariableSubtitution() {
+        this._bits = new boolean[4];
+    }
+
     private VariableSubtitution(
         @Nullable Integer allocProp,
         @Nullable Integer copyProp,

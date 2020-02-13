@@ -39,6 +39,10 @@ public class Image {
 
     private boolean[] _bits;
 
+    public Image() {
+        this._bits = new boolean[3];
+    }
+
     private Image(
         @Nullable Integer height,
         @Nullable String url,

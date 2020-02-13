@@ -59,6 +59,10 @@ public class User {
 
     private boolean[] _bits;
 
+    public User() {
+        this._bits = new boolean[10];
+    }
+
     private User(
         @Nullable String bio,
         @Nullable Map<String, Integer> counts,
