@@ -427,55 +427,55 @@ struct PinDirtyProperties {
     [descriptionFields addObject:parentDebugDescription];
     struct PinDirtyProperties props = _pinDirtyProperties;
     if (props.PinDirtyPropertyAttribution) {
-        [descriptionFields addObject:[@"_attribution = " stringByAppendingFormat:@"%@", _attribution]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_attribution = %@", _attribution]];
     }
     if (props.PinDirtyPropertyAttributionObjects) {
-        [descriptionFields addObject:[@"_attributionObjects = " stringByAppendingFormat:@"%@", _attributionObjects]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_attributionObjects = %@", _attributionObjects]];
     }
     if (props.PinDirtyPropertyBoard) {
-        [descriptionFields addObject:[@"_board = " stringByAppendingFormat:@"%@", _board]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_board = %@", _board]];
     }
     if (props.PinDirtyPropertyColor) {
-        [descriptionFields addObject:[@"_color = " stringByAppendingFormat:@"%@", _color]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_color = %@", _color]];
     }
     if (props.PinDirtyPropertyCounts) {
-        [descriptionFields addObject:[@"_counts = " stringByAppendingFormat:@"%@", _counts]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_counts = %@", _counts]];
     }
     if (props.PinDirtyPropertyCreatedAt) {
-        [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_createdAt = %@", _createdAt]];
     }
     if (props.PinDirtyPropertyCreator) {
-        [descriptionFields addObject:[@"_creator = " stringByAppendingFormat:@"%@", _creator]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_creator = %@", _creator]];
     }
     if (props.PinDirtyPropertyDescriptionText) {
-        [descriptionFields addObject:[@"_descriptionText = " stringByAppendingFormat:@"%@", _descriptionText]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_descriptionText = %@", _descriptionText]];
     }
     if (props.PinDirtyPropertyIdentifier) {
-        [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", _identifier]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_identifier = %@", _identifier]];
     }
     if (props.PinDirtyPropertyImage) {
-        [descriptionFields addObject:[@"_image = " stringByAppendingFormat:@"%@", _image]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_image = %@", _image]];
     }
     if (props.PinDirtyPropertyInStock) {
-        [descriptionFields addObject:[@"_inStock = " stringByAppendingFormat:@"%@", @(_inStock)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_inStock = %@", @(_inStock)]];
     }
     if (props.PinDirtyPropertyLink) {
-        [descriptionFields addObject:[@"_link = " stringByAppendingFormat:@"%@", _link]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_link = %@", _link]];
     }
     if (props.PinDirtyPropertyMedia) {
-        [descriptionFields addObject:[@"_media = " stringByAppendingFormat:@"%@", _media]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_media = %@", _media]];
     }
     if (props.PinDirtyPropertyNote) {
-        [descriptionFields addObject:[@"_note = " stringByAppendingFormat:@"%@", _note]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_note = %@", _note]];
     }
     if (props.PinDirtyPropertyTags) {
-        [descriptionFields addObject:[@"_tags = " stringByAppendingFormat:@"%@", _tags]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_tags = %@", _tags]];
     }
     if (props.PinDirtyPropertyUrl) {
-        [descriptionFields addObject:[@"_url = " stringByAppendingFormat:@"%@", _url]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_url = %@", _url]];
     }
     if (props.PinDirtyPropertyVisualSearchAttrs) {
-        [descriptionFields addObject:[@"_visualSearchAttrs = " stringByAppendingFormat:@"%@", _visualSearchAttrs]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_visualSearchAttrs = %@", _visualSearchAttrs]];
     }
     return [NSString stringWithFormat:@"Pin = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }

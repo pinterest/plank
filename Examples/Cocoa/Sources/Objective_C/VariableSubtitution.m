@@ -118,16 +118,16 @@ struct VariableSubtitutionDirtyProperties {
     [descriptionFields addObject:parentDebugDescription];
     struct VariableSubtitutionDirtyProperties props = _variableSubtitutionDirtyProperties;
     if (props.VariableSubtitutionDirtyPropertyAllocProp) {
-        [descriptionFields addObject:[@"_allocProp = " stringByAppendingFormat:@"%@", @(_allocProp)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_allocProp = %@", @(_allocProp)]];
     }
     if (props.VariableSubtitutionDirtyPropertyCopyProp) {
-        [descriptionFields addObject:[@"_copyProp = " stringByAppendingFormat:@"%@", @(_copyProp)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_copyProp = %@", @(_copyProp)]];
     }
     if (props.VariableSubtitutionDirtyPropertyMutableCopyProp) {
-        [descriptionFields addObject:[@"_mutableCopyProp = " stringByAppendingFormat:@"%@", @(_mutableCopyProp)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_mutableCopyProp = %@", @(_mutableCopyProp)]];
     }
     if (props.VariableSubtitutionDirtyPropertyNewProp) {
-        [descriptionFields addObject:[@"_newProp = " stringByAppendingFormat:@"%@", @(_newProp)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_newProp = %@", @(_newProp)]];
     }
     return [NSString stringWithFormat:@"VariableSubtitution = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }

@@ -85,7 +85,7 @@ struct ModelDirtyProperties {
     [descriptionFields addObject:parentDebugDescription];
     struct ModelDirtyProperties props = _modelDirtyProperties;
     if (props.ModelDirtyPropertyIdentifier) {
-        [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", _identifier]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_identifier = %@", _identifier]];
     }
     return [NSString stringWithFormat:@"Model = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }

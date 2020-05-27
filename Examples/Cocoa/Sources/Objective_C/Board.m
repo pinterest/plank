@@ -191,31 +191,31 @@ struct BoardDirtyProperties {
     [descriptionFields addObject:parentDebugDescription];
     struct BoardDirtyProperties props = _boardDirtyProperties;
     if (props.BoardDirtyPropertyContributors) {
-        [descriptionFields addObject:[@"_contributors = " stringByAppendingFormat:@"%@", _contributors]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_contributors = %@", _contributors]];
     }
     if (props.BoardDirtyPropertyCounts) {
-        [descriptionFields addObject:[@"_counts = " stringByAppendingFormat:@"%@", _counts]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_counts = %@", _counts]];
     }
     if (props.BoardDirtyPropertyCreatedAt) {
-        [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_createdAt = %@", _createdAt]];
     }
     if (props.BoardDirtyPropertyCreator) {
-        [descriptionFields addObject:[@"_creator = " stringByAppendingFormat:@"%@", _creator]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_creator = %@", _creator]];
     }
     if (props.BoardDirtyPropertyCreatorURL) {
-        [descriptionFields addObject:[@"_creatorURL = " stringByAppendingFormat:@"%@", _creatorURL]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_creatorURL = %@", _creatorURL]];
     }
     if (props.BoardDirtyPropertyDescriptionText) {
-        [descriptionFields addObject:[@"_descriptionText = " stringByAppendingFormat:@"%@", _descriptionText]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_descriptionText = %@", _descriptionText]];
     }
     if (props.BoardDirtyPropertyImage) {
-        [descriptionFields addObject:[@"_image = " stringByAppendingFormat:@"%@", _image]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_image = %@", _image]];
     }
     if (props.BoardDirtyPropertyName) {
-        [descriptionFields addObject:[@"_name = " stringByAppendingFormat:@"%@", _name]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_name = %@", _name]];
     }
     if (props.BoardDirtyPropertyUrl) {
-        [descriptionFields addObject:[@"_url = " stringByAppendingFormat:@"%@", _url]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_url = %@", _url]];
     }
     return [NSString stringWithFormat:@"Board = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }

@@ -107,13 +107,13 @@ struct ImageDirtyProperties {
     [descriptionFields addObject:parentDebugDescription];
     struct ImageDirtyProperties props = _imageDirtyProperties;
     if (props.ImageDirtyPropertyHeight) {
-        [descriptionFields addObject:[@"_height = " stringByAppendingFormat:@"%@", @(_height)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_height = %@", @(_height)]];
     }
     if (props.ImageDirtyPropertyUrl) {
-        [descriptionFields addObject:[@"_url = " stringByAppendingFormat:@"%@", _url]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_url = %@", _url]];
     }
     if (props.ImageDirtyPropertyWidth) {
-        [descriptionFields addObject:[@"_width = " stringByAppendingFormat:@"%@", @(_width)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_width = %@", @(_width)]];
     }
     return [NSString stringWithFormat:@"Image = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }

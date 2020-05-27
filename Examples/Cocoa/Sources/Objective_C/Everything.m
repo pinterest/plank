@@ -1316,115 +1316,115 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     [descriptionFields addObject:parentDebugDescription];
     struct EverythingDirtyProperties props = _everythingDirtyProperties;
     if (props.EverythingDirtyPropertyArrayProp) {
-        [descriptionFields addObject:[@"_arrayProp = " stringByAppendingFormat:@"%@", _arrayProp]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_arrayProp = %@", _arrayProp]];
     }
     if (props.EverythingDirtyPropertyCharEnum) {
-        [descriptionFields addObject:[@"_charEnum = " stringByAppendingFormat:@"%@", @(_charEnum)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_charEnum = %@", @(_charEnum)]];
     }
     if (props.EverythingDirtyPropertyDateProp) {
-        [descriptionFields addObject:[@"_dateProp = " stringByAppendingFormat:@"%@", _dateProp]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_dateProp = %@", _dateProp]];
     }
     if (props.EverythingDirtyPropertyIntEnum) {
-        [descriptionFields addObject:[@"_intEnum = " stringByAppendingFormat:@"%@", @(_intEnum)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_intEnum = %@", @(_intEnum)]];
     }
     if (props.EverythingDirtyPropertyIntProp) {
-        [descriptionFields addObject:[@"_intProp = " stringByAppendingFormat:@"%@", @(_intProp)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_intProp = %@", @(_intProp)]];
     }
     if (props.EverythingDirtyPropertyListPolymorphicValues) {
-        [descriptionFields addObject:[@"_listPolymorphicValues = " stringByAppendingFormat:@"%@", _listPolymorphicValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_listPolymorphicValues = %@", _listPolymorphicValues]];
     }
     if (props.EverythingDirtyPropertyListWithListAndOtherModelValues) {
-        [descriptionFields addObject:[@"_listWithListAndOtherModelValues = " stringByAppendingFormat:@"%@", _listWithListAndOtherModelValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_listWithListAndOtherModelValues = %@", _listWithListAndOtherModelValues]];
     }
     if (props.EverythingDirtyPropertyListWithMapAndOtherModelValues) {
-        [descriptionFields addObject:[@"_listWithMapAndOtherModelValues = " stringByAppendingFormat:@"%@", _listWithMapAndOtherModelValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_listWithMapAndOtherModelValues = %@", _listWithMapAndOtherModelValues]];
     }
     if (props.EverythingDirtyPropertyListWithObjectValues) {
-        [descriptionFields addObject:[@"_listWithObjectValues = " stringByAppendingFormat:@"%@", _listWithObjectValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_listWithObjectValues = %@", _listWithObjectValues]];
     }
     if (props.EverythingDirtyPropertyListWithOtherModelValues) {
-        [descriptionFields addObject:[@"_listWithOtherModelValues = " stringByAppendingFormat:@"%@", _listWithOtherModelValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_listWithOtherModelValues = %@", _listWithOtherModelValues]];
     }
     if (props.EverythingDirtyPropertyListWithPrimitiveValues) {
-        [descriptionFields addObject:[@"_listWithPrimitiveValues = " stringByAppendingFormat:@"%@", _listWithPrimitiveValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_listWithPrimitiveValues = %@", _listWithPrimitiveValues]];
     }
     if (props.EverythingDirtyPropertyMapPolymorphicValues) {
-        [descriptionFields addObject:[@"_mapPolymorphicValues = " stringByAppendingFormat:@"%@", _mapPolymorphicValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_mapPolymorphicValues = %@", _mapPolymorphicValues]];
     }
     if (props.EverythingDirtyPropertyMapProp) {
-        [descriptionFields addObject:[@"_mapProp = " stringByAppendingFormat:@"%@", _mapProp]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_mapProp = %@", _mapProp]];
     }
     if (props.EverythingDirtyPropertyMapWithListAndOtherModelValues) {
-        [descriptionFields addObject:[@"_mapWithListAndOtherModelValues = " stringByAppendingFormat:@"%@", _mapWithListAndOtherModelValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_mapWithListAndOtherModelValues = %@", _mapWithListAndOtherModelValues]];
     }
     if (props.EverythingDirtyPropertyMapWithMapAndOtherModelValues) {
-        [descriptionFields addObject:[@"_mapWithMapAndOtherModelValues = " stringByAppendingFormat:@"%@", _mapWithMapAndOtherModelValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_mapWithMapAndOtherModelValues = %@", _mapWithMapAndOtherModelValues]];
     }
     if (props.EverythingDirtyPropertyMapWithObjectValues) {
-        [descriptionFields addObject:[@"_mapWithObjectValues = " stringByAppendingFormat:@"%@", _mapWithObjectValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_mapWithObjectValues = %@", _mapWithObjectValues]];
     }
     if (props.EverythingDirtyPropertyMapWithOtherModelValues) {
-        [descriptionFields addObject:[@"_mapWithOtherModelValues = " stringByAppendingFormat:@"%@", _mapWithOtherModelValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_mapWithOtherModelValues = %@", _mapWithOtherModelValues]];
     }
     if (props.EverythingDirtyPropertyMapWithPrimitiveValues) {
-        [descriptionFields addObject:[@"_mapWithPrimitiveValues = " stringByAppendingFormat:@"%@", _mapWithPrimitiveValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_mapWithPrimitiveValues = %@", _mapWithPrimitiveValues]];
     }
     if (props.EverythingDirtyPropertyNestedObject) {
-        [descriptionFields addObject:[@"_nestedObject = " stringByAppendingFormat:@"%@", _nestedObject]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_nestedObject = %@", _nestedObject]];
     }
     if (props.EverythingDirtyPropertyNsintegerEnum) {
-        [descriptionFields addObject:[@"_nsintegerEnum = " stringByAppendingFormat:@"%@", @(_nsintegerEnum)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_nsintegerEnum = %@", @(_nsintegerEnum)]];
     }
     if (props.EverythingDirtyPropertyNsuintegerEnum) {
-        [descriptionFields addObject:[@"_nsuintegerEnum = " stringByAppendingFormat:@"%@", @(_nsuintegerEnum)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_nsuintegerEnum = %@", @(_nsuintegerEnum)]];
     }
     if (props.EverythingDirtyPropertyNumberProp) {
-        [descriptionFields addObject:[@"_numberProp = " stringByAppendingFormat:@"%@", @(_numberProp)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_numberProp = %@", @(_numberProp)]];
     }
     if (props.EverythingDirtyPropertyOtherModelProp) {
-        [descriptionFields addObject:[@"_otherModelProp = " stringByAppendingFormat:@"%@", _otherModelProp]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_otherModelProp = %@", _otherModelProp]];
     }
     if (props.EverythingDirtyPropertyPolymorphicProp) {
-        [descriptionFields addObject:[@"_polymorphicProp = " stringByAppendingFormat:@"%@", _polymorphicProp]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_polymorphicProp = %@", _polymorphicProp]];
     }
     if (props.EverythingDirtyPropertySetProp) {
-        [descriptionFields addObject:[@"_setProp = " stringByAppendingFormat:@"%@", _setProp]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_setProp = %@", _setProp]];
     }
     if (props.EverythingDirtyPropertySetPropWithOtherModelValues) {
-        [descriptionFields addObject:[@"_setPropWithOtherModelValues = " stringByAppendingFormat:@"%@", _setPropWithOtherModelValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_setPropWithOtherModelValues = %@", _setPropWithOtherModelValues]];
     }
     if (props.EverythingDirtyPropertySetPropWithPrimitiveValues) {
-        [descriptionFields addObject:[@"_setPropWithPrimitiveValues = " stringByAppendingFormat:@"%@", _setPropWithPrimitiveValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_setPropWithPrimitiveValues = %@", _setPropWithPrimitiveValues]];
     }
     if (props.EverythingDirtyPropertySetPropWithValues) {
-        [descriptionFields addObject:[@"_setPropWithValues = " stringByAppendingFormat:@"%@", _setPropWithValues]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_setPropWithValues = %@", _setPropWithValues]];
     }
     if (props.EverythingDirtyPropertyShortEnum) {
-        [descriptionFields addObject:[@"_shortEnum = " stringByAppendingFormat:@"%@", @(_shortEnum)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_shortEnum = %@", @(_shortEnum)]];
     }
     if (props.EverythingDirtyPropertyStringEnum) {
-        [descriptionFields addObject:[@"_stringEnum = " stringByAppendingFormat:@"%@", EverythingStringEnumToString(_stringEnum)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_stringEnum = %@", EverythingStringEnumToString(_stringEnum)]];
     }
     if (props.EverythingDirtyPropertyStringProp) {
-        [descriptionFields addObject:[@"_stringProp = " stringByAppendingFormat:@"%@", _stringProp]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_stringProp = %@", _stringProp]];
     }
     if (props.EverythingDirtyPropertyType) {
-        [descriptionFields addObject:[@"_type = " stringByAppendingFormat:@"%@", _type]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_type = %@", _type]];
     }
     if (props.EverythingDirtyPropertyUnsignedCharEnum) {
-        [descriptionFields addObject:[@"_unsignedCharEnum = " stringByAppendingFormat:@"%@", @(_unsignedCharEnum)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_unsignedCharEnum = %@", @(_unsignedCharEnum)]];
     }
     if (props.EverythingDirtyPropertyUnsignedIntEnum) {
-        [descriptionFields addObject:[@"_unsignedIntEnum = " stringByAppendingFormat:@"%@", @(_unsignedIntEnum)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_unsignedIntEnum = %@", @(_unsignedIntEnum)]];
     }
     if (props.EverythingDirtyPropertyUnsignedShortEnum) {
-        [descriptionFields addObject:[@"_unsignedShortEnum = " stringByAppendingFormat:@"%@", @(_unsignedShortEnum)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_unsignedShortEnum = %@", @(_unsignedShortEnum)]];
     }
     if (props.EverythingDirtyPropertyUriProp) {
-        [descriptionFields addObject:[@"_uriProp = " stringByAppendingFormat:@"%@", _uriProp]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_uriProp = %@", _uriProp]];
     }
     if (props.EverythingDirtyPropertyBooleanProp) {
-        [descriptionFields addObject:[@"_everythingBooleanProperties.EverythingBooleanBooleanProp = " stringByAppendingFormat:@"%@", @(_everythingBooleanProperties.EverythingBooleanBooleanProp)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_everythingBooleanProperties.EverythingBooleanBooleanProp = %@", @(_everythingBooleanProperties.EverythingBooleanBooleanProp)]];
     }
     return [NSString stringWithFormat:@"Everything = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
