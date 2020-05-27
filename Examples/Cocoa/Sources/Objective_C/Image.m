@@ -100,6 +100,7 @@ struct ImageDirtyProperties {
     }
     return self;
 }
+#ifdef DEBUG
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
@@ -117,6 +118,7 @@ struct ImageDirtyProperties {
     }
     return [NSString stringWithFormat:@"Image = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
+#endif
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(ImageBuilder *builder))block
 {
     NSParameterAssert(block);

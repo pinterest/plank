@@ -111,6 +111,7 @@ struct VariableSubtitutionDirtyProperties {
     }
     return self;
 }
+#ifdef DEBUG
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
@@ -131,6 +132,7 @@ struct VariableSubtitutionDirtyProperties {
     }
     return [NSString stringWithFormat:@"VariableSubtitution = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
+#endif
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(VariableSubtitutionBuilder *builder))block
 {
     NSParameterAssert(block);

@@ -1309,6 +1309,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     return self;
 }
+#ifdef DEBUG
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
@@ -1428,6 +1429,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     return [NSString stringWithFormat:@"Everything = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
+#endif
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(EverythingBuilder *builder))block
 {
     NSParameterAssert(block);
