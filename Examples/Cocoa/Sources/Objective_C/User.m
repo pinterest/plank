@@ -217,34 +217,34 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     [descriptionFields addObject:parentDebugDescription];
     struct UserDirtyProperties props = _userDirtyProperties;
     if (props.UserDirtyPropertyBio) {
-        [descriptionFields addObject:[@"_bio = " stringByAppendingFormat:@"%@", _bio]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_bio = %@", _bio]];
     }
     if (props.UserDirtyPropertyCounts) {
-        [descriptionFields addObject:[@"_counts = " stringByAppendingFormat:@"%@", _counts]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_counts = %@", _counts]];
     }
     if (props.UserDirtyPropertyCreatedAt) {
-        [descriptionFields addObject:[@"_createdAt = " stringByAppendingFormat:@"%@", _createdAt]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_createdAt = %@", _createdAt]];
     }
     if (props.UserDirtyPropertyEmailFrequency) {
-        [descriptionFields addObject:[@"_emailFrequency = " stringByAppendingFormat:@"%@", UserEmailFrequencyToString(_emailFrequency)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_emailFrequency = %@", UserEmailFrequencyToString(_emailFrequency)]];
     }
     if (props.UserDirtyPropertyFirstName) {
-        [descriptionFields addObject:[@"_firstName = " stringByAppendingFormat:@"%@", _firstName]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_firstName = %@", _firstName]];
     }
     if (props.UserDirtyPropertyIdentifier) {
-        [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", _identifier]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_identifier = %@", _identifier]];
     }
     if (props.UserDirtyPropertyImage) {
-        [descriptionFields addObject:[@"_image = " stringByAppendingFormat:@"%@", _image]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_image = %@", _image]];
     }
     if (props.UserDirtyPropertyLastName) {
-        [descriptionFields addObject:[@"_lastName = " stringByAppendingFormat:@"%@", _lastName]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_lastName = %@", _lastName]];
     }
     if (props.UserDirtyPropertyType) {
-        [descriptionFields addObject:[@"_type = " stringByAppendingFormat:@"%@", _type]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_type = %@", _type]];
     }
     if (props.UserDirtyPropertyUsername) {
-        [descriptionFields addObject:[@"_username = " stringByAppendingFormat:@"%@", _username]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_username = %@", _username]];
     }
     return [NSString stringWithFormat:@"User = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }

@@ -85,7 +85,7 @@ struct NestedDirtyProperties {
     [descriptionFields addObject:parentDebugDescription];
     struct NestedDirtyProperties props = _nestedDirtyProperties;
     if (props.NestedDirtyPropertyIdentifier) {
-        [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", @(_identifier)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_identifier = %@", @(_identifier)]];
     }
     return [NSString stringWithFormat:@"Nested = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }

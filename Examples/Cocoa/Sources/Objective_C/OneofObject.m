@@ -85,7 +85,7 @@ struct OneofObjectDirtyProperties {
     [descriptionFields addObject:parentDebugDescription];
     struct OneofObjectDirtyProperties props = _oneofObjectDirtyProperties;
     if (props.OneofObjectDirtyPropertyIdentifier) {
-        [descriptionFields addObject:[@"_identifier = " stringByAppendingFormat:@"%@", @(_identifier)]];
+        [descriptionFields addObject:[NSString stringWithFormat:@"_identifier = %@", @(_identifier)]];
     }
     return [NSString stringWithFormat:@"OneofObject = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }

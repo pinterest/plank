@@ -15,7 +15,7 @@ extension ObjCModelRenderer {
         }.map { (param, prop) -> String in
             ObjCIR.ifStmt("props.\(dirtyPropertyOption(propertyName: param, className: self.className))") {
                 let ivarName = "_\(Languages.objectiveC.snakeCaseToPropertyName(param))"
-                return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, prop.schema))]];"]
+                return ["[descriptionFields addObject:[NSString stringWithFormat:\("\(ivarName) = %@".objcLiteral()), \(renderDebugStatement(param, prop.schema))]];"]
             }
         }.joined(separator: "\n")
 
@@ -24,7 +24,7 @@ extension ObjCModelRenderer {
         }.map { (param, _) -> String in
             ObjCIR.ifStmt("props.\(dirtyPropertyOption(propertyName: param, className: self.className))") {
                 let ivarName = "_\(booleanPropertiesIVarName).\(booleanPropertyOption(propertyName: param, className: self.className))"
-                return ["[descriptionFields addObject:[@\"\(ivarName) = \" stringByAppendingFormat:\("%@".objcLiteral()), @(\(ivarName))]];"]
+                return ["[descriptionFields addObject:[NSString stringWithFormat:\("\(ivarName) = %@".objcLiteral()), @(\(ivarName))]];"]
             }
         }
 
@@ -44,7 +44,7 @@ extension ObjCADTRenderer {
         let props = properties.map { (param, prop) -> String in
             ObjCIR.ifStmt("self.internalType == \(self.renderInternalEnumTypeCase(name: ObjCADTRenderer.objectName(prop.schema)))") {
                 let ivarName = "_\(Languages.objectiveC.snakeCaseToPropertyName(param))"
-                return ["[descriptionFields addObject:[\((ivarName + " = ").objcLiteral()) stringByAppendingFormat:\("%@".objcLiteral()), \(renderDebugStatement(param, prop.schema))]];"]
+                return ["[descriptionFields addObject:[NSString stringWithFormat:\("\(ivarName) = %@".objcLiteral()), \(renderDebugStatement(param, prop.schema))]];"]
             }
         }.joined(separator: "\n")
 
