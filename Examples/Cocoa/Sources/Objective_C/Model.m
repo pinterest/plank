@@ -78,6 +78,7 @@ struct ModelDirtyProperties {
     }
     return self;
 }
+#ifdef DEBUG
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
@@ -89,6 +90,7 @@ struct ModelDirtyProperties {
     }
     return [NSString stringWithFormat:@"Model = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
+#endif
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(ModelBuilder *builder))block
 {
     NSParameterAssert(block);

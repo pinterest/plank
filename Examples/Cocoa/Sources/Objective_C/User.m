@@ -210,6 +210,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     }
     return self;
 }
+#ifdef DEBUG
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
@@ -248,6 +249,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     }
     return [NSString stringWithFormat:@"User = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
+#endif
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(UserBuilder *builder))block
 {
     NSParameterAssert(block);

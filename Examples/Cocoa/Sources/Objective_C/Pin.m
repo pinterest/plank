@@ -420,6 +420,7 @@ struct PinDirtyProperties {
     }
     return self;
 }
+#ifdef DEBUG
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
@@ -479,6 +480,7 @@ struct PinDirtyProperties {
     }
     return [NSString stringWithFormat:@"Pin = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
+#endif
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(PinBuilder *builder))block
 {
     NSParameterAssert(block);

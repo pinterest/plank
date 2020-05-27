@@ -78,6 +78,7 @@ struct NestedDirtyProperties {
     }
     return self;
 }
+#ifdef DEBUG
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];
@@ -89,6 +90,7 @@ struct NestedDirtyProperties {
     }
     return [NSString stringWithFormat:@"Nested = {\n%@\n}", debugDescriptionForFields(descriptionFields)];
 }
+#endif
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(NestedBuilder *builder))block
 {
     NSParameterAssert(block);
