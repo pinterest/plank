@@ -162,7 +162,7 @@ public struct ObjCModelRenderer: ObjCFileRenderer {
         }
 
         let enumIVarDeclarations: [(Parameter, TypeName)] = enumProperties.compactMap { (arg) -> (Parameter, TypeName) in
-            let (param, prop) = arg
+            let (param, _) = arg
             return (param, enumTypeName(propertyName: param, className: self.className))
         }
 
