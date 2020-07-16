@@ -164,10 +164,10 @@ extension ObjCModelRenderer {
                     assert(false, "TODO: Forward optional across methods")
                     return []
                 }()
-            case let .enumT(.integer(variants)):
+            case .enumT(.integer):
                 let typeName = enumTypeName(propertyName: firstName, className: className)
                 return ["\(propertyToAssign) = (\(typeName))[\(rawObjectName) integerValue];"]
-            case let .enumT(.string(variants)):
+            case .enumT(.string):
                 return ["\(propertyToAssign) = \(enumFromStringMethodName(propertyName: firstName, className: className))(value);"]
             case let .object(objectRoot):
                 return ["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"]
