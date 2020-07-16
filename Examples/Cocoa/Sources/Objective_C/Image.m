@@ -49,7 +49,7 @@ struct ImageDirtyProperties {
         return self;
     }
         {
-            __unsafe_unretained id value = modelDictionary[@"height"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"height"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_height = [value integerValue];
@@ -58,7 +58,7 @@ struct ImageDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"url"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"url"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_url = [NSURL URLWithString:value];
@@ -67,7 +67,7 @@ struct ImageDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"width"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"width"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_width = [value integerValue];

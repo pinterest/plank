@@ -47,7 +47,7 @@ struct ModelDirtyProperties {
         return self;
     }
         {
-            __unsafe_unretained id value = modelDictionary[@"id"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"id"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_identifier = [value copy];
