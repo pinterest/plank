@@ -274,7 +274,7 @@ extension ObjCModelRenderer {
                     "if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }",
                 -->self.properties.map { name, prop in
                     ObjCIR.scope { [
-                        "__unsafe_unretained id value = modelDictionary[\(name.objcLiteral())]; // Collection will retain.",
+                        "__unsafe_unretained id value = modelDictionary[\(name.objcLiteral())];",
                         ObjCIR.ifStmt("value != nil") { [
                             ObjCIR.ifStmt("value != (id)kCFNull") {
                                 switch prop.schema {

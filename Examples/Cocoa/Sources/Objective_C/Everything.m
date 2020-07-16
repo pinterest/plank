@@ -724,7 +724,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
         return self;
     }
         {
-            __unsafe_unretained id value = modelDictionary[@"array_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"array_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_arrayProp = value;
@@ -733,7 +733,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"boolean_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"boolean_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_everythingBooleanProperties.EverythingBooleanBooleanProp = [value boolValue] & 0x1;
@@ -742,7 +742,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"char_enum"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"char_enum"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_charEnum = (EverythingCharEnum)[value integerValue];
@@ -751,7 +751,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"date_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"date_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_dateProp = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
@@ -760,7 +760,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"int_enum"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"int_enum"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_intEnum = (EverythingIntEnum)[value integerValue];
@@ -769,7 +769,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"int_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"int_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_intProp = [value integerValue];
@@ -778,7 +778,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"list_polymorphic_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"list_polymorphic_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_listPolymorphicValues = value;
@@ -787,7 +787,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"list_with_list_and_other_model_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"list_with_list_and_other_model_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSArray *items = value;
@@ -818,7 +818,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"list_with_map_and_other_model_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"list_with_map_and_other_model_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSArray *items = value;
@@ -845,7 +845,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"list_with_object_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"list_with_object_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSArray *items = value;
@@ -865,7 +865,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"list_with_other_model_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"list_with_other_model_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSArray *items = value;
@@ -885,7 +885,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"list_with_primitive_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"list_with_primitive_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_listWithPrimitiveValues = value;
@@ -894,7 +894,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"map_polymorphic_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"map_polymorphic_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSDictionary *items0 = value;
@@ -930,7 +930,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"map_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"map_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_mapProp = value;
@@ -939,7 +939,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"map_with_list_and_other_model_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"map_with_list_and_other_model_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSDictionary *items0 = value;
@@ -966,7 +966,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"map_with_map_and_other_model_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"map_with_map_and_other_model_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSDictionary *items0 = value;
@@ -982,7 +982,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"map_with_object_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"map_with_object_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSDictionary *items0 = value;
@@ -998,7 +998,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"map_with_other_model_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"map_with_other_model_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSDictionary *items0 = value;
@@ -1014,7 +1014,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"map_with_primitive_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"map_with_primitive_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_mapWithPrimitiveValues = value;
@@ -1023,7 +1023,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"nested_object"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"nested_object"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_nestedObject = [Nested modelObjectWithDictionary:value];
@@ -1032,7 +1032,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"nsinteger_enum"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"nsinteger_enum"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_nsintegerEnum = (EverythingNsintegerEnum)[value integerValue];
@@ -1041,7 +1041,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"nsuinteger_enum"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"nsuinteger_enum"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_nsuintegerEnum = (EverythingNsuintegerEnum)[value integerValue];
@@ -1050,7 +1050,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"number_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"number_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_numberProp = [value doubleValue];
@@ -1059,7 +1059,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"other_model_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"other_model_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_otherModelProp = [User modelObjectWithDictionary:value];
@@ -1068,7 +1068,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"polymorphic_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"polymorphic_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"user"]) {
@@ -1120,7 +1120,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"set_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"set_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_setProp = value;
@@ -1129,7 +1129,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"set_prop_with_other_model_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"set_prop_with_other_model_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSArray *items = value;
@@ -1149,7 +1149,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"set_prop_with_primitive_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"set_prop_with_primitive_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSArray *items = value;
@@ -1159,7 +1159,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"set_prop_with_values"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"set_prop_with_values"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSArray *items = value;
@@ -1179,7 +1179,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"short_enum"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"short_enum"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_shortEnum = (EverythingShortEnum)[value integerValue];
@@ -1188,7 +1188,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"string_enum"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"string_enum"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_stringEnum = EverythingStringEnumFromString(value);
@@ -1197,7 +1197,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"string_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"string_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_stringProp = [value copy];
@@ -1206,7 +1206,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"type"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"type"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_type = [value copy];
@@ -1215,7 +1215,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"unsigned_char_enum"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"unsigned_char_enum"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_unsignedCharEnum = (EverythingUnsignedCharEnum)[value integerValue];
@@ -1224,7 +1224,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"unsigned_int_enum"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"unsigned_int_enum"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_unsignedIntEnum = (EverythingUnsignedIntEnum)[value integerValue];
@@ -1233,7 +1233,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"unsigned_short_enum"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"unsigned_short_enum"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_unsignedShortEnum = (EverythingUnsignedShortEnum)[value integerValue];
@@ -1242,7 +1242,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"uri_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"uri_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_uriProp = [NSURL URLWithString:value];

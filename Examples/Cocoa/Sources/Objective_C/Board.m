@@ -55,7 +55,7 @@ struct BoardDirtyProperties {
     }
     if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }
         {
-            __unsafe_unretained id value = modelDictionary[@"contributors"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"contributors"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSArray *items = value;
@@ -75,7 +75,7 @@ struct BoardDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"counts"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"counts"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_counts = value;
@@ -84,7 +84,7 @@ struct BoardDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"created_at"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"created_at"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
@@ -93,7 +93,7 @@ struct BoardDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"creator"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"creator"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     NSDictionary *items0 = value;
@@ -109,7 +109,7 @@ struct BoardDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"creator_url"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"creator_url"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_creatorURL = [NSURL URLWithString:value];
@@ -118,7 +118,7 @@ struct BoardDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"description"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"description"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_descriptionText = [value copy];
@@ -127,7 +127,7 @@ struct BoardDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"image"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"image"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_image = [Image modelObjectWithDictionary:value];
@@ -136,7 +136,7 @@ struct BoardDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"name"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"name"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_name = [value copy];
@@ -145,7 +145,7 @@ struct BoardDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"url"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"url"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_url = [NSURL URLWithString:value];

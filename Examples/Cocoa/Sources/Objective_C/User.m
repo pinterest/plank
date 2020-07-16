@@ -89,7 +89,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
         return self;
     }
         {
-            __unsafe_unretained id value = modelDictionary[@"bio"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"bio"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_bio = [value copy];
@@ -98,7 +98,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"counts"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"counts"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_counts = value;
@@ -107,7 +107,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"created_at"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"created_at"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
@@ -116,7 +116,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"email_frequency"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"email_frequency"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_emailFrequency = UserEmailFrequencyFromString(value);
@@ -125,7 +125,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"first_name"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"first_name"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_firstName = [value copy];
@@ -134,7 +134,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"id"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"id"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_identifier = [value copy];
@@ -143,7 +143,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"image"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"image"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_image = [Image modelObjectWithDictionary:value];
@@ -152,7 +152,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"last_name"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"last_name"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_lastName = [value copy];
@@ -161,7 +161,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"type"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"type"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_type = [value copy];
@@ -170,7 +170,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"username"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"username"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_username = [value copy];

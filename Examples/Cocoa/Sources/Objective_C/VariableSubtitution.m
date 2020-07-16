@@ -50,7 +50,7 @@ struct VariableSubtitutionDirtyProperties {
         return self;
     }
         {
-            __unsafe_unretained id value = modelDictionary[@"alloc_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"alloc_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_allocProp = [value integerValue];
@@ -59,7 +59,7 @@ struct VariableSubtitutionDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"copy_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"copy_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_copyProp = [value integerValue];
@@ -68,7 +68,7 @@ struct VariableSubtitutionDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"mutable_copy_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"mutable_copy_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_mutableCopyProp = [value integerValue];
@@ -77,7 +77,7 @@ struct VariableSubtitutionDirtyProperties {
             }
         }
         {
-            __unsafe_unretained id value = modelDictionary[@"new_prop"]; // Collection will retain.
+            __unsafe_unretained id value = modelDictionary[@"new_prop"];
             if (value != nil) {
                 if (value != (id)kCFNull) {
                     self->_newProp = [value integerValue];
