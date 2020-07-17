@@ -36,11 +36,19 @@ struct VariableSubtitutionDirtyProperties {
 {
     return [[self alloc] initWithModelDictionary:dictionary];
 }
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary error:(NSError *__autoreleasing *)error
+{
+    return [[self alloc] initWithModelDictionary:dictionary error:error];
+}
 - (instancetype)init
 {
-    return [self initWithModelDictionary:@{}];
+    return [self initWithModelDictionary:@{} error:NULL];
 }
-- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary
+{
+    return [self initWithModelDictionary:modelDictionary error:NULL];
+}
+- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(modelDictionary);
     if (!modelDictionary) {
@@ -52,37 +60,57 @@ struct VariableSubtitutionDirtyProperties {
     {
         __unsafe_unretained id value = modelDictionary[@"alloc_prop"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_allocProp = [value integerValue];
-            }
             self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyAllocProp = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSNumber class]]) {
+                    self->_allocProp = [value integerValue];
+                } else {
+                    self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyAllocProp = 0;
+                    *error = PlankTypeError(@"alloc_prop", [NSNumber class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"copy_prop"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_copyProp = [value integerValue];
-            }
             self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyCopyProp = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSNumber class]]) {
+                    self->_copyProp = [value integerValue];
+                } else {
+                    self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyCopyProp = 0;
+                    *error = PlankTypeError(@"copy_prop", [NSNumber class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"mutable_copy_prop"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_mutableCopyProp = [value integerValue];
-            }
             self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyMutableCopyProp = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSNumber class]]) {
+                    self->_mutableCopyProp = [value integerValue];
+                } else {
+                    self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyMutableCopyProp = 0;
+                    *error = PlankTypeError(@"mutable_copy_prop", [NSNumber class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"new_prop"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_newProp = [value integerValue];
-            }
             self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyNewProp = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSNumber class]]) {
+                    self->_newProp = [value integerValue];
+                } else {
+                    self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyNewProp = 0;
+                    *error = PlankTypeError(@"new_prop", [NSNumber class], [value class]);
+                }
+            }
         }
     }
     if ([self class] == [VariableSubtitution class]) {

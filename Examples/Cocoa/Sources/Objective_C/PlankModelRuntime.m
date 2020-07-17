@@ -49,3 +49,11 @@ NSUInteger PINIntegerArrayHash(const NSUInteger *subhashes, NSUInteger count)
     }
     return (NSUInteger)result;
 }
+NSError * PlankTypeError(NSString *key, Class expected, Class actual)
+{
+    NSDictionary *userInfo = nil;
+    #if DEBUG
+    userInfo = @{ NSDebugDescriptionErrorKey: [NSString stringWithFormat:@"%@: expected %@ but got %@", key, expected, actual] };
+    #endif
+    return [NSError errorWithDomain:NSCocoaErrorDomain code:NSKeyValueValidationError userInfo:userInfo];
+}

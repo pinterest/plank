@@ -167,11 +167,19 @@ struct PinDirtyProperties {
 {
     return [[self alloc] initWithModelDictionary:dictionary];
 }
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary error:(NSError *__autoreleasing *)error
+{
+    return [[self alloc] initWithModelDictionary:dictionary error:error];
+}
 - (instancetype)init
 {
-    return [self initWithModelDictionary:@{}];
+    return [self initWithModelDictionary:@{} error:NULL];
 }
-- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary
+{
+    return [self initWithModelDictionary:modelDictionary error:NULL];
+}
+- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(modelDictionary);
     if (!modelDictionary) {
@@ -183,202 +191,303 @@ struct PinDirtyProperties {
     {
         __unsafe_unretained id value = modelDictionary[@"attribution"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                NSDictionary *items0 = value;
-                NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                    if (obj0 != nil && obj0 != (id)kCFNull) {
-                        result0[key0] = [obj0 copy];
-                    }
-                }];
-                self->_attribution = result0;
-            }
             self->_pinDirtyProperties.PinDirtyPropertyAttribution = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *items0 = value;
+                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                        if (obj0 != nil && obj0 != (id)kCFNull) {
+                            if (!error || [obj0 isKindOfClass:[NSString class]]) {
+                                result0[key0] = [obj0 copy];
+                            } else {
+                                *error = PlankTypeError([@[@"attribution", key0] componentsJoinedByString:@"."], [NSString class], [obj0 class]);
+                            }
+                        }
+                    }];
+                    self->_attribution = result0;
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyAttribution = 0;
+                    *error = PlankTypeError(@"attribution", [NSDictionary class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"attribution_objects"];
         if (value != nil) {
+            self->_pinDirtyProperties.PinDirtyPropertyAttributionObjects = 1;
             if (value != (id)kCFNull) {
-                NSArray *items = value;
-                NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
-                for (id obj0 in items) {
-                    if (obj0 != (id)kCFNull) {
-                        id tmp0 = nil;
-                        if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"board"]) {
-                            tmp0 = [PinAttributionObjects  objectWithBoard:[Board modelObjectWithDictionary:obj0]];
-                        }
-                        if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"user"]) {
-                            tmp0 = [PinAttributionObjects  objectWithUser:[User modelObjectWithDictionary:obj0]];
-                        }
-                        if (tmp0 != nil) {
-                            [result0 addObject:tmp0];
+                if (!error || [value isKindOfClass:[NSArray class]]) {
+                    NSArray *items = value;
+                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                    for (id obj0 in items) {
+                        if (obj0 != (id)kCFNull) {
+                            id tmp0 = nil;
+                            if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"board"]) {
+                                tmp0 = [PinAttributionObjects  objectWithBoard:[Board modelObjectWithDictionary:obj0]];
+                            }
+                            if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"user"]) {
+                                tmp0 = [PinAttributionObjects  objectWithUser:[User modelObjectWithDictionary:obj0]];
+                            }
+                            if (tmp0 != nil) {
+                                [result0 addObject:tmp0];
+                            }
                         }
                     }
+                    self->_attributionObjects = result0;
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyAttributionObjects = 0;
+                    *error = PlankTypeError(@"attribution_objects", [NSArray class], [value class]);
                 }
-                self->_attributionObjects = result0;
             }
-            self->_pinDirtyProperties.PinDirtyPropertyAttributionObjects = 1;
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"board"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_board = [Board modelObjectWithDictionary:value];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyBoard = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSDictionary class]]) {
+                    self->_board = [Board modelObjectWithDictionary:value];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyBoard = 0;
+                    *error = PlankTypeError(@"board", [NSDictionary class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"color"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_color = [value copy];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyColor = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_color = [value copy];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyColor = 0;
+                    *error = PlankTypeError(@"color", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"counts"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_counts = value;
-            }
             self->_pinDirtyProperties.PinDirtyPropertyCounts = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSDictionary class]]) {
+                    self->_counts = value;
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyCounts = 0;
+                    *error = PlankTypeError(@"counts", [NSDictionary class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"created_at"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyCreatedAt = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyCreatedAt = 0;
+                    *error = PlankTypeError(@"created_at", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"creator"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                NSDictionary *items0 = value;
-                NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                    if (obj0 != nil && obj0 != (id)kCFNull) {
-                        result0[key0] = [User modelObjectWithDictionary:obj0];
-                    }
-                }];
-                self->_creator = result0;
-            }
             self->_pinDirtyProperties.PinDirtyPropertyCreator = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *items0 = value;
+                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                        if (obj0 != nil && obj0 != (id)kCFNull) {
+                            if (!error || [obj0 isKindOfClass:[NSDictionary class]]) {
+                                result0[key0] = [User modelObjectWithDictionary:obj0];
+                            } else {
+                                *error = PlankTypeError([@[@"creator", key0] componentsJoinedByString:@"."], [NSDictionary class], [obj0 class]);
+                            }
+                        }
+                    }];
+                    self->_creator = result0;
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyCreator = 0;
+                    *error = PlankTypeError(@"creator", [NSDictionary class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"description"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_descriptionText = [value copy];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyDescriptionText = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_descriptionText = [value copy];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyDescriptionText = 0;
+                    *error = PlankTypeError(@"description", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"id"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_identifier = [value copy];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyIdentifier = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_identifier = [value copy];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyIdentifier = 0;
+                    *error = PlankTypeError(@"id", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"image"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_image = [Image modelObjectWithDictionary:value];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyImage = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSDictionary class]]) {
+                    self->_image = [Image modelObjectWithDictionary:value];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyImage = 0;
+                    *error = PlankTypeError(@"image", [NSDictionary class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"in_stock"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_inStock = (PinInStock)[value integerValue];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyInStock = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSNumber class]]) {
+                    self->_inStock = (PinInStock)[value integerValue];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyInStock = 0;
+                    *error = PlankTypeError(@"in_stock", [NSNumber class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"link"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_link = [NSURL URLWithString:value];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyLink = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_link = [NSURL URLWithString:value];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyLink = 0;
+                    *error = PlankTypeError(@"link", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"media"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                NSDictionary *items0 = value;
-                NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                    if (obj0 != nil && obj0 != (id)kCFNull) {
-                        result0[key0] = [obj0 copy];
-                    }
-                }];
-                self->_media = result0;
-            }
             self->_pinDirtyProperties.PinDirtyPropertyMedia = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *items0 = value;
+                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                        if (obj0 != nil && obj0 != (id)kCFNull) {
+                            if (!error || [obj0 isKindOfClass:[NSString class]]) {
+                                result0[key0] = [obj0 copy];
+                            } else {
+                                *error = PlankTypeError([@[@"media", key0] componentsJoinedByString:@"."], [NSString class], [obj0 class]);
+                            }
+                        }
+                    }];
+                    self->_media = result0;
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyMedia = 0;
+                    *error = PlankTypeError(@"media", [NSDictionary class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"note"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_note = [value copy];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyNote = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_note = [value copy];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyNote = 0;
+                    *error = PlankTypeError(@"note", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"tags"];
         if (value != nil) {
+            self->_pinDirtyProperties.PinDirtyPropertyTags = 1;
             if (value != (id)kCFNull) {
-                NSArray *items = value;
-                NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
-                for (id obj0 in items) {
-                    if (obj0 != (id)kCFNull) {
-                        id tmp0 = nil;
-                        tmp0 = obj0;
-                        if (tmp0 != nil) {
-                            [result0 addObject:tmp0];
+                if (!error || [value isKindOfClass:[NSArray class]]) {
+                    NSArray *items = value;
+                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                    for (id obj0 in items) {
+                        if (obj0 != (id)kCFNull) {
+                            id tmp0 = nil;
+                            if (!error || [obj0 isKindOfClass:[NSDictionary class]]) {
+                                tmp0 = obj0;
+                            } else {
+                                *error = PlankTypeError([@[@"tags", @"?"] componentsJoinedByString:@"."], [NSDictionary class], [obj0 class]);
+                            }
+                            if (tmp0 != nil) {
+                                [result0 addObject:tmp0];
+                            }
                         }
                     }
+                    self->_tags = result0;
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyTags = 0;
+                    *error = PlankTypeError(@"tags", [NSArray class], [value class]);
                 }
-                self->_tags = result0;
             }
-            self->_pinDirtyProperties.PinDirtyPropertyTags = 1;
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"url"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_url = [NSURL URLWithString:value];
-            }
             self->_pinDirtyProperties.PinDirtyPropertyUrl = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_url = [NSURL URLWithString:value];
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyUrl = 0;
+                    *error = PlankTypeError(@"url", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"visual_search_attrs"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_visualSearchAttrs = value;
-            }
             self->_pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSDictionary class]]) {
+                    self->_visualSearchAttrs = value;
+                } else {
+                    self->_pinDirtyProperties.PinDirtyPropertyVisualSearchAttrs = 0;
+                    *error = PlankTypeError(@"visual_search_attrs", [NSDictionary class], [value class]);
+                }
+            }
         }
     }
     if ([self class] == [Pin class]) {

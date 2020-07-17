@@ -32,4 +32,6 @@ NSString *debugDescriptionForFields(NSArray *descriptionFields);
 
 NSUInteger PINIntegerArrayHash(const NSUInteger *subhashes, NSUInteger count);
 
+NSError * PlankTypeError(NSString *key, Class expected, Class actual);
+
 NS_ASSUME_NONNULL_END

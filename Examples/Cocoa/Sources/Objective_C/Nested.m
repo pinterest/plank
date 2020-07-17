@@ -33,11 +33,19 @@ struct NestedDirtyProperties {
 {
     return [[self alloc] initWithModelDictionary:dictionary];
 }
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary error:(NSError *__autoreleasing *)error
+{
+    return [[self alloc] initWithModelDictionary:dictionary error:error];
+}
 - (instancetype)init
 {
-    return [self initWithModelDictionary:@{}];
+    return [self initWithModelDictionary:@{} error:NULL];
 }
-- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary
+{
+    return [self initWithModelDictionary:modelDictionary error:NULL];
+}
+- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(modelDictionary);
     if (!modelDictionary) {
@@ -49,10 +57,15 @@ struct NestedDirtyProperties {
     {
         __unsafe_unretained id value = modelDictionary[@"id"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_identifier = [value integerValue];
-            }
             self->_nestedDirtyProperties.NestedDirtyPropertyIdentifier = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSNumber class]]) {
+                    self->_identifier = [value integerValue];
+                } else {
+                    self->_nestedDirtyProperties.NestedDirtyPropertyIdentifier = 0;
+                    *error = PlankTypeError(@"id", [NSNumber class], [value class]);
+                }
+            }
         }
     }
     if ([self class] == [Nested class]) {

@@ -20,7 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)className;
 + (NSString *)polymorphicTypeIdentifier;
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary;
-- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary;
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary error:(NSError *__autoreleasing *)error;
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary;
+- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error;
 - (instancetype)initWithBuilder:(ImageBuilder *)builder;
 - (instancetype)initWithBuilder:(ImageBuilder *)builder initType:(PlankModelInitType)initType;
 - (instancetype)copyWithBlock:(PLANK_NOESCAPE void (^)(ImageBuilder *builder))block;
