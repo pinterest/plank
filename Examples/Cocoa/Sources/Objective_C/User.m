@@ -88,96 +88,96 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     if (!(self = [super init])) {
         return self;
     }
-        {
-            __unsafe_unretained id value = modelDictionary[@"bio"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_bio = [value copy];
-                }
-                self->_userDirtyProperties.UserDirtyPropertyBio = 1;
+    {
+        __unsafe_unretained id value = modelDictionary[@"bio"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_bio = [value copy];
             }
+            self->_userDirtyProperties.UserDirtyPropertyBio = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"counts"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_counts = value;
-                }
-                self->_userDirtyProperties.UserDirtyPropertyCounts = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"counts"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_counts = value;
             }
+            self->_userDirtyProperties.UserDirtyPropertyCounts = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"created_at"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
-                }
-                self->_userDirtyProperties.UserDirtyPropertyCreatedAt = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"created_at"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
             }
+            self->_userDirtyProperties.UserDirtyPropertyCreatedAt = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"email_frequency"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_emailFrequency = UserEmailFrequencyFromString(value);
-                }
-                self->_userDirtyProperties.UserDirtyPropertyEmailFrequency = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"email_frequency"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_emailFrequency = UserEmailFrequencyFromString(value);
             }
+            self->_userDirtyProperties.UserDirtyPropertyEmailFrequency = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"first_name"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_firstName = [value copy];
-                }
-                self->_userDirtyProperties.UserDirtyPropertyFirstName = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"first_name"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_firstName = [value copy];
             }
+            self->_userDirtyProperties.UserDirtyPropertyFirstName = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"id"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_identifier = [value copy];
-                }
-                self->_userDirtyProperties.UserDirtyPropertyIdentifier = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"id"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_identifier = [value copy];
             }
+            self->_userDirtyProperties.UserDirtyPropertyIdentifier = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"image"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_image = [Image modelObjectWithDictionary:value];
-                }
-                self->_userDirtyProperties.UserDirtyPropertyImage = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"image"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_image = [Image modelObjectWithDictionary:value];
             }
+            self->_userDirtyProperties.UserDirtyPropertyImage = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"last_name"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_lastName = [value copy];
-                }
-                self->_userDirtyProperties.UserDirtyPropertyLastName = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"last_name"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_lastName = [value copy];
             }
+            self->_userDirtyProperties.UserDirtyPropertyLastName = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"type"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_type = [value copy];
-                }
-                self->_userDirtyProperties.UserDirtyPropertyType = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"type"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_type = [value copy];
             }
+            self->_userDirtyProperties.UserDirtyPropertyType = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"username"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_username = [value copy];
-                }
-                self->_userDirtyProperties.UserDirtyPropertyUsername = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"username"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_username = [value copy];
             }
+            self->_userDirtyProperties.UserDirtyPropertyUsername = 1;
         }
+    }
     if ([self class] == [User class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
     }

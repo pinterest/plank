@@ -46,15 +46,15 @@ struct ModelDirtyProperties {
     if (!(self = [super init])) {
         return self;
     }
-        {
-            __unsafe_unretained id value = modelDictionary[@"id"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_identifier = [value copy];
-                }
-                self->_modelDirtyProperties.ModelDirtyPropertyIdentifier = 1;
+    {
+        __unsafe_unretained id value = modelDictionary[@"id"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_identifier = [value copy];
             }
+            self->_modelDirtyProperties.ModelDirtyPropertyIdentifier = 1;
         }
+    }
     if ([self class] == [Model class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
     }

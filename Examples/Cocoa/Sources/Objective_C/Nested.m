@@ -46,15 +46,15 @@ struct NestedDirtyProperties {
     if (!(self = [super init])) {
         return self;
     }
-        {
-            __unsafe_unretained id value = modelDictionary[@"id"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_identifier = [value integerValue];
-                }
-                self->_nestedDirtyProperties.NestedDirtyPropertyIdentifier = 1;
+    {
+        __unsafe_unretained id value = modelDictionary[@"id"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_identifier = [value integerValue];
             }
+            self->_nestedDirtyProperties.NestedDirtyPropertyIdentifier = 1;
         }
+    }
     if ([self class] == [Nested class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
     }

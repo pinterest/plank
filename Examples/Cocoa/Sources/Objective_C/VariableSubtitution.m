@@ -49,42 +49,42 @@ struct VariableSubtitutionDirtyProperties {
     if (!(self = [super init])) {
         return self;
     }
-        {
-            __unsafe_unretained id value = modelDictionary[@"alloc_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_allocProp = [value integerValue];
-                }
-                self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyAllocProp = 1;
+    {
+        __unsafe_unretained id value = modelDictionary[@"alloc_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_allocProp = [value integerValue];
             }
+            self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyAllocProp = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"copy_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_copyProp = [value integerValue];
-                }
-                self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyCopyProp = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"copy_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_copyProp = [value integerValue];
             }
+            self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyCopyProp = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"mutable_copy_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_mutableCopyProp = [value integerValue];
-                }
-                self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyMutableCopyProp = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"mutable_copy_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_mutableCopyProp = [value integerValue];
             }
+            self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyMutableCopyProp = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"new_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_newProp = [value integerValue];
-                }
-                self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyNewProp = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"new_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_newProp = [value integerValue];
             }
+            self->_variableSubtitutionDirtyProperties.VariableSubtitutionDirtyPropertyNewProp = 1;
         }
+    }
     if ([self class] == [VariableSubtitution class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
     }

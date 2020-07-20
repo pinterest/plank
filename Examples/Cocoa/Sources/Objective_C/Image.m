@@ -48,33 +48,33 @@ struct ImageDirtyProperties {
     if (!(self = [super init])) {
         return self;
     }
-        {
-            __unsafe_unretained id value = modelDictionary[@"height"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_height = [value integerValue];
-                }
-                self->_imageDirtyProperties.ImageDirtyPropertyHeight = 1;
+    {
+        __unsafe_unretained id value = modelDictionary[@"height"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_height = [value integerValue];
             }
+            self->_imageDirtyProperties.ImageDirtyPropertyHeight = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"url"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_url = [NSURL URLWithString:value];
-                }
-                self->_imageDirtyProperties.ImageDirtyPropertyUrl = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"url"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_url = [NSURL URLWithString:value];
             }
+            self->_imageDirtyProperties.ImageDirtyPropertyUrl = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"width"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_width = [value integerValue];
-                }
-                self->_imageDirtyProperties.ImageDirtyPropertyWidth = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"width"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_width = [value integerValue];
             }
+            self->_imageDirtyProperties.ImageDirtyPropertyWidth = 1;
         }
+    }
     if ([self class] == [Image class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
     }
