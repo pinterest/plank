@@ -29,7 +29,7 @@ extension ObjCModelRenderer {
         }
 
         let printFormat = "\(className) = {\\n%@\\n}".objcLiteral()
-        return ObjCIR.method("- (NSString *)debugDescription", ifdef: "DEBUG") { [
+        return ObjCIR.method("- (NSString *)debugDescription", debug: true) { [
             "NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:\("\\n".objcLiteral())];",
             "NSMutableArray *descriptionFields = [NSMutableArray arrayWithCapacity:\(self.properties.count)];",
             "[descriptionFields addObject:parentDebugDescription];",

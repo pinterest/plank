@@ -169,16 +169,16 @@ class ObjectiveCIRTests: XCTestCase {
         XCTAssertEqual(expected, actual)
     }
 
-    func testMethodIfdef() {
+    func testMethodDebug() {
         let expected = [
-            "#ifdef DEBUG",
+            "#if DEBUG",
             "- (id)method",
             "{",
             "\treturn nil",
             "}",
             "#endif",
         ]
-        let actual = ObjCIR.method("- (id)method", ifdef: "DEBUG") {
+        let actual = ObjCIR.method("- (id)method", debug: true) {
             ["return nil"]
         }.render()
         XCTAssertEqual(expected, actual)
