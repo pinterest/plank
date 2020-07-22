@@ -146,6 +146,17 @@ struct ObjCRuntimeFile {
                     ]
                 }
             ),
+            ObjCIR.Root.function(
+                ObjCIR.method("NSError * PlankTypeError(NSString *key, Class expected, Class actual)") {
+                    [
+                        "NSDictionary *userInfo = nil;",
+                        "#if DEBUG",
+                        "userInfo = @{ NSDebugDescriptionErrorKey: [NSString stringWithFormat:@\"%@: expected %@ but got %@\", key, expected, actual] };",
+                        "#endif",
+                        "return [NSError errorWithDomain:NSCocoaErrorDomain code:NSKeyValueValidationError userInfo:userInfo];",
+                    ]
+                }
+            ),
             ObjCIR.Root.macro("NS_ASSUME_NONNULL_END"),
         ]
     }

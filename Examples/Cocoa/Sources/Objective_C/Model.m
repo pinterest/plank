@@ -33,11 +33,19 @@ struct ModelDirtyProperties {
 {
     return [[self alloc] initWithModelDictionary:dictionary];
 }
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary error:(NSError *__autoreleasing *)error
+{
+    return [[self alloc] initWithModelDictionary:dictionary error:error];
+}
 - (instancetype)init
 {
-    return [self initWithModelDictionary:@{}];
+    return [self initWithModelDictionary:@{} error:NULL];
 }
-- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary
+{
+    return [self initWithModelDictionary:modelDictionary error:NULL];
+}
+- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(modelDictionary);
     if (!modelDictionary) {
@@ -49,10 +57,15 @@ struct ModelDirtyProperties {
     {
         __unsafe_unretained id value = modelDictionary[@"id"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_identifier = [value copy];
-            }
             self->_modelDirtyProperties.ModelDirtyPropertyIdentifier = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_identifier = [value copy];
+                } else {
+                    self->_modelDirtyProperties.ModelDirtyPropertyIdentifier = 0;
+                    *error = PlankTypeError(@"id", [NSString class], [value class]);
+                }
+            }
         }
     }
     if ([self class] == [Model class]) {

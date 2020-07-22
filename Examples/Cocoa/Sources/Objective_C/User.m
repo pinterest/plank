@@ -75,11 +75,19 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
 {
     return [[self alloc] initWithModelDictionary:dictionary];
 }
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary error:(NSError *__autoreleasing *)error
+{
+    return [[self alloc] initWithModelDictionary:dictionary error:error];
+}
 - (instancetype)init
 {
-    return [self initWithModelDictionary:@{}];
+    return [self initWithModelDictionary:@{} error:NULL];
 }
-- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary
+{
+    return [self initWithModelDictionary:modelDictionary error:NULL];
+}
+- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(modelDictionary);
     if (!modelDictionary) {
@@ -91,91 +99,141 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
     {
         __unsafe_unretained id value = modelDictionary[@"bio"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_bio = [value copy];
-            }
             self->_userDirtyProperties.UserDirtyPropertyBio = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_bio = [value copy];
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyBio = 0;
+                    *error = PlankTypeError(@"bio", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"counts"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_counts = value;
-            }
             self->_userDirtyProperties.UserDirtyPropertyCounts = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSDictionary class]]) {
+                    self->_counts = value;
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyCounts = 0;
+                    *error = PlankTypeError(@"counts", [NSDictionary class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"created_at"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
-            }
             self->_userDirtyProperties.UserDirtyPropertyCreatedAt = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyCreatedAt = 0;
+                    *error = PlankTypeError(@"created_at", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"email_frequency"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_emailFrequency = UserEmailFrequencyFromString(value);
-            }
             self->_userDirtyProperties.UserDirtyPropertyEmailFrequency = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_emailFrequency = UserEmailFrequencyFromString(value);
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyEmailFrequency = 0;
+                    *error = PlankTypeError(@"email_frequency", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"first_name"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_firstName = [value copy];
-            }
             self->_userDirtyProperties.UserDirtyPropertyFirstName = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_firstName = [value copy];
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyFirstName = 0;
+                    *error = PlankTypeError(@"first_name", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"id"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_identifier = [value copy];
-            }
             self->_userDirtyProperties.UserDirtyPropertyIdentifier = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_identifier = [value copy];
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyIdentifier = 0;
+                    *error = PlankTypeError(@"id", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"image"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_image = [Image modelObjectWithDictionary:value];
-            }
             self->_userDirtyProperties.UserDirtyPropertyImage = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSDictionary class]]) {
+                    self->_image = [Image modelObjectWithDictionary:value];
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyImage = 0;
+                    *error = PlankTypeError(@"image", [NSDictionary class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"last_name"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_lastName = [value copy];
-            }
             self->_userDirtyProperties.UserDirtyPropertyLastName = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_lastName = [value copy];
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyLastName = 0;
+                    *error = PlankTypeError(@"last_name", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"type"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_type = [value copy];
-            }
             self->_userDirtyProperties.UserDirtyPropertyType = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_type = [value copy];
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyType = 0;
+                    *error = PlankTypeError(@"type", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"username"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_username = [value copy];
-            }
             self->_userDirtyProperties.UserDirtyPropertyUsername = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_username = [value copy];
+                } else {
+                    self->_userDirtyProperties.UserDirtyPropertyUsername = 0;
+                    *error = PlankTypeError(@"username", [NSString class], [value class]);
+                }
+            }
         }
     }
     if ([self class] == [User class]) {

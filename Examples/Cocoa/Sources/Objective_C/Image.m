@@ -35,11 +35,19 @@ struct ImageDirtyProperties {
 {
     return [[self alloc] initWithModelDictionary:dictionary];
 }
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dictionary error:(NSError *__autoreleasing *)error
+{
+    return [[self alloc] initWithModelDictionary:dictionary error:error];
+}
 - (instancetype)init
 {
-    return [self initWithModelDictionary:@{}];
+    return [self initWithModelDictionary:@{} error:NULL];
 }
-- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary
+- (instancetype)initWithModelDictionary:(NSDictionary *)modelDictionary
+{
+    return [self initWithModelDictionary:modelDictionary error:NULL];
+}
+- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(modelDictionary);
     if (!modelDictionary) {
@@ -51,28 +59,43 @@ struct ImageDirtyProperties {
     {
         __unsafe_unretained id value = modelDictionary[@"height"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_height = [value integerValue];
-            }
             self->_imageDirtyProperties.ImageDirtyPropertyHeight = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSNumber class]]) {
+                    self->_height = [value integerValue];
+                } else {
+                    self->_imageDirtyProperties.ImageDirtyPropertyHeight = 0;
+                    *error = PlankTypeError(@"height", [NSNumber class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"url"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_url = [NSURL URLWithString:value];
-            }
             self->_imageDirtyProperties.ImageDirtyPropertyUrl = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSString class]]) {
+                    self->_url = [NSURL URLWithString:value];
+                } else {
+                    self->_imageDirtyProperties.ImageDirtyPropertyUrl = 0;
+                    *error = PlankTypeError(@"url", [NSString class], [value class]);
+                }
+            }
         }
     }
     {
         __unsafe_unretained id value = modelDictionary[@"width"];
         if (value != nil) {
-            if (value != (id)kCFNull) {
-                self->_width = [value integerValue];
-            }
             self->_imageDirtyProperties.ImageDirtyPropertyWidth = 1;
+            if (value != (id)kCFNull) {
+                if (!error || [value isKindOfClass:[NSNumber class]]) {
+                    self->_width = [value integerValue];
+                } else {
+                    self->_imageDirtyProperties.ImageDirtyPropertyWidth = 0;
+                    *error = PlankTypeError(@"width", [NSNumber class], [value class]);
+                }
+            }
         }
     }
     if ([self class] == [Image class]) {
