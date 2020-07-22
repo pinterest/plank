@@ -1549,7 +1549,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     }
     return self;
 }
-#ifdef DEBUG
+#if DEBUG
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];

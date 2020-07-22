@@ -51,7 +51,7 @@ extension ObjectiveCIRTests {
        ("testElseStmt", testElseStmt),
        ("testIfElseStmt", testIfElseStmt),
        ("testMethod", testMethod),
-       ("testMethodIfdef", testMethodIfdef)
+       ("testMethodDebug", testMethodDebug)
    ]
 }
 // Generated Test Extension for ObjectiveCInitTests

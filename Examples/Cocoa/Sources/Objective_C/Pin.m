@@ -529,7 +529,7 @@ struct PinDirtyProperties {
     }
     return self;
 }
-#ifdef DEBUG
+#if DEBUG
 - (NSString *)debugDescription
 {
     NSArray<NSString *> *parentDebugDescription = [[super debugDescription] componentsSeparatedByString:@"\n"];

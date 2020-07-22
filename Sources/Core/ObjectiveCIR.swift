@@ -186,8 +186,8 @@ func == (lhs: MethodVisibility, rhs: MethodVisibility) -> Bool {
 }
 
 public struct ObjCIR {
-    static func method(_ signature: String, ifdef: String? = nil, body: () -> [String]) -> ObjCIR.Method {
-        return ObjCIR.Method(body: body(), signature: signature, ifdef: ifdef)
+    static func method(_ signature: String, debug: Bool = false, body: () -> [String]) -> ObjCIR.Method {
+        return ObjCIR.Method(body: body(), signature: signature, debug: debug)
     }
 
     static func stmt(_ body: String) -> String {
@@ -313,7 +313,7 @@ public struct ObjCIR {
     public struct Method {
         let body: [String]
         let signature: String
-        let ifdef: String?
+        let debug: Bool
 
         func render() -> [String] {
             let lines = [
@@ -322,8 +322,8 @@ public struct ObjCIR {
                 -->body,
                 "}",
             ]
-            if ifdef != nil {
-                return ["#ifdef " + ifdef!] + lines + ["#endif"]
+            if debug {
+                return ["#if DEBUG"] + lines + ["#endif"]
             }
             return lines
         }
