@@ -54,105 +54,105 @@ struct BoardDirtyProperties {
         return self;
     }
     if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }
-        {
-            __unsafe_unretained id value = modelDictionary[@"contributors"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            tmp0 = [User modelObjectWithDictionary:obj0];
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
+    {
+        __unsafe_unretained id value = modelDictionary[@"contributors"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSArray *items = value;
+                NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
+                for (id obj0 in items) {
+                    if (obj0 != (id)kCFNull) {
+                        id tmp0 = nil;
+                        tmp0 = [User modelObjectWithDictionary:obj0];
+                        if (tmp0 != nil) {
+                            [result0 addObject:tmp0];
                         }
                     }
-                    self->_contributors = result0;
                 }
-                self->_boardDirtyProperties.BoardDirtyPropertyContributors = 1;
+                self->_contributors = result0;
             }
+            self->_boardDirtyProperties.BoardDirtyPropertyContributors = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"counts"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_counts = value;
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyCounts = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"counts"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_counts = value;
             }
+            self->_boardDirtyProperties.BoardDirtyPropertyCounts = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"created_at"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyCreatedAt = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"created_at"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_createdAt = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
             }
+            self->_boardDirtyProperties.BoardDirtyPropertyCreatedAt = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"creator"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSDictionary *items0 = value;
-                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                        if (obj0 != nil && obj0 != (id)kCFNull) {
-                            result0[key0] = [obj0 copy];
-                        }
-                    }];
-                    self->_creator = result0;
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyCreator = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"creator"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSDictionary *items0 = value;
+                NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                    if (obj0 != nil && obj0 != (id)kCFNull) {
+                        result0[key0] = [obj0 copy];
+                    }
+                }];
+                self->_creator = result0;
             }
+            self->_boardDirtyProperties.BoardDirtyPropertyCreator = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"creator_url"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_creatorURL = [NSURL URLWithString:value];
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyCreatorURL = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"creator_url"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_creatorURL = [NSURL URLWithString:value];
             }
+            self->_boardDirtyProperties.BoardDirtyPropertyCreatorURL = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"description"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_descriptionText = [value copy];
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyDescriptionText = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"description"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_descriptionText = [value copy];
             }
+            self->_boardDirtyProperties.BoardDirtyPropertyDescriptionText = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"image"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_image = [Image modelObjectWithDictionary:value];
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyImage = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"image"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_image = [Image modelObjectWithDictionary:value];
             }
+            self->_boardDirtyProperties.BoardDirtyPropertyImage = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"name"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_name = [value copy];
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyName = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"name"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_name = [value copy];
             }
+            self->_boardDirtyProperties.BoardDirtyPropertyName = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"url"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_url = [NSURL URLWithString:value];
-                }
-                self->_boardDirtyProperties.BoardDirtyPropertyUrl = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"url"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_url = [NSURL URLWithString:value];
             }
+            self->_boardDirtyProperties.BoardDirtyPropertyUrl = 1;
         }
+    }
     if ([self class] == [Board class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
     }

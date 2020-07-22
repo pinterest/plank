@@ -723,533 +723,533 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
     if (!(self = [super init])) {
         return self;
     }
-        {
-            __unsafe_unretained id value = modelDictionary[@"array_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_arrayProp = value;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyArrayProp = 1;
+    {
+        __unsafe_unretained id value = modelDictionary[@"array_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_arrayProp = value;
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyArrayProp = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"boolean_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_everythingBooleanProperties.EverythingBooleanBooleanProp = [value boolValue] & 0x1;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyBooleanProp = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"boolean_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_everythingBooleanProperties.EverythingBooleanBooleanProp = [value boolValue] & 0x1;
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyBooleanProp = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"char_enum"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_charEnum = (EverythingCharEnum)[value integerValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyCharEnum = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"char_enum"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_charEnum = (EverythingCharEnum)[value integerValue];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyCharEnum = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"date_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_dateProp = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyDateProp = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"date_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_dateProp = [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyDateProp = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"int_enum"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_intEnum = (EverythingIntEnum)[value integerValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyIntEnum = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"int_enum"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_intEnum = (EverythingIntEnum)[value integerValue];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyIntEnum = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"int_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_intProp = [value integerValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyIntProp = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"int_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_intProp = [value integerValue];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyIntProp = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"list_polymorphic_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_listPolymorphicValues = value;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"list_polymorphic_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_listPolymorphicValues = value;
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyListPolymorphicValues = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"list_with_list_and_other_model_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            NSArray *items = obj0;
-                            NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items.count];
-                            for (id obj1 in items) {
-                                if (obj1 != (id)kCFNull) {
-                                    id tmp1 = nil;
-                                    tmp1 = [User modelObjectWithDictionary:obj1];
-                                    if (tmp1 != nil) {
-                                        [result1 addObject:tmp1];
-                                    }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"list_with_list_and_other_model_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSArray *items = value;
+                NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                for (id obj0 in items) {
+                    if (obj0 != (id)kCFNull) {
+                        id tmp0 = nil;
+                        NSArray *items = obj0;
+                        NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items.count];
+                        for (id obj1 in items) {
+                            if (obj1 != (id)kCFNull) {
+                                id tmp1 = nil;
+                                tmp1 = [User modelObjectWithDictionary:obj1];
+                                if (tmp1 != nil) {
+                                    [result1 addObject:tmp1];
                                 }
                             }
-                            tmp0 = result1;
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
+                        }
+                        tmp0 = result1;
+                        if (tmp0 != nil) {
+                            [result0 addObject:tmp0];
                         }
                     }
-                    self->_listWithListAndOtherModelValues = result0;
                 }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues = 1;
+                self->_listWithListAndOtherModelValues = result0;
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyListWithListAndOtherModelValues = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"list_with_map_and_other_model_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            NSDictionary *items1 = obj0;
-                            NSMutableDictionary *result1 = [NSMutableDictionary dictionaryWithCapacity:items1.count];
-                            [items1 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key1, id  _Nonnull obj1, __unused BOOL * _Nonnull stop1){
-                                if (obj1 != nil && obj1 != (id)kCFNull) {
-                                    result1[key1] = [User modelObjectWithDictionary:obj1];
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"list_with_map_and_other_model_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSArray *items = value;
+                NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                for (id obj0 in items) {
+                    if (obj0 != (id)kCFNull) {
+                        id tmp0 = nil;
+                        NSDictionary *items1 = obj0;
+                        NSMutableDictionary *result1 = [NSMutableDictionary dictionaryWithCapacity:items1.count];
+                        [items1 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key1, id  _Nonnull obj1, __unused BOOL * _Nonnull stop1){
+                            if (obj1 != nil && obj1 != (id)kCFNull) {
+                                result1[key1] = [User modelObjectWithDictionary:obj1];
+                            }
+                        }];
+                        tmp0 = result1;
+                        if (tmp0 != nil) {
+                            [result0 addObject:tmp0];
+                        }
+                    }
+                }
+                self->_listWithMapAndOtherModelValues = result0;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"list_with_object_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSArray *items = value;
+                NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                for (id obj0 in items) {
+                    if (obj0 != (id)kCFNull) {
+                        id tmp0 = nil;
+                        tmp0 = [obj0 copy];
+                        if (tmp0 != nil) {
+                            [result0 addObject:tmp0];
+                        }
+                    }
+                }
+                self->_listWithObjectValues = result0;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"list_with_other_model_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSArray *items = value;
+                NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
+                for (id obj0 in items) {
+                    if (obj0 != (id)kCFNull) {
+                        id tmp0 = nil;
+                        tmp0 = [User modelObjectWithDictionary:obj0];
+                        if (tmp0 != nil) {
+                            [result0 addObject:tmp0];
+                        }
+                    }
+                }
+                self->_listWithOtherModelValues = result0;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyListWithOtherModelValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"list_with_primitive_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_listWithPrimitiveValues = value;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyListWithPrimitiveValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"map_polymorphic_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSDictionary *items0 = value;
+                NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                    if (obj0 != nil && obj0 != (id)kCFNull) {
+                        if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"user"]) {
+                            result0[key0] = [EverythingMapPolymorphicValues  objectWithUser:[User modelObjectWithDictionary:obj0]];
+                        }
+                        if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"board"]) {
+                            result0[key0] = [EverythingMapPolymorphicValues  objectWithBoard:[Board modelObjectWithDictionary:obj0]];
+                        }
+                        if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"image"]) {
+                            result0[key0] = [EverythingMapPolymorphicValues  objectWithImage:[Image modelObjectWithDictionary:obj0]];
+                        }
+                        if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"pin"]) {
+                            result0[key0] = [EverythingMapPolymorphicValues  objectWithPin:[Pin modelObjectWithDictionary:obj0]];
+                        }
+                        if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"everything"]) {
+                            result0[key0] = [EverythingMapPolymorphicValues  objectWithEverything:[Everything modelObjectWithDictionary:obj0]];
+                        }
+                        if ([obj0 isKindOfClass:[NSArray class]]) {
+                            result0[key0] = [EverythingMapPolymorphicValues  objectWithArray:obj0];
+                        }
+                        if ([obj0 isKindOfClass:[NSDictionary class]]) {
+                            result0[key0] = [EverythingMapPolymorphicValues  objectWithDictionary:obj0];
+                        }
+                    }
+                }];
+                self->_mapPolymorphicValues = result0;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyMapPolymorphicValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"map_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_mapProp = value;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyMapProp = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"map_with_list_and_other_model_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSDictionary *items0 = value;
+                NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                    if (obj0 != nil && obj0 != (id)kCFNull) {
+                        NSArray *items = obj0;
+                        NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items.count];
+                        for (id obj1 in items) {
+                            if (obj1 != (id)kCFNull) {
+                                id tmp1 = nil;
+                                tmp1 = [User modelObjectWithDictionary:obj1];
+                                if (tmp1 != nil) {
+                                    [result1 addObject:tmp1];
                                 }
-                            }];
-                            tmp0 = result1;
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
                             }
                         }
+                        result0[key0] = result1;
                     }
-                    self->_listWithMapAndOtherModelValues = result0;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyListWithMapAndOtherModelValues = 1;
+                }];
+                self->_mapWithListAndOtherModelValues = result0;
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"list_with_object_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            tmp0 = [obj0 copy];
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"map_with_map_and_other_model_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSDictionary *items0 = value;
+                NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                    if (obj0 != nil && obj0 != (id)kCFNull) {
+                        result0[key0] = obj0;
+                    }
+                }];
+                self->_mapWithMapAndOtherModelValues = result0;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"map_with_object_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSDictionary *items0 = value;
+                NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                    if (obj0 != nil && obj0 != (id)kCFNull) {
+                        result0[key0] = [obj0 copy];
+                    }
+                }];
+                self->_mapWithObjectValues = result0;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"map_with_other_model_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSDictionary *items0 = value;
+                NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
+                [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
+                    if (obj0 != nil && obj0 != (id)kCFNull) {
+                        result0[key0] = [User modelObjectWithDictionary:obj0];
+                    }
+                }];
+                self->_mapWithOtherModelValues = result0;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"map_with_primitive_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_mapWithPrimitiveValues = value;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"nested_object"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_nestedObject = [Nested modelObjectWithDictionary:value];
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyNestedObject = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"nsinteger_enum"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_nsintegerEnum = (EverythingNsintegerEnum)[value integerValue];
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"nsuinteger_enum"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_nsuintegerEnum = (EverythingNsuintegerEnum)[value integerValue];
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"number_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_numberProp = [value doubleValue];
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyNumberProp = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"other_model_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_otherModelProp = [User modelObjectWithDictionary:value];
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyOtherModelProp = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"polymorphic_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"user"]) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithUser:[User modelObjectWithDictionary:value]];
+                }
+                if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"board"]) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoard:[Board modelObjectWithDictionary:value]];
+                }
+                if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"image"]) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithImage:[Image modelObjectWithDictionary:value]];
+                }
+                if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"pin"]) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithPin:[Pin modelObjectWithDictionary:value]];
+                }
+                if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"everything"]) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithEverything:[Everything modelObjectWithDictionary:value]];
+                }
+                if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"oneof_object"]) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithOneofObject:[OneofObject modelObjectWithDictionary:value]];
+                }
+                if ([value isKindOfClass:[NSString class]]) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithString:[value copy]];
+                }
+                if ([value isKindOfClass:[NSNumber class]] && strcmp([value objCType], @encode(BOOL)) == 0) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoolean:[value boolValue] & 0x1];
+                }
+                if ([value isKindOfClass:[NSNumber class]] && (strcmp([value objCType], @encode(int)) == 0 ||
+                strcmp([value objCType], @encode(unsigned int)) == 0 ||
+                strcmp([value objCType], @encode(short)) == 0 ||
+                strcmp([value objCType], @encode(unsigned short)) == 0 ||
+                strcmp([value objCType], @encode(long)) == 0 ||
+                strcmp([value objCType], @encode(long long)) == 0 ||
+                strcmp([value objCType], @encode(unsigned long)) == 0 ||
+                strcmp([value objCType], @encode(unsigned long long)) == 0)) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithInteger:[value integerValue]];
+                }
+                if ([value isKindOfClass:[NSNumber class]] && (strcmp([value objCType], @encode(float)) == 0 ||
+                strcmp([value objCType], @encode(double)) == 0)) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithFloat:[value doubleValue]];
+                }
+                if ([value isKindOfClass:[NSString class]] && [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value] != nil) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithDate:[[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value]];
+                }
+                if ([value isKindOfClass:[NSString class]] && [NSURL URLWithString:value] != nil) {
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithURL:[NSURL URLWithString:value]];
+                }
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"set_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_setProp = value;
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertySetProp = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"set_prop_with_other_model_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSArray *items = value;
+                NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
+                for (id obj0 in items) {
+                    if (obj0 != (id)kCFNull) {
+                        id tmp0 = nil;
+                        tmp0 = [User modelObjectWithDictionary:obj0];
+                        if (tmp0 != nil) {
+                            [result0 addObject:tmp0];
                         }
                     }
-                    self->_listWithObjectValues = result0;
                 }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyListWithObjectValues = 1;
+                self->_setPropWithOtherModelValues = result0;
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertySetPropWithOtherModelValues = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"list_with_other_model_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableArray *result0 = [NSMutableArray arrayWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            tmp0 = [User modelObjectWithDictionary:obj0];
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"set_prop_with_primitive_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSArray *items = value;
+                self->_setPropWithPrimitiveValues = [NSSet setWithArray:items];
+            }
+            self->_everythingDirtyProperties.EverythingDirtyPropertySetPropWithPrimitiveValues = 1;
+        }
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"set_prop_with_values"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                NSArray *items = value;
+                NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
+                for (id obj0 in items) {
+                    if (obj0 != (id)kCFNull) {
+                        id tmp0 = nil;
+                        tmp0 = [obj0 copy];
+                        if (tmp0 != nil) {
+                            [result0 addObject:tmp0];
                         }
                     }
-                    self->_listWithOtherModelValues = result0;
                 }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyListWithOtherModelValues = 1;
+                self->_setPropWithValues = result0;
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"list_with_primitive_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_listWithPrimitiveValues = value;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyListWithPrimitiveValues = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"short_enum"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_shortEnum = (EverythingShortEnum)[value integerValue];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyShortEnum = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"map_polymorphic_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSDictionary *items0 = value;
-                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                        if (obj0 != nil && obj0 != (id)kCFNull) {
-                            if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"user"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithUser:[User modelObjectWithDictionary:obj0]];
-                            }
-                            if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"board"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithBoard:[Board modelObjectWithDictionary:obj0]];
-                            }
-                            if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"image"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithImage:[Image modelObjectWithDictionary:obj0]];
-                            }
-                            if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"pin"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithPin:[Pin modelObjectWithDictionary:obj0]];
-                            }
-                            if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"everything"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithEverything:[Everything modelObjectWithDictionary:obj0]];
-                            }
-                            if ([obj0 isKindOfClass:[NSArray class]]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithArray:obj0];
-                            }
-                            if ([obj0 isKindOfClass:[NSDictionary class]]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithDictionary:obj0];
-                            }
-                        }
-                    }];
-                    self->_mapPolymorphicValues = result0;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyMapPolymorphicValues = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"string_enum"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_stringEnum = EverythingStringEnumFromString(value);
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyStringEnum = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"map_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_mapProp = value;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyMapProp = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"string_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_stringProp = [value copy];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyStringProp = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"map_with_list_and_other_model_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSDictionary *items0 = value;
-                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                        if (obj0 != nil && obj0 != (id)kCFNull) {
-                            NSArray *items = obj0;
-                            NSMutableArray *result1 = [NSMutableArray arrayWithCapacity:items.count];
-                            for (id obj1 in items) {
-                                if (obj1 != (id)kCFNull) {
-                                    id tmp1 = nil;
-                                    tmp1 = [User modelObjectWithDictionary:obj1];
-                                    if (tmp1 != nil) {
-                                        [result1 addObject:tmp1];
-                                    }
-                                }
-                            }
-                            result0[key0] = result1;
-                        }
-                    }];
-                    self->_mapWithListAndOtherModelValues = result0;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithListAndOtherModelValues = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"type"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_type = [value copy];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyType = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"map_with_map_and_other_model_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSDictionary *items0 = value;
-                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                        if (obj0 != nil && obj0 != (id)kCFNull) {
-                            result0[key0] = obj0;
-                        }
-                    }];
-                    self->_mapWithMapAndOtherModelValues = result0;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithMapAndOtherModelValues = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"unsigned_char_enum"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_unsignedCharEnum = (EverythingUnsignedCharEnum)[value integerValue];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"map_with_object_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSDictionary *items0 = value;
-                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                        if (obj0 != nil && obj0 != (id)kCFNull) {
-                            result0[key0] = [obj0 copy];
-                        }
-                    }];
-                    self->_mapWithObjectValues = result0;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithObjectValues = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"unsigned_int_enum"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_unsignedIntEnum = (EverythingUnsignedIntEnum)[value integerValue];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"map_with_other_model_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSDictionary *items0 = value;
-                    NSMutableDictionary *result0 = [NSMutableDictionary dictionaryWithCapacity:items0.count];
-                    [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
-                        if (obj0 != nil && obj0 != (id)kCFNull) {
-                            result0[key0] = [User modelObjectWithDictionary:obj0];
-                        }
-                    }];
-                    self->_mapWithOtherModelValues = result0;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithOtherModelValues = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"unsigned_short_enum"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_unsignedShortEnum = (EverythingUnsignedShortEnum)[value integerValue];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"map_with_primitive_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_mapWithPrimitiveValues = value;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyMapWithPrimitiveValues = 1;
+    }
+    {
+        __unsafe_unretained id value = modelDictionary[@"uri_prop"];
+        if (value != nil) {
+            if (value != (id)kCFNull) {
+                self->_uriProp = [NSURL URLWithString:value];
             }
+            self->_everythingDirtyProperties.EverythingDirtyPropertyUriProp = 1;
         }
-        {
-            __unsafe_unretained id value = modelDictionary[@"nested_object"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_nestedObject = [Nested modelObjectWithDictionary:value];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyNestedObject = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"nsinteger_enum"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_nsintegerEnum = (EverythingNsintegerEnum)[value integerValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyNsintegerEnum = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"nsuinteger_enum"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_nsuintegerEnum = (EverythingNsuintegerEnum)[value integerValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyNsuintegerEnum = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"number_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_numberProp = [value doubleValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyNumberProp = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"other_model_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_otherModelProp = [User modelObjectWithDictionary:value];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyOtherModelProp = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"polymorphic_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"user"]) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithUser:[User modelObjectWithDictionary:value]];
-                    }
-                    if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"board"]) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoard:[Board modelObjectWithDictionary:value]];
-                    }
-                    if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"image"]) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithImage:[Image modelObjectWithDictionary:value]];
-                    }
-                    if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"pin"]) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithPin:[Pin modelObjectWithDictionary:value]];
-                    }
-                    if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"everything"]) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithEverything:[Everything modelObjectWithDictionary:value]];
-                    }
-                    if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"oneof_object"]) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithOneofObject:[OneofObject modelObjectWithDictionary:value]];
-                    }
-                    if ([value isKindOfClass:[NSString class]]) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithString:[value copy]];
-                    }
-                    if ([value isKindOfClass:[NSNumber class]] && strcmp([value objCType], @encode(BOOL)) == 0) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoolean:[value boolValue] & 0x1];
-                    }
-                    if ([value isKindOfClass:[NSNumber class]] && (strcmp([value objCType], @encode(int)) == 0 ||
-                    strcmp([value objCType], @encode(unsigned int)) == 0 ||
-                    strcmp([value objCType], @encode(short)) == 0 ||
-                    strcmp([value objCType], @encode(unsigned short)) == 0 ||
-                    strcmp([value objCType], @encode(long)) == 0 ||
-                    strcmp([value objCType], @encode(long long)) == 0 ||
-                    strcmp([value objCType], @encode(unsigned long)) == 0 ||
-                    strcmp([value objCType], @encode(unsigned long long)) == 0)) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithInteger:[value integerValue]];
-                    }
-                    if ([value isKindOfClass:[NSNumber class]] && (strcmp([value objCType], @encode(float)) == 0 ||
-                    strcmp([value objCType], @encode(double)) == 0)) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithFloat:[value doubleValue]];
-                    }
-                    if ([value isKindOfClass:[NSString class]] && [[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value] != nil) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithDate:[[NSValueTransformer valueTransformerForName:kPlankDateValueTransformerKey] transformedValue:value]];
-                    }
-                    if ([value isKindOfClass:[NSString class]] && [NSURL URLWithString:value] != nil) {
-                        self->_polymorphicProp = [EverythingPolymorphicProp  objectWithURL:[NSURL URLWithString:value]];
-                    }
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"set_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_setProp = value;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertySetProp = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"set_prop_with_other_model_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            tmp0 = [User modelObjectWithDictionary:obj0];
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
-                        }
-                    }
-                    self->_setPropWithOtherModelValues = result0;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertySetPropWithOtherModelValues = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"set_prop_with_primitive_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    self->_setPropWithPrimitiveValues = [NSSet setWithArray:items];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertySetPropWithPrimitiveValues = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"set_prop_with_values"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    NSArray *items = value;
-                    NSMutableSet *result0 = [NSMutableSet setWithCapacity:items.count];
-                    for (id obj0 in items) {
-                        if (obj0 != (id)kCFNull) {
-                            id tmp0 = nil;
-                            tmp0 = [obj0 copy];
-                            if (tmp0 != nil) {
-                                [result0 addObject:tmp0];
-                            }
-                        }
-                    }
-                    self->_setPropWithValues = result0;
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertySetPropWithValues = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"short_enum"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_shortEnum = (EverythingShortEnum)[value integerValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyShortEnum = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"string_enum"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_stringEnum = EverythingStringEnumFromString(value);
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyStringEnum = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"string_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_stringProp = [value copy];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyStringProp = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"type"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_type = [value copy];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyType = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"unsigned_char_enum"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_unsignedCharEnum = (EverythingUnsignedCharEnum)[value integerValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyUnsignedCharEnum = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"unsigned_int_enum"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_unsignedIntEnum = (EverythingUnsignedIntEnum)[value integerValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyUnsignedIntEnum = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"unsigned_short_enum"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_unsignedShortEnum = (EverythingUnsignedShortEnum)[value integerValue];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyUnsignedShortEnum = 1;
-            }
-        }
-        {
-            __unsafe_unretained id value = modelDictionary[@"uri_prop"];
-            if (value != nil) {
-                if (value != (id)kCFNull) {
-                    self->_uriProp = [NSURL URLWithString:value];
-                }
-                self->_everythingDirtyProperties.EverythingDirtyPropertyUriProp = 1;
-            }
-        }
+    }
     if ([self class] == [Everything class]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kPlankDidInitializeNotification object:self userInfo:@{ kPlankInitTypeKey : @(PlankModelInitTypeDefault) }];
     }

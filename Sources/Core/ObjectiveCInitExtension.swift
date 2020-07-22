@@ -272,7 +272,7 @@ extension ObjCModelRenderer {
                 ObjCIR.ifStmt("!modelDictionary") { ["return self;"] },
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                     "if (!(self = [super initWithModelDictionary:modelDictionary])) { return self; }",
-                -->self.properties.map { name, prop in
+                self.properties.map { name, prop in
                     ObjCIR.scope { [
                         "__unsafe_unretained id value = modelDictionary[\(name.objcLiteral())];",
                         ObjCIR.ifStmt("value != nil") { [
@@ -287,7 +287,7 @@ extension ObjCModelRenderer {
                             "self->_\(dirtyPropertiesIVarName).\(dirtyPropertyOption(propertyName: name, className: className)) = 1;",
                         ] },
                     ] }
-                },
+                }.joined(separator: "\n"),
                 ObjCIR.ifStmt("[self class] == [\(self.className) class]") {
                     [renderPostInitNotification(type: "PlankModelInitTypeDefault")]
                 },
