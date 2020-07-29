@@ -186,7 +186,7 @@ extern UserEmailFrequency UserEmailFrequencyFromString(NSString * _Nonnull str)
             self->_userDirtyProperties.UserDirtyPropertyImage = 1;
             if (value != (id)kCFNull) {
                 if (!error || [value isKindOfClass:[NSDictionary class]]) {
-                    self->_image = [Image modelObjectWithDictionary:value];
+                    self->_image = [Image modelObjectWithDictionary:value error:error];
                 } else {
                     self->_userDirtyProperties.UserDirtyPropertyImage = 0;
                     *error = PlankTypeError(@"image", [NSDictionary class], [value class]);

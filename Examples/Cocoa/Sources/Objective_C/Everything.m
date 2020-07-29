@@ -847,7 +847,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                                     if (obj1 != (id)kCFNull) {
                                         id tmp1 = nil;
                                         if (!error || [obj1 isKindOfClass:[NSDictionary class]]) {
-                                            tmp1 = [User modelObjectWithDictionary:obj1];
+                                            tmp1 = [User modelObjectWithDictionary:obj1 error:error];
                                         } else {
                                             *error = PlankTypeError([@[@"list_with_list_and_other_model_values", @"?", @"?"] componentsJoinedByString:@"."], [NSDictionary class], [obj1 class]);
                                         }
@@ -890,7 +890,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                                 [items1 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key1, id  _Nonnull obj1, __unused BOOL * _Nonnull stop1){
                                     if (obj1 != nil && obj1 != (id)kCFNull) {
                                         if (!error || [obj1 isKindOfClass:[NSDictionary class]]) {
-                                            result1[key1] = [User modelObjectWithDictionary:obj1];
+                                            result1[key1] = [User modelObjectWithDictionary:obj1 error:error];
                                         } else {
                                             *error = PlankTypeError([@[@"list_with_map_and_other_model_values", @"?", key1] componentsJoinedByString:@"."], [NSDictionary class], [obj1 class]);
                                         }
@@ -954,7 +954,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                         if (obj0 != (id)kCFNull) {
                             id tmp0 = nil;
                             if (!error || [obj0 isKindOfClass:[NSDictionary class]]) {
-                                tmp0 = [User modelObjectWithDictionary:obj0];
+                                tmp0 = [User modelObjectWithDictionary:obj0 error:error];
                             } else {
                                 *error = PlankTypeError([@[@"list_with_other_model_values", @"?"] componentsJoinedByString:@"."], [NSDictionary class], [obj0 class]);
                             }
@@ -996,19 +996,19 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                     [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
                         if (obj0 != nil && obj0 != (id)kCFNull) {
                             if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"user"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithUser:[User modelObjectWithDictionary:obj0]];
+                                result0[key0] = [EverythingMapPolymorphicValues  objectWithUser:[User modelObjectWithDictionary:obj0 error:error]];
                             }
                             if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"board"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithBoard:[Board modelObjectWithDictionary:obj0]];
+                                result0[key0] = [EverythingMapPolymorphicValues  objectWithBoard:[Board modelObjectWithDictionary:obj0 error:error]];
                             }
                             if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"image"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithImage:[Image modelObjectWithDictionary:obj0]];
+                                result0[key0] = [EverythingMapPolymorphicValues  objectWithImage:[Image modelObjectWithDictionary:obj0 error:error]];
                             }
                             if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"pin"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithPin:[Pin modelObjectWithDictionary:obj0]];
+                                result0[key0] = [EverythingMapPolymorphicValues  objectWithPin:[Pin modelObjectWithDictionary:obj0 error:error]];
                             }
                             if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"everything"]) {
-                                result0[key0] = [EverythingMapPolymorphicValues  objectWithEverything:[Everything modelObjectWithDictionary:obj0]];
+                                result0[key0] = [EverythingMapPolymorphicValues  objectWithEverything:[Everything modelObjectWithDictionary:obj0 error:error]];
                             }
                             if ([obj0 isKindOfClass:[NSArray class]]) {
                                 result0[key0] = [EverythingMapPolymorphicValues  objectWithArray:obj0];
@@ -1057,7 +1057,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                                     if (obj1 != (id)kCFNull) {
                                         id tmp1 = nil;
                                         if (!error || [obj1 isKindOfClass:[NSDictionary class]]) {
-                                            tmp1 = [User modelObjectWithDictionary:obj1];
+                                            tmp1 = [User modelObjectWithDictionary:obj1 error:error];
                                         } else {
                                             *error = PlankTypeError([@[@"map_with_list_and_other_model_values", key0, @"?"] componentsJoinedByString:@"."], [NSDictionary class], [obj1 class]);
                                         }
@@ -1141,7 +1141,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                     [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
                         if (obj0 != nil && obj0 != (id)kCFNull) {
                             if (!error || [obj0 isKindOfClass:[NSDictionary class]]) {
-                                result0[key0] = [User modelObjectWithDictionary:obj0];
+                                result0[key0] = [User modelObjectWithDictionary:obj0 error:error];
                             } else {
                                 *error = PlankTypeError([@[@"map_with_other_model_values", key0] componentsJoinedByString:@"."], [NSDictionary class], [obj0 class]);
                             }
@@ -1175,7 +1175,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             self->_everythingDirtyProperties.EverythingDirtyPropertyNestedObject = 1;
             if (value != (id)kCFNull) {
                 if (!error || [value isKindOfClass:[NSDictionary class]]) {
-                    self->_nestedObject = [Nested modelObjectWithDictionary:value];
+                    self->_nestedObject = [Nested modelObjectWithDictionary:value error:error];
                 } else {
                     self->_everythingDirtyProperties.EverythingDirtyPropertyNestedObject = 0;
                     *error = PlankTypeError(@"nested_object", [NSDictionary class], [value class]);
@@ -1231,7 +1231,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             self->_everythingDirtyProperties.EverythingDirtyPropertyOtherModelProp = 1;
             if (value != (id)kCFNull) {
                 if (!error || [value isKindOfClass:[NSDictionary class]]) {
-                    self->_otherModelProp = [User modelObjectWithDictionary:value];
+                    self->_otherModelProp = [User modelObjectWithDictionary:value error:error];
                 } else {
                     self->_everythingDirtyProperties.EverythingDirtyPropertyOtherModelProp = 0;
                     *error = PlankTypeError(@"other_model_prop", [NSDictionary class], [value class]);
@@ -1245,22 +1245,22 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
             self->_everythingDirtyProperties.EverythingDirtyPropertyPolymorphicProp = 1;
             if (value != (id)kCFNull) {
                 if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"user"]) {
-                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithUser:[User modelObjectWithDictionary:value]];
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithUser:[User modelObjectWithDictionary:value error:error]];
                 }
                 if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"board"]) {
-                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoard:[Board modelObjectWithDictionary:value]];
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithBoard:[Board modelObjectWithDictionary:value error:error]];
                 }
                 if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"image"]) {
-                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithImage:[Image modelObjectWithDictionary:value]];
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithImage:[Image modelObjectWithDictionary:value error:error]];
                 }
                 if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"pin"]) {
-                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithPin:[Pin modelObjectWithDictionary:value]];
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithPin:[Pin modelObjectWithDictionary:value error:error]];
                 }
                 if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"everything"]) {
-                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithEverything:[Everything modelObjectWithDictionary:value]];
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithEverything:[Everything modelObjectWithDictionary:value error:error]];
                 }
                 if ([value isKindOfClass:[NSDictionary class]] && [value[@"type"] isEqualToString:@"oneof_object"]) {
-                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithOneofObject:[OneofObject modelObjectWithDictionary:value]];
+                    self->_polymorphicProp = [EverythingPolymorphicProp  objectWithOneofObject:[OneofObject modelObjectWithDictionary:value error:error]];
                 }
                 if ([value isKindOfClass:[NSString class]]) {
                     self->_polymorphicProp = [EverythingPolymorphicProp  objectWithString:[value copy]];
@@ -1317,7 +1317,7 @@ extern EverythingStringEnum EverythingStringEnumFromString(NSString * _Nonnull s
                         if (obj0 != (id)kCFNull) {
                             id tmp0 = nil;
                             if (!error || [obj0 isKindOfClass:[NSDictionary class]]) {
-                                tmp0 = [User modelObjectWithDictionary:obj0];
+                                tmp0 = [User modelObjectWithDictionary:obj0 error:error];
                             } else {
                                 *error = PlankTypeError([@[@"set_prop_with_other_model_values", @"?"] componentsJoinedByString:@"."], [NSDictionary class], [obj0 class]);
                             }
