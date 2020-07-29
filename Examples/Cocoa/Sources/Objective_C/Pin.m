@@ -225,10 +225,10 @@ struct PinDirtyProperties {
                         if (obj0 != (id)kCFNull) {
                             id tmp0 = nil;
                             if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"board"]) {
-                                tmp0 = [PinAttributionObjects  objectWithBoard:[Board modelObjectWithDictionary:obj0]];
+                                tmp0 = [PinAttributionObjects  objectWithBoard:[Board modelObjectWithDictionary:obj0 error:error]];
                             }
                             if ([obj0 isKindOfClass:[NSDictionary class]] && [obj0[@"type"] isEqualToString:@"user"]) {
-                                tmp0 = [PinAttributionObjects  objectWithUser:[User modelObjectWithDictionary:obj0]];
+                                tmp0 = [PinAttributionObjects  objectWithUser:[User modelObjectWithDictionary:obj0 error:error]];
                             }
                             if (tmp0 != nil) {
                                 [result0 addObject:tmp0];
@@ -249,7 +249,7 @@ struct PinDirtyProperties {
             self->_pinDirtyProperties.PinDirtyPropertyBoard = 1;
             if (value != (id)kCFNull) {
                 if (!error || [value isKindOfClass:[NSDictionary class]]) {
-                    self->_board = [Board modelObjectWithDictionary:value];
+                    self->_board = [Board modelObjectWithDictionary:value error:error];
                 } else {
                     self->_pinDirtyProperties.PinDirtyPropertyBoard = 0;
                     *error = PlankTypeError(@"board", [NSDictionary class], [value class]);
@@ -310,7 +310,7 @@ struct PinDirtyProperties {
                     [items0 enumerateKeysAndObjectsUsingBlock:^(NSString *  _Nonnull key0, id  _Nonnull obj0, __unused BOOL * _Nonnull stop0){
                         if (obj0 != nil && obj0 != (id)kCFNull) {
                             if (!error || [obj0 isKindOfClass:[NSDictionary class]]) {
-                                result0[key0] = [User modelObjectWithDictionary:obj0];
+                                result0[key0] = [User modelObjectWithDictionary:obj0 error:error];
                             } else {
                                 *error = PlankTypeError([@[@"creator", key0] componentsJoinedByString:@"."], [NSDictionary class], [obj0 class]);
                             }
@@ -358,7 +358,7 @@ struct PinDirtyProperties {
             self->_pinDirtyProperties.PinDirtyPropertyImage = 1;
             if (value != (id)kCFNull) {
                 if (!error || [value isKindOfClass:[NSDictionary class]]) {
-                    self->_image = [Image modelObjectWithDictionary:value];
+                    self->_image = [Image modelObjectWithDictionary:value error:error];
                 } else {
                     self->_pinDirtyProperties.PinDirtyPropertyImage = 0;
                     *error = PlankTypeError(@"image", [NSDictionary class], [value class]);

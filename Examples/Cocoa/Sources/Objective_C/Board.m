@@ -74,7 +74,7 @@ struct BoardDirtyProperties {
                         if (obj0 != (id)kCFNull) {
                             id tmp0 = nil;
                             if (!error || [obj0 isKindOfClass:[NSDictionary class]]) {
-                                tmp0 = [User modelObjectWithDictionary:obj0];
+                                tmp0 = [User modelObjectWithDictionary:obj0 error:error];
                             } else {
                                 *error = PlankTypeError([@[@"contributors", @"?"] componentsJoinedByString:@"."], [NSDictionary class], [obj0 class]);
                             }
@@ -178,7 +178,7 @@ struct BoardDirtyProperties {
             self->_boardDirtyProperties.BoardDirtyPropertyImage = 1;
             if (value != (id)kCFNull) {
                 if (!error || [value isKindOfClass:[NSDictionary class]]) {
-                    self->_image = [Image modelObjectWithDictionary:value];
+                    self->_image = [Image modelObjectWithDictionary:value error:error];
                 } else {
                     self->_boardDirtyProperties.BoardDirtyPropertyImage = 0;
                     *error = PlankTypeError(@"image", [NSDictionary class], [value class]);

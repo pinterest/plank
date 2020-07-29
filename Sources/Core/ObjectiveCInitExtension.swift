@@ -217,7 +217,7 @@ extension ObjCModelRenderer {
             case .enumT(.string):
                 return renderTypeCheck { ["\(propertyToAssign) = \(enumFromStringMethodName(propertyName: firstName, className: className))(value);"] }
             case let .object(objectRoot):
-                return renderTypeCheck { ["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"] }
+                return renderTypeCheck { ["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName) error:error];"] }
             case let .oneOf(types: schemas):
                 // TODO: Update to create ADT objects
                 let adtClassName = typeFromSchema(firstName, schema.nonnullProperty()).trimmingCharacters(in: CharacterSet(charactersIn: "*"))
@@ -238,7 +238,7 @@ extension ObjCModelRenderer {
                     switch schema {
                     case let .object(objectRoot):
                         return ObjCIR.ifStmt("[\(rawObjectName) isKindOfClass:[NSDictionary class]] && [\(rawObjectName)[\("type".objcLiteral())] isEqualToString:\(objectRoot.typeIdentifier.objcLiteral())]") {
-                            transformToADTInit(["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName)];"])
+                            transformToADTInit(["\(propertyToAssign) = [\(objectRoot.className(with: self.params)) modelObjectWithDictionary:\(rawObjectName) error:error];"])
                         }
                     case let .reference(with: ref):
                         return ref.force().map(loop) ?? {
