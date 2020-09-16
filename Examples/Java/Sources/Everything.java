@@ -2086,7 +2086,52 @@ public class Everything {
 
             @Override
             public void write(@NonNull JsonWriter writer, EverythingMapPolymorphicValues value) throws IOException {
-                writer.nullValue();
+                if (value == null) {
+                    writer.nullValue();
+                    return;
+                }
+                if (value.value0 != null) {
+                    if (userTypeAdapter == null) {
+                        userTypeAdapter = gson.getAdapter(User.class).nullSafe();
+                    }
+                    userTypeAdapter.write(writer, value.value0);
+                }
+                if (value.value1 != null) {
+                    if (boardTypeAdapter == null) {
+                        boardTypeAdapter = gson.getAdapter(Board.class).nullSafe();
+                    }
+                    boardTypeAdapter.write(writer, value.value1);
+                }
+                if (value.value2 != null) {
+                    if (imageTypeAdapter == null) {
+                        imageTypeAdapter = gson.getAdapter(Image.class).nullSafe();
+                    }
+                    imageTypeAdapter.write(writer, value.value2);
+                }
+                if (value.value3 != null) {
+                    if (pinTypeAdapter == null) {
+                        pinTypeAdapter = gson.getAdapter(Pin.class).nullSafe();
+                    }
+                    pinTypeAdapter.write(writer, value.value3);
+                }
+                if (value.value4 != null) {
+                    if (everythingTypeAdapter == null) {
+                        everythingTypeAdapter = gson.getAdapter(Everything.class).nullSafe();
+                    }
+                    everythingTypeAdapter.write(writer, value.value4);
+                }
+                if (value.value5 != null) {
+                    if (list_Object_TypeAdapter == null) {
+                        list_Object_TypeAdapter = gson.getAdapter(List<Object>.class).nullSafe();
+                    }
+                    list_Object_TypeAdapter.write(writer, value.value5);
+                }
+                if (value.value6 != null) {
+                    if (map_String__Object_TypeAdapter == null) {
+                        map_String__Object_TypeAdapter = gson.getAdapter(Map<String, Object>.class).nullSafe();
+                    }
+                    map_String__Object_TypeAdapter.write(writer, value.value6);
+                }
             }
 
             @Nullable
@@ -2294,7 +2339,82 @@ public class Everything {
 
             @Override
             public void write(@NonNull JsonWriter writer, EverythingPolymorphicProp value) throws IOException {
-                writer.nullValue();
+                if (value == null) {
+                    writer.nullValue();
+                    return;
+                }
+                if (value.value0 != null) {
+                    if (userTypeAdapter == null) {
+                        userTypeAdapter = gson.getAdapter(User.class).nullSafe();
+                    }
+                    userTypeAdapter.write(writer, value.value0);
+                }
+                if (value.value1 != null) {
+                    if (boardTypeAdapter == null) {
+                        boardTypeAdapter = gson.getAdapter(Board.class).nullSafe();
+                    }
+                    boardTypeAdapter.write(writer, value.value1);
+                }
+                if (value.value2 != null) {
+                    if (imageTypeAdapter == null) {
+                        imageTypeAdapter = gson.getAdapter(Image.class).nullSafe();
+                    }
+                    imageTypeAdapter.write(writer, value.value2);
+                }
+                if (value.value3 != null) {
+                    if (pinTypeAdapter == null) {
+                        pinTypeAdapter = gson.getAdapter(Pin.class).nullSafe();
+                    }
+                    pinTypeAdapter.write(writer, value.value3);
+                }
+                if (value.value4 != null) {
+                    if (everythingTypeAdapter == null) {
+                        everythingTypeAdapter = gson.getAdapter(Everything.class).nullSafe();
+                    }
+                    everythingTypeAdapter.write(writer, value.value4);
+                }
+                if (value.value5 != null) {
+                    if (oneofObjectTypeAdapter == null) {
+                        oneofObjectTypeAdapter = gson.getAdapter(OneofObject.class).nullSafe();
+                    }
+                    oneofObjectTypeAdapter.write(writer, value.value5);
+                }
+                if (value.value6 != null) {
+                    if (stringTypeAdapter == null) {
+                        stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
+                    }
+                    stringTypeAdapter.write(writer, value.value6);
+                }
+                if (value.value7 != null) {
+                    if (booleanTypeAdapter == null) {
+                        booleanTypeAdapter = gson.getAdapter(Boolean.class).nullSafe();
+                    }
+                    booleanTypeAdapter.write(writer, value.value7);
+                }
+                if (value.value8 != null) {
+                    if (integerTypeAdapter == null) {
+                        integerTypeAdapter = gson.getAdapter(Integer.class).nullSafe();
+                    }
+                    integerTypeAdapter.write(writer, value.value8);
+                }
+                if (value.value9 != null) {
+                    if (doubleTypeAdapter == null) {
+                        doubleTypeAdapter = gson.getAdapter(Double.class).nullSafe();
+                    }
+                    doubleTypeAdapter.write(writer, value.value9);
+                }
+                if (value.value10 != null) {
+                    if (dateTypeAdapter == null) {
+                        dateTypeAdapter = gson.getAdapter(Date.class).nullSafe();
+                    }
+                    dateTypeAdapter.write(writer, value.value10);
+                }
+                if (value.value11 != null) {
+                    if (stringTypeAdapter == null) {
+                        stringTypeAdapter = gson.getAdapter(String.class).nullSafe();
+                    }
+                    stringTypeAdapter.write(writer, value.value11);
+                }
             }
 
             @Nullable

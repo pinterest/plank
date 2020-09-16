@@ -1012,7 +1012,22 @@ public class Pin {
 
             @Override
             public void write(@NonNull JsonWriter writer, PinAttributionObjects value) throws IOException {
-                writer.nullValue();
+                if (value == null) {
+                    writer.nullValue();
+                    return;
+                }
+                if (value.value0 != null) {
+                    if (boardTypeAdapter == null) {
+                        boardTypeAdapter = gson.getAdapter(Board.class).nullSafe();
+                    }
+                    boardTypeAdapter.write(writer, value.value0);
+                }
+                if (value.value1 != null) {
+                    if (userTypeAdapter == null) {
+                        userTypeAdapter = gson.getAdapter(User.class).nullSafe();
+                    }
+                    userTypeAdapter.write(writer, value.value1);
+                }
             }
 
             @Nullable

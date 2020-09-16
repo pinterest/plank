@@ -159,9 +159,27 @@ extension JavaModelRenderer {
             [.public],
             "void write(@NonNull JsonWriter writer, " + formattedADTName + " value)",
             ["IOException"]
-        ) { [
-            "writer.nullValue();",
-        ] }
+        ) {
+            [
+                JavaIR.ifBlock(condition: "value == null") { [
+                    "writer.nullValue();",
+                    "return;",
+                ] },
+            ] +
+                schemas.enumerated().map { index, schemaObj in
+                    let typeAdapterVariableName = typeAdapterVariableNameForType(unwrappedTypeFromSchema("", schemaObj.schema))
+                    return JavaIR.ifBlock(condition: "value.value\(index) != null") {
+                        [
+                            // Creates TypeAdapter if necessary
+                            JavaIR.ifBlock(condition: "\(typeAdapterVariableName) == null") { [
+                                "\(typeAdapterVariableName) = gson.getAdapter(\(unwrappedTypeFromSchema("", schemaObj.schema)).class).nullSafe();",
+                            ] },
+                            // Write to JsonWriter
+                            "\(typeAdapterVariableName).write(writer, value.value\(index));",
+                        ]
+                    }
+                }
+        }
 
         let read = JavaIR.methodThatThrows(
             annotations: [.nullable, JavaAnnotation.override],
