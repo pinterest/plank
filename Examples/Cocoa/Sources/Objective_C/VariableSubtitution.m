@@ -51,6 +51,7 @@ struct VariableSubtitutionDirtyProperties {
 - (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(modelDictionary);
+    NSParameterAssert([modelDictionary isKindOfClass:[NSDictionary class]]);
     if (!(self = [super init])) {
         return self;
     }
