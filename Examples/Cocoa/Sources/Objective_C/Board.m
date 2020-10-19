@@ -58,10 +58,10 @@ struct BoardDirtyProperties {
 - (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(modelDictionary);
+    if (!(self = [super initWithModelDictionary:modelDictionary error:error])) { return self; }
     if (!modelDictionary) {
         return self;
     }
-    if (!(self = [super initWithModelDictionary:modelDictionary error:error])) { return self; }
     {
         __unsafe_unretained id value = modelDictionary[@"contributors"];
         if (value != nil) {

@@ -48,10 +48,10 @@ struct OneofObjectDirtyProperties {
 - (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(modelDictionary);
-    if (!modelDictionary) {
+    if (!(self = [super init])) {
         return self;
     }
-    if (!(self = [super init])) {
+    if (!modelDictionary) {
         return self;
     }
     {
