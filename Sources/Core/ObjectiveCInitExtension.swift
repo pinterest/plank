@@ -316,9 +316,9 @@ extension ObjCModelRenderer {
         return ObjCIR.method("- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error") {
             [
                 "NSParameterAssert(modelDictionary);",
-                ObjCIR.ifStmt("!modelDictionary") { ["return self;"] },
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                     "if (!(self = [super initWithModelDictionary:modelDictionary error:error])) { return self; }",
+                ObjCIR.ifStmt("!modelDictionary") { ["return self;"] },
                 self.properties.map { name, prop in
                     ObjCIR.scope { [
                         "__unsafe_unretained id value = modelDictionary[\(name.objcLiteral())];",
