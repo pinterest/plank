@@ -31,7 +31,7 @@ output_stability_test: build
 ci_tests: test integration_test output_stability_test
 
 archive:
-	swift build -c release --static-swift-stdlib --disable-sandbox
+	swift build -c release --disable-sandbox
 
 upload_pipeline:
 	.buildkite/upload_pipeline.sh
