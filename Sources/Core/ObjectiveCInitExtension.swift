@@ -316,6 +316,7 @@ extension ObjCModelRenderer {
         return ObjCIR.method("- (instancetype)initWithModelDictionary:(NS_VALID_UNTIL_END_OF_SCOPE NSDictionary *)modelDictionary error:(NSError *__autoreleasing *)error") {
             [
                 "NSParameterAssert(modelDictionary);",
+                "NSParameterAssert([modelDictionary isKindOfClass:[NSDictionary class]]);",
                 self.isBaseClass ? ObjCIR.ifStmt("!(self = [super init])") { ["return self;"] } :
                     "if (!(self = [super initWithModelDictionary:modelDictionary error:error])) { return self; }",
                 ObjCIR.ifStmt("!modelDictionary") { ["return self;"] },
