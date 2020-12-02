@@ -38,5 +38,5 @@ if [ -x "$(command -v flow)" ]; then
 fi
 
 if [ -n "${ANDROID_HOME}" ]; then
-  python tools/bazel build //Examples/Java:JavaExample --verbose_failures
+  python tools/bazel build //Examples/Java:example --verbose_failures
 fi
