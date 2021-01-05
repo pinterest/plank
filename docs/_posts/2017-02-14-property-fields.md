@@ -164,7 +164,7 @@ In addition, there is syntax for providing concrete subtypes such as dates, URIs
         "title": "nested",
         "properties": {
             "id": {"type": "integer"},
-            "name: {"type": "string"}
+            "name": {"type": "string"}
         }
     }
 }
