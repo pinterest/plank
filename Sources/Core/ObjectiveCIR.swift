@@ -358,10 +358,7 @@ public struct ObjCIR {
             case let .macro(macro):
                 return [macro]
             case let .imports(classNames, myName, parentName):
-                var parentImport = ""
-                if let parentName = parentName {
-                    parentImport = ObjCIR.fileImportStmt(parentName, headerPrefix: nil)
-                }
+                let parentImport = (parentName != nil) ? ObjCIR.fileImportStmt(parentName!, headerPrefix: nil) : ""
                 return [
                     "#import <Foundation/Foundation.h>",
                     parentImport,
