@@ -15,6 +15,7 @@ let date = Date()
 
 public enum GenerationParameterType {
     case classPrefix
+    case headerPrefix
     case recursive
     case includeRuntime
     case indent
@@ -282,13 +283,13 @@ public protocol FileGeneratorManager {
 }
 
 public protocol FileGenerator {
-    func renderFile() -> String
+    func renderFile(_: GenerationParameters) -> String
     var fileName: String { mutating get }
     var indent: Int { get }
 }
 
 protocol RootRenderer {
-    func renderImplementation() -> [String]
+    func renderImplementation(_ params: GenerationParameters) -> [String]
 }
 
 protocol FileRenderer {
@@ -452,7 +453,7 @@ public func writeFile(file: FileGenerator, outputDirectory: URL, generationParam
     var file = file
     let indent = generationParameters.indent(file: file)
     let indentSpaces = String(repeating: " ", count: indent)
-    let fileContents = file.renderFile()
+    let fileContents = file.renderFile(generationParameters)
         .replacingOccurrences(of: "\t", with: indentSpaces)
         .appending("\n") // Ensure there is exactly one new line a the end of the file
     do {

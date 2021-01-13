@@ -290,7 +290,10 @@ public struct ObjCIR {
         ].joined(separator: "\n")
     }
 
-    static func fileImportStmt(_ filename: String) -> String {
+    static func fileImportStmt(_ filename: String, headerPrefix: String?) -> String {
+        if let headerPrefix = headerPrefix {
+            return "#import \"\(headerPrefix)\(filename).h\""
+        }
         return "#import \"\(filename).h\""
     }
 
@@ -347,7 +350,7 @@ public struct ObjCIR {
         case enumDecl(name: String, values: EnumType)
         case optionSetEnum(name: String, values: [EnumValue<Int>])
 
-        func renderHeader() -> [String] {
+        func renderHeader(_: GenerationParameters) -> [String] {
             switch self {
             case .structDecl:
                 // skip structs in header
@@ -355,9 +358,10 @@ public struct ObjCIR {
             case let .macro(macro):
                 return [macro]
             case let .imports(classNames, myName, parentName):
+                let parentImport = (parentName != nil) ? ObjCIR.fileImportStmt(parentName!, headerPrefix: nil) : ""
                 return [
                     "#import <Foundation/Foundation.h>",
-                    parentName.map(ObjCIR.fileImportStmt) ?? "",
+                    parentImport,
                     "#import \"\(ObjCRuntimeHeaderFile().fileName)\"",
                 ].filter { $0 != "" } + (["\(myName)Builder"] + classNames)
                     .sorted().map { "@class \($0.trimmingCharacters(in: .whitespaces));" }
@@ -408,7 +412,7 @@ public struct ObjCIR {
             }
         }
 
-        func renderImplementation() -> [String] {
+        func renderImplementation(_ params: GenerationParameters) -> [String] {
             switch self {
             case let .structDecl(name: name, fields: fields):
                 return [
@@ -423,7 +427,7 @@ public struct ObjCIR {
                 return [classNames.union(Set([myName]))
                     .sorted()
                     .map { $0.trimmingCharacters(in: .whitespaces) }
-                    .map(ObjCIR.fileImportStmt)
+                    .map { ObjCIR.fileImportStmt($0, headerPrefix: params[GenerationParameterType.headerPrefix]) }
                     .joined(separator: "\n")]
             case .classDecl(name: let className, extends: _, methods: let methods, properties: _, protocols: let protocols):
                 return [
