@@ -70,7 +70,7 @@ extension FlagOptions: HelpCommandOutput {
             "",
             "    Objective-C:",
             "    --\(FlagOptions.objectiveCClassPrefix.rawValue) - The prefix to add to all generated class names",
-            "    --\(FlagOptions.objectiveCHeaderPrefix.rawValue) - The prefix to add to header include for all generated classes",
+            "    --\(FlagOptions.objectiveCHeaderPrefix.rawValue) - The prefix to add before all generated header includes",
             "",
             "    Java:",
             "    --\(FlagOptions.javaPackageName.rawValue) - The package name to associate with generated Java sources",
