@@ -33,7 +33,7 @@ struct JSRuntimeFile: FileGenerator {
             .joined(separator: "\n")
     }
 
-    func renderFile(_ paramaters: GenerationParameters) -> String {
+    func renderFile(_: GenerationParameters) -> String {
         let output = (
             [self.renderCommentHeader()] + [self.renderContent()]
         )

@@ -283,7 +283,7 @@ public protocol FileGeneratorManager {
 }
 
 public protocol FileGenerator {
-    func renderFile(_ : GenerationParameters) -> String
+    func renderFile(_: GenerationParameters) -> String
     var fileName: String { mutating get }
     var indent: Int { get }
 }

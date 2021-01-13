@@ -43,10 +43,10 @@ struct ObjCHeaderFile: FileGenerator {
         return objcDefaultIndent
     }
 
-    func renderFile(_ paramaters: GenerationParameters) -> String {
+    func renderFile(_ parameters: GenerationParameters) -> String {
         let output = (
             [self.renderCommentHeader()] +
-                roots.compactMap { $0.renderHeader(paramaters).joined(separator: "\n") }
+                roots.compactMap { $0.renderHeader(parameters).joined(separator: "\n") }
         )
         .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
         .filter { $0 != "" }
@@ -67,10 +67,10 @@ struct ObjCImplementationFile: FileGenerator {
         return objcDefaultIndent
     }
 
-    func renderFile(_ paramaters: GenerationParameters) -> String {
+    func renderFile(_ parameters: GenerationParameters) -> String {
         let output = (
             [self.renderCommentHeader()] +
-                roots.map { $0.renderImplementation(paramaters).joined(separator: "\n") }
+                roots.map { $0.renderImplementation(parameters).joined(separator: "\n") }
         )
         .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
         .filter { $0 != "" }
@@ -163,20 +163,19 @@ struct ObjCRuntimeFile {
 }
 
 struct ObjCRuntimeHeaderFile: FileGenerator {
+    let fileNamePrefix = "PlankModelRuntime"
+    let fileNameExtension = "h"
     var fileName: String {
         return "\(fileNamePrefix).\(fileNameExtension)"
     }
-    
-    let fileNamePrefix = "PlankModelRuntime"
-    let fileNameExtension = "h"
 
     var indent: Int {
         return objcDefaultIndent
     }
 
-    func renderFile(_ paramaters: GenerationParameters) -> String {
+    func renderFile(_ parameters: GenerationParameters) -> String {
         let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
-        let outputs = roots.map { $0.renderHeader(paramaters) }.reduce([], +)
+        let outputs = roots.map { $0.renderHeader(parameters) }.reduce([], +)
         return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>", ""] + outputs)
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }
@@ -193,12 +192,12 @@ struct ObjCRuntimeImplementationFile: FileGenerator {
         return objcDefaultIndent
     }
 
-    func renderFile(_ paramaters: GenerationParameters) -> String {
+    func renderFile(_ parameters: GenerationParameters) -> String {
         let roots: [ObjCIR.Root] = ObjCRuntimeFile.renderRoots()
-        let outputs = roots.map { $0.renderImplementation(paramaters) }.reduce([], +)
+        let outputs = roots.map { $0.renderImplementation(parameters) }.reduce([], +)
         return ([self.renderCommentHeader(), "", "#import <Foundation/Foundation.h>",
                  "",
-                 ObjCIR.fileImportStmt(ObjCRuntimeHeaderFile().fileNamePrefix, headerPrefix: paramaters[GenerationParameterType.headerPrefix]),
+                 ObjCIR.fileImportStmt(ObjCRuntimeHeaderFile().fileNamePrefix, headerPrefix: parameters[GenerationParameterType.headerPrefix]),
                  outputs.joined(separator: "\n")])
             .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
             .filter { $0 != "" }

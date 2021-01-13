@@ -183,7 +183,7 @@ class ObjectiveCIRTests: XCTestCase {
         }.render()
         XCTAssertEqual(expected, actual)
     }
-    
+
     func testFileImport() {
         XCTAssertEqual("#import \"include/ModelClass.h\"", ObjCIR.fileImportStmt("ModelClass", headerPrefix: "include/"))
         XCTAssertEqual("#import \"ModelClass.h\"", ObjCIR.fileImportStmt("ModelClass", headerPrefix: nil))

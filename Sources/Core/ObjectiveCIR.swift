@@ -350,7 +350,7 @@ public struct ObjCIR {
         case enumDecl(name: String, values: EnumType)
         case optionSetEnum(name: String, values: [EnumValue<Int>])
 
-        func renderHeader(_ params: GenerationParameters) -> [String] {
+        func renderHeader(_: GenerationParameters) -> [String] {
             switch self {
             case .structDecl:
                 // skip structs in header
@@ -359,7 +359,7 @@ public struct ObjCIR {
                 return [macro]
             case let .imports(classNames, myName, parentName):
                 var parentImport = ""
-                if let parentName = parentName {
+                if parentName != nil {
                     parentImport = ObjCIR.fileImportStmt(parentName, headerPrefix: nil)
                 }
                 return [
@@ -430,7 +430,7 @@ public struct ObjCIR {
                 return [classNames.union(Set([myName]))
                     .sorted()
                     .map { $0.trimmingCharacters(in: .whitespaces) }
-                            .map({ObjCIR.fileImportStmt($0, headerPrefix: params[GenerationParameterType.headerPrefix])})
+                    .map { ObjCIR.fileImportStmt($0, headerPrefix: params[GenerationParameterType.headerPrefix]) }
                     .joined(separator: "\n")]
             case .classDecl(name: let className, extends: _, methods: let methods, properties: _, protocols: let protocols):
                 return [
