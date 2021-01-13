@@ -487,7 +487,7 @@ public struct JavaIR {
         case classDecl(aClass: JavaIR.Class)
         case interfaceDecl(aInterface: JavaIR.Interface)
 
-        func renderImplementation() -> [String] {
+        func renderImplementation(_ params: GenerationParameters) -> [String] {
             switch self {
             case let .packages(names):
                 return names.sorted().map { "package \($0);" }

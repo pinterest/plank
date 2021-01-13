@@ -28,10 +28,10 @@ struct JavaFileGenerator: FileGenerator {
         return "\(className).java"
     }
 
-    func renderFile() -> String {
+    func renderFile(_ paramaters: GenerationParameters) -> String {
         return (
             [self.renderCommentHeader()] +
-                roots.map { $0.renderImplementation().joined(separator: "\n") }
+                roots.map { $0.renderImplementation(paramaters).joined(separator: "\n") }
         )
         .map { $0.trimmingCharacters(in: CharacterSet.whitespaces) }
         .map { $0.replacingOccurrences(of: "  ", with: " ") }
