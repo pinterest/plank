@@ -431,6 +431,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 }
             case .set: return ["java.util.Set"]
             case .string(format: .some(.dateTime)): return ["java.util.Date"]
+            case .oneOf: return ["com.google.gson.JsonObject"]
             default: return []
             }
         }.reduce(into: []) {
