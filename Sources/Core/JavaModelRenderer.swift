@@ -186,6 +186,9 @@ public struct JavaModelRenderer: JavaFileRenderer {
     func renderModelMergeFrom() -> JavaIR.Method {
         let methodName = "mergeFrom"
         return JavaIR.method(annotations: decorations.annotationsForMethod(methodName).union([.nonnull]), [.public], className + " " + methodName + "(@NonNull " + className + " model)") { [
+            JavaIR.ifBlock(condition: "this == model") { [
+                "return this;",
+            ] },
             self.className + ".Builder builder = this.toBuilder();",
             "builder.mergeFrom(model);",
             "return builder.build();",

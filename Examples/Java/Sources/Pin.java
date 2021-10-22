@@ -140,6 +140,9 @@ public class Pin {
 
     @NonNull
     public Pin mergeFrom(@NonNull Pin model) {
+        if (this == model) {
+            return this;
+        }
         Pin.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();

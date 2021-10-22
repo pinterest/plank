@@ -59,6 +59,9 @@ public class OneofObject {
 
     @NonNull
     public OneofObject mergeFrom(@NonNull OneofObject model) {
+        if (this == model) {
+            return this;
+        }
         OneofObject.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();

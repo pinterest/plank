@@ -67,6 +67,9 @@ public class Image {
 
     @NonNull
     public Image mergeFrom(@NonNull Image model) {
+        if (this == model) {
+            return this;
+        }
         Image.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();

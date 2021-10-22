@@ -59,6 +59,9 @@ public class Nested {
 
     @NonNull
     public Nested mergeFrom(@NonNull Nested model) {
+        if (this == model) {
+            return this;
+        }
         Nested.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
