@@ -303,6 +303,9 @@ public class Everything {
 
     @NonNull
     public Everything mergeFrom(@NonNull Everything model) {
+        if (this == model) {
+            return this;
+        }
         Everything.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();

@@ -98,6 +98,9 @@ public class Board {
 
     @NonNull
     public Board mergeFrom(@NonNull Board model) {
+        if (this == model) {
+            return this;
+        }
         Board.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();

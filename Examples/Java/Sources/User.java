@@ -101,6 +101,9 @@ public class User {
 
     @NonNull
     public User mergeFrom(@NonNull User model) {
+        if (this == model) {
+            return this;
+        }
         User.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();

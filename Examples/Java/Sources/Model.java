@@ -59,6 +59,9 @@ public class Model {
 
     @NonNull
     public Model mergeFrom(@NonNull Model model) {
+        if (this == model) {
+            return this;
+        }
         Model.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();

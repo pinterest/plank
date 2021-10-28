@@ -71,6 +71,9 @@ public class VariableSubtitution {
 
     @NonNull
     public VariableSubtitution mergeFrom(@NonNull VariableSubtitution model) {
+        if (this == model) {
+            return this;
+        }
         VariableSubtitution.Builder builder = this.toBuilder();
         builder.mergeFrom(model);
         return builder.build();
