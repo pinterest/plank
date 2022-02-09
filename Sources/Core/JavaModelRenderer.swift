@@ -480,19 +480,19 @@ public struct JavaModelRenderer: JavaFileRenderer {
             switch prop.schema {
             case let .oneOf(types: possibleTypes):
                 let objProps = possibleTypes.map { $0.nullableProperty() }
-                return adtRootsForSchema(property: param, schemas: objProps)
+                return adtRootsForSchema(property: param, schemas: objProps, decorations: decorations)
             case let .array(itemType: .some(itemType)):
                 switch itemType {
                 case let .oneOf(types: possibleTypes):
                     let objProps = possibleTypes.map { $0.nullableProperty() }
-                    return adtRootsForSchema(property: param, schemas: objProps)
+                    return adtRootsForSchema(property: param, schemas: objProps, decorations: decorations)
                 default: return []
                 }
             case let .map(valueType: .some(additionalProperties)):
                 switch additionalProperties {
                 case let .oneOf(types: possibleTypes):
                     let objProps = possibleTypes.map { $0.nullableProperty() }
-                    return adtRootsForSchema(property: param, schemas: objProps)
+                    return adtRootsForSchema(property: param, schemas: objProps, decorations: decorations)
                 default: return []
                 }
             default: return []
@@ -525,7 +525,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         )
 
         let typeAdapterFactoryClass = JavaIR.Class(
-            annotations: [],
+            annotations: decorations.annotationsForTypeAdapterFactories(),
             modifiers: [.public, .static],
             extends: nil,
             implements: ["TypeAdapterFactory"],

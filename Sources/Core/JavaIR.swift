@@ -119,6 +119,7 @@ struct JavaDecorations: Codable {
     var properties: [String: PropertyDecorations]?
     var methods: [String: MethodDecorations]?
     var variables: [String: VariableDecorations]?
+    var typeAdapterFactories: ClassDecorations?
     var imports: [String]?
 
     func annotationsForClass() -> Set<JavaAnnotation> {
@@ -204,6 +205,18 @@ struct JavaDecorations: Codable {
             return []
         }
         guard let annotations = variable.annotations else {
+            return []
+        }
+        return Set(annotations.map { annotationString in
+            JavaAnnotation.custom(annotationString)
+        })
+    }
+
+    func annotationsForTypeAdapterFactories() -> Set<JavaAnnotation> {
+        guard let typeAdapterFactoriesDecorations = typeAdapterFactories else {
+            return []
+        }
+        guard let annotations = typeAdapterFactoriesDecorations.annotations else {
             return []
         }
         return Set(annotations.map { annotationString in
