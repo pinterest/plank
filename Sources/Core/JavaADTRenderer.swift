@@ -20,7 +20,7 @@ extension JavaModelRenderer {
 
      }
      */
-    func adtRootsForSchema(property: String, schemas: [SchemaObjectProperty]) -> [JavaIR.Root] {
+    func adtRootsForSchema(property: String, schemas: [SchemaObjectProperty], decorations: JavaDecorations) -> [JavaIR.Root] {
         let adtName = "\(rootSchema.name)_\(property)"
         let formattedADTName = Languages.java.snakeCaseToCamelCase(adtName)
 
@@ -63,7 +63,7 @@ extension JavaModelRenderer {
                                methods: [emptyConstructor] + typeConstructors + [matcherMethod],
                                enums: [],
                                innerClasses: [
-                                   adtTypeAdapterFactory(property: property, schemas: schemas),
+                                   adtTypeAdapterFactory(property: property, schemas: schemas, decorations: decorations),
                                    adtTypeAdapter(property: property, schemas: schemas),
                                ],
                                interfaces: [matcherInterface],
@@ -72,7 +72,7 @@ extension JavaModelRenderer {
         return [JavaIR.Root.classDecl(aClass: cls)]
     }
 
-    func adtTypeAdapterFactory(property: String, schemas _: [SchemaObjectProperty]) -> JavaIR.Class {
+    func adtTypeAdapterFactory(property: String, schemas _: [SchemaObjectProperty], decorations: JavaDecorations) -> JavaIR.Class {
         let adtName = "\(rootSchema.name)_\(property)"
         let formattedADTName = Languages.java.snakeCaseToCamelCase(adtName)
 
@@ -84,7 +84,7 @@ extension JavaModelRenderer {
         ] }
 
         return JavaIR.Class(
-            annotations: [],
+            annotations: decorations.annotationsForTypeAdapterFactories(),
             modifiers: [.public, .static],
             extends: nil,
             implements: ["TypeAdapterFactory"],
