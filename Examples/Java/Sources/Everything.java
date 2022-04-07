@@ -20,6 +20,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -783,7 +784,7 @@ public class Everything {
             this.unsignedIntEnum = model.unsignedIntEnum;
             this.unsignedShortEnum = model.unsignedShortEnum;
             this.uriProp = model.uriProp;
-            this._bits = model._bits;
+            this._bits = Arrays.copyOf(model._bits, model._bits.length);
         }
 
         @NonNull
