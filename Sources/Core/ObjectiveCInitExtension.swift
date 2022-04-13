@@ -122,11 +122,13 @@ extension ObjCModelRenderer {
                 ]
             }
 
+            
             switch schema {
             case let .array(itemType: .some(itemType)):
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
+                let currentItems = "items\(counter)"
                 if itemType.isPrimitiveType {
                     return renderTypeCheck { [
                         "\(propertyToAssign) = \(rawObjectName);",
@@ -134,9 +136,9 @@ extension ObjCModelRenderer {
                 }
                 let propertyInit = renderPropertyInit(currentTmp, currentObj, keyPath: keyPath + ["?".objcLiteral()], schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
                 return renderTypeCheck { [
-                    "NSArray *items = \(rawObjectName);",
-                    "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:items.count];",
-                    ObjCIR.forStmt("id \(currentObj) in items") { [
+                    "NSArray *\(currentItems) = \(rawObjectName);",
+                    "NSMutableArray *\(currentResult) = [NSMutableArray arrayWithCapacity:\(currentItems).count];",
+                    ObjCIR.forStmt("id \(currentObj) in \(currentItems)") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                             "id \(currentTmp) = nil;",
                             propertyInit,
@@ -151,17 +153,18 @@ extension ObjCModelRenderer {
                 let currentResult = "result\(counter)"
                 let currentTmp = "tmp\(counter)"
                 let currentObj = "obj\(counter)"
+                let currentItems = "items\(counter)"
                 if itemType.isPrimitiveType {
                     return renderTypeCheck { [
-                        "NSArray *items = \(rawObjectName);",
-                        "\(propertyToAssign) = [NSSet setWithArray:items];",
+                        "NSArray *\(currentItems) = \(rawObjectName);",
+                        "\(propertyToAssign) = [NSSet setWithArray:\(currentItems)];",
                     ] }
                 }
                 let propertyInit = renderPropertyInit(currentTmp, currentObj, keyPath: keyPath + ["?".objcLiteral()], schema: itemType, firstName: firstName, counter: counter + 1).joined(separator: "\n")
                 return renderTypeCheck { [
-                    "NSArray *items = \(rawObjectName);",
-                    "NSMutableSet *\(currentResult) = [NSMutableSet setWithCapacity:items.count];",
-                    ObjCIR.forStmt("id \(currentObj) in items") { [
+                    "NSArray *\(currentItems) = \(rawObjectName);",
+                    "NSMutableSet *\(currentResult) = [NSMutableSet setWithCapacity:\(currentItems).count];",
+                    ObjCIR.forStmt("id \(currentObj) in \(currentItems)") { [
                         ObjCIR.ifStmt("\(currentObj) != (id)kCFNull") { [
                             "id \(currentTmp) = nil;",
                             propertyInit,
