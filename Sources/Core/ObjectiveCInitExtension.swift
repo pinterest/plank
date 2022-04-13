@@ -122,7 +122,6 @@ extension ObjCModelRenderer {
                 ]
             }
 
-            
             switch schema {
             case let .array(itemType: .some(itemType)):
                 let currentResult = "result\(counter)"
