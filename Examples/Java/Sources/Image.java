@@ -19,6 +19,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -138,7 +139,7 @@ public class Image {
             this.height = model.height;
             this.url = model.url;
             this.width = model.width;
-            this._bits = model._bits;
+            this._bits = Arrays.copyOf(model._bits, model._bits.length);
         }
 
         @NonNull

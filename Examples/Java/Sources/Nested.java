@@ -19,6 +19,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -105,7 +106,7 @@ public class Nested {
 
         private Builder(@NonNull Nested model) {
             this.uid = model.uid;
-            this._bits = model._bits;
+            this._bits = Arrays.copyOf(model._bits, model._bits.length);
         }
 
         @NonNull

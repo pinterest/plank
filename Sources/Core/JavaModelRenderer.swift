@@ -214,7 +214,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
         let privateConstructor = JavaIR.method([.private], "Builder(@NonNull " + className + " model)") {
             self.transitiveProperties.map { param, _ in
                 "this." + Languages.java.snakeCaseToPropertyName(param) + " = model." + Languages.java.snakeCaseToPropertyName(param) + ";"
-            } + ["this._bits = model._bits;"]
+            } + ["this._bits = Arrays.copyOf(model._bits, model._bits.length);"]
         }
 
         return [emptyConstructor, privateConstructor]
@@ -457,6 +457,7 @@ public struct JavaModelRenderer: JavaFileRenderer {
                 "com.google.gson.stream.JsonToken",
                 "com.google.gson.stream.JsonWriter",
                 "java.io.IOException",
+                "java.util.Arrays",
                 "java.util.Objects",
                 nullabilityAnnotationType.package + ".NonNull",
                 nullabilityAnnotationType.package + ".Nullable",
